@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SpatialSprout 3D</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Interactive 3D books for Ontario students. Read the idea, then build it in 3D. Start with The Interactive Classroom: Grade 3 Math.">
+<meta property="og:title" content="SpatialSprout 3D">
+<meta property="og:description" content="Interactive 3D books for Ontario students. Lessons that stand up off the page.">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png">
+<link rel="apple-touch-icon" href="assets/img/icon-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Patrick+Hand&family=Zilla+Slab:wght@500;600;700&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="site-head" id="top">
+  <div class="wrap head-row">
+    <a class="brand" href="#top" aria-label="SpatialSprout 3D home">
+      <img class="brand-mark" src="assets/img/mark-white.png" alt="" width="40" height="40">
+      <span class="brand-name">SpatialSprout <b>3D</b></span>
+    </a>
+    <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="nav">Menu</button>
+    <nav class="nav" id="nav" aria-label="Main">
+      <a href="#how">How it works</a>
+      <a href="#library">Library</a>
+      <a href="#inside">Inside Grade 3</a>
+      <a href="#about">About</a>
+      <a class="btn btn-sun btn-sm" href="books/grade-3-math/index.html">Open the book</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <p class="eyebrow">Interactive 3D books · Ontario curriculum</p>
+        <h1>Lessons that stand up off the page.</h1>
+        <p class="lead">Every lesson is a real book spread. Read the idea on one page, and a 3D model pops up on the other so kids can build it, turn it and test it with their own hands.</p>
+        <div class="cta-row">
+          <a class="btn btn-sun" href="books/grade-3-math/index.html">Open Grade 3 Math</a>
+          <a class="btn btn-ghost" href="#library">Browse the library</a>
+        </div>
+        <p class="hand note">Works in the browser on phones, tablets and computers. Nothing to install.</p>
+      </div>
+      <div class="hero-stage" aria-hidden="true">
+        <canvas id="hero3d"></canvas>
+        <div class="stage-fallback"><img src="assets/img/logo-white.png" alt=""></div>
+      </div>
+    </div>
+    <div class="wrap">
+      <dl class="facts">
+        <div><dt>22</dt><dd>lessons</dd></div>
+        <div><dt>44</dt><dd>book spreads</dd></div>
+        <div><dt>110</dt><dd>3D game rounds</dd></div>
+        <div><dt>5 of 5</dt><dd>Ontario math strands</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="band" id="how">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">How a lesson works</p>
+        <h2>Read it, watch it, build it, prove it.</h2>
+      </div>
+      <ol class="steps">
+        <li>
+          <span class="step-n">1</span>
+          <h3>Read the idea</h3>
+          <p>The left page explains one idea in plain words with a picture, key words and a question to predict.</p>
+        </li>
+        <li>
+          <span class="step-n">2</span>
+          <h3>Watch it move</h3>
+          <p>Press play and a warm narrator reads along while the 3D model acts it out: blocks regroup, cakes split, clocks tick.</p>
+        </li>
+        <li>
+          <span class="step-n">3</span>
+          <h3>Build it yourself</h3>
+          <p>Drag coins into a tray, swing a clock hand, stretch a garden fence. Kids touch the model, not a worksheet.</p>
+        </li>
+        <li>
+          <span class="step-n">4</span>
+          <h3>Win the stamp</h3>
+          <p>The Practice spread has quick questions with flaps to check, then a 5-round game. Win all five to stamp the lesson.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="band band-alt" id="library">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">The library</p>
+        <h2>One book at a time, every grade.</h2>
+        <p class="sub">Grade 3 Math is open now. More grades and subjects are on the way.</p>
+      </div>
+      <div class="shelf" id="shelf"></div>
+      <p class="more" id="more"></p>
+    </div>
+  </section>
+
+  <section class="band" id="inside">
+    <div class="wrap inside-grid">
+      <div class="inside-intro">
+        <p class="eyebrow">Inside Grade 3 Math</p>
+        <h2>Every Grade 3 expectation, page by page.</h2>
+        <p>Each lesson is tagged with the Ontario curriculum codes it covers, so teachers can match it to their plans and parents can see what the class is working on.</p>
+        <div class="legend" id="legend"></div>
+        <a class="btn btn-brand" href="books/grade-3-math/index.html">Open the book</a>
+      </div>
+      <div class="lessons" id="lessons"></div>
+    </div>
+  </section>
+
+  <section class="band band-alt">
+    <div class="wrap two-col">
+      <div class="who">
+        <h2>For families</h2>
+        <ul>
+          <li>Opens in the browser on any phone, tablet or computer.</li>
+          <li>Every page can be read aloud, so younger readers can follow on their own.</li>
+          <li>Stars and stamps are saved on your device, so kids pick up where they left off.</li>
+        </ul>
+      </div>
+      <div class="who">
+        <h2>For teachers</h2>
+        <ul>
+          <li>Each lesson lists its curriculum codes, from B1.1 to F1.1.</li>
+          <li>Put the Learn spread on the board for the whole class, then use the Practice games in centres.</li>
+          <li>Kids can replay any Practice game, and most games make new puzzles each time.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="band about" id="about">
+    <div class="wrap about-grid">
+      <img class="about-logo" src="assets/img/logo-teal.png" alt="SpatialSprout 3D, Learning in 3D" width="320" height="258">
+      <div>
+        <p class="eyebrow">About</p>
+        <h2>SpatialSprout 3D</h2>
+        <p>SpatialSprout 3D makes interactive 3D books for students in Ontario. The idea is simple: some things click when you can pick them up and turn them around. Our books put that into every lesson.</p>
+        <p>The first book, <i>The Interactive Classroom: Grade 3 Math</i>, is written by M. A. Mafodh. Next come the other grades, then science, language and social studies.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap foot-row">
+    <div class="foot-brand">
+      <img src="assets/img/mark-white.png" alt="" width="32" height="32">
+      <span>SpatialSprout 3D</span>
+    </div>
+    <p>Built on the expectations of the Ontario Grade 3 Mathematics curriculum (2020).</p>
+    <p>© <span id="year">2026</span> SpatialSprout 3D. All rights reserved.</p>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="assets/catalog.js"></script>
+<script src="assets/site.js"></script>
+<script src="assets/hero3d.js"></script>
+</body>
+</html>
