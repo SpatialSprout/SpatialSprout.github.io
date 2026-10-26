@@ -3,8 +3,6 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<link rel="icon" type="image/png" sizes="32x32" href="../../assets/img/favicon-32.png">
-<link rel="apple-touch-icon" href="../../assets/img/icon-180.png">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head>
 <body>
@@ -130,6 +128,7 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 
 <div class="sheetwrap" id="sheet" hidden><div class="sheet" role="dialog" aria-modal="true" id="sheetBody"></div></div>
 
+<script src="book.js"></script>
 <script src="brand.js"></script>
 <script src="voice.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -146,7 +145,9 @@ const BR=window.BRAND||{};
 const img=src=>{const i=new Image();if(src)i.src=src;return i;};
 const LOGO=img(BR.full),MARK=img(BR.mark),MARKT=img(BR.markTeal);
 if(BR.mark)$('#brandMark').src=BR.mark;
-const AUTHOR='M. A. Mafodh',BRANDNAME='SpatialSprout 3D',TITLE='The Interactive Classroom',SUB='Grade 3 Math';
+const BK=Object.assign({grade:3,subject:'Math',tiles:['M','A','T','H'],key:'3',strands:'all five Ontario strands'},window.BOOK||{});
+const GR=String(BK.grade),SUBJ=BK.subject,SKEY='tic'+BK.key+'-';
+const AUTHOR='M. A. Mafodh',BRANDNAME='SpatialSprout 3D',TITLE='The Interactive Classroom',SUB='Grade '+GR+' '+SUBJ;
 
 /* ================= constants ================= */
 const W=4.6,D=6.2,MAT_Y=.04,COVER_T=.1,BLOCK_T=.17,PY=MAT_Y+COVER_T+BLOCK_T+.004;
@@ -253,10 +254,10 @@ function drawCover(g){g.setTransform(PS,0,0,PS,0,0);
     else if(k===3){g.beginPath();g.moveTo(-s/2,0);g.lineTo(s/2,0);g.moveTo(0,-s/2);g.lineTo(0,s/2);g.stroke();}else{g.font=ZS(Math.round(s*1.6));g.fillText(String(Math.floor(rnd()*10)),-s/2,s/2);}g.restore();}
   rr(g,X0,64,500,54,27);g.fillStyle='#fff';g.fill();g.font=FT.eyebrow;g.fillStyle=TEAL;let x=X0+30;for(const ch of 'ONTARIO CURRICULUM EDITION'){g.fillText(ch,x,99);x+=g.measureText(ch).width+3;}
   g.save();g.shadowColor='rgba(10,20,60,.3)';g.shadowOffsetY=6;T(g,TITLE.split(' ').slice(0,2).join(' '),X0,226,ZS(88),'#fff');T(g,'Classroom',X0,340,ZS(112),'#fff');g.restore();
-  const tc=['#ffd24a','#ff7a9c','#7fe0c8','#ffb347'];['M','A','T','H'].forEach((L,i)=>{g.save();g.translate(X0+64+i*142,470);g.rotate((i%2?1:-1)*.07);
+  const tc=['#ffd24a','#ff7a9c','#7fe0c8','#ffb347','#b9d1ff','#c7f0a4','#ffc4a8'];BK.tiles.forEach((L,i)=>{g.save();g.translate(X0+64+i*142,470);g.rotate((i%2?1:-1)*.07);
     rr(g,-60,-52,120,120,24);g.fillStyle='rgba(10,20,60,.25)';g.fill();rr(g,-60,-60,120,120,24);g.fillStyle=tc[i];g.fill();g.lineWidth=5;g.strokeStyle='#fff';g.stroke();T(g,L,0,30,ZS(90),INK,'center');g.restore();});
   g.save();g.translate(CW-165,470);g.beginPath();for(let i=0;i<24;i++){const r=i%2?92:114,a=i/24*Math.PI*2;i?g.lineTo(Math.cos(a)*r,Math.sin(a)*r):g.moveTo(Math.cos(a)*r,Math.sin(a)*r);}g.closePath();g.fillStyle='#ffd24a';g.fill();
-  T(g,'GRADE',0,-30,'700 25px "Atkinson Hyperlegible", sans-serif',INK,'center');T(g,'3',0,60,ZS(100),INK,'center');g.restore();
+  T(g,'GRADE',0,-30,'700 25px "Atkinson Hyperlegible", sans-serif',INK,'center');T(g,GR,0,60,ZS(100),INK,'center');g.restore();
   T(g,'by '+AUTHOR,X0,620,'700 40px "Atkinson Hyperlegible", sans-serif','#fff');
   /* brand: the logo sits straight on the cover art, no panel; a soft halo and shadow seat it into the colour */
   const LY=700,LH=350,LWd=LOGO.naturalWidth?LH*LOGO.naturalWidth/LOGO.naturalHeight:0,LX=CW/2-LWd/2;
@@ -373,11 +374,11 @@ function box(p,y,h,title){const g=p.g;rr(g,X0,y,TW,h,18);g.fillStyle=tint(ACC,.0
   if(title){T(g,'★',X0+24,y+42,ZS(30),'#f2a400');T(g,title,X0+60,y+42,FT.h3,INK);}}
 function paperBase(p){const g=p.g;g.setTransform(PS,0,0,PS,0,0);g.fillStyle=PAPER;g.fillRect(0,0,CW,CH);g.fillStyle=g.createPattern(grain,'repeat');g.fillRect(0,0,CW,CH);}
 function finishPage(p,side,sp){const g=p.g,L=side==='L';
-  if(sp.L){const i=sp.L.n;g.fillStyle=ACC;const ty=230+((i-1)%22)*48;rr(g,L?-20:CW-34,ty,54,44,10);g.fill();T(g,String(i),L?15:CW-15,ty+31,ZS(22),'#fff','center');}
+  if(sp.L){const i=sp.L.n;g.fillStyle=ACC;const NL=Math.max(1,LESSONS.length),ty=230+((i-1)%NL)*Math.min(48,1060/NL);rr(g,L?-20:CW-34,ty,54,44,10);g.fill();T(g,String(i),L?15:CW-15,ty+31,ZS(22),'#fff','center');}
   const gr=g.createLinearGradient(L?CW:0,0,L?CW-160:160,0);gr.addColorStop(0,'rgba(20,28,50,.24)');gr.addColorStop(.3,'rgba(20,28,50,.07)');gr.addColorStop(1,'rgba(20,28,50,0)');g.fillStyle=gr;g.fillRect(L?CW-160:0,0,160,CH);
   g.font=FT.small;g.fillStyle=GREY;const num=sp.page+(L?0:1);
   if(L){g.textAlign='left';g.fillText(String(num),X0,1358);g.fillText(TITLE+' · '+SUB,X0+60,1358);}
-  else{g.textAlign='left';if(sp.codes&&sp.codes.length)g.fillText('Ontario '+sp.codes.map(c=>'3.'+c).join(' · '),X0,1358);g.textAlign='right';g.fillText(String(num),X0+TW,1358);g.fillStyle=TEAL;g.fillText(BRANDNAME,X0+TW-60,1358);}g.textAlign='left';}
+  else{g.textAlign='left';if(sp.codes&&sp.codes.length)g.fillText('Ontario '+sp.codes.map(c=>GR+'.'+c).join(' · '),X0,1358);g.textAlign='right';g.fillText(String(num),X0+TW,1358);g.fillStyle=TEAL;g.fillText(BRANDNAME,X0+TW-60,1358);}g.textAlign='left';}
 const cxOf=x=>(x+W/2)*PX,cyOf=z=>(z+D/2)*PX;
 function starsRow(g,x,y,n,of,size){for(let i=0;i<of;i++)T(g,'★',x+i*size*1.1,y,ZS(size),i<n?'#f2a400':'#d7dbe3');}
 
@@ -408,7 +409,7 @@ function speak(text,onend){if(!soundOn)return false;stopSpeak();const tk=voTok;c
 
 /* ================= runtime API ================= */
 let SP=[],cur=-1,stepI=0,busy=false,building=false,token=0,seqTok=0,clickables=[],draggables=[],flap3d=[],curApi={};
-let stamps={};try{stamps=JSON.parse(localStorage.getItem('tic3-stamps')||'{}')||{};}catch(e){stamps={};}
+let stamps={};try{stamps=JSON.parse(localStorage.getItem(SKEY+'stamps')||'{}')||{};}catch(e){stamps={};}
 const A={
   redraw(){if(cur<0||building)return;drawPage(leftP,SP[cur],'L');drawPage(rightP,SP[cur],'R');refreshDock();},
   refresh(){if(!building)refreshDock();},
@@ -421,7 +422,7 @@ const A={
   good(msg,at){chime();burst(at||V(W/2,PY+1.2,-.8));if(msg)A.say(msg);},
   bad(msg){chime(false);if(msg)A.say(msg);},
   pop,
-  win(){const sp=SP[cur];if(!sp||!sp.L)return;const id=sp.L.id;sp.S.st.won=true;if(!stamps[id]){stamps[id]=1;try{localStorage.setItem('tic3-stamps',JSON.stringify(stamps));}catch(e){}}
+  win(){const sp=SP[cur];if(!sp||!sp.L)return;const id=sp.L.id;sp.S.st.won=true;if(!stamps[id]){stamps[id]=1;try{localStorage.setItem(SKEY+'stamps',JSON.stringify(stamps));}catch(e){}}
     stampDrop();updateBadge();paperSound(.5);}
 };
 function stampDrop(){const c=document.createElement('canvas');c.width=c.height=256;drawStamp(c.getContext('2d'),128,128,100);
@@ -449,14 +450,14 @@ Object.assign(PM,{THREE,V,W,D,PY,PX,CW,CH,X0,TW,INK,RED,BLUE,GREY,TEAL,VIBE,FT,Z
 
 /* ================= spreads ================= */
 const INTRO={id:'intro',kind:'intro',title:'Welcome',strand:'',color:TEAL,num:'',codes:[],
- steps:[{say:'Welcome to The Interactive Classroom.',speech:'Welcome to The Interactive Classroom, Grade 3 Math, by '+AUTHOR+', from SpatialSprout 3D.',view:'book'},
+ steps:[{say:'Welcome to The Interactive Classroom.',speech:'Welcome to The Interactive Classroom, '+SUB+', by '+AUTHOR+', from SpatialSprout 3D.',view:'book'},
         {say:'Read how to use this book.',speech:'Every lesson has a Learn page and a Practice page. Read the idea, watch the model show you, then play the game to earn a stamp.',view:'read'},
         {say:'Tap a lesson, or press next.',speech:'Tap a lesson in the contents, or press next to turn the page.',view:'book'}],
  left(p){const g=p.g;const gr=g.createLinearGradient(0,0,CW,0);gr.addColorStop(0,'#1fa8a2');gr.addColorStop(1,'#2f7de1');g.fillStyle=gr;g.fillRect(0,0,CW,500);
   for(let x=0;x<CW;x+=64){g.beginPath();g.arc(x+32,500,32,0,Math.PI);g.fillStyle='#2489c6';g.fill();}
   g.font=FT.eyebrow;g.fillStyle='rgba(255,255,255,.92)';spaced(g,'ONTARIO CURRICULUM EDITION',X0,96,3);
   T(g,'The Interactive',X0,196,ZS(76),'#fff');T(g,'Classroom',X0,290,ZS(96),'#fff');
-  const tc=['#ffd24a','#ff7a9c','#7fe0c8'];let x=X0;['Grade','3','Math'].forEach((w,i)=>{g.font=ZS(52);const tw=g.measureText(w).width+36;rr(g,x,330,tw,74,18);g.fillStyle=tc[i];g.fill();T(g,w,x+18,385,ZS(52),INK);x+=tw+14;});
+  const tc=['#ffd24a','#ff7a9c','#7fe0c8'];let x=X0;['Grade',GR,SUBJ].forEach((w,i)=>{g.font=ZS(52);const tw=g.measureText(w).width+36;rr(g,x,330,tw,74,18);g.fillStyle=tc[i];g.fill();T(g,w,x+18,385,ZS(52),INK);x+=tw+14;});
   T(g,'by '+AUTHOR,X0,458,'700 32px "Atkinson Hyperlegible", sans-serif','#fff');
   let y=wrap(g,'A math book that stands up off the page. Every lesson has a *Learn* spread with the idea and a model that shows it, and a *Practice* spread with questions and a 3D game.',X0,600,TW,42,{font:FT.body,bold:FT.bodyB});
   y+=24;T(g,'How to use this book',X0,y,FT.h3);y+=52;
@@ -464,8 +465,8 @@ const INTRO={id:'intro',kind:'intro',title:'Welcome',strand:'',color:TEAL,num:''
     g.beginPath();g.arc(X0+20,y-9,20,0,Math.PI*2);g.fillStyle=VIBE[i];g.fill();T(g,String(i+1),X0+20,y,FT.smallB,'#fff','center');T(g,s,X0+56,y,FT.body);y+=50;});
   g.fillStyle=tint(TEAL,.25);g.fillRect(X0,1060,TW,2);const lt=tintLogo(TEAL),lh=200,lw=lt?lh*lt.width/lt.height:0;if(lt)g.drawImage(lt,X0,1088,lw,lh);
   T(g,'Written by',X0+40+lw,1150,FT.small,GREY);T(g,AUTHOR,X0+40+lw,1192,ZS(40),INK);T(g,'Published by '+BRANDNAME,X0+40+lw,1236,FT.small,TEAL);},
- right(p){const g=p.g;T(g,'Contents',X0,120,ZS(56));T(g,LESSONS.length+' lessons · '+LESSONS.length*2+' spreads · all five Ontario strands',X0,164,FT.small,GREY);
-  const colW=TW/2,rowH=92;LESSONS.forEach((L,i)=>{const col=i<11?0:1,row=i%11,x=X0+col*colW,y=200+row*rowH;
+ right(p){const g=p.g;T(g,'Contents',X0,120,ZS(56));T(g,LESSONS.length+' lessons · '+LESSONS.length*2+' spreads · '+BK.strands,X0,164,FT.small,GREY);
+  const half=Math.ceil(LESSONS.length/2),colW=TW/2,rowH=Math.min(92,1110/half);LESSONS.forEach((L,i)=>{const col=i<half?0:1,row=i%half,x=X0+col*colW,y=200+row*rowH;
     rr(g,x,y+8,48,48,12);g.fillStyle=L.color;g.fill();T(g,String(i+1),x+24,y+42,ZS(26),'#fff','center');
     const ty=wrap(g,L.title,x+60,y+30,colW-80,28,{font:FT.smallB});T(g,L.strand+'  ·  p. '+(SP.indexOf(L.learnSp)*2+1),x+60,Math.max(ty,y+58)+2,FT.small,GREY);
     if(stamps[L.id])drawStamp(g,x+colW-40,y+36,24);hot(p,x,y,colW-10,rowH-6,()=>goSpread(SP.indexOf(L.learnSp)));});},
@@ -520,7 +521,7 @@ function refreshDock(noCam){const dock=$('#dock');const sp=SP[cur];
 function setCaption(t){$('#capSay').textContent=t;}
 function drawDots(){const d=$('#dots');d.innerHTML='';if(cur<0)return;SP[cur].steps.forEach((s,i)=>{const e=document.createElement('i');if(i===stepI)e.className='on';else if(i<stepI)e.className='done';d.append(e);});}
 function updateBadge(){$('#stampCount').textContent=LESSONS.filter(L=>stamps[L.id]).length+' / '+LESSONS.length;}
-function savedAt(){let at=0;try{at=parseInt(localStorage.getItem('tic3-at')||'0',10)||0;}catch(e){}const hi=SP.findIndex(s=>'#'+s.id===location.hash);if(hi>=0)at=hi;return at>=0&&at<SP.length?at:0;}
+function savedAt(){let at=0;try{at=parseInt(localStorage.getItem(SKEY+'at')||'0',10)||0;}catch(e){}const hi=SP.findIndex(s=>'#'+s.id===location.hash);if(hi>=0)at=hi;return at>=0&&at<SP.length?at:0;}
 let playing=false,playTok=0;
 function setPlay(on){playing=on;$('#icPlay').innerHTML=on?'<path d="M5 3.5h3.5v13H5zM11.5 3.5H15v13h-3.5z"/>':'<path d="M5 3.5v13l11-6.5z"/>';$('#bPlay').setAttribute('aria-label',on?'Pause':'Play lesson');$('#bPlay').classList.toggle('on',on);if(!on){playTok++;stopSpeak();}}
 function setStep(i){const sp=SP[cur];stepI=Math.max(0,Math.min(sp.steps.length-1,i));const s=sp.steps[stepI];
@@ -539,13 +540,13 @@ async function goSpread(t,stepTo){if(busy||t===cur||t<0||t>=SP.length)return;if(
   if(fwd)copyCanvas(flipF,rightP);else copyCanvas(flipB,leftP);
   const api=buildSpread(t);
   if(fwd){drawPage(flipB,sp,'L');drawPage(rightP,sp,'R');await flip(true);drawPage(leftP,sp,'L');}else{drawPage(flipF,sp,'R');drawPage(leftP,sp,'L');await flip(false);drawPage(rightP,sp,'R');}
-  cur=t;curApi=api;popGrp.visible=true;restoreFlaps();await popUp();busy=false;try{localStorage.setItem('tic3-at',String(t));}catch(e){}setStep(stepTo||0);refreshDock();}
+  cur=t;curApi=api;popGrp.visible=true;restoreFlaps();await popUp();busy=false;try{localStorage.setItem(SKEY+'at',String(t));}catch(e){}setStep(stepTo||0);refreshDock();}
 async function openBook(t){if(busy||bookOpen)return;busy=true;token++;setPlay(false);$('#sheet').hidden=true;const sp=SP[t];
   if(coverDeco){const d=coverDeco;coverDeco=null;tween(.35,k=>d.scale.setScalar(Math.max(.01,1-k))).then(()=>{scene.remove(d);disposeObj(d);});}
   const api=buildSpread(t);drawPage(leftP,sp,'L');drawPage(rightP,sp,'R');paperSound(.5);bookOpen=true;setView('book');
   await tween(1.5,k=>{coverPivot.rotation.z=Math.PI*k;},easeIO);leftBlock.visible=leftMesh.visible=true;
   await tween(.35,k=>{const s=Math.max(.02,k);leftBlock.scale.y=s;leftBlock.position.y=MAT_Y+COVER_T+BLOCK_T*s/2;leftMesh.position.y=MAT_Y+COVER_T+BLOCK_T*s+.004;},easeOut);
-  cur=t;curApi=api;popGrp.visible=true;restoreFlaps();await popUp();busy=false;try{localStorage.setItem('tic3-at',String(t));}catch(e){}setStep(0);refreshDock();}
+  cur=t;curApi=api;popGrp.visible=true;restoreFlaps();await popUp();busy=false;try{localStorage.setItem(SKEY+'at',String(t));}catch(e){}setStep(0);refreshDock();}
 
 /* ================= picking + dragging in 3D ================= */
 const ray=new THREE.Raycaster(),ptr=new THREE.Vector2();let down=null,drag=null;
@@ -585,12 +586,12 @@ $('#sheet').addEventListener('click',e=>{if(e.target.id==='sheet')$('#sheet').hi
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){$('#sheet').hidden=true;return;}if(!$('#sheet').hidden)return;if(e.key==='ArrowRight')next();else if(e.key==='ArrowLeft')prev();});
 function openToc(){let h='<div class="eyebrow">'+TITLE+' · '+SUB+'</div><h2>Contents</h2><div class="muted">By '+AUTHOR+'. Each lesson has a Learn spread and a Practice spread. Win the practice game to earn its stamp.</div><ol class="toclist">';
   let last='';LESSONS.forEach(L=>{if(L.strand!==last){h+='<li class="grp">'+L.strand+'</li>';last=L.strand;}const i=SP.indexOf(L.learnSp);
-    h+='<li><button type="button" data-i="'+i+'"><span class="n" style="background:'+L.color+'">'+L.n+'</span><span><span class="tt">'+L.title+'</span><br><span class="st">'+L.codes.map(c=>'3.'+c).join(', ')+'</span></span><span class="sc'+(stamps[L.id]?' got':'')+'">'+(stamps[L.id]?'★ Stamped':'')+'</span></button></li>';});
+    h+='<li><button type="button" data-i="'+i+'"><span class="n" style="background:'+L.color+'">'+L.n+'</span><span><span class="tt">'+L.title+'</span><br><span class="st">'+L.codes.map(c=>GR+'.'+c).join(', ')+'</span></span><span class="sc'+(stamps[L.id]?' got':'')+'">'+(stamps[L.id]?'★ Stamped':'')+'</span></button></li>';});
   sheet(h+'</ol>');document.querySelectorAll('.toclist button').forEach(b=>b.onclick=()=>{$('#sheet').hidden=true;const i=+b.dataset.i;bookOpen?goSpread(i):openBook(i);});}
 $('#bToc').onclick=openToc;$('#badge').onclick=openToc;
 $('#bGuide').onclick=()=>{const s=bookOpen&&cur>=0?SP[cur]:SP[0];const L=s.L;
-  if(!L){sheet('<div class="eyebrow">For parents and teachers</div><h2>About this book</h2><p><b>'+TITLE+': '+SUB+'</b> by '+AUTHOR+', published by '+BRANDNAME+', follows the Ontario Grade 3 mathematics curriculum (2020) across all five content strands: Number, Algebra, Data, Spatial Sense and Financial Literacy.</p><h3>How a lesson runs</h3><ul><li><b>Learn spread:</b> the theory, key words and a prediction flap on the left; a 3D model on the right that demonstrates the idea when you press play, and that children can touch, drag and build.</li><li><b>Practice spread:</b> three lift-the-flap questions and a five-round 3D game with fresh puzzles every time.</li></ul><p class="muted">Each lesson lists its Ontario expectation codes in the footer and in this guide. Read-aloud is on the speaker button. Progress is saved in this browser.</p>');return;}
-  const g=L.guide||{};sheet('<div class="eyebrow">Lesson '+L.n+' · '+L.strand+'</div><h2>'+L.title+'</h2><div class="codes">'+L.codes.map(c=>'<span>Ontario 3.'+c+'</span>').join('')+'</div><h3>Learning goal</h3><p>'+(g.goal||'')+'</p><h3>Key vocabulary</h3><p>'+(g.words||'')+'</p><h3>Questions to ask</h3><ul>'+(g.ask||[]).map(a=>'<li>'+a+'</li>').join('')+'</ul><h3>Try at home</h3><p>'+(g.home||'')+'</p><p class="muted">'+TITLE+' by '+AUTHOR+' · '+BRANDNAME+'</p>');};
+  if(!L){sheet('<div class="eyebrow">For parents and teachers</div><h2>About this book</h2><p><b>'+TITLE+': '+SUB+'</b> by '+AUTHOR+', published by '+BRANDNAME+', follows the Ontario Grade '+GR+' '+(BK.curriculum||'mathematics')+' curriculum (2020) across all five content strands: Number, Algebra, Data, Spatial Sense and Financial Literacy.</p><h3>How a lesson runs</h3><ul><li><b>Learn spread:</b> the theory, key words and a prediction flap on the left; a 3D model on the right that demonstrates the idea when you press play, and that children can touch, drag and build.</li><li><b>Practice spread:</b> three lift-the-flap questions and a five-round 3D game with fresh puzzles every time.</li></ul><p class="muted">Each lesson lists its Ontario expectation codes in the footer and in this guide. Read-aloud is on the speaker button. Progress is saved in this browser.</p>');return;}
+  const g=L.guide||{};sheet('<div class="eyebrow">Lesson '+L.n+' · '+L.strand+'</div><h2>'+L.title+'</h2><div class="codes">'+L.codes.map(c=>'<span>Ontario '+GR+'.'+c+'</span>').join('')+'</div><h3>Learning goal</h3><p>'+(g.goal||'')+'</p><h3>Key vocabulary</h3><p>'+(g.words||'')+'</p><h3>Questions to ask</h3><ul>'+(g.ask||[]).map(a=>'<li>'+a+'</li>').join('')+'</ul><h3>Try at home</h3><p>'+(g.home||'')+'</p><p class="muted">'+TITLE+' by '+AUTHOR+' · '+BRANDNAME+'</p>');};
 
 /* ================= loop ================= */
 const clock=new THREE.Clock();

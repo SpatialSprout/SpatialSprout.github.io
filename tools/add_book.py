@@ -16,7 +16,7 @@ HEAD = ('<!doctype html>\n<html lang="en-CA">\n<head>\n<meta charset="utf-8">\n'
 src, slug = sys.argv[1], sys.argv[2]
 dst = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'books', slug)
 if os.path.isdir(dst): shutil.rmtree(dst)
-shutil.copytree(src, dst, ignore=shutil.ignore_patterns('.*'))
+shutil.copytree(src, dst, ignore=shutil.ignore_patterns('.*','preview.html'))
 p = os.path.join(dst, 'index.html')
 html = open(p, encoding='utf-8').read()
 if not html.lstrip().lower().startswith('<!doctype'):

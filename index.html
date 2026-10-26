@@ -30,9 +30,9 @@
     <nav class="nav" id="nav" aria-label="Main">
       <a href="#how">How it works</a>
       <a href="#library">Library</a>
-      <a href="#inside">Inside Grade 3</a>
+      <a href="#inside">Inside the books</a>
       <a href="#about">About</a>
-      <a class="btn btn-sun btn-sm" href="books/grade-3-math/index.html">Open the book</a>
+      <a class="btn btn-sun btn-sm" href="#library">Open a book</a>
     </nav>
   </div>
 </header>
@@ -45,8 +45,8 @@
         <h1>Lessons that stand up off the page.</h1>
         <p class="lead">Every lesson is a real book spread. Read the idea on one page, and a 3D model pops up on the other so kids can build it, turn it and test it with their own hands.</p>
         <div class="cta-row">
-          <a class="btn btn-sun" href="books/grade-3-math/index.html">Open Grade 3 Math</a>
-          <a class="btn btn-ghost" href="#library">Browse the library</a>
+          <a class="btn btn-sun" href="#library">Choose a book</a>
+          <a class="btn btn-ghost" href="#how">See how it works</a>
         </div>
         <p class="hand note">Works in the browser on phones, tablets and computers. Nothing to install.</p>
       </div>
@@ -57,9 +57,9 @@
     </div>
     <div class="wrap">
       <dl class="facts">
-        <div><dt>22</dt><dd>lessons</dd></div>
-        <div><dt>44</dt><dd>book spreads</dd></div>
-        <div><dt>110</dt><dd>3D game rounds</dd></div>
+        <div><dt id="fBooks">2</dt><dd>books open now</dd></div>
+        <div><dt id="fLessons">50</dt><dd>lessons</dd></div>
+        <div><dt id="fRounds">250</dt><dd>3D game rounds</dd></div>
         <div><dt>5 of 5</dt><dd>Ontario math strands</dd></div>
       </dl>
     </div>
@@ -101,7 +101,7 @@
       <div class="section-head">
         <p class="eyebrow">The library</p>
         <h2>One book at a time, every grade.</h2>
-        <p class="sub">Grade 3 Math is open now. More grades and subjects are on the way.</p>
+        <p class="sub" id="libSub">More grades and subjects are on the way.</p>
       </div>
       <div class="shelf" id="shelf"></div>
       <p class="more" id="more"></p>
@@ -111,11 +111,12 @@
   <section class="band" id="inside">
     <div class="wrap inside-grid">
       <div class="inside-intro">
-        <p class="eyebrow">Inside Grade 3 Math</p>
-        <h2>Every Grade 3 expectation, page by page.</h2>
+        <div class="tabs" id="bookTabs" role="tablist" aria-label="Choose a book"></div>
+        <p class="eyebrow" id="insideEyebrow">Inside the book</p>
+        <h2 id="insideTitle">Every expectation, page by page.</h2>
         <p>Each lesson is tagged with the Ontario curriculum codes it covers, so teachers can match it to their plans and parents can see what the class is working on.</p>
         <div class="legend" id="legend"></div>
-        <a class="btn btn-brand" href="books/grade-3-math/index.html">Open the book</a>
+        <a class="btn btn-brand" id="insideOpen" href="#library">Open the book</a>
       </div>
       <div class="lessons" id="lessons"></div>
     </div>
@@ -149,7 +150,7 @@
         <p class="eyebrow">About</p>
         <h2>SpatialSprout 3D</h2>
         <p>SpatialSprout 3D makes interactive 3D books for students in Ontario. The idea is simple: some things click when you can pick them up and turn them around. Our books put that into every lesson.</p>
-        <p>The first book, <i>The Interactive Classroom: Grade 3 Math</i>, is written by M. A. Mafodh. Next come the other grades, then science, language and social studies.</p>
+        <p>The books in <i>The Interactive Classroom</i> series are written by M. A. Mafodh. Grade 3 and Grade 4 Math are open now. Next come the other grades, then science, language and social studies.</p>
       </div>
     </div>
   </section>
@@ -161,7 +162,7 @@
       <img src="assets/img/mark-white.png" alt="" width="32" height="32">
       <span>SpatialSprout 3D</span>
     </div>
-    <p>Built on the expectations of the Ontario Grade 3 Mathematics curriculum (2020).</p>
+    <p>Built on the expectations of the Ontario Mathematics curriculum, Grades 1–8 (2020).</p>
     <p>© <span id="year">2026</span> SpatialSprout 3D. All rights reserved.</p>
   </div>
 </footer>
