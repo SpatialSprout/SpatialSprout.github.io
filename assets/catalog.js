@@ -10,10 +10,10 @@ window.CATALOG = {
     "Financial Literacy": { letter: "F", color: "var(--money)" }
   },
   books: [
-    { grade: 1, subject: "Math", status: "planned" },
-    { grade: 2, subject: "Math", status: "planned" },
+    { grade: 1, subject: "Math", status: "planned", colors: ["#ffc04d", "#ff8a3d", "#ff4f8b"] },
+    { grade: 2, subject: "Math", status: "planned", colors: ["#ff8cc6", "#d26ad8", "#7a5cf0"] },
     {
-      grade: 3, subject: "Math", status: "live", slug: "grade-3-math",
+      grade: 3, subject: "Math", status: "live", colors: ["#1fb0a6", "#2f7de1", "#5b4fd8"], slug: "grade-3-math",
       title: "The Interactive Classroom: Grade 3 Math",
       author: "M. A. Mafodh",
       blurb: "22 lessons across all five strands of the Ontario Grade 3 math curriculum. Each lesson has a Learn spread and a Practice spread with a 3D game.",
@@ -43,7 +43,7 @@ window.CATALOG = {
       ]
     },
     {
-      grade: 4, subject: "Math", status: "live", slug: "grade-4-math",
+      grade: 4, subject: "Math", status: "live", colors: ["#5fd38a", "#16a36f", "#0e7490"], slug: "grade-4-math",
       title: "The Interactive Classroom: Grade 4 Math",
       author: "M. A. Mafodh",
       blurb: "28 lessons covering all 48 Grade 4 math expectations, with place-value disks, fraction bars, coding with nested loops, coordinate grids and more.",
@@ -79,10 +79,10 @@ window.CATALOG = {
 
       ]
     },
-    { grade: 5, subject: "Math", status: "planned" },
-    { grade: 6, subject: "Math", status: "planned" },
-    { grade: 7, subject: "Math", status: "planned" },
-    { grade: 8, subject: "Math", status: "planned" }
+    { grade: 5, subject: "Math", status: "planned", colors: ["#b39dff", "#7c3aed", "#4c1d95"] },
+    { grade: 6, subject: "Math", status: "planned", colors: ["#ffbf47", "#f97316", "#be3a12"] },
+    { grade: 7, subject: "Math", status: "planned", colors: ["#5cc8ff", "#2563eb", "#1e3a8a"] },
+    { grade: 8, subject: "Math", status: "planned", colors: ["#34d1bf", "#0f766e", "#134e4a"] }
   ],
   moreSubjects: ["Science and Technology", "Language", "Social Studies", "History and Geography"]
 };

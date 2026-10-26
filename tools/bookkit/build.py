@@ -8,6 +8,7 @@ bj=open(os.path.join(d,'book.js')).read()
 m=re.search(r'files\s*:\s*(\[[^\]]*\])',bj);files=json.loads(m.group(1).replace("'",'"'))
 g=re.search(r'grade\s*:\s*(\d+)',bj).group(1);subj=re.search(r"subject\s*:\s*['\"]([^'\"]+)",bj).group(1)
 eng=open(os.path.join(here,'engine.html')).read()
+eng=eng.replace('/*LINES*/{}',open(os.path.join(here,'lines.json')).read().strip())
 eng=eng.replace('{{TITLE}}',f'The Interactive Classroom: Grade {g} {subj}').replace('{{LESSON_SCRIPTS}}','\n'.join(f'<script src="{f}"></script>' for f in files))
 HEAD=('<!doctype html>\n<html lang="en-CA">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n'
   '<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>\n</head>\n<body>\n')

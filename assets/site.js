@@ -22,14 +22,15 @@
   if (shelf) {
     shelf.innerHTML = C.books.map(function (b) {
       if (b.status === "live") {
-        return '<a class="book live" href="books/' + esc(b.slug) + '/index.html">' +
+        var bg = b.colors ? ' style="background:linear-gradient(150deg,' + b.colors[0] + ',' + b.colors[1] + ' 55%,' + b.colors[2] + ')"' : '';
+        return '<a class="book live" href="books/' + esc(b.slug) + '/index.html"' + bg + '>' +
           '<span class="pill">Open now</span>' +
           '<span class="ttl">Grade ' + b.grade + ' ' + esc(b.subject) + '</span>' +
           '<span class="tiles" aria-hidden="true"><span>M</span><span>A</span><span>T</span><span>H</span></span>' +
           '<span class="by">The Interactive Classroom · by ' + esc(b.author) + '</span>' +
           '<span class="open">Open the book <span aria-hidden="true">→</span></span></a>';
       }
-      return '<div class="book" aria-label="Grade ' + b.grade + ' ' + esc(b.subject) + ', coming soon">' +
+      return '<div class="book" aria-label="Grade ' + b.grade + ' ' + esc(b.subject) + ', coming soon"' + (b.colors ? ' style="border-color:' + b.colors[1] + '55"' : '') + '>' +
         '<span class="g">' + b.grade + '</span><span class="s">Grade ' + b.grade + '<br>' + esc(b.subject) + '</span>' +
         '<span class="st">Coming soon</span></div>';
     }).join("");
