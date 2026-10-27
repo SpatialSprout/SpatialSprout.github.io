@@ -10,7 +10,38 @@ window.CATALOG = {
     "Financial Literacy": { letter: "F", color: "var(--money)" }
   },
   books: [
-    { grade: 1, subject: "Math", status: "planned", colors: ["#ffc04d", "#ff8a3d", "#ff4f8b"] },
+    {
+      grade: 1, subject: "Math", status: "live", colors: ["#ffc04d", "#ff8a3d", "#ff4f8b"], slug: "grade-1-math",
+      title: "The Interactive Classroom: Grade 1 Math",
+      author: "M. A. Mafodh",
+      blurb: "24 playful lessons covering all 38 Grade 1 math expectations: counting to 50, tens and ones, fair shares and halves, facts to 10, make-10 and doubles, patterns, coding a bunny, sorting and graphs, shapes and solids, matching halves, the calendar and Canadian money.",
+      lessons: [
+        { t: "Counting to 50", s: "Number", c: ["B1.1", "B1.5"] },
+        { t: "Tens and ones", s: "Number", c: ["B1.2"] },
+        { t: "More, fewer and the same", s: "Number", c: ["B1.3"] },
+        { t: "Estimate, then count", s: "Number", c: ["B1.4"] },
+        { t: "Fair shares", s: "Number", c: ["B1.6", "B1.7"] },
+        { t: "More sharers, smaller pieces", s: "Number", c: ["B1.8"] },
+        { t: "Adding and subtracting to 10", s: "Number", c: ["B2.1", "B2.2"] },
+        { t: "Make 10 and doubles", s: "Number", c: ["B2.3"] },
+        { t: "Story problems to 50", s: "Number", c: ["B2.4"] },
+        { t: "Equal groups", s: "Number", c: ["B2.5"] },
+        { t: "Repeating patterns", s: "Algebra", c: ["C1.1", "C1.2"] },
+        { t: "Growing patterns", s: "Algebra", c: ["C1.3", "C1.4"] },
+        { t: "Changes or stays the same?", s: "Algebra", c: ["C2.1"] },
+        { t: "Balance: equal or not?", s: "Algebra", c: ["C2.2", "C2.3"] },
+        { t: "Code the bunny", s: "Algebra", c: ["C3.1", "C3.2"] },
+        { t: "Sorting things", s: "Data", c: ["D1.1"] },
+        { t: "Graphs of our favourites", s: "Data", c: ["D1.2", "D1.3", "D1.4", "D1.5"] },
+        { t: "Impossible, possible or certain?", s: "Data", c: ["D2.1", "D2.2"] },
+        { t: "Shapes and solids", s: "Spatial Sense", c: ["E1.1", "E1.2"] },
+        { t: "Matching halves", s: "Spatial Sense", c: ["E1.3"] },
+        { t: "Where is it?", s: "Spatial Sense", c: ["E1.4", "E1.5"] },
+        { t: "Longer, heavier, holds more", s: "Spatial Sense", c: ["E2.1", "E2.2"] },
+        { t: "Days, weeks and months", s: "Spatial Sense", c: ["E2.3"] },
+        { t: "Canadian coins and bills", s: "Financial Literacy", c: ["F1.1"] }
+      ]
+    },
     { grade: 2, subject: "Math", status: "planned", colors: ["#ff8cc6", "#d26ad8", "#7a5cf0"] },
     {
       grade: 3, subject: "Math", status: "live", colors: ["#1fb0a6", "#2f7de1", "#5b4fd8"], slug: "grade-3-math",
