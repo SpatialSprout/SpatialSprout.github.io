@@ -47,7 +47,7 @@ P.lesson({id:'patterns1',title:'Repeating patterns',strand:'Algebra',codes:['C1.
   return {info:()=>st.core+' '+st.n,
     controls:()=>{const c=Object.keys(CORES).map(k=>({t:k.split('').join(' '),on:st.core===k,fn:()=>{st.core=k;st.n=6;draw();}})).concat([{t:'Next',go:true,fn:next},{t:st.show==='shapes'?'Show letters':st.show==='letters'?'Show actions':'Show shapes',fn:()=>{st.show={shapes:'letters',letters:'actions',actions:'shapes'}[st.show];draw();}}]);
       if(mode==='play'&&st.ask)return choices(st.setup?null:game,st.ask.o,st.ask.ans,st.ask.ok).concat(c.slice(-1));if(mode==='play'&&st.want)return c.slice(-1);return c;},
-    demo(n){st.ask=null;st.want=null;st.show='shapes';if(n==='ab'){st.core='AB';st.n=4;draw();A.seq([[600,next],[600,next],[800,()=>{st.show='letters';draw();}]]);}if(n==='aab'){st.core='AAB';st.n=3;draw();A.seq([[600,()=>{st.show='actions';draw();}],[600,next],[600,next],[600,next]]);}},
+    demo(n){st.ask=null;st.want=null;st.show='shapes';if(n==='show'){st.core='AB';st.n=6;draw();}if(n==='next'){st.core='AB';if(st.n!==6){st.n=6;}next();}if(n==='ab'){st.core='AB';st.n=4;draw();A.seq([[600,next],[600,next],[800,()=>{st.show='letters';draw();}]]);}if(n==='aab'){st.core='AAB';st.n=3;draw();A.seq([[600,()=>{st.show='actions';draw();}],[600,next],[600,next],[600,next]]);}},
     task(r){st.setup=true;st.ask=null;st.want=null;st.show='shapes';let txt;
       if(r<3){st.core=['AB','AAB','ABC'][r];st.n=st.core.length*2+(r===1?1:0);st.want=true;txt='What comes *next*? Tap it!';}
       else if(r===3){st.core='ABB';st.n=6;st.ask={ans:'A B B',o:shuffle(['A B B','A B','A A B']),ok:'Yes! ball, cube, cube repeats.'};txt='What is the *core* of this pattern?';}
@@ -86,7 +86,7 @@ P.lesson({id:'grow1',title:'Growing patterns',strand:'Algebra',codes:['C1.3','C1
   draw();
   return {info:()=>st.a+'+'+st.d,
     controls:()=>{const c=[{t:'Grow',go:true,fn:grow},{t:'start +',fn:()=>{st.a=Math.min(10,st.a+1);st.n=4;draw();}},{t:'start −',fn:()=>{st.a=Math.max(0,st.a-1);st.n=4;draw();}},{t:'rule: add 1',fn:()=>{st.d=1;st.n=4;draw();}},{t:'add 2',fn:()=>{st.d=2;st.n=4;draw();}},{t:'add 5',fn:()=>{st.d=5;st.n=4;draw();}},{t:'add 10',fn:()=>{st.d=10;st.n=4;draw();}}];if(mode==='play'&&st.ask)return choices(st.setup?null:game,st.ask.o,st.ask.ans,st.ask.ok);return c;},
-    demo(n){st.ask=null;st.miss=-1;if(n==='grow'){st.a=1;st.d=2;st.n=1;draw();A.seq([[600,grow],[600,grow],[600,grow],[700,grow]]);}if(n==='miss'){st.a=2;st.d=2;st.n=4;st.miss=2;draw();A.seq([[1400,()=>{st.miss=-1;draw();A.say('6!');}]]);}},
+    demo(n){st.ask=null;st.miss=-1;if(n==='show'){st.a=1;st.d=2;st.n=4;draw();}if(n==='grownow'){st.a=1;st.d=2;st.n=4;grow();}if(n==='grow'){st.a=1;st.d=2;st.n=1;draw();A.seq([[600,grow],[600,grow],[600,grow],[700,grow]]);}if(n==='miss'){st.a=2;st.d=2;st.n=4;st.miss=2;draw();A.seq([[1400,()=>{st.miss=-1;draw();A.say('6!');}]]);}},
     task(r){st.setup=true;st.ask=null;st.miss=-1;let txt;
       if(r===0){st.a=1;st.d=2;st.n=4;st.ask={ans:'9',o:shuffle(['9','8','10']),ok:'Yes! 7 + 2 = 9.'};txt='How many cubes in the *next* tower?';}
       else if(r===1){st.a=10;st.d=5;st.n=5;st.miss=2;st.ask={ans:'20',o:shuffle(['20','17','25']),ok:'Yes! The rule is add 5.'};txt='Which number is *missing*?';}
@@ -227,7 +227,7 @@ P.lesson({id:'coding1',title:'Code the bunny',strand:'Algebra',codes:['C3.1','C3
   place();drawGoal();
   return {info:()=>st.code.join(''),
     controls:()=>{const c=[{t:'↑',fn:()=>add('↑')},{t:'↓',fn:()=>add('↓')},{t:'←',fn:()=>add('←')},{t:'→',fn:()=>add('→')},{t:'Undo',fn:()=>{st.code.pop();A.redraw();}},{t:'Clear',fn:()=>{st.code=[];st.pos=st.start.slice();place();A.redraw();}},{t:'Run',go:true,fn:run}];if(mode==='play'&&st.ask)return choices(st.setup?null:game,st.ask.o,st.ask.ans,st.ask.ok);return c;},
-    demo(n){st.ask=null;st.need=false;st.start=[0,0];st.goal=[2,2];if(n==='run'){st.code=['→','→','↑','↑'];st.pos=[0,0];place();drawGoal();A.seq([[700,run]]);}if(n==='fix'){st.code=['→','↑','↑'];st.pos=[0,0];place();drawGoal();A.seq([[400,run],[2200,()=>add('→')],[700,run]]);}},
+    demo(n){st.ask=null;st.need=false;st.start=[0,0];st.goal=[2,2];if(n==='show'){st.code=['→','→','↑','↑'];st.pos=[0,0];place();drawGoal();}if(n==='runnow'){st.code=['→','→','↑','↑'];run();}if(n==='run'){st.code=['→','→','↑','↑'];st.pos=[0,0];place();drawGoal();A.seq([[700,run]]);}if(n==='fix'){st.code=['→','↑','↑'];st.pos=[0,0];place();drawGoal();A.seq([[400,run],[2200,()=>add('→')],[700,run]]);}},
     task(r){st.setup=true;st.ask=null;st.need=true;let txt;
       if(r===0){st.start=[0,0];st.goal=[3,1];st.code=[];txt='Write code to take the bunny to the *carrot*, then press *Run*.';}
       else if(r===1){st.start=[0,0];st.goal=[1,4];st.code=[];txt='The carrot moved! Write new code, then *Run*.';}
@@ -272,7 +272,7 @@ P.lesson({id:'sort1',title:'Sorting things',strand:'Data',codes:['D1.1'],
   draw();
   return {info:()=>st.by||'mixed',
     controls:()=>{const c=[{t:'By colour',on:st.by==='colour',fn:()=>sortBy('colour')},{t:'By shape',on:st.by==='shape',fn:()=>sortBy('shape')},{t:'By size',on:st.by==='size',fn:()=>sortBy('size')},{t:'Mix',go:true,fn:()=>{st.by=null;draw();}}];if(mode==='play'&&st.ask)return choices(st.setup?null:game,st.ask.o,st.ask.ans,st.ask.ok);return c;},
-    demo(n){st.ask=null;st.want=null;st.odd=null;st.needBy=null;st.by=null;draw();if(n==='col')A.seq([[900,()=>sortBy('colour')]]);if(n==='shape')A.seq([[900,()=>sortBy('shape')]]);},
+    demo(n){st.ask=null;st.want=null;st.odd=null;st.needBy=null;if(n==='colnow'){sortBy('colour');return;}st.by=null;draw();if(n==='col')A.seq([[900,()=>sortBy('colour')]]);if(n==='shape')A.seq([[900,()=>sortBy('shape')]]);},
     task(r){st.setup=true;st.ask=null;st.want=null;st.odd=null;st.needBy=null;st.by=null;let txt;
       if(r===0){st.needBy='colour';txt='Sort the toys so each hoop has *one colour*.';}
       else if(r===1){st.needBy='shape';txt='Sort the toys so all the *cubes* are together.';}
@@ -319,7 +319,7 @@ P.lesson({id:'graph1',title:'Graphs of our favourites',strand:'Data',codes:['D1.
   draw();
   return {info:()=>st.v.join(','),
     controls:()=>{const c=[{t:'Order',on:st.ord,go:true,fn:()=>{st.ord=!st.ord;A.pop();draw();}},{t:'Clear votes',fn:()=>{st.v=[0,0,0,0];draw();}}];if(mode==='play'&&st.ask)return choices(st.setup?null:game,st.ask.o,st.ask.ans,st.ask.ok).concat(c.slice(0,1));return mode==='play'?c.slice(0,1):c;},
-    demo(n){st.ask=null;st.want=null;st.need=null;if(n==='vote'){st.v=[0,0,0,0];st.ord=false;draw();A.seq([0,0,2,1,0,2,3,0,1,2,0,1,0,3,2].map(i=>[260,()=>vote(i)]));}if(n==='order'){st.v=[6,3,4,2];st.ord=false;draw();A.seq([[900,()=>{st.ord=true;draw();A.say('Apple is the favourite!');}]]);}},
+    demo(n){st.ask=null;st.want=null;st.need=null;if(n==='vote'){st.v=[0,0,0,0];st.ord=false;draw();A.seq([0,0,2,1,0,2,3,0,1,2,0,1,0,3,2].map(i=>[260,()=>vote(i)]));}if(n==='show'){st.v=[6,3,4,2];st.ord=false;draw();}if(n==='order'){st.v=[6,3,4,2];st.ord=false;draw();A.seq([[900,()=>{st.ord=true;draw();A.say('Apple is the favourite!');}]]);}},
     task(r){st.setup=true;st.ask=null;st.want=null;st.need=null;st.ord=false;let txt;
       if(r===0){st.v=shuffle([7,3,5,2]);const mx=Math.max(...st.v);st.want=i=>st.v[i]===Math.max(...st.v);st.wantOk='Yes! That is the favourite.';txt='Tap the tower with the *most* votes.';}
       else if(r===1){st.v=shuffle([6,1,4,3]);const mn=Math.min(...st.v);st.want=i=>st.v[i]===Math.min(...st.v);st.wantOk='Yes! That has the fewest votes.';txt='Tap the tower with the *fewest* votes.';}
@@ -361,7 +361,7 @@ P.lesson({id:'chance1',title:'Impossible, possible or certain?',strand:'Data',co
   draw();
   return {info:()=>st.sp,
     controls:()=>{const c=[{t:'All red',on:st.sp==='red',fn:()=>{st.sp='red';st.res=[];draw();}},{t:'Red and blue',on:st.sp==='mix',fn:()=>{st.sp='mix';st.res=[];draw();}},{t:'No red',on:st.sp==='none',fn:()=>{st.sp='none';st.res=[];draw();}},{t:'Spin',go:true,fn:spin}];if(mode==='play'&&st.ask)return choices(st.setup?null:game,st.ask.o,st.ask.ans,st.ask.ok).concat(c.slice(3));return c;},
-    demo(n){st.ask=null;st.res=[];if(n==='all'){st.sp='red';draw();A.seq([[600,spin]]);}if(n==='half'){st.sp='mix';draw();A.seq([[500,spin],[2000,spin],[2000,spin]]);}},
+    demo(n){st.ask=null;st.res=[];if(n==='red'){st.sp='red';draw();}if(n==='mixs'){st.sp='mix';draw();}if(n==='all'){st.sp='red';draw();A.seq([[600,spin]]);}if(n==='half'){st.sp='mix';draw();A.seq([[500,spin],[2000,spin],[2000,spin]]);}},
     task(r){st.setup=true;st.res=[];let txt;const O=['Certain','Possible','Impossible'];
       if(r===0){st.sp='red';st.ask={ans:'Certain',o:O,ok:'Yes! Every part is red.'};txt='Spinning *red* on this spinner is…';}
       else if(r===1){st.sp='mix';st.ask={ans:'Possible',o:O,ok:'Yes! It might land on red.'};txt='Spinning *red* on this spinner is…';}

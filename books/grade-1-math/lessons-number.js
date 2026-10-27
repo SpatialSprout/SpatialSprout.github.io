@@ -50,7 +50,7 @@ P.lesson({id:'count50',title:'Counting to 50',strand:'Number',codes:['B1.1','B1.
   place();drawBoard();
   return {info:()=>String(st.pos),
     controls:()=>{const c=[{t:'Count by 1s',fn:()=>count(1)},{t:'by 2s',fn:()=>count(2)},{t:'by 5s',fn:()=>count(5)},{t:'by 10s',go:true,fn:()=>count(10)}];if(mode==='play'&&st.ask)return choices(st.setup?null:game,st.ask.o,st.ask.ans,st.ask.ok).concat(c);return c;},
-    demo(n){st.ask=null;st.want=null;if(n==='ones')count(1);if(n==='tens')count(10);},
+    demo(n){st.ask=null;st.want=null;if(n==='reset'){A.stopSeq();st.step=0;st.lit=0;st.pos=1;place();drawBoard();}if(/^at\d+$/.test(n)){A.stopSeq();const v=+n.slice(2);st.step=10;st.lit=v;drawBoard();go(v);}if(n==='ones')count(1);if(n==='tens')count(10);},
     task(r){st.setup=true;st.ask=null;st.want=null;st.step=0;st.lit=0;let txt;
       if(r===0){const s=5,k=rnd(2,6);st.step=5;st.lit=k*5;st.pos=k*5;st.want=k*5+5;txt='Count by 5s: '+[1,2,3].map(i=>(k-3+i)*5).filter(v=>v>0).join(', ')+', ___. *Tap the next number!*';}
       else if(r===1){const k=rnd(3,15);st.step=2;st.lit=k*2;st.pos=k*2;st.want=k*2+2;txt='Count by 2s: '+(k*2-4)+', '+(k*2-2)+', '+k*2+', ___. *Tap the next number!*';}
@@ -95,7 +95,7 @@ P.lesson({id:'tens50',title:'Tens and ones',strand:'Number',codes:['B1.2'],
   draw();
   return {info:()=>st.t+'t'+st.o+'o',
     controls:()=>{const c=[{t:'+ ten',go:true,fn:()=>add('t',1)},{t:'− ten',fn:()=>add('t',-1)},{t:'+ one',fn:()=>add('o',1)},{t:'− one',fn:()=>add('o',-1)},{t:'Break a ten',fn:brk},{t:'Make a ten',fn:snap}];if(mode==='play'&&st.ask)return choices(st.setup?null:game,st.ask.o,st.ask.ans,st.ask.ok).concat(c);return c;},
-    demo(n){st.ask=null;st.need=null;if(n==='make'){st.t=0;st.o=0;draw();const s=[];for(let i=0;i<3;i++)s.push([500,()=>add('t',1)]);for(let i=0;i<4;i++)s.push([350,()=>add('o',1)]);A.seq(s);}if(n==='break'){st.t=3;st.o=4;draw();A.seq([[900,brk]]);}},
+    demo(n){st.ask=null;st.need=null;if(n==='show'){st.t=3;st.o=4;draw();}if(n==='breaknow'){st.t=3;st.o=4;draw();brk();}if(n==='make'){st.t=0;st.o=0;draw();const s=[];for(let i=0;i<3;i++)s.push([500,()=>add('t',1)]);for(let i=0;i<4;i++)s.push([350,()=>add('o',1)]);A.seq(s);}if(n==='break'){st.t=3;st.o=4;draw();A.seq([[900,brk]]);}},
     task(r){st.setup=true;st.ask=null;st.need=null;st.t=0;st.o=0;let txt;
       if(r<3){const n=r===0?rnd(21,29):r===1?rnd(31,39):rnd(41,48);st.need=s=>s.t*10+s.o===n;st.needOk=s=>'Yes! '+s.t+' tens and '+s.o+' ones make '+n+'!';txt='Build *'+n+'* with tens and ones.';}
       else if(r===3){const n=rnd(23,38);st.t=Math.floor(n/10);st.o=n%10;st.need=s=>s.t*10+s.o===n&&s.o>=10;st.needOk=s=>'Yes! '+s.t+' tens and '+s.o+' ones is also '+n+'!';txt='This is *'+n+'*. Show '+n+' *another way*. (Try Break a ten!)';}
@@ -178,7 +178,7 @@ P.lesson({id:'estimate50',title:'Estimate, then count',strand:'Number',codes:['B
   draw();
   return {info:()=>st.n+(st.counted?' counted':''),
     controls:()=>{const c=[{t:'Count',go:true,fn:count},{t:'New jar',fn:()=>{st.n=rnd(8,48);st.counted=false;draw();}}];if(mode==='play'&&st.ask)return choices(st.setup?null:game,st.ask.o,st.ask.ans,st.ask.ok).concat(c);return c;},
-    demo(n){st.ask=null;if(n==='count'){st.n=32;st.counted=false;draw();A.seq([[1500,count]]);}if(n==='small'){st.n=9;st.counted=false;draw();A.seq([[1200,count]]);}},
+    demo(n){st.ask=null;if(n==='jar'){st.n=32;st.counted=false;draw();}if(n==='countnow'){if(st.n!==32||st.counted){st.n=32;st.counted=false;draw();}count();}if(n==='count'){st.n=32;st.counted=false;draw();A.seq([[1500,count]]);}if(n==='small'){st.n=9;st.counted=false;draw();A.seq([[1200,count]]);}},
     task(r){st.setup=true;st.counted=false;let txt;
       const near=n=>Math.round(n/10)*10;
       if(r<3){st.n=[rnd(8,12),rnd(28,33),rnd(46,50)][r];const a='About '+near(st.n);st.ask={ans:a,o:['About 10','About 30','About 50'],ok:'Great estimate! Press Count to check: there are '+st.n+'.'};txt='About how many marbles are in the jar? *Estimate!*';}
@@ -227,7 +227,7 @@ P.lesson({id:'share1',title:'Fair shares',strand:'Number',codes:['B1.6','B1.7'],
   return {info:()=>st.n+'/'+st.k,
     controls:()=>{const c=[{t:'2 friends',on:st.k===2,fn:()=>{st.k=2;st.dealt=0;st.view='share';draw();}},{t:'4 friends',on:st.k===4,fn:()=>{st.k=4;st.dealt=0;st.view='share';draw();}},{t:'Share',go:true,fn:share},{t:'cookies +',fn:()=>{st.n=Math.min(10,st.n+1);st.dealt=0;draw();}},{t:'cookies −',fn:()=>{st.n=Math.max(2,st.n-1);st.dealt=0;draw();}},{t:'Pizza',fn:()=>{st.view=st.view==='pizza'?'share':'pizza';draw();}}];
       if(mode==='play'&&st.ask)return choices(st.setup?null:game,st.ask.o,st.ask.ans,st.ask.ok).concat(c.slice(0,3));return c;},
-    demo(n){st.ask=null;st.view='share';if(n==='deal'){st.n=9;st.k=2;st.dealt=0;draw();A.seq([[600,shareAll]]);}if(n==='pizza'){st.view='pizza';draw();}},
+    demo(n){st.ask=null;st.view='share';if(n==='reset'){st.n=9;st.k=2;st.dealt=0;draw();}if(n==='deal'){st.n=9;st.k=2;st.dealt=0;draw();A.seq([[600,shareAll]]);}if(n==='pizza'){st.view='pizza';draw();}},
     task(r){st.setup=true;st.view='share';st.dealt=0;let txt;
       if(r===0){st.n=9;st.k=2;st.ask={ans:'4 each, 1 left',o:shuffle(['4 each, 1 left','5 each, 0 left','3 each, 3 left']),ok:'Yes! 4 each and 1 left over.'};txt='Share *9 cookies* with *2 friends*. Press Share to help!';}
       else if(r===1){st.n=10;st.k=4;st.ask={ans:'2 each, 2 left',o:shuffle(['2 each, 2 left','3 each, 0 left','1 each, 6 left']),ok:'Yes! 2 each and 2 left over.'};txt='Share *10 cookies* with *4 friends*.';}
@@ -267,7 +267,7 @@ P.lesson({id:'pieces1',title:'More sharers, smaller pieces',strand:'Number',code
   draw();
   return {info:()=>st.a+'/'+st.b,
     controls:()=>{const c=[{t:'top friends −',fn:()=>{st.a=Math.max(2,st.a-1);draw();}},{t:'top friends +',fn:()=>{st.a=Math.min(10,st.a+1);draw();}},{t:'bottom friends −',fn:()=>{st.b=Math.max(2,st.b-1);draw();}},{t:'bottom friends +',go:true,fn:()=>{st.b=Math.min(10,st.b+1);draw();}}];if(mode==='play'&&st.ask)return choices(st.setup?null:game,st.ask.o,st.ask.ans,st.ask.ok).concat(c);return c;},
-    demo(n){st.ask=null;st.want=null;if(n==='more'){st.a=2;st.b=2;draw();A.seq([[900,()=>{st.b=3;draw();}],[800,()=>{st.b=4;draw();A.say('Smaller pieces!');}]]);}if(n==='cmp'){st.a=3;st.b=6;draw();}},
+    demo(n){st.ask=null;st.want=null;if(n==='show24'){st.a=2;st.b=4;draw();}if(n==='more'){st.a=2;st.b=2;draw();A.seq([[900,()=>{st.b=3;draw();}],[800,()=>{st.b=4;draw();A.say('Smaller pieces!');}]]);}if(n==='cmp'){st.a=3;st.b=6;draw();}},
     task(r){st.setup=true;st.ask=null;st.want=null;let txt;
       if(r<3){const pr=[[2,4],[5,3],[8,6]][r];st.a=pr[0];st.b=pr[1];const big=st.a<st.b?0:1;st.want=i=>i===big;st.wantOk='Yes! Fewer friends, bigger pieces!';txt='Tap the sandwich with the *bigger* gold piece.';}
       else if(r===3){st.a=4;st.b=10;st.want=i=>i===1;st.wantOk='Yes! 10 friends means small pieces.';txt='Tap the sandwich with the *smaller* gold piece.';}
@@ -307,7 +307,7 @@ P.lesson({id:'facts10',title:'Adding and subtracting to 10',strand:'Number',code
   draw();
   return {info:()=>st.a+'+'+st.b,
     controls:()=>{const c=[{t:'+ orange',fn:()=>add('a',1)},{t:'− orange',fn:()=>add('a',-1)},{t:'+ yellow',go:true,fn:()=>add('b',1)},{t:'− yellow',fn:()=>add('b',-1)},{t:'Turn around',fn:()=>{st.hide=false;[st.a,st.b]=[st.b,st.a];A.pop();draw();}},{t:'Take away yellow',fn:()=>{st.hide=!st.hide;A.pop();draw();}}];if(mode==='play'&&st.ask)return choices(st.setup?null:game,st.ask.o,st.ask.ans,st.ask.ok).concat(c);return c;},
-    demo(n){st.ask=null;st.need=null;st.hide=false;if(n==='add'){st.a=6;st.b=0;draw();A.seq([0,1,2].map(()=>[450,()=>add('b',1)]).concat([[900,()=>{[st.a,st.b]=[st.b,st.a];draw();A.say('3 + 6 = 9');}]]));}if(n==='sub'){st.a=6;st.b=3;draw();A.seq([[1000,()=>{st.hide=true;draw();A.say('9 − 3 = 6');}]]);}},
+    demo(n){st.ask=null;st.need=null;st.hide=false;if(n==='show'){st.a=6;st.b=3;draw();}if(n==='hidenow'){st.a=6;st.b=3;st.hide=true;draw();}if(n==='add'){st.a=6;st.b=0;draw();A.seq([0,1,2].map(()=>[450,()=>add('b',1)]).concat([[900,()=>{[st.a,st.b]=[st.b,st.a];draw();A.say('3 + 6 = 9');}]]));}if(n==='sub'){st.a=6;st.b=3;draw();A.seq([[1000,()=>{st.hide=true;draw();A.say('9 − 3 = 6');}]]);}},
     task(r){st.setup=true;st.ask=null;st.need=null;st.hide=false;st.a=0;st.b=0;let txt;
       if(r===0){st.need=[rnd(3,6),rnd(2,4)];txt='Make *'+st.need[0]+' + '+st.need[1]+'* on the ten frame.';}
       else if(r===1){const a=rnd(4,7),b=rnd(1,10-a);st.a=a;st.b=b;st.ask={ans:String(a+b),o:shuffle([String(a+b),String(a+b+1),String(a+b-1)]),ok:'Yes! '+a+' + '+b+' = '+(a+b)+'.'};txt='What is *'+a+' + '+b+'*?';}
@@ -349,7 +349,7 @@ P.lesson({id:'make10',title:'Make 10 and doubles',strand:'Number',codes:['B2.3']
   draw();
   return {info:()=>st.a+'+'+st.b,
     controls:()=>{const c=[{t:'Make ten',go:true,fn:make},{t:'1st +',fn:()=>set('a',1)},{t:'1st −',fn:()=>set('a',-1)},{t:'2nd +',fn:()=>set('b',1)},{t:'2nd −',fn:()=>set('b',-1)}];if(mode==='play'&&st.ask)return choices(st.setup?null:game,st.ask.o,st.ask.ans,st.ask.ok).concat(c);return c;},
-    demo(n){st.ask=null;st.made=false;if(n==='make'){st.a=8;st.b=5;draw();A.seq([[1000,make]]);}if(n==='double'){st.a=7;st.b=7;draw();A.say('Double 7 is 14!');}},
+    demo(n){st.ask=null;st.made=false;if(n==='show'){st.a=8;st.b=5;draw();}if(n==='makenow'){st.a=8;st.b=5;make();}if(n==='made'){st.a=8;st.b=5;st.made=true;draw();}if(n==='make'){st.a=8;st.b=5;draw();A.seq([[1000,make]]);}if(n==='double'){st.a=7;st.b=7;draw();A.say('Double 7 is 14!');}},
     task(r){st.setup=true;st.made=false;let txt;
       if(r===0){st.a=9;st.b=pick([3,4,5]);const s=st.a+st.b;st.ask={ans:String(s),o:shuffle([String(s),String(s+1),String(s-2)]),ok:'Yes! 10 + '+(s-10)+' = '+s+'.'};txt='Make 10 to find *'+st.a+' + '+st.b+'*.';}
       else if(r===1){const d=pick([6,7,8]);st.a=d;st.b=d;st.ask={ans:String(2*d),o:shuffle([String(2*d),String(2*d+1),String(d+1)]),ok:'Yes! Double '+d+' is '+2*d+'.'};txt='What is *double '+d+'*?';}
@@ -391,7 +391,7 @@ P.lesson({id:'story50',title:'Story problems to 50',strand:'Number',codes:['B2.4
   place();
   return {info:()=>String(st.pos),
     controls:()=>{const c=[{t:'+10',go:true,fn:()=>hopBy(10)},{t:'+1',fn:()=>hopBy(1)},{t:'−10',fn:()=>hopBy(-10)},{t:'−1',fn:()=>hopBy(-1)},{t:'Start',fn:()=>{st.pos=st.start;place();}}];if(mode==='play'&&st.ask)return choices(st.setup?null:game,st.ask.o,st.ask.ans,st.ask.ok).concat(c);return c;},
-    demo(n){st.ask=null;st.target=null;if(n==='add'){st.start=23;st.pos=23;place();A.seq([[700,()=>hopBy(10)],[800,()=>hopBy(1)],[400,()=>hopBy(1)]]);}if(n==='sub'){st.start=40;st.pos=40;place();A.seq([[700,()=>hopBy(-10)],[800,()=>hopBy(-1)],[350,()=>hopBy(-1)],[350,()=>hopBy(-1)],[350,()=>hopBy(-1)],[350,()=>hopBy(-1)]]);}},
+    demo(n){st.ask=null;st.target=null;if(n==='start23'){A.stopSeq();busy=Promise.resolve();st.start=23;st.pos=23;place();}if(n==='h10')hopBy(10);if(n==='h1')hopBy(1);if(n==='add'){st.start=23;st.pos=23;place();A.seq([[700,()=>hopBy(10)],[800,()=>hopBy(1)],[400,()=>hopBy(1)]]);}if(n==='sub'){st.start=40;st.pos=40;place();A.seq([[700,()=>hopBy(-10)],[800,()=>hopBy(-1)],[350,()=>hopBy(-1)],[350,()=>hopBy(-1)],[350,()=>hopBy(-1)],[350,()=>hopBy(-1)]]);}},
     task(r){st.setup=true;st.ask=null;st.target=null;let txt;
       if(r===0){const a=rnd(11,25),b=rnd(11,20);st.start=a;st.target=a+b;txt='There are *'+a+' fish*. *'+b+' more* swim in. Hop to find how many now!';}
       else if(r===1){const a=rnd(35,48),b=rnd(11,19);st.start=a;st.target=a-b;txt='There are *'+a+' birds*. *'+b+'* fly away. Hop to find how many are left!';}
@@ -437,7 +437,7 @@ P.lesson({id:'groups1',title:'Equal groups',strand:'Number',codes:['B2.5'],
   draw();
   return {info:()=>st.g+'x'+st.e,
     controls:()=>{const c=[{t:'plates +',go:true,fn:()=>setG(1)},{t:'plates −',fn:()=>setG(-1)},{t:'each +',fn:()=>setE(1)},{t:'each −',fn:()=>setE(-1)}];if(mode==='play'&&st.ask)return choices(st.setup?null:game,st.ask.o,st.ask.ans,st.ask.ok).concat(c);return c;},
-    demo(n){st.ask=null;st.need=null;if(n==='grow'){st.e=2;st.g=1;draw();A.seq([[600,()=>setG(1)],[600,()=>setG(1)],[500,()=>A.say('2, 4, 6!')]]);}if(n==='half'){st.e=.5;st.g=4;draw();A.say('4 halves = 2 apples');}},
+    demo(n){st.ask=null;st.need=null;if(n==='show'){st.e=2;st.g=3;draw();}if(n==='grow'){st.e=2;st.g=1;draw();A.seq([[600,()=>setG(1)],[600,()=>setG(1)],[500,()=>A.say('2, 4, 6!')]]);}if(n==='half'){st.e=.5;st.g=4;draw();A.say('4 halves = 2 apples');}},
     task(r){st.setup=true;st.ask=null;st.need=null;st.g=1;st.e=1;let txt;
       if(r===0){st.need=[pick([3,4]),2];txt='Make *'+st.need[0]+' groups of 2*.';}
       else if(r===1){st.need=[2,pick([4,5])];txt='Make *2 groups of '+st.need[1]+'*.';}

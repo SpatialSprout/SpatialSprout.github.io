@@ -49,7 +49,7 @@ P.lesson({id:'shapes1',title:'Shapes and solids',strand:'Spatial Sense',codes:['
   draw();
   return {info:()=>st.sel<0?'none':SOL[st.sel].n,
     controls:()=>{const c=[{t:st.castle?'Show solids':'Build a castle',go:true,fn:()=>{st.castle=!st.castle;st.sel=-1;draw();}}];if(mode==='play'&&st.ask)return choices(st.setup?null:game,st.ask.o,st.ask.ans,st.ask.ok).concat(c);return c;},
-    demo(n){st.ask=null;st.want=null;st.sel=-1;if(n==='tour'){st.castle=false;draw();A.seq(SOL.map((s,i)=>[800,()=>{st.sel=i;A.say(s.n);A.redraw();}]));}if(n==='castle'){st.castle=true;draw();}},
+    demo(n){st.ask=null;st.want=null;st.sel=-1;if(n==='solids'){st.castle=false;draw();}if(n==='tour'){st.castle=false;draw();A.seq(SOL.map((s,i)=>[800,()=>{st.sel=i;A.say(s.n);A.redraw();}]));}if(n==='castle'){st.castle=true;draw();}},
     task(r){st.setup=true;st.ask=null;st.want=null;st.sel=-1;st.castle=false;let txt;
       if(r===0){st.want=i=>i===1;st.wantOk='Yes! That is a cube.';txt='Tap the *cube*.';}
       else if(r===1){st.want=i=>i===0;st.wantOk='Yes! A sphere rolls every way.';txt='Tap the solid that is *round all over*: it can *only roll*.';}
@@ -144,7 +144,7 @@ P.lesson({id:'where1',title:'Where is it?',strand:'Spatial Sense',codes:['E1.4',
   placeBall();placeBug();
   return {info:()=>st.at+' '+st.bug.join(','),
     controls:()=>{const c=Object.keys(POS).map(k=>({t:PN[k],on:st.at===k,fn:()=>put(k)})).concat([{t:'bug forward',go:true,fn:()=>step([0,1],'forward')},{t:'bug back',fn:()=>step([0,-1],'back')},{t:'bug left',fn:()=>step([-1,0],'left')},{t:'bug right',fn:()=>step([1,0],'right')}]);if(mode==='play'&&st.ask)return choices(st.setup?null:game,st.ask.o,st.ask.ans,st.ask.ok);return c;},
-    demo(n){st.ask=null;st.need=null;if(n==='tour'){st.at='on';placeBall();A.seq(['under','beside','front','behind','on'].map(k=>[1100,()=>put(k)]));}if(n==='bug'){st.bug=[0,1];placeBug();A.seq([[700,()=>step([0,1],'forward')],[700,()=>step([0,1],'forward')],[700,()=>step([1,0],'right')]]);}},
+    demo(n){st.ask=null;st.need=null;if(n==='home'){st.at='on';placeBall();}if(POS[n])put(n);if(n==='tour'){st.at='on';placeBall();A.seq(['under','beside','front','behind','on'].map(k=>[1100,()=>put(k)]));}if(n==='bug'){st.bug=[0,1];placeBug();A.seq([[700,()=>step([0,1],'forward')],[700,()=>step([0,1],'forward')],[700,()=>step([1,0],'right')]]);}},
     task(r){st.setup=true;st.ask=null;st.need=null;st.at='beside';st.bug=[0,0];let txt;
       if(r<3){st.need=['under','behind','front'][r];st.at=r===0?'on':'beside';txt='Put the ball *'+PN[st.need]+'* the table.';}
       else if(r===3){st.need='flower';st.bug=[0,0];txt='Move the *ladybug* to the *flower*.';}
@@ -158,7 +158,7 @@ P.lesson({id:'where1',title:'Where is it?',strand:'Spatial Sense',codes:['E1.4',
 P.lesson({id:'measure1',title:'Longer, heavier, holds more',strand:'Spatial Sense',codes:['E2.1','E2.2'],
  guide:{goal:'Identify measurable attributes such as length, area, mass, capacity and angle, and compare and order everyday objects by length, area, mass and capacity.',words:'long, longer, longest, short, heavy, heavier, light, holds more, covers more, area, capacity, mass',
   ask:['How can you tell which pencil is longer?','What does a balance show?','Which cup holds more water?'],home:'Line up 3 spoons from shortest to longest. Which toy is heavier? Which cup holds more?'},
- learn:[{say:'Compare the lengths.',speech:'Amara lines up the pencils at the same starting line. The blue pencil is the longest. The yellow one is the shortest. Now they are in order!',view:'model',demo:'len'},
+ learn:[{say:'Compare the lengths.',speech:'Amara lines up the pencils at the same starting line. The green pencil is the longest. The yellow one is the shortest. Now they are in order!',view:'model',demo:'len'},
         {say:'Read about measuring.',speech:'We can measure how long something is: its length. How heavy it is: its mass. How much it holds: its capacity. And how much space it covers: its area.',view:'read'},
         {say:'Watch: the balance.',speech:'Put a toy on each side of the balance. The heavier side goes down. The apple is heavier than the feather!',view:'model',demo:'mass'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -187,7 +187,7 @@ P.lesson({id:'measure1',title:'Longer, heavier, holds more',strand:'Spatial Sens
   draw();
   return {tick(dt){if(arm){cur+=(tilt-cur)*Math.min(1,dt*4);arm.rotation.z=-cur;}},info:()=>st.m,
     controls:()=>{const c=[{t:'Length',on:st.m==='len',fn:()=>{st.m='len';draw();}},{t:'Mass',on:st.m==='mass',fn:()=>{st.m='mass';draw();}},{t:'Capacity',on:st.m==='cap',fn:()=>{st.m='cap';draw();}},{t:'Area',on:st.m==='area',fn:()=>{st.m='area';draw();}},{t:'Line up',go:true,fn:()=>{st.m='len';st.ord=true;A.pop();draw();}}];if(mode==='play'&&st.ask)return choices(st.setup?null:game,st.ask.o,st.ask.ans,st.ask.ok).concat(c);return c;},
-    demo(n){st.ask=null;st.want=null;st.mi=null;st.cp=null;st.ar=null;if(n==='len'){st.m='len';st.ord=false;draw();A.seq([[1000,()=>{st.ord=true;draw();A.say('Blue is the longest!');}]]);}if(n==='mass'){st.m='mass';st.ms=[3,1];draw();}},
+    demo(n){st.ask=null;st.want=null;st.mi=null;st.cp=null;st.ar=null;if(n==='lenord'){st.m='len';st.L=[3,5,2];st.ord=true;draw();}if(n==='len'){st.m='len';st.L=[3,5,2];st.ord=false;draw();A.seq([[1000,()=>{st.ord=true;draw();A.say('Green is the longest!');}]]);}if(n==='mass'){st.m='mass';st.ms=[3,1];draw();}},
     task(r){st.setup=true;st.ask=null;st.want=null;st.mi=null;st.cp=null;st.ar=null;st.ord=false;let txt;
       if(r===0){st.m='len';st.L=shuffle([2,3,5]);const mx=Math.max(...st.L);st.want=i=>st.L[i]===mx;st.wantOk='Yes! That is the longest. Lining them up helps!';txt='Tap the *longest* pencil. (Press Line up to help!)';}
       else if(r===1){st.m='mass';st.mi=[1,0];st.ms=[1,3];st.want=i=>i===1;st.wantOk='Yes! The heavier side goes down.';txt='Tap the *heavier* object.';}
@@ -230,7 +230,7 @@ P.lesson({id:'calendar1',title:'Days, weeks and months',strand:'Spatial Sense',c
   draw();
   return {info:()=>MON[st.m],
     controls:()=>{const c=[{t:'Last month',fn:()=>{st.m=(st.m+11)%12;st.sel=null;draw();}},{t:'Next month',go:true,fn:()=>{st.m=(st.m+1)%12;st.sel=null;A.pop();draw();A.say(MON[st.m]);}}];if(mode==='play'&&st.ask)return choices(st.setup?null:game,st.ask.o,st.ask.ans,st.ask.ok).concat(c);return c;},
-    demo(n){st.ask=null;st.want=null;if(n==='find'){st.m=9;st.sel=null;draw();A.seq([[900,()=>tap(15)]]);}if(n==='flip'){st.m=0;st.sel=null;draw();A.seq([1,2,3,4,5,6].map(m=>[650,()=>{st.m=m;draw();A.say(MON[m]);}]));}},
+    demo(n){st.ask=null;st.want=null;if(n==='oct'){st.m=9;st.sel=null;draw();}if(n==='tap15'){if(st.m!==9){st.m=9;}tap(15);}if(n==='find'){st.m=9;st.sel=null;draw();A.seq([[900,()=>tap(15)]]);}if(n==='flip'){st.m=0;st.sel=null;draw();A.seq([1,2,3,4,5,6].map(m=>[650,()=>{st.m=m;draw();A.say(MON[m]);}]));}},
     task(r){st.setup=true;st.ask=null;st.want=null;st.sel=null;st.m=9;let txt;
       if(r===0){const d=pick([12,18,23]);st.want=x=>x===d;st.wantOk='Yes! That is '+MON[st.m]+' '+d+'.';txt='Tap *'+MON[st.m]+' '+d+'*.';}
       else if(r===1){st.want=(x,dn)=>dn==='Wednesday';st.wantOk='Yes! Wednesday comes after Tuesday.';txt='Tap any day that comes *after Tuesday*.';}
@@ -277,7 +277,7 @@ P.lesson({id:'money1',title:'Canadian coins and bills',strand:'Financial Literac
   draw();
   return {info:()=>st.sel==null?'-':MONEY[st.sel].n,
     controls:()=>{const c=[{t:'Order by value',on:st.ord,go:true,fn:()=>{st.ord=true;A.pop();draw();}},{t:'Mix',fn:()=>{st.ord=false;draw();}}];if(mode==='play'&&st.ask)return choices(st.setup?null:game,st.ask.o,st.ask.ans,st.ask.ok).concat(c);return c;},
-    demo(n){st.ask=null;st.want=null;st.set=null;if(n==='tour'){st.ord=false;st.sel=null;draw();A.seq(MONEY.map((m,i)=>[700,()=>{st.sel=i;draw();}]));}if(n==='order'){st.ord=false;st.sel=null;draw();A.seq([[900,()=>{st.ord=true;draw();A.say('least to greatest!');}]]);}},
+    demo(n){st.ask=null;st.want=null;st.set=null;if(n==='show'){st.ord=false;st.sel=null;draw();}if(n==='tour'){st.ord=false;st.sel=null;draw();A.seq(MONEY.map((m,i)=>[700,()=>{st.sel=i;draw();}]));}if(n==='order'){st.ord=false;st.sel=null;draw();A.seq([[900,()=>{st.ord=true;draw();A.say('least to greatest!');}]]);}},
     task(r){st.setup=true;st.ask=null;st.want=null;st.set=null;st.sel=null;st.ord=false;let txt;
       if(r===0){st.want=i=>i===2;st.wantOk='Yes! The quarter is worth 25¢.';txt='Tap the coin worth *25¢*.';}
       else if(r===1){st.set=[0,1];st.want=i=>i===1;st.wantOk='Yes! A dime (10¢) is worth more than a nickel (5¢), even though it is smaller!';txt='Tap the coin worth *more*.';}
