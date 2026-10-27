@@ -59,7 +59,7 @@ P.lesson({id:'rectangles',title:'Properties of rectangles',strand:'Spatial Sense
   return {tick(dt,t){big.rotation.y=Math.sin(t*.4)*.08;},info:()=>st.k+': '+props(st.k).right+' right angles',
     controls:()=>{const tg=[{t:'Right angles',on:st.ra,fn:()=>{st.ra=!st.ra;drawBig();}},{t:'Parallel sides',on:st.par,fn:()=>{st.par=!st.par;drawBig();}},{t:'Symmetry',on:st.sym,fn:()=>{st.sym=!st.sym;drawBig();}}];
       if(mode==='play'&&st.ask)return choices(game,st.ask.opts,st.ask.ans,st.ask.ok).concat(tg);return tg.concat(mode==='learn'?[{t:'Next shape',go:true,fn:()=>{st.k=SN[(SN.indexOf(st.k)+1)%SN.length];drawBig();}}]:[]);},
-    demo(n){if(n==='props'){st.k='rectangle';st.ra=false;st.par=false;st.sym=false;drawBig();A.seq([[700,()=>{st.ra=true;drawBig();A.say('4 right angles');}],[1300,()=>{st.par=true;drawBig();A.say('2 pairs of parallel sides');}]]);}
+    demo(n){if(n==='rect'){st.k='rectangle';st.ra=false;st.par=false;st.sym=false;drawBig();return;}if(n==='ra'){st.ra=true;drawBig();return;}if(n==='par'){st.par=true;drawBig();return;}if(n==='symon'){st.sym=true;drawBig();return;}if(n==='props'){st.k='rectangle';st.ra=false;st.par=false;st.sym=false;drawBig();A.seq([[700,()=>{st.ra=true;drawBig();A.say('4 right angles');}],[1300,()=>{st.par=true;drawBig();A.say('2 pairs of parallel sides');}]]);}
       if(n==='sym'){st.k='rectangle';st.sym=true;st.par=false;drawBig();A.seq([[1500,()=>{st.k='square';drawBig();A.say('A square has 4 lines of symmetry.');}],[1700,()=>{st.k='parallelogram';drawBig();A.say('A parallelogram has none.');}]]);}},
     task(r){st.ask=null;st.want=null;st.ra=false;st.par=false;st.sym=false;
       if(r===0){rowKeys=shuffle(['rectangle','parallelogram','trapezoid','rhombus']);drawRow();st.k='trapezoid';drawBig();st.want=k=>k==='rectangle';st.wantOk='Yes! The rectangle has 4 right angles.';st.wantHint='find 4 right angles.';return 'Tap the shape that is a *rectangle*. Turn on right angles to check.';}
@@ -118,7 +118,7 @@ P.lesson({id:'grid',title:'Coordinates and transformations',strand:'Spatial Sens
   return {info:()=>'('+st.x+', '+st.y+')',
     controls:()=>{const ar=[{t:'← left',fn:()=>move(-1,0)},{t:'→ right',fn:()=>move(1,0)},{t:'↑ up',fn:()=>move(0,1)},{t:'↓ down',fn:()=>move(0,-1)}];
       if(mode==='play'&&st.ask)return choices(game,st.ask.opts,st.ask.ans,st.ask.ok);return ar.concat(mode==='learn'?[{t:'Mirror x = 3',on:st.mirror,fn:()=>{st.mirror=!st.mirror;place(false);}},{t:'Clear trail',fn:()=>clearGroup(trail)}]:[]);},
-    demo(n){clearGroup(trail);if(n==='plot'){st.mirror=false;st.x=0;st.y=0;place(false);A.seq([[700,()=>move(1,0)],[500,()=>move(1,0)],[500,()=>move(1,0)],[600,()=>move(0,1)],[500,()=>move(0,1)],[700,()=>A.say('(3, 2): 3 across, 2 up.')]]);}
+    demo(n){if(n==='origin'){st.mirror=false;st.x=0;st.y=0;clearGroup(trail);place(false);return;}if(n==='r'){move(1,0);return;}if(n==='u'){move(0,1);return;}clearGroup(trail);if(n==='plot'){st.mirror=false;st.x=0;st.y=0;place(false);A.seq([[700,()=>move(1,0)],[500,()=>move(1,0)],[500,()=>move(1,0)],[600,()=>move(0,1)],[500,()=>move(0,1)],[700,()=>A.say('(3, 2): 3 across, 2 up.')]]);}
       if(n==='reflect'){st.x=1;st.y=4;st.mirror=true;place(false);A.say('(1, 4) reflects to (5, 4).');}},
     task(r){st.ask=null;st.target=null;clearGroup(trail);st.mirror=false;
       if(r===0){st.x=0;st.y=0;st.target=[rnd(1,6),rnd(1,6)];place(false);return 'Move the rocket to *('+st.target[0]+', '+st.target[1]+')*.';}
@@ -173,7 +173,7 @@ P.lesson({id:'angles',title:'Right, acute, obtuse and straight angles',strand:'S
   return {info:()=>ACL(st.a)+' angle',
     controls:()=>{if(mode==='play'&&st.ask)return choices(game,['acute','right','obtuse','straight'],st.ask,'Yes! It is '+(st.ask==='acute'||st.ask==='obtuse'?'an ':'a ')+st.ask+' angle.');
       return [{t:'close',fn:()=>setA(st.a-15)},{t:'open',go:true,fn:()=>setA(st.a+15)},{t:'right angle',fn:()=>setA(90)},{t:'straight',fn:()=>setA(180)}];},
-    demo(){st.a=15;draw();const l=[];[30,45,60,75,90,105,120,135,150,165,180].forEach(a=>l.push([400,()=>{setA(a);if(a===90)A.say('Right angle!');}]));A.seq(l);},
+    demo(n){if(/^a\d+$/.test(n)){setA(+n.slice(1));return;}st.a=15;draw();const l=[];[30,45,60,75,90,105,120,135,150,165,180].forEach(a=>l.push([400,()=>{setA(a);if(a===90)A.say('Right angle!');}]));A.seq(l);},
     task(r){st.ask=null;st.want=null;if(r===0){st.a=180;st.want='acute';}else if(r===1){st.a=30;st.want='right';}else if(r===2){st.a=30;st.want='obtuse';}else if(r===3){st.a=60;st.want='straight';}
       else{st.a=pick([30,45,60,105,120,150]);st.ask=ACL(st.a);}draw();return st.want?'Make *'+(st.want==='acute'||st.want==='obtuse'?'an ':'a ')+st.want+' angle*.':'What kind of angle is this?';}};}
 });
@@ -235,7 +235,7 @@ P.lesson({id:'metric',title:'Grams, kilograms, millilitres and litres',strand:'S
     controls:()=>{if(mode==='play'&&st.ask)return choices(game,st.ask.opts,st.ask.ans,st.ask.ok);const m=[{t:'Mass',on:st.mode==='mass',fn:()=>setMode('mass')},{t:'Capacity',on:st.mode==='cap',fn:()=>setMode('cap')}];
       if(st.mode==='mass')return (mode==='learn'?m:[]).concat([{t:'Clear scale',fn:()=>{st.on=[];fillScale();}}]);
       return (mode==='learn'?m:[]).concat([{t:'Pour 250 mL',go:true,fn:()=>pour(250,cups[0])},{t:'Pour 100 mL',fn:()=>pour(100,cups[1])},{t:'Empty',fn:()=>{st.ml=0;level();A.redraw();}}]);},
-    demo(n){if(n==='kg'){setMode('mass');st.on=[];fillScale();A.seq([[700,()=>addItem(1)],[900,()=>addItem(2)],[900,()=>addItem(2)],[900,()=>A.say('500 g + 250 g + 250 g = 1000 g = 1 kg')]]);}
+    demo(n){if(n==='empty'){st.mode='mass';st.on=[];fillScale();return;}if(n==='book'){addItem(1);return;}if(n==='butter'){addItem(2);return;}if(n==='kg'){setMode('mass');st.on=[];fillScale();A.seq([[700,()=>addItem(1)],[900,()=>addItem(2)],[900,()=>addItem(2)],[900,()=>A.say('500 g + 250 g + 250 g = 1000 g = 1 kg')]]);}
       if(n==='litre'){setMode('cap');st.ml=0;level();A.seq([[600,()=>pour(250,cups[0])],[1100,()=>pour(250,cups[0])],[1100,()=>pour(250,cups[0])],[1100,()=>pour(250,cups[0])],[1300,()=>A.say('4 × 250 mL = 1000 mL = 1 L')]]);}},
     task(r){st.ask=null;st.target=null;st.on=[];st.ml=0;fillScale();level();
       if(r===0){setMode('mass');st.target=1000;return 'Put exactly *1 kg* on the scale. (Remember: 1 kg = 1000 g.)';}
@@ -300,7 +300,7 @@ P.lesson({id:'elapsed',title:'Elapsed time',strand:'Spatial Sense',codes:['E2.3'
   return {tick(dt){const t=target(),k=Math.min(1,dt*8);ha+=(t.h-ha)*k;ma+=(t.m-ma)*k;hp.rotation.z=ha;mp.rotation.z=ma;},info:()=>tf(st.tm)+'  ·  elapsed '+dur(Math.max(0,st.tm-st.start)),
     controls:()=>{if(mode==='play'&&st.ask)return choices(game,st.ask.opts,st.ask.ans,st.ask.ok);
       return [{t:'−1 hour',fn:()=>add(-60)},{t:'+1 hour',fn:()=>add(60)},{t:'−5 min',fn:()=>add(-5)},{t:'+5 min',go:true,fn:()=>add(5)}].concat(mode==='learn'?[{t:'Set start = now',fn:()=>{st.start=st.tm;sync();}}]:[]);},
-    demo(){st.start=135;st.tm=135;sync();A.seq([[800,()=>{add(60);A.say('+1 hour: 3:15');}],[1300,()=>{add(15);}],[600,()=>{add(15);A.say('+30 min: 3:45. Elapsed: 1 h 30 min.');}]]);},
+    demo(n){if(n==='movie'){st.start=14*60+15;st.tm=14*60+15;sync();return;}if(n==='p60'){add(60);return;}if(n==='p30'){add(30);return;}st.start=135;st.tm=135;sync();A.seq([[800,()=>{add(60);A.say('+1 hour: 3:15');}],[1300,()=>{add(15);}],[600,()=>{add(15);A.say('+30 min: 3:45. Elapsed: 1 h 30 min.');}]]);},
     task(r){st.ask=null;st.want=null;
       if(r===0){st.start=rnd(1,4)*60+pick([0,15,30]);const d=pick([75,90,105]);st.tm=st.start;st.want=st.start+d;sync();return 'A movie starts at *'+tf(st.start)+'* and lasts *'+dur(d)+'*. Set the clock to the *end time*.';}
       if(r===1){st.start=10*60+40;const d=25;st.tm=st.start;st.want=st.start+d;sync();return 'Recess starts at *10:40* and lasts *25 min*. Set the end time.';}
@@ -346,7 +346,7 @@ P.lesson({id:'area4',title:'Area of rectangles',strand:'Spatial Sense',codes:['E
   rebuild(false);
   return {info:()=>'Area '+st.w*st.h+' m²  (drag the yellow corner)',
     controls:()=>[{t:'Longer',go:true,fn:()=>set(st.w+1,st.h)},{t:'Shorter',fn:()=>set(st.w-1,st.h)},{t:'Wider',go:true,fn:()=>set(st.w,st.h+1)},{t:'Narrower',fn:()=>set(st.w,st.h-1)}],
-    demo(n){if(n==='tile'){st.w=6;st.h=1;rebuild(false);A.seq([[600,()=>set(6,2)],[700,()=>set(6,3)],[700,()=>set(6,4)],[900,()=>A.say('4 rows × 6 = 24 m²')]]);}
+    demo(n){if(n==='show'){st.w=6;st.h=4;rebuild(false);A.redraw();return;}if(n==='tile'){st.w=6;st.h=1;rebuild(false);A.seq([[600,()=>set(6,2)],[700,()=>set(6,3)],[700,()=>set(6,4)],[900,()=>A.say('4 rows × 6 = 24 m²')]]);}
       if(n==='missing'){st.w=1;st.h=4;rebuild(false);const l=[];for(let w=2;w<=9;w++)l.push([380,()=>set(w,4)]);l.push([700,()=>A.say('9 m × 4 m = 36 m². The missing length is 9 m.')]);A.seq(l);}},
     task(r){st.w=1;st.h=1;rebuild(false);
       if(r===0){const w=rnd(5,9),h=rnd(3,7);st.want=(a,b)=>a===w&&b===h;return 'Build a garden *'+w+' m long* and *'+h+' m wide*. What is its area?';}
@@ -404,7 +404,7 @@ P.lesson({id:'shopping',title:'Paying and making change',strand:'Financial Liter
     controls:()=>{if(mode==='play'&&st.ask)return st.ask.opts.map(o=>({t:String(o),big:true,fn:()=>{if(o===st.ask.ans)game.solved(st.ask.ok);else A.bad('Not quite. Try again!');}}));
       const c=[{t:'Pay $20',fn:()=>payCash(20)},{t:'Pay $50',fn:()=>payCash(50)},{t:'Empty cart',fn:()=>{st.cart=[];st.paid=0;clearGroup(bills);fillCart();}}];
       return mode==='learn'?c.concat(PAY.slice(1).map(([n],i)=>({t:n,on:st.method===i+1,fn:()=>{st.method=i+1;st.paid=0;clearGroup(bills);A.redraw();}}))):c;},
-    demo(n){if(n==='cart'){st.cart=[];st.paid=0;clearGroup(bills);fillCart();A.seq([[700,()=>addC(0)],[900,()=>addC(1)],[900,()=>A.say('$7 + $9 = $16')]]);}if(n==='pay'){st.cart=[0,1];fillCart();A.seq([[800,()=>payCash(20)]]);}},
+    demo(n){if(n==='empty'){st.cart=[];st.paid=0;clearGroup(bills);fillCart();return;}if(n==='ball'){addC(0);return;}if(n==='kite'){addC(1);return;}if(n==='pay20'){payCash(20);return;}if(n==='cart'){st.cart=[];st.paid=0;clearGroup(bills);fillCart();A.seq([[700,()=>addC(0)],[900,()=>addC(1)],[900,()=>A.say('$7 + $9 = $16')]]);}if(n==='pay'){st.cart=[0,1];fillCart();A.seq([[800,()=>payCash(20)]]);}},
     task(r){st.ask=null;st.need=null;st.afterNeed=null;st.cart=[];st.paid=0;clearGroup(bills);fillCart();
       if(r===0||r===1){const k=r===0?2:3;const items=shuffle([0,1,2,3,4,5]).slice(0,k);st.need=items;st.afterNeed=t=>{st.ask={ans:'$'+t,opts:shuffle(['$'+t,'$'+(t+2),'$'+(t-1)]),ok:'Yes! The total is $'+t+'.'};A.say('Now choose the total.');A.redraw();};
         return 'Put the *'+items.map(i=>GOODS[i].n.toLowerCase()).join('* and the *')+'* in the cart. Then choose the total.';}
@@ -463,7 +463,7 @@ P.lesson({id:'budget',title:'Earn, spend, save and share',strand:'Financial Lite
     controls:()=>{if(mode==='play'&&st.ask)return choices(game,st.ask.opts,st.ask.ans,st.ask.ok);
       if(st.mode==='cmp')return mode==='learn'?[{t:'Jars',fn:()=>setMode('jars')}]:[];
       return [{t:'Earn $10',go:true,fn:earn,dis:mode==='play'&&!!st.plan}].concat(JARS.map(j=>({t:'+ '+j.n,fn:()=>drop(j.k)})),[{t:'Empty jars',fn:()=>{st.jars={spend:0,save:0,invest:0,donate:0};st.pile=mode==='play'&&st.plan?10:0;drawJars();}}],mode==='learn'?[{t:'Compare',fn:()=>setMode('cmp')}]:[]);},
-    demo(n){if(n==='split'){setMode('jars');st.jars={spend:0,save:0,invest:0,donate:0};st.pile=0;drawJars();A.seq([[600,earn],[700,()=>drop('spend')],[300,()=>drop('spend')],[300,()=>drop('spend')],[500,()=>drop('save')],[300,()=>drop('save')],[300,()=>drop('save')],[300,()=>drop('save')],[500,()=>drop('invest')],[300,()=>drop('invest')],[500,()=>drop('donate')]]);}
+    demo(n){if(n==='jars'){st.pile=0;st.jars={spend:0,save:0,invest:0,donate:0};setMode('jars');drawJars();return;}if(n==='earn'){earn();return;}const DK={dsp:'spend',dsv:'save',din:'invest',ddo:'donate'};if(DK[n]){drop(DK[n]);return;}if(n==='cmp'){setMode('cmp');return;}if(n==='split'){setMode('jars');st.jars={spend:0,save:0,invest:0,donate:0};st.pile=0;drawJars();A.seq([[600,earn],[700,()=>drop('spend')],[300,()=>drop('spend')],[300,()=>drop('spend')],[500,()=>drop('save')],[300,()=>drop('save')],[300,()=>drop('save')],[300,()=>drop('save')],[500,()=>drop('invest')],[300,()=>drop('invest')],[500,()=>drop('donate')]]);}
       if(n==='compare')setMode('cmp');},
     task(r){st.ask=null;st.plan=null;st.better=null;st.jars={spend:0,save:0,invest:0,donate:0};
       if(r===0||r===4){setMode('jars');st.pile=10;st.plan=r===0?{save:5,spend:3,donate:2}:{spend:4,save:4,invest:2};drawJars();return 'You earned $10. Plan: '+JARS.filter(j=>st.plan[j.k]).map(j=>'*'+j.n.toLowerCase()+' $'+st.plan[j.k]+'*').join(', ')+'. Drop the loonies in.';}

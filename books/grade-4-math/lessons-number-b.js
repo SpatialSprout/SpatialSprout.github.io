@@ -60,7 +60,7 @@ P.lesson({id:'times10',title:'Multiplying by 10, 100 and 1000',strand:'Number',c
   return {info:()=>'Value: '+fmt(st.v),
     controls:()=>[{t:'× 10',big:true,fn:()=>apply(10,'× 10',1)},{t:'× 100',big:true,fn:()=>apply(100,'× 100',2)},{t:'× 1000',big:true,fn:()=>apply(1000,'× 1000',3)},{t:'÷ 10',big:true,go:true,fn:()=>apply(.1,'÷ 10',-1)},
       {t:'Start over',fn:()=>{st.v=st.start;render();}}].concat(mode==='learn'?[{t:'New number',fn:()=>{st.v=st.start=rnd(2,99);render();}}]:[]),
-    demo(n){if(n==='x10'){st.v=st.start=34;render();A.seq([[900,()=>apply(10,'34 × 10',1)]]);}if(n==='d10'){st.v=st.start=45;render();A.seq([[900,()=>apply(.1,'45 ÷ 10',-1)]]);}},
+    demo(n){if(n==='v34'){st.v=st.start=34;render();return;}if(n==='ax10'){apply(10,'34 × 10',1);return;}if(n==='v45'){st.v=st.start=45;render();return;}if(n==='ad10'){apply(.1,'45 ÷ 10',-1);return;}if(n==='x10'){st.v=st.start=34;render();A.seq([[900,()=>apply(10,'34 × 10',1)]]);}if(n==='d10'){st.v=st.start=45;render();A.seq([[900,()=>apply(.1,'45 ÷ 10',-1)]]);}},
     task(r){let a,t,txt;if(r===0){a=rnd(12,98);t=a*10;txt='Make *'+fmt(t)+'* from *'+a+'*.';}else if(r===1){a=rnd(3,95);t=a*100;txt='Multiply *'+a+' × 100*.';}
       else if(r===2){a=rnd(2,9);t=a*1000;txt='What is *'+a+' × 1000*? Make it.';}else if(r===3){a=rnd(2,9)*10*rnd(1,9);a=a>990?560:a;t=a/10;txt='Divide *'+fmt(a)+' ÷ 10*.';}
       else{a=rnd(11,99);if(a%10===0)a++;t=a/10;txt='Make *'+t.toFixed(1)+'* from *'+a+'*.';}
@@ -124,7 +124,7 @@ P.lesson({id:'addsub4',title:'Adding and subtracting to 10 000',strand:'Number',
   return {info:()=>st.col<st.n?'Answer digit for the '+st.labels[st.col]+' column':'Solved!',
     controls:()=>{const c=[];if(st.col<st.n){const a=colAnswer();if(a.borrow)c.push({t:'Regroup',go:true,big:true,fn:doBorrow});else for(let d=0;d<=9;d++)c.push({t:String(d),big:true,fn:()=>answer(d)});}
       if(mode==='learn')c.push({t:'Show me',fn:showMe},{t:'New + problem',fn:()=>setup(rnd(1200,4800),rnd(1100,4800),'+',0)},{t:'New − problem',fn:()=>{const a=rnd(4000,9000);setup(a,rnd(1100,a-500),'−',0);}});return c;},
-    demo(n){if(n==='add')setup(2468,1357,'+',0);if(n==='sub')setup(842,367,'−',0);A.seq([[700,showMe]]);},
+    demo(n){if(n==='show'){setup(4378,2517,'+',0);return;}if(n==='showme'){showMe();return;}if(n==='add')setup(2468,1357,'+',0);if(n==='sub')setup(842,367,'−',0);A.seq([[700,showMe]]);},
     task(r){busy=false;if(r===0)setup(rnd(1200,4800),rnd(1200,4800),'+',0);else if(r===1){const a=rnd(5000,9500);setup(a,rnd(1200,a-800),'−',0);}
       else if(r===2)setup(rnd(150,480),rnd(150,480),'+',1);else if(r===3){const a=rnd(400,900);setup(a,rnd(120,a-60),'−',1);}else setup(rnd(2000,5999),rnd(2000,3999),'+',0);
       const f=v=>st.dec?(v/10).toFixed(1):fmt(v);return 'Solve *'+f(st.a)+(st.op==='+'?' + ':' − ')+f(st.b)+'*, one column at a time.';}};}
@@ -168,7 +168,7 @@ P.lesson({id:'multiply4',title:'Multiplying bigger numbers',strand:'Number',code
     controls:()=>{const ans=st.m*st.n,parts=split(st.n);const ready=st.shown.slice(0,parts.length).every(x=>x);
       if(mode==='play')return ready?choices(game,opts(ans,[10,-10,100,-100,st.m,-st.m]),ans,st.m+' × '+st.n+' = '+ans+'!'):[{t:'Reveal all',fn:()=>parts.forEach((_,i)=>reveal(i))}];
       return [{t:'Factor −',fn:()=>setUp(Math.max(2,st.m-1),st.n)},{t:'Factor +',fn:()=>setUp(Math.min(9,st.m+1),st.n)},{t:'New number',go:true,fn:()=>setUp(st.m,rnd(112,489))},{t:'Reveal all',fn:()=>parts.forEach((_,i)=>reveal(i))}];},
-    demo(){setUp(4,236);A.seq([[800,()=>reveal(0)],[1300,()=>reveal(1)],[1300,()=>reveal(2)],[1300,()=>A.say('800 + 120 + 24 = 944')]]);},
+    demo(n){if(n==='show'){setUp(4,236);return;}if(/^r\d$/.test(n)){reveal(+n[1]);return;}setUp(4,236);A.seq([[800,()=>reveal(0)],[1300,()=>reveal(1)],[1300,()=>reveal(2)],[1300,()=>A.say('800 + 120 + 24 = 944')]]);},
     task(r){const m=rnd(3,9),n=r===0?rnd(21,98):r===4?pick([10,100,1000])*rnd(2,9)/ (1) :rnd(112,489);setUp(m,r===4?rnd(2,9)*100+rnd(1,9)*10:n);return 'Find *'+st.m+' × '+st.n+'*. Tap each block, then choose the product.';}};}
 });
 function split(n){const s=String(n);return s.split('').map((d,i)=>+d*Math.pow(10,s.length-1-i)).filter(v=>v>0);}
@@ -225,7 +225,7 @@ P.lesson({id:'divide4',title:'Dividing and remainders',strand:'Number',codes:['B
       const base=[{t:'Deal',go:true,big:true,fn:deal,dis:st.done},{t:'Break',fn:()=>breakOne(),dis:st.done}];
       if(mode==='play'&&st.done){const o=shuffle([ans,r?(q+1)+' R'+r:(q+1)+'',r?q+' R'+(r+1>=st.d?0:r+1):(q-1)+'']);return o.map(x=>({t:x,big:true,fn:()=>{if(x===ans)game.solved(st.n+' ÷ '+st.d+' = '+ans+'!');else A.bad('Count what is on one plate, and what is left.');}}));}
       return mode==='learn'?base.concat([{t:'New problem',fn:()=>setUp(rnd(25,99),rnd(2,6))}]):base;},
-    demo(){setUp(57,4);A.seq([[800,deal],[1100,()=>breakOne('t')],[1100,deal],[900,deal],[900,deal],[900,deal],[900,deal],[900,()=>{finish();A.say('14 each, 1 left: 57 ÷ 4 = 14 R1, or 14 and 1/4.');}]]);},
+    demo(n){if(n==='show'){setUp(57,4);return;}if(n==='dealnow'){deal();return;}if(n==='brk'){breakOne();return;}setUp(57,4);A.seq([[800,deal],[1100,()=>breakOne('t')],[1100,deal],[900,deal],[900,deal],[900,deal],[900,deal],[900,()=>{finish();A.say('14 each, 1 left: 57 ÷ 4 = 14 R1, or 14 and 1/4.');}]]);},
     task(r){const T5=[[rnd(3,4)*rnd(11,19),0],[rnd(25,59),0],[rnd(121,199),0],[rnd(61,97),0],[rnd(31,79),0]];let n=T5[r][0];const d=[3,4,5,2,6][r];if(r===0)n=d*rnd(11,24);if(n>199)n=199;setUp(n,d);
       return 'Share *'+n+'* among *'+d+'* plates. Deal, break, then choose the answer.';}};}
 });
@@ -265,7 +265,7 @@ P.lesson({id:'unitfrac',title:'Adding unit fractions',strand:'Number',codes:['B2
   draw();
   return {info:()=>st.n+' × 1/'+st.d+' = '+st.n+'/'+st.d,
     controls:()=>[2,3,4,5,6,8,10].map(d=>({t:'1/'+d,on:st.d===d,fn:()=>{st.d=d;st.n=Math.min(st.n,2*d);draw();}})).concat([{t:'Add a piece',go:true,big:true,fn:()=>addP(1)},{t:'Remove',fn:()=>addP(-1)}]),
-    demo(){st.d=4;st.n=0;draw();A.seq([[700,()=>addP(1)],[700,()=>addP(1)],[700,()=>addP(1)],[900,()=>A.say('1/4 + 1/4 + 1/4 = 3 × 1/4 = 3/4')]]);},
+    demo(n){if(n==='show0'){st.d=4;st.n=0;draw();return;}if(n==='add1'){addP(1);return;}st.d=4;st.n=0;draw();A.seq([[700,()=>addP(1)],[700,()=>addP(1)],[700,()=>addP(1)],[900,()=>A.say('1/4 + 1/4 + 1/4 = 3 × 1/4 = 3/4')]]);},
     task(r){st.n=0;st.d=2;let n,d,txt;if(r===0){d=5;n=4;txt='Show *4 × 1/5*.';}else if(r===1){d=3;n=6;txt='How many *1/3* pieces make *2 wholes*? Show it.';}
       else if(r===2){d=8;n=rnd(3,7);txt='Show *'+Array(n).fill('1/8').join(' + ')+'*.';}else if(r===3){d=pick([3,4,5]);n=d+rnd(1,d-1);txt='Show *'+n+' × 1/'+d+'*. Is it more than 1?';}
       else{d=pick([6,10]);n=rnd(2,d-1);txt='Show *'+n+'/'+d+'* as unit fractions.';}st.target=[n,d];draw();return txt;}};}
@@ -312,7 +312,7 @@ P.lesson({id:'rates',title:'Rates: for every one',strand:'Number',codes:['B2.8']
   return {info:()=>st.n+' groups × '+RATES[st.ri].per+' = '+st.n*RATES[st.ri].per,
     controls:()=>{const c=[{t:'− group',fn:()=>setN(st.n-1)},{t:'+ group',go:true,big:true,fn:()=>setN(st.n+1)}];
       if(mode==='learn')c.push(...RATES.map((R,i)=>({t:R.each,on:st.ri===i,fn:()=>{st.ri=i;draw();}})));return c;},
-    demo(){st.ri=0;st.n=1;draw();A.seq([[800,()=>setN(2)],[800,()=>setN(3)],[800,()=>setN(4)],[900,()=>A.say('4 cartons × 6 eggs = 24 eggs')]]);},
+    demo(n){if(n==='show1'){st.ri=0;st.n=1;draw();return;}if(/^n\d$/.test(n)){setN(+n[1]);return;}st.ri=0;st.n=1;draw();A.seq([[800,()=>setN(2)],[800,()=>setN(3)],[800,()=>setN(4)],[900,()=>A.say('4 cartons × 6 eggs = 24 eggs')]]);},
     task(r){st.ri=r;st.n=0;const R=RATES[r],k=rnd(3,9);st.target=k*R.per;draw();
       return r%2===0?'1 '+R.it+' has *'+R.per+' '+R.each+'*. Show *'+st.target+' '+R.each+'*. How many '+R.it+'s?':'Show the '+R.each+' on *'+k+' '+R.it+'s* ('+R.per+' per '+R.it+').';}};}
 });

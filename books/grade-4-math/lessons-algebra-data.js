@@ -58,7 +58,7 @@ P.lesson({id:'patterns4',title:'Patterns, tables and graphs',strand:'Algebra',co
   return {info:()=>'Rule: start '+st.a+', add '+st.b,
     controls:()=>mode==='play'?[{t:'− cube',fn:()=>setU(st.user-1)},{t:'+ cube',go:true,big:true,fn:()=>setU(st.user+1)}]:
       [{t:'Start −',fn:()=>setRule(st.a-1,st.b)},{t:'Start +',fn:()=>setRule(st.a+1,st.b)},{t:'Add −',fn:()=>setRule(st.a,st.b-1)},{t:'Add +',fn:()=>setRule(st.a,st.b+1)},{t:st.dec?'Each cube = 0.1':'Each cube = 1',on:st.dec,fn:()=>{st.dec=!st.dec;draw();}}],
-    demo(n){st.miss=-1;st.dec=n==='decimal';st.a=3;st.b=2;draw();A.say(n==='decimal'?'0.3, 0.5, 0.7, 0.9, 1.1, 1.3':'3, 5, 7, 9, 11, 13');},
+    demo(n){if(n==='show'){st.miss=-1;st.dec=false;st.a=3;st.b=2;draw();return;}st.miss=-1;st.dec=n==='decimal';st.a=3;st.b=2;draw();A.say(n==='decimal'?'0.3, 0.5, 0.7, 0.9, 1.1, 1.3':'3, 5, 7, 9, 11, 13');},
     task(r){st.dec=false;st.user=0;if(r===0){st.a=rnd(1,4);st.b=rnd(2,3);st.miss=5;}else if(r===1){st.a=rnd(1,3);st.b=rnd(2,3);st.miss=rnd(1,4);}
       else if(r===2){st.dec=true;st.a=rnd(1,3);st.b=2;st.miss=5;}else if(r===3){st.a=rnd(2,5);st.b=3;st.miss=4;}else{st.b=-rnd(2,3);st.a=6-5*st.b>20?16:rnd(-5*st.b+1,16);st.miss=rnd(2,5);}
       draw();const f=v=>st.dec?(v/10).toFixed(1):String(v);
@@ -108,7 +108,7 @@ P.lesson({id:'equations4',title:'Variables and equations',strand:'Algebra',codes
   fill();ang=tAng;place();
   return {tick(dt){ang+=(tAng-ang)*Math.min(1,dt*4);place();},info:()=>st.txt+'   (n = '+st.n+')',
     controls:()=>[{t:'−10',fn:()=>setN(st.n-10)},{t:'−1',big:true,fn:()=>setN(st.n-1)},{t:'+1',big:true,go:true,fn:()=>setN(st.n+1)},{t:'+10',fn:()=>setN(st.n+10)}].concat(mode==='learn'?[{t:'New puzzle',fn:()=>{const n=rnd(5,30),c=rnd(3,20);setUp(1,c,n+c,'n + '+c+' = '+(n+c));}}]:[]),
-    demo(n){if(n==='solve'){setUp(1,17,42,'n + 17 = 42');A.seq([[700,()=>setN(10)],[800,()=>setN(20)],[800,()=>setN(30)],[900,()=>setN(26)],[700,()=>setN(25)]]);}
+    demo(n){if(n==='show'){setUp(1,17,42,'n + 17 = 42');return;}if(/^n\d+$/.test(n)){setN(+n.slice(1));return;}if(n==='solve'){setUp(1,17,42,'n + 17 = 42');A.seq([[700,()=>setN(10)],[800,()=>setN(20)],[800,()=>setN(30)],[900,()=>setN(26)],[700,()=>setN(25)]]);}
       if(n==='bags'){setUp(3,0,24,'3 × n = 24');const l=[];for(let i=1;i<=8;i++)l.push([i===1?800:450,()=>setN(i)]);A.seq(l);}},
     task(r){let hint='';if(r===0){const n=rnd(8,30),c=rnd(6,19);setUp(1,c,n+c,'n + '+c+' = '+(n+c));}
       else if(r===1){const k=rnd(15,35),c=rnd(5,12);setUp(1,0,k+c,'n − '+c+' = '+k);hint=' (Think: n = '+k+' + '+c+'.)';}
@@ -161,7 +161,7 @@ P.lesson({id:'inequal',title:'Inequalities on a number line',strand:'Algebra',co
   draw();
   return {info:()=>'Marked: '+(st.marks.length?st.marks.slice().sort((a,b)=>a-b).join(', '):'none'),
     controls:()=>[{t:'Check',go:true,big:true,fn:check},{t:'Clear marks',fn:()=>{st.marks=[];draw();}}].concat(mode==='learn'?[{t:'Show all',fn:()=>{st.marks=sols();draw();}},{t:'New inequality',fn:()=>{const a=rnd(2,8);Math.random()<.5?setUp('+',a,'<',rnd(a+3,18)):setUp('−',a,'>',rnd(5,20-a-2));}}]:[]),
-    demo(){setUp('+',6,'<',14);const l=[];for(let v=0;v<=8;v++)l.push([450,()=>{if(v<8)tap(v);else{st.test=8;tok.position.set(toX(8),.55,Z);A.redraw();A.say('8 + 6 = 14 is not less than 14.');}}]);A.seq(l);},
+    demo(n){if(n==='show'){setUp('+',6,'<',14);return;}if(/^t\d+$/.test(n)){tap(+n.slice(1));return;}setUp('+',6,'<',14);const l=[];for(let v=0;v<=8;v++)l.push([450,()=>{if(v<8)tap(v);else{st.test=8;tok.position.set(toX(8),.55,Z);A.redraw();A.say('8 + 6 = 14 is not less than 14.');}}]);A.seq(l);},
     task(r){const T5=[()=>{const a=rnd(3,8);setUp('+',a,'<',rnd(a+3,a+8));},()=>{const a=rnd(2,6);setUp('−',a,'>',rnd(10,20-a-2));},()=>{const a=rnd(9,14);setUp('+',a,'>',rnd(a+4,a+10));},
       ()=>{const a=rnd(4,9);setUp('−',a,'<',rnd(3,8));},()=>{const a=rnd(5,10);setUp('+',a,'<',rnd(a+2,a+6));}];T5[r]();
       return 'Mark *every* whole number from 0 to 20 that solves *x '+(st.op==='+'?'+':'−')+' '+st.a+' '+st.rel+' '+st.b+'*, then press Check.';}};}
@@ -223,7 +223,7 @@ P.lesson({id:'coding4',title:'Coding with nested loops',strand:'Algebra',codes:[
   return {tick(dt,t){if(goal)goal.rotation.y=t*1.5;if(running){timer-=dt;if(timer<=0){timer=.42;step();}}},info:()=>'Level '+(st.li+1)+': get to the star with a nested loop.',
     controls:()=>[{t:'↑ Forward',fn:()=>add('F')},{t:'↺ Left',fn:()=>add('L')},{t:'↻ Right',fn:()=>add('R')},{t:'× repeat step',fn:rep},{t:'Repeat −',fn:()=>{st.rep=Math.max(1,st.rep-1);A.redraw();}},{t:'Repeat +',fn:()=>{st.rep=Math.min(6,st.rep+1);A.redraw();}},
       {t:'▶ Run',go:true,fn:run},{t:'Undo',fn:()=>{if(!running){st.body.pop();A.redraw();}}},{t:'Clear',fn:()=>{if(!running){st.body=[];st.rep=1;reset();}}}].concat(mode==='learn'?[{t:'Next level',fn:()=>{st.li=(st.li+1)%LV4.length;st.body=[];st.rep=1;load();A.redraw();}}]:[]),
-    demo(){st.li=1;st.body=[{cmd:'F',n:1},{cmd:'R',n:1},{cmd:'F',n:1},{cmd:'L',n:1}];st.rep=3;load();A.redraw();A.seq([[900,run]]);},
+    demo(n){if(n==='show'){st.li=1;st.body=[{cmd:'F',n:1},{cmd:'R',n:1},{cmd:'F',n:1},{cmd:'L',n:1}];st.rep=3;load();A.redraw();return;}if(n==='runnow'){run();return;}st.li=1;st.body=[{cmd:'F',n:1},{cmd:'R',n:1},{cmd:'F',n:1},{cmd:'L',n:1}];st.rep=3;load();A.redraw();A.seq([[900,run]]);},
     task(r){st.li=r;st.body=[];st.rep=1;if(r===3){st.body=[{cmd:'F',n:3},{cmd:'R',n:1}];st.rep=1;}load();
       return r===3?'Fix the bug: this code should reach the star. *Change one number*, then Run.':'Level *'+(r+1)+'*: reach the star with a *repeating group* of steps.';}};}
 });
@@ -276,7 +276,7 @@ P.lesson({id:'datatypes',title:'Kinds of data and stem-and-leaf plots',strand:'D
   return {info:()=>st.mode==='sort'?'Sort the card into the right bin':'Stem-and-leaf plot: '+st.shown+' values',
     controls:()=>{if(mode==='play'&&st.ask)return choices(game,st.ask.opts,st.ask.ans,st.ask.ok);if(st.mode==='sort')return [{t:'Words',big:true,fn:()=>place('Q')},{t:'Numbers',big:true,fn:()=>place('N')}].concat(mode==='learn'?[{t:'Stem-and-leaf',fn:()=>setMode('stem')}]:[]);
       return [{t:'Add value',go:true,fn:()=>{if(st.shown<st.data.length){st.shown++;A.pop();drawStem();}}},{t:'Start over',fn:()=>{st.shown=0;drawStem();}},{t:'Sort cards',fn:()=>setMode('sort')}];},
-    demo(n){if(n==='sort'){setMode('sort');A.seq([[900,()=>place(DCARDS[st.ci%DCARDS.length][1])],[1300,()=>place(DCARDS[st.ci%DCARDS.length][1])],[1300,()=>place(DCARDS[st.ci%DCARDS.length][1])]]);}
+    demo(n){if(n==='sortm'){setMode('sort');return;}if(n==='stemall'){st.shown=st.data.length;setMode('stem');return;}if(n==='sort'){setMode('sort');A.seq([[900,()=>place(DCARDS[st.ci%DCARDS.length][1])],[1300,()=>place(DCARDS[st.ci%DCARDS.length][1])],[1300,()=>place(DCARDS[st.ci%DCARDS.length][1])]]);}
       if(n==='stem'){st.shown=0;setMode('stem');const l=[];for(let i=0;i<st.data.length;i++)l.push([450,()=>{st.shown++;drawStem();}]);A.seq(l);}},
     task(r){st.ask=null;st.want=null;if(r<3){st.want='sort';st.ci=rnd(0,DCARDS.length-1);setMode('sort');return 'Sort the card: is *“'+DCARDS[st.ci][0]+'”* words or numbers?';}
       const base=rnd(2,3);st.data=Array.from({length:9},()=>rnd(base*10,base*10+29)).sort((a,b)=>a-b);st.shown=9;setMode('stem');
@@ -330,7 +330,7 @@ P.lesson({id:'doublebar',title:'Double-bar graphs',strand:'Data',codes:['D1.3','
     controls:()=>{if(mode==='play'&&st.ask)return choices(game,st.ask.opts,st.ask.ans,st.ask.ok);
       const c=[{t:'◀ bar',fn:()=>{let q=st.sel[0]*2+st.sel[1]-1;if(q<0)q=7;st.sel=[Math.floor(q/2),q%2];draw();}},{t:'bar ▶',fn:()=>{let q=(st.sel[0]*2+st.sel[1]+1)%8;st.sel=[Math.floor(q/2),q%2];draw();}},{t:'− vote',fn:()=>change(-1)},{t:'+ vote',go:true,fn:()=>change(1)}];
       if(mode==='learn')c.push({t:'Scale: 1 per block',on:st.scale===1,fn:()=>{st.scale=1;draw();}},{t:'2 per block',on:st.scale===2,fn:()=>{st.scale=2;draw();}});return c;},
-    demo(){st.a=[0,0,0,0];st.b=[0,0,0,0];draw();const fa=[6,4,5,3],fb=[3,6,4,5];const l=[];for(let s=1;s<=6;s++)l.push([350,()=>{st.a=fa.map(v=>Math.min(v,s));st.b=fb.map(v=>Math.min(v,s));draw();}]);A.seq(l);},
+    demo(n){if(n==='show'){st.a=[6,4,5,3];st.b=[3,6,4,5];draw();return;}st.a=[0,0,0,0];st.b=[0,0,0,0];draw();const fa=[6,4,5,3],fb=[3,6,4,5];const l=[];for(let s=1;s<=6;s++)l.push([350,()=>{st.a=fa.map(v=>Math.min(v,s));st.b=fb.map(v=>Math.min(v,s));draw();}]);A.seq(l);},
     task(r){st.ask=null;st.want=null;st.target=null;st.scale=1;st.a=SPORTS.map(()=>rnd(2,9));st.b=SPORTS.map(()=>rnd(2,9));
       if(r===0){const mx=Math.max(...st.b);st.b[st.b.indexOf(mx)]=mx+1;const best=st.b.indexOf(Math.max(...st.b));st.want=(i,k)=>k===1?i===best:false;st.wantOk='Yes! '+SPORTS[best]+' had the most votes in Class B.';draw();return 'Tap the bar: which sport got the *most votes in Class B*?';}
       if(r===1){const i=rnd(0,3);st.a[i]=rnd(7,10);st.b[i]=rnd(2,st.a[i]-2);const d=st.a[i]-st.b[i];draw();st.ask={ans:d,opts:opts(d,[-1,1,2,-2],1),ok:'Yes! '+st.a[i]+' − '+st.b[i]+' = '+d+'.'};return 'How many *more* chose *'+SPORTS[i]+'* in Class A than in Class B?';}
@@ -378,7 +378,7 @@ P.lesson({id:'median',title:'Mean, median and mode',strand:'Data',codes:['D1.5',
   return {info:()=>st.v.join(', '),
     controls:()=>{const c=[{t:'Sort',fn:sortIt},{t:'Even out',fn:evenOut},{t:'Start over',fn:()=>{st.v=st.orig.slice();draw();}}];if(mode==='play'&&st.ask)return choices(game,st.ask.opts,st.ask.ans,st.ask.ok).concat(c);
       return mode==='learn'?c.concat([{t:'New data',go:true,fn:()=>{st.v=newData();st.orig=st.v.slice();draw();}}]):c;},
-    demo(n){st.v=[5,2,6,3,6,4,9];st.orig=st.v.slice();draw();if(n==='median')A.seq([[900,sortIt],[1200,()=>A.say('The middle tower is 5: the median. 6 appears twice: the mode.')]]);if(n==='mean')A.seq([[700,evenOut]]);},
+    demo(n){if(n==='show'){st.v=[5,2,6,3,6,4,9];st.orig=st.v.slice();draw();return;}if(n==='sortnow'){sortIt();return;}st.v=[5,2,6,3,6,4,9];st.orig=st.v.slice();draw();if(n==='median')A.seq([[900,sortIt],[1200,()=>A.say('The middle tower is 5: the median. 6 appears twice: the mode.')]]);if(n==='mean')A.seq([[700,evenOut]]);},
     task(r){st.ask=null;st.want=null;st.v=newData();st.orig=st.v.slice();
       if(r===0||r===3){st.want=i=>{const s=st.v.slice().sort((a,b)=>a-b);return st.v.every((x,j)=>x===s[j])&&i===Math.floor(st.v.length/2);};st.wantOk='Yes! That is the median.';st.wantHint='Sort first, then tap the middle tower.';draw();return 'Find the *median*. Sort the towers, then tap the middle one.';}
       if(r===1){const md=modes(st.v);if(md.length!==1){st.v[0]=st.v[1];st.orig=st.v.slice();}const m=modes(st.v)[0];st.want=i=>st.v[i]===m;st.wantOk='Yes! The mode is '+m+'.';st.wantHint='Look for the height that appears most often.';draw();return 'Find the *mode*. Tap a tower with the value that appears *most often*.';}
@@ -432,7 +432,7 @@ P.lesson({id:'probline',title:'The probability line',strand:'Data',codes:['D2.1'
   fillBowl();
   return {info:()=>'How likely is '+st.col+'?  ('+st.bag.filter(c=>c===st.col).length+' of '+st.bag.length+')',
     controls:()=>[{t:'Draw a marble',fn:draw1},{t:'Clear tally',fn:()=>{st.tally={};A.redraw();}}].concat(mode==='learn'?Object.keys(MCOL).map(c=>({t:c,on:st.col===c,fn:()=>{st.col=c;fillBowl();}})):[]),
-    demo(n){st.bag=['red','red','red','red','blue','blue','green','yellow'];st.col='red';st.tally={};fillBowl();if(n==='place')A.seq([[900,()=>choose(2)]]);if(n==='draw'){const l=[];for(let i=0;i<8;i++)l.push([500,draw1]);A.seq(l);}},
+    demo(n){if(n==='show'){st.bag=['red','red','red','red','blue','blue','green','yellow'];st.col='red';st.tally={};fillBowl();return;}if(n==='ch2'){choose(2);return;}st.bag=['red','red','red','red','blue','blue','green','yellow'];st.col='red';st.tally={};fillBowl();if(n==='place')A.seq([[900,()=>choose(2)]]);if(n==='draw'){const l=[];for(let i=0;i<8;i++)l.push([500,draw1]);A.seq(l);}},
     task(r){const kinds=Object.keys(MCOL);const c=pick(kinds),o=kinds.filter(k=>k!==c);let bag;
       if(r===0)bag=Array(8).fill(c);else if(r===1)bag=[c].concat(Array.from({length:7},()=>pick(o)));else if(r===2)bag=Array(4).fill(c).concat(Array.from({length:4},()=>pick(o)));
       else if(r===3)bag=Array.from({length:8},()=>pick(o));else bag=Array(6).fill(c).concat([pick(o),pick(o)]);

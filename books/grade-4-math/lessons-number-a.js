@@ -76,7 +76,7 @@ P.lesson({id:'thousands',title:'Place value to 10 000',strand:'Number',codes:['B
   return {info:()=>fmt(pvVal(st.c))+' = '+pvExp(pvVal(st.c)),
     controls:()=>[{t:'+1000',big:true,fn:()=>add('th')},{t:'+100',big:true,fn:()=>add('h')},{t:'+10',big:true,fn:()=>add('t')},{t:'+1',big:true,fn:()=>add('o')},
       {t:'Regroup 10 → 1',go:true,fn:regroup,dis:!['o','t','h'].some(k=>st.c[k]>=10)},{t:'Clear',fn:()=>set(0,0,0,0)}],
-    demo(n){if(n==='build'){set(0,0,0,0);A.seq([[600,()=>{for(let i=0;i<3;i++)add('th');A.say('3 thousands');}],[1300,()=>{for(let i=0;i<4;i++)add('h');A.say('4 hundreds');}],[1300,()=>A.say('0 tens: the zero holds the place')],[1300,()=>{for(let i=0;i<6;i++)add('o');A.say('6 ones. That makes 3406!');}]]);}
+    demo(n){if(n==='show'){set(3,4,0,6);return;}if(n==='build'){set(0,0,0,0);A.seq([[600,()=>{for(let i=0;i<3;i++)add('th');A.say('3 thousands');}],[1300,()=>{for(let i=0;i<4;i++)add('h');A.say('4 hundreds');}],[1300,()=>A.say('0 tens: the zero holds the place')],[1300,()=>{for(let i=0;i<6;i++)add('o');A.say('6 ones. That makes 3406!');}]]);}
       if(n==='regroup'){set(1,9,2,0);A.seq([[1000,()=>add('h')],[1200,regroup],[1800,()=>A.say('9 hundreds + 1 hundred = 10 hundreds = 1 thousand. Now it is 2020.')]]);}},
     task(r){st.c={th:0,h:0,t:0,o:0};render(false);let n,txt;
       if(r===0){n=rnd(1,9)*1000+rnd(1,9)*100+rnd(1,9)*10+rnd(1,9);txt='Build the number *'+fmt(n)+'*.';}
@@ -139,7 +139,7 @@ P.lesson({id:'round4',title:'Rounding to 10, 100 and 1000',strand:'Number',codes
   return {info:()=>'Round '+fmt(st.n)+' to the nearest '+st.base,
     controls:()=>{const [lo,hi]=lohi();const c=[{t:'Round down to '+fmt(lo),big:true,fn:()=>choose(false)},{t:'Round up to '+fmt(hi),big:true,fn:()=>choose(true)}];
       if(mode==='learn')return [10,100,1000].map(b=>({t:'nearest '+b,on:st.base===b,fn:()=>{st.base=b;fresh();}})).concat(c,[{t:'New number',go:true,fn:fresh}]);return c;},
-    demo(n){if(n==='roll'){st.base=100;st.n=3482;st.picked=null;place();A.seq([[900,()=>roll(()=>A.say('3482 rounds up to 3500.'))]]);}
+    demo(n){if(n==='r3482'){st.base=100;st.n=3482;st.picked=null;place();A.redraw();return;}if(n==='rollnow'){roll();return;}if(n==='roll'){st.base=100;st.n=3482;st.picked=null;place();A.seq([[900,()=>roll(()=>A.say('3482 rounds up to 3500.'))]]);}
       if(n==='half'){st.base=1000;st.n=6500;st.picked=null;place();A.redraw();A.seq([[1100,()=>roll(()=>A.say('Halfway rounds up: 6500 rounds to 7000.'))]]);}},
     task(r){st.base=[10,100,1000,100,1000][r];const lo=st.base===1000?rnd(1,9)*1000:st.base===100?rnd(10,98)*100:rnd(100,998)*10;
       st.n=r===3?lo+50:st.base===10?lo+rnd(1,9):lo+rnd(1,st.base-1);if(st.n%st.base===0)st.n+=1;st.picked=null;place();
@@ -190,7 +190,7 @@ P.lesson({id:'fractions4',title:'Fractions from halves to tenths',strand:'Number
   rebuild();
   return {info:()=>st.n+'/'+st.d+'  (tap a part to shade)',
     controls:()=>[2,3,4,5,6,8,10].map(d=>({t:'/'+d,on:st.d===d,fn:()=>setD(d)})).concat([{t:'−1',big:true,fn:()=>setN(st.n-1)},{t:'+1 part',big:true,go:true,fn:()=>setN(st.n+1)}]),
-    demo(n){if(n==='fifths'){st.n=0;setD(5);A.seq([[700,()=>setN(1)],[600,()=>setN(2)],[600,()=>setN(3)],[800,()=>A.say('3 out of 5 equal parts: 3/5.')]]);}
+    demo(n){if(n==='d5'){st.n=0;setD(5);return;}if(/^n\d$/.test(n)){setN(+n[1]);return;}if(n==='fifths'){st.n=0;setD(5);A.seq([[700,()=>setN(1)],[600,()=>setN(2)],[600,()=>setN(3)],[800,()=>A.say('3 out of 5 equal parts: 3/5.')]]);}
       if(n==='count'){st.n=0;setD(4);const l=[];for(let i=1;i<=6;i++)l.push([700,()=>{setN(i);A.say(i===4?'4/4 = 1 whole':i>4?i+'/4 = 1 and '+(i-4)+'/4':i+'/4');}]);A.seq(l);}},
     task(r){const T5=[[3,5,true],[7,10,false],[7,4,true],[12,6,true],null];let t=T5[r];if(!t){const d=pick([3,6,8]);t=[rnd(1,d-1),d,false];}
       st.target=[t[0],t[1]];st.n=0;if(t[2]){st.d=t[1];}else st.d=2;rebuild();A.redraw();
@@ -240,7 +240,7 @@ P.lesson({id:'fairshare',title:'Comparing fair shares',strand:'Number',codes:['B
     info:()=>'Left: 1/'+st.a+'   ·   Right: 1/'+st.b,
     controls:()=>mode==='play'?[{t:'Left table',big:true,fn:()=>pickT(0)},{t:'Right table',big:true,fn:()=>pickT(1)}]:
       [{t:'Left −',fn:()=>{st.a=cyc(st.a,-1);both();}},{t:'Left +',fn:()=>{st.a=cyc(st.a,1);both();}},{t:'Right −',fn:()=>{st.b=cyc(st.b,-1);both();}},{t:'Right +',fn:()=>{st.b=cyc(st.b,1);both();}}],
-    demo(){st.a=2;st.b=2;both();A.seq([[700,()=>{st.a=4;both();A.say('4 people: each gets 1/4')}],[1500,()=>{st.b=6;both();A.say('6 people: each gets 1/6')}],[1700,()=>A.say('1/4 > 1/6: fewer people, bigger share.')]]);},
+    demo(n){if(n==='show46'){st.a=4;st.b=6;both();return;}st.a=2;st.b=2;both();A.seq([[700,()=>{st.a=4;both();A.say('4 people: each gets 1/4')}],[1500,()=>{st.b=6;both();A.say('6 people: each gets 1/6')}],[1700,()=>A.say('1/4 > 1/6: fewer people, bigger share.')]]);},
     task(r){let a=pick(SHR),b=pick(SHR.filter(x=>x!==a));st.a=a;st.b=b;both();
       if(r===3){st.ask={ans:a>b?0:1,ok:'Yes! 1/'+Math.max(a,b)+' is the smaller share.',why:'more people means smaller shares.'};return 'Tap the table where each person gets the *smaller* share.';}
       if(r===4){const t=a;st.ask={ans:0,ok:'Yes! That table shares by '+t+', so each gets 1/'+t+'.',why:'count the people at each table.'};return 'Tap the table where each person gets *1/'+t+'*.';}
@@ -294,7 +294,7 @@ P.lesson({id:'decimals',title:'Decimal tenths',strand:'Number',codes:['B1.7','B1
   return {info:()=>(st.w+st.t/10).toFixed(1)+' = '+st.w+' and '+st.t+'/10',
     controls:()=>{if(mode==='play'&&st.ask)return st.ask.opts.map(o=>({t:String(o),big:true,fn:()=>{if(o===st.ask.ans){roundIt();game.solved(st.ask.ok);}else A.bad('Not quite. Which whole number is closer?');}}));
       return [{t:'+1 whole',big:true,fn:()=>change(1,0)},{t:'+0.1',big:true,go:true,fn:()=>change(0,1)},{t:'−0.1',fn:()=>change(0,-1)},{t:'Trade 10 tenths',fn:trade,dis:st.t<10},{t:'Round',fn:roundIt},{t:'Clear',fn:()=>{st.w=0;st.t=0;render();}}];},
-    demo(n){if(n==='build'){st.w=0;st.t=0;render();A.seq([[600,()=>{change(1,0);change(1,0);A.say('2 wholes');}],[1200,()=>{for(let i=0;i<7;i++)change(0,1);A.say('7 tenths: 2.7');}]]);}
+    demo(n){if(n==='show'){st.w=2;st.t=7;render();return;}if(n==='roundnow'){roundIt();return;}if(n==='build'){st.w=0;st.t=0;render();A.seq([[600,()=>{change(1,0);change(1,0);A.say('2 wholes');}],[1200,()=>{for(let i=0;i<7;i++)change(0,1);A.say('7 tenths: 2.7');}]]);}
       if(n==='round'){st.w=2;st.t=7;render();A.seq([[900,roundIt]]);}},
     task(r){st.ask=null;st.target=null;st.w=0;st.t=0;
       if(r===3){const w=rnd(1,4),t=pick([1,2,3,4,6,7,8,9]);st.w=w;st.t=t;render();const ans=t>=5?w+1:w;st.ask={ans,opts:[w,w+1],ok:(w+t/10).toFixed(1)+' rounds to '+ans+'.'};return 'Round *'+(w+t/10).toFixed(1)+'* to the nearest whole number.';}
@@ -347,7 +347,7 @@ P.lesson({id:'facts',title:'Multiplication facts',strand:'Number',codes:['B2.2',
   rebuild(false);
   return {info:()=>st.r+' × '+st.c+' = '+st.r*st.c+'  (drag the yellow corner)',
     controls:()=>[{t:'Rows −',fn:()=>set(st.r-1,st.c)},{t:'Rows +',go:true,fn:()=>set(st.r+1,st.c)},{t:'Cols −',fn:()=>set(st.r,st.c-1)},{t:'Cols +',go:true,fn:()=>set(st.r,st.c+1)},{t:'Turn ↻',fn:turn},{t:st.split?'Split: on':'Split at 5',on:st.split,fn:()=>{st.split=!st.split;rebuild(true);A.redraw();}}],
-    demo(n){if(n==='grow'){st.split=false;st.r=1;st.c=8;rebuild(false);const l=[];for(let r=2;r<=7;r++)l.push([500,()=>set(r,8)]);l.push([800,()=>A.say('7 rows of 8 = 56')]);A.seq(l);}
+    demo(n){if(n==='show'){st.split=false;set(7,8,true);return;}if(n==='splitnow'){st.split=true;rebuild(true);A.redraw();return;}if(n==='grow'){st.split=false;st.r=1;st.c=8;rebuild(false);const l=[];for(let r=2;r<=7;r++)l.push([500,()=>set(r,8)]);l.push([800,()=>A.say('7 rows of 8 = 56')]);A.seq(l);}
       if(n==='split'){st.r=7;st.c=8;st.split=false;rebuild(false);A.seq([[800,()=>{st.split=true;rebuild(true);A.redraw();}],[1400,()=>A.say('5 × 8 = 40 and 2 × 8 = 16. 40 + 16 = 56.')]]);}},
     task(r){st.split=false;st.r=1;st.c=1;rebuild(false);
       if(r===0){const a=rnd(6,9),b=rnd(6,9);st.want=(x,y)=>(x===a&&y===b)||(x===b&&y===a);return 'Show *'+a+' × '+b+'*. What is the product?';}
