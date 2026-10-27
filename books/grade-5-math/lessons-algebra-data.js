@@ -55,7 +55,7 @@ P.lesson({id:'patterns5',title:'Growing and shrinking patterns',strand:'Algebra'
     controls:()=>mode==='play'?[{t:'− cube',fn:()=>setU(st.user-1)},{t:'+ cube',go:true,big:true,fn:()=>setU(st.user+1)}]:
       [{t:'Start −',fn:()=>setRule(st.a-1,st.b)},{t:'Start +',fn:()=>setRule(st.a+1,st.b)},{t:'Change −',fn:()=>setRule(st.a,st.b-1)},{t:'Change +',fn:()=>setRule(st.a,st.b+1)},
        ...[[1,'cube = 1'],[.1,'0.1'],[.01,'0.01']].map(([s,t])=>({t,on:st.sc===s,fn:()=>{st.sc=s;draw();}}))],
-    demo(n){st.miss=-1;if(n==='shrink'){st.sc=1;st.a=15;st.b=-2;}else{st.sc=.01;st.a=3;st.b=2;}draw();A.say(n==='shrink'?'15, 13, 11, 9, 7, 5':'0.03, 0.05, 0.07, 0.09, 0.11, 0.13');},
+    demo(n){if(n==='show'){st.miss=-1;st.sc=1;st.a=15;st.b=-2;draw();return;}st.miss=-1;if(n==='shrink'){st.sc=1;st.a=15;st.b=-2;}else{st.sc=.01;st.a=3;st.b=2;}draw();A.say(n==='shrink'?'15, 13, 11, 9, 7, 5':'0.03, 0.05, 0.07, 0.09, 0.11, 0.13');},
     task(r){st.setup=true;st.sc=1;st.user=0;if(r===0){st.a=rnd(1,4);st.b=rnd(2,3);st.miss=5;}else if(r===1){st.b=-rnd(2,3);st.a=rnd(-5*st.b+2,18);st.miss=rnd(2,4);}
       else if(r===2){st.sc=.1;st.a=rnd(1,4);st.b=2;st.miss=5;}else if(r===3){st.sc=.01;st.a=rnd(2,5);st.b=rnd(2,3);st.miss=rnd(1,4);}else{st.b=-3;st.a=rnd(16,18);st.miss=5;}
       draw();st.setup=false;
@@ -102,7 +102,7 @@ P.lesson({id:'expr5',title:'Algebraic expressions',strand:'Algebra',codes:['C2.1
       const c=[{t:'n −',fn:()=>setN(st.n-1)},{t:'n +',go:true,big:true,fn:()=>setN(st.n+1)}];
       if(mode==='learn')c.push({t:'Bags −',fn:()=>{if(st.k>1){st.k--;draw();}}},{t:'Bags +',fn:()=>{if(st.k<5){st.k++;draw();}}},{t:'Extra −',fn:()=>{if(st.c>0){st.c--;draw();}}},{t:'Extra +',fn:()=>{if(st.c<9){st.c++;draw();}}},{t:'+ / −',fn:()=>{st.op=st.op==='+'?'−':'+';draw();}});
       return c;},
-    demo(n){st.ask=null;if(n==='eval'){setUp(3,2,'+',0);A.seq([[800,()=>setN(1)],[400,()=>setN(2)],[400,()=>setN(3)],[400,()=>setN(4)],[900,()=>A.say('3 × 4 + 2 = 14')]]);}
+    demo(n){if(n==='show'){st.ask=null;setUp(3,2,'+',4);return;}if(/^n\d+$/.test(n)){setN(+n.slice(1));return;}st.ask=null;if(n==='eval'){setUp(3,2,'+',0);A.seq([[800,()=>setN(1)],[400,()=>setN(2)],[400,()=>setN(3)],[400,()=>setN(4)],[900,()=>A.say('3 × 4 + 2 = 14')]]);}
       if(n==='vary'){setUp(3,2,'+',1);const l=[];for(let i=2;i<=6;i++)l.push([800,()=>{setN(i);A.say('n = '+i+': '+val(st));}]);A.seq(l);}},
     task(r){st.setup=true;st.ask=null;st.needN=null;let txt;
       if(r===0||r===3){const k=rnd(2,5),c=rnd(1,9),op=r===3?'−':'+',n=rnd(3,9);setUp(k,c,op,0);st.needN=n;const v=val({k,c,op,n});st.ask={ans:v,o:opts(v,[1,-1,k,-k,2*c,-c]),ok:'Yes! '+k+' × '+n+' '+op+' '+c+' = '+v+'.'};txt='Evaluate *'+ext(st)+'* when *n = '+n+'*. Set n first!';}
@@ -155,7 +155,7 @@ P.lesson({id:'equations5',title:'Solving equations to 100',strand:'Algebra',code
   fill();ang=tAng;place();
   return {tick(dt){ang+=(tAng-ang)*Math.min(1,dt*4);place();},info:()=>st.txt+'   (n = '+st.n+')',
     controls:()=>[{t:'−10',fn:()=>setN(st.n-10)},{t:'−1',big:true,fn:()=>setN(st.n-1)},{t:'+1',big:true,go:true,fn:()=>setN(st.n+1)},{t:'+10',fn:()=>setN(st.n+10)}].concat(mode==='learn'?[{t:'New puzzle',fn:()=>{const n=rnd(10,60),c=rnd(10,39);setUp(1,c,n+c,'n + '+c+' = '+(n+c));}}]:[]),
-    demo(n){if(n==='solve'){setUp(1,37,82,'n + 37 = 82');A.seq([[700,()=>setN(10)],[600,()=>setN(20)],[600,()=>setN(30)],[600,()=>setN(40)],[600,()=>setN(50)],[700,()=>setN(46)],[600,()=>setN(45)]]);}
+    demo(n){if(n==='show'){setUp(1,37,82,'n + 37 = 82');return;}if(/^n\d+$/.test(n)){setN(+n.slice(1));return;}if(n==='solve'){setUp(1,37,82,'n + 37 = 82');A.seq([[700,()=>setN(10)],[600,()=>setN(20)],[600,()=>setN(30)],[600,()=>setN(40)],[600,()=>setN(50)],[700,()=>setN(46)],[600,()=>setN(45)]]);}
       if(n==='bags'){setUp(4,0,92,'4n = 92');A.seq([[800,()=>setN(10)],[700,()=>setN(20)],[700,()=>setN(21)],[500,()=>setN(22)],[500,()=>setN(23)]]);}},
     task(r){st.setup=true;let hint='';if(r===0){const n=rnd(15,60),c=rnd(12,39);setUp(1,c,n+c,'n + '+c+' = '+(n+c));}
       else if(r===1){const k=rnd(25,70),c=rnd(11,29);setUp(1,0,k+c,'n − '+c+' = '+k);hint=' (Think: n = '+k+' + '+c+'.)';}
@@ -212,7 +212,7 @@ P.lesson({id:'inequal5',title:'Solving and graphing inequalities',strand:'Algebr
     controls:()=>[{t:'−5',fn:()=>setB(st.bound-5)},{t:'−1',fn:()=>setB(st.bound-1)},{t:'+1',fn:()=>setB(st.bound+1)},{t:'+5',fn:()=>setB(st.bound+5)},
       {t:'◀ smaller',on:st.dir==='L',fn:()=>{st.dir='L';draw();}},{t:'bigger ▶',on:st.dir==='R',fn:()=>{st.dir='R';draw();}},{t:st.incl?'Boundary: in ●':'Boundary: out ○',fn:()=>{st.incl=!st.incl;draw();}},{t:'Check',go:true,big:true,fn:check}]
       .concat(mode==='learn'?[{t:'New inequality',fn:fresh}]:[]),
-    demo(n){if(n==='solve'){setUp('+',7,'<',20);A.seq([[700,()=>setB(20)],[600,()=>setB(15)],[600,()=>setB(13)],[900,()=>{st.incl=false;draw();A.say('13 + 7 = 20 is not less than 20.');}],[1200,check]]);}
+    demo(n){if(n==='show'){setUp('+',7,'<',20);return;}if(n==='b13'){setB(13);return;}if(n==='excl'){st.incl=false;draw();return;}if(n==='solve'){setUp('+',7,'<',20);A.seq([[700,()=>setB(20)],[600,()=>setB(15)],[600,()=>setB(13)],[900,()=>{st.incl=false;draw();A.say('13 + 7 = 20 is not less than 20.');}],[1200,check]]);}
       if(n==='mult'){setUp('×',3,'>',24);A.seq([[700,()=>setB(10)],[600,()=>setB(8)],[800,()=>{st.dir='R';st.incl=false;draw();A.say('3 × 8 = 24 is not greater than 24.');}],[1300,check]]);}},
     task(r){st.setup=true;[()=>{const a=rnd(5,15);setUp('+',a,'<',rnd(a+8,48));},()=>{const a=rnd(4,12);setUp('−',a,'>',rnd(10,30));},()=>{const a=rnd(2,5);setUp('×',a,'<',a*rnd(4,9));},
       ()=>{const a=rnd(3,6);setUp('×',a,'>',a*rnd(3,7)+rnd(0,a-1));},()=>{const a=rnd(10,20);setUp('+',a,'>',rnd(a+5,45));}][r]();st.setup=false;
@@ -272,7 +272,7 @@ P.lesson({id:'coding5',title:'Coding with conditional statements',strand:'Algebr
     controls:()=>[...CONDS.map((c,i)=>({t:c.k==='gt'?'n > □':c.k==='lt'?'n < □':c.k==='even'?'even?':'multiple of □',on:st.ci===i,fn:()=>setCode(i,c.k==='mul'?(st.k>12?5:st.k):st.k)})),
       {t:'□ −5',fn:()=>setCode(st.ci,st.k-5)},{t:'□ −1',fn:()=>setCode(st.ci,st.k-1)},{t:'□ +1',fn:()=>setCode(st.ci,st.k+1)},{t:'□ +5',fn:()=>setCode(st.ci,st.k+5)},{t:'▶ Run',go:true,big:true,fn:run}]
       .concat(mode==='learn'?[{t:'New balls',fn:()=>{st.balls=Array.from({length:6},()=>rnd(1,50));lay();}}]:[]),
-    demo(n){st.busy=false;st.goal=null;st.balls=[7,24,15,31,20,42];if(n==='run'){setCode(0,20);A.seq([[700,run]]);}if(n==='alter'){setCode(2,20);A.seq([[700,run]]);}},
+    demo(n){if(n==='runnow'){run();return;}st.busy=false;st.goal=null;st.balls=[7,24,15,31,20,42];if(n==='run'){setCode(0,20);A.seq([[700,run]]);}if(n==='alter'){setCode(2,20);A.seq([[700,run]]);}},
     task(r){st.setup=true;st.busy=false;const G5=[{d:'numbers greater than '+(r===0?25:40),f:n=>n>(r===0?25:40),mk:()=>Array.from({length:6},(_,i)=>i%2?rnd(26+(r?15:0),55):rnd(5,25+(r?15:0)))},
       {d:'even numbers',f:n=>n%2===0},{d:'numbers less than 12',f:n=>n<12},{d:'multiples of 5',f:n=>n%5===0}];
       let gl;if(r===0){gl=G5[0];setCode(1,10);}else if(r===1){gl=G5[1];setCode(0,10);}else if(r===2){gl=G5[2];setCode(0,12);}else if(r===3){gl=G5[3];setCode(3,3);}else{gl={d:'numbers greater than 40',f:n=>n>40};setCode(1,40);}
@@ -323,7 +323,7 @@ P.lesson({id:'sampling5',title:'Samples and relative frequency',strand:'Data',co
   return {info:()=>st.samp.length?(st.kind==='random'?'Random':'Corner')+' sample of 20':'Population: 100 students',
     controls:()=>{const c=[{t:'Random sample',go:true,fn:()=>take('random')},{t:'Corner sample',fn:()=>take('corner')},{t:'Clear',fn:()=>{st.samp=[];st.kind=null;draw();}}];
       if(mode==='play'&&st.ask&&(!st.ask.needs||st.kind===st.ask.needs))return choices(st.setup?null:game,st.ask.o,st.ask.ans,st.ask.ok).concat(c);return c;},
-    demo(n){st.ask=null;if(n==='random')A.seq([[700,()=>take('random')],[1800,()=>A.say('The sample bars look a lot like the population bars.')]]);if(n==='corner')A.seq([[700,()=>take('corner')],[1800,()=>A.say('Mostly soccer: this sample is biased.')]]);},
+    demo(n){if(n==='rnd'){take('random');return;}if(n==='corner2'){take('corner');return;}st.ask=null;if(n==='random')A.seq([[700,()=>take('random')],[1800,()=>A.say('The sample bars look a lot like the population bars.')]]);if(n==='corner')A.seq([[700,()=>take('corner')],[1800,()=>A.say('Mostly soccer: this sample is biased.')]]);},
     task(r){st.setup=true;st.samp=[];st.kind=null;draw();let txt;
       if(r===0){st.ask={ans:'Random sample',o:shuffle(['Random sample','Corner sample']),ok:'Yes! A random sample gives everyone the same chance.'};txt='Take both samples. Which one is more *representative* of the school?';}
       else if(r===1||r===2){take('random');const c=counts(st.samp.map(i=>POP[i]));const i=rnd(0,3);const f=c[i];
@@ -432,7 +432,7 @@ P.lesson({id:'mean5',title:'Mean, median and mode',strand:'Data',codes:['D1.5'],
   return {info:()=>st.v.map(f).join(', '),
     controls:()=>{const c=[{t:'Sort',fn:sortIt},{t:'Even out',fn:evenOut},{t:'Start over',fn:()=>{st.v=st.orig.slice();draw();}}];if(mode==='play'&&st.ask)return choices(st.setup?null:game,st.ask.o,st.ask.ans,st.ask.ok,x=>typeof x==='number'?f(x):x).concat(c);
       return mode==='learn'?c.concat([{t:'New data',go:true,fn:()=>{st.sc=1;st.v=Array.from({length:rnd(5,7)},()=>rnd(1,10));st.orig=st.v.slice();draw();}}]):c;},
-    demo(n){st.sc=1;if(n==='median'){st.v=[7,3,9,5,2,7];st.orig=st.v.slice();draw();A.seq([[900,sortIt],[1300,()=>A.say('Two middles: 5 and 7. The median is 6.')]]);}
+    demo(n){if(n==='show'){st.sc=1;st.v=[7,3,9,5,2,7];st.orig=st.v.slice();draw();return;}if(n==='sortnow'){sortIt();return;}if(n==='even'){evenOut();return;}st.sc=1;if(n==='median'){st.v=[7,3,9,5,2,7];st.orig=st.v.slice();draw();A.seq([[900,sortIt],[1300,()=>A.say('Two middles: 5 and 7. The median is 6.')]]);}
       if(n==='mean'){st.v=[2,3,5,7,7,9];st.orig=st.v.slice();draw();A.seq([[700,evenOut]]);}},
     task(r){st.setup=true;st.ask=null;st.sc=1;let txt;
       if(r===0){st.v=Array.from({length:6},()=>rnd(1,10));const s=st.v.slice().sort((a,b)=>a-b),med=(s[2]+s[3])/2;st.ask={ans:med,o:opts(med,[.5,-.5,1,-1,2],0),ok:'Yes! Halfway between '+s[2]+' and '+s[3]+' is '+med+'.'};txt='Find the *median* of these 6 values.';}
@@ -496,7 +496,7 @@ P.lesson({id:'prob5',title:'Theoretical and experimental probability',strand:'Da
     controls:()=>{const c=[{t:'Spin',fn:()=>spin(1)},{t:'Spin 20×',go:true,fn:()=>spin(20)},{t:'Clear tally',fn:()=>{st.tally=[0,0,0,0];st.trials=0;drawTally();}}];
       if(mode==='play'&&st.ask&&(!st.ask.needT||st.trials>=st.ask.needT))return choices(st.setup?null:game,st.ask.o,typeof st.ask.ans==='function'?st.ask.ans():st.ask.ans,st.ask.ok).concat(c);
       return mode==='learn'?c.concat(SCOL.map(([n],i)=>({t:n,on:st.col===i,fn:()=>{st.col=i;A.redraw();}})),[{t:'New spinner',fn:()=>{st.sec=newSpinner(pick([6,8,10]));st.tally=[0,0,0,0];st.trials=0;drawDisc();}}]):c;},
-    demo(n){st.sec=[0,0,0,1,1,2,2,3];st.col=0;st.tally=[0,0,0,0];st.trials=0;drawDisc();if(n==='place')A.seq([[900,()=>tapLine(3)]]);if(n==='spin')A.seq([[600,()=>spin(20,()=>A.say('Red: '+st.tally[0]+' out of 20. Theory says about 7.5.'))]]);},
+    demo(n){if(n==='spin20'){spin(20);return;}st.sec=[0,0,0,1,1,2,2,3];st.col=0;st.tally=[0,0,0,0];st.trials=0;drawDisc();if(n==='place')A.seq([[900,()=>tapLine(3)]]);if(n==='spin')A.seq([[600,()=>spin(20,()=>A.say('Red: '+st.tally[0]+' out of 20. Theory says about 7.5.'))]]);},
     task(r){st.setup=true;st.ask=null;st.want=null;pin.visible=false;st.tally=[0,0,0,0];st.trials=0;const n=pick([6,8,10]);st.sec=newSpinner(n);st.col=rnd(0,3);while(!st.sec.includes(st.col))st.col=rnd(0,3);drawDisc();let txt;
       const k=st.sec.filter(c=>c===st.col).length;
       if(r===0||r===3){st.want='line';txt='Tap the probability line to show *P('+SCOL[st.col][0]+')*.';}

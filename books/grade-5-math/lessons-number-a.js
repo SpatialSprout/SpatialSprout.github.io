@@ -79,7 +79,7 @@ P.lesson({id:'pv5',title:'Place value to 100 000',strand:'Number',codes:['B1.1',
   return {info:()=>fmt(pvVal(st.c))+' = '+pvExp(pvVal(st.c)),
     controls:()=>[{t:'+10 000',big:true,fn:()=>add('tt')},{t:'+1000',big:true,fn:()=>add('th')},{t:'+100',big:true,fn:()=>add('h')},{t:'+10',big:true,fn:()=>add('t')},{t:'+1',big:true,fn:()=>add('o')},
       {t:'Regroup 10 → 1',go:true,fn:regroup,dis:!['o','t','h','th'].some(k=>st.c[k]>=10)},{t:'Clear',fn:()=>set(0,0,0,0,0)}],
-    demo(n){if(n==='build'){set(0,0,0,0,0);A.seq([[600,()=>{for(let i=0;i<5;i++)add('tt');A.say('5 ten thousands');}],[1300,()=>{add('th');add('th');A.say('2 thousands');}],[1200,()=>{for(let i=0;i<3;i++)add('h');A.say('3 hundreds');}],[1200,()=>A.say('0 tens: the zero holds the place')],[1200,()=>{for(let i=0;i<6;i++)add('o');A.say('6 ones. That makes 52 306!');}]]);}
+    demo(n){if(n==='show'){set(5,2,3,0,6);return;}if(n==='build'){set(0,0,0,0,0);A.seq([[600,()=>{for(let i=0;i<5;i++)add('tt');A.say('5 ten thousands');}],[1300,()=>{add('th');add('th');A.say('2 thousands');}],[1200,()=>{for(let i=0;i<3;i++)add('h');A.say('3 hundreds');}],[1200,()=>A.say('0 tens: the zero holds the place')],[1200,()=>{for(let i=0;i<6;i++)add('o');A.say('6 ones. That makes 52 306!');}]]);}
       if(n==='regroup'){set(3,9,4,0,0);A.seq([[1000,()=>add('th')],[1200,regroup],[1800,()=>A.say('10 thousands = 1 ten thousand. Now it is 40 400.')]]);}},
     task(r){st.setup=true;st.c={tt:0,th:0,h:0,t:0,o:0};render(false);let n,txt;
       if(r===0){n=rnd(1,9)*10000+rnd(1,9)*1000+rnd(1,9)*100+rnd(1,9)*10+rnd(1,9);txt='Build the number *'+fmt(n)+'*.';}
@@ -132,7 +132,7 @@ P.lesson({id:'equiv5',title:'Equivalent fractions to twelfths',strand:'Number',c
   return {info:()=>st.tn+'/'+st.td+(st.n*st.td===st.tn*st.d?' = ':' ≠ ')+st.n+'/'+st.d,
     controls:()=>DENS.map(d=>({t:'/'+d,on:st.d===d,fn:()=>setD(d)})).concat([{t:'−1',big:true,fn:()=>setN(st.n-1)},{t:'+1 part',big:true,go:true,fn:()=>setN(st.n+1)}],
       mode==='learn'?[{t:'New top bar',fn:()=>{const d=pick([2,3,4,6]);st.td=d;st.tn=rnd(1,2*d-1);draw();}}]:[]),
-    demo(n){if(n==='equiv'){st.tn=1;st.td=2;st.d=2;st.n=1;draw();A.seq([[900,()=>{setD(4);A.say('1/2 = 2/4');}],[1500,()=>{setD(6);A.say('1/2 = 3/6');}],[1500,()=>{setD(12);A.say('1/2 = 6/12');}]]);}
+    demo(n){if(n==='half'){st.tn=1;st.td=2;st.d=2;st.n=1;draw();return;}if(/^d\d+$/.test(n)){setD(+n.slice(1));return;}if(n==='equiv'){st.tn=1;st.td=2;st.d=2;st.n=1;draw();A.seq([[900,()=>{setD(4);A.say('1/2 = 2/4');}],[1500,()=>{setD(6);A.say('1/2 = 3/6');}],[1500,()=>{setD(12);A.say('1/2 = 6/12');}]]);}
       if(n==='mixed'){st.tn=7;st.td=4;st.d=4;st.n=0;draw();const l=[];for(let i=1;i<=7;i++)l.push([450,()=>setN(i)]);l.push([900,()=>A.say('7/4 = 1 whole and 3/4 = 1 3/4')],[1600,()=>{setD(8);A.say('and 14/8 too!');}]);A.seq(l);}},
     task(r){st.setup=true;const T5=[[[1,2,null],[1,3,null],[3,4,null]],[[2,3,12],[1,4,12],[5,6,12]],[[3,4,8],[2,5,10],[1,3,6]],[[5,4,8],[7,6,12],[5,3,6]],[[3,2,6],[7,4,8],[5,2,4]]][r];const t=pick(T5);
       st.tn=t[0];st.td=t[1];st.need={d:t[2]};st.d=2;st.n=0;draw();st.setup=false;
@@ -184,7 +184,7 @@ P.lesson({id:'order5',title:'Comparing and ordering fractions',strand:'Number',c
   draw();
   return {info:()=>st.mode==='great'?'Tap the greater fraction':'Tap the cards from least to greatest',
     controls:()=>mode==='learn'?[{t:'New set',go:true,fn:()=>{st.items=fresh(3,Math.random()<.5);st.placed=[];st.mode='asc';draw();}},{t:'Show me',fn:showMe},{t:'Start over',fn:()=>{st.placed=[];draw();}}]:[{t:'Start over',fn:()=>{if(st.mode!=='great'){st.placed=[];draw();}}}],
-    demo(n){if(n==='order'){st.items=[{n:3,d:4},{n:5,d:12},{n:3,d:2,t:'1 1/2'}];st.placed=[];st.mode='asc';draw();showMe();}
+    demo(n){if(n==='show'){st.items=[{n:3,d:4},{n:5,d:12},{n:3,d:2,t:'1 1/2'}];st.placed=[];st.mode='asc';draw();return;}if(n==='sm'){showMe();return;}if(n==='order'){st.items=[{n:3,d:4},{n:5,d:12},{n:3,d:2,t:'1 1/2'}];st.placed=[];st.mode='asc';draw();showMe();}
       if(n==='rules'){st.items=[{n:5,d:8},{n:3,d:8}];st.placed=[];st.mode='asc';draw();A.seq([[700,()=>tapCard(1)],[900,()=>tapCard(0)],[1500,()=>{st.items=[{n:2,d:3},{n:2,d:5}];st.placed=[];draw();}],[700,()=>tapCard(1)],[900,()=>tapCard(0)]]);}},
     task(r){st.setup=true;st.placed=[];if(r===3){st.mode='great';st.items=fresh(2,true);}else{st.mode='asc';st.items=r===1?(()=>{const n=pick([2,3,5]);return shuffle([3,4,6,8,10,12].filter(d=>d>n)).slice(0,3).map(d=>({n,d}));})():fresh(3,r>=2);}
       draw();st.setup=false;return r===3?'Tap the *greater* fraction.':r===1?'Same numerators! Tap from *least to greatest*.':r>=2?'Order these, with *improper fractions and mixed numbers*: least to greatest.':'Tap the cards from *least to greatest*.';}};
@@ -236,7 +236,7 @@ P.lesson({id:'hundredths',title:'Decimal hundredths',strand:'Number',codes:['B1.
   render();
   return {info:()=>((st.w*100+st.t*10+st.h)/100).toFixed(2),
     controls:()=>[{t:'+1',big:true,fn:()=>change(1,0,0)},{t:'+0.1',big:true,fn:()=>change(0,1,0)},{t:'+0.01',big:true,go:true,fn:()=>change(0,0,1)},{t:'Trade 10 → 1',fn:trade,dis:st.h<10&&st.t<10},{t:'Clear',fn:()=>{st.w=0;st.t=0;st.h=0;render();}}],
-    demo(n){if(n==='build'){st.w=0;st.t=0;st.h=0;render();A.seq([[600,()=>{change(1,0,0);A.say('1 whole');}],[1100,()=>{for(let i=0;i<4;i++)change(0,1,0);A.say('4 tenths');}],[1200,()=>{for(let i=0;i<7;i++)change(0,0,1);A.say('7 hundredths: 1.47');}]]);}
+    demo(n){if(n==='show'){st.w=1;st.t=4;st.h=7;render();return;}if(n==='build'){st.w=0;st.t=0;st.h=0;render();A.seq([[600,()=>{change(1,0,0);A.say('1 whole');}],[1100,()=>{for(let i=0;i<4;i++)change(0,1,0);A.say('4 tenths');}],[1200,()=>{for(let i=0;i<7;i++)change(0,0,1);A.say('7 hundredths: 1.47');}]]);}
       if(n==='compare'){st.w=0;st.t=6;st.h=5;render();A.seq([[600,()=>A.say('0.65')],[1600,()=>{st.t=7;st.h=0;render();A.say('0.7 = 0.70. It is further right, so 0.7 > 0.65.');}]]);}},
     task(r){st.setup=true;st.w=0;st.t=0;st.h=0;let txt,v;
       if(r===0){v=rnd(1,2)*100+rnd(1,9)*10+rnd(1,9);txt='Build *'+(v/100).toFixed(2)+'*.';}
@@ -295,7 +295,7 @@ P.lesson({id:'round5',title:'Rounding to the nearest tenth',strand:'Number',code
   place();
   return {info:()=>'Round '+(st.n/100).toFixed(2)+' to the nearest tenth',
     controls:()=>{const [lo,hi]=lohi();const c=[{t:'Round down to '+(lo/100).toFixed(1),big:true,fn:()=>choose(false)},{t:'Round up to '+(hi/100).toFixed(1),big:true,fn:()=>choose(true)}];return mode==='learn'?c.concat([{t:'New number',go:true,fn:fresh}]):c;},
-    demo(n){if(n==='roll'){st.n=347;st.picked=null;place();A.seq([[900,()=>roll(()=>A.say('3.47 rounds up to 3.5.'))]]);}
+    demo(n){if(n==='r347'){st.n=347;st.picked=null;place();A.redraw();return;}if(n==='rollnow'){roll();return;}if(n==='roll'){st.n=347;st.picked=null;place();A.seq([[900,()=>roll(()=>A.say('3.47 rounds up to 3.5.'))]]);}
       if(n==='half'){st.n=625;st.picked=null;place();A.redraw();A.seq([[1100,()=>roll(()=>A.say('Halfway rounds up: 6.25 rounds to 6.3.'))]]);}},
     task(r){st.n=r===3?rnd(10,99)*10+5:rnd(10,199)*10+pick([1,2,3,4,6,7,8,9]);st.picked=null;place();const v=(st.n/100).toFixed(2);
       return r===1?'A runner took *'+v+' s*. Round the time to the nearest *tenth*.':r===4?'A bottle holds *'+v+' L*. About how many litres, to the nearest *tenth*?':'Round *'+v+'* to the nearest *tenth*.';}};}
@@ -339,7 +339,7 @@ P.lesson({id:'percent5',title:'Fractions, decimals and percents',strand:'Number'
   draw(false);
   return {info:()=>st.n+'% shaded',
     controls:()=>[{t:'−10',fn:()=>setN(st.n-10)},{t:'−1',fn:()=>setN(st.n-1)},{t:'+1',big:true,fn:()=>setN(st.n+1)},{t:'+10',big:true,go:true,fn:()=>setN(st.n+10)},{t:'Clear',fn:()=>setN(0)}],
-    demo(n){if(n==='quarter'){st.n=0;draw(false);A.seq([[600,()=>setN(10)],[500,()=>setN(20)],[500,()=>setN(25)],[900,()=>A.say('25 out of 100 = 0.25 = 25% = 1/4')]]);}
+    demo(n){if(n==='clear'){st.n=0;draw(false);return;}if(/^n\d+$/.test(n)){setN(+n.slice(1));return;}if(n==='quarter'){st.n=0;draw(false);A.seq([[600,()=>setN(10)],[500,()=>setN(20)],[500,()=>setN(25)],[900,()=>A.say('25 out of 100 = 0.25 = 25% = 1/4')]]);}
       if(n==='tenths'){st.n=0;draw(false);A.seq([[600,()=>setN(10)],[600,()=>setN(20)],[600,()=>setN(30)],[900,()=>A.say('3/10 = 0.3 = 30%')]]);}},
     task(r){st.setup=true;st.n=0;draw(false);let txt;const f=pick(PCT);const v=f[0]*100/f[1];
       if(r===0){st.target=v;txt='Shade *'+f[0]+'/'+f[1]+'* of the grid.';}
@@ -392,7 +392,7 @@ P.lesson({id:'facts12',title:'Facts to 12 × 12 and properties',strand:'Number',
   rebuild(false);
   return {info:()=>st.r+' × '+st.c+' = '+st.r*st.c+'  (drag the yellow corner)',
     controls:()=>[{t:'Rows −',fn:()=>set(st.r-1,st.c)},{t:'Rows +',go:true,fn:()=>set(st.r+1,st.c)},{t:'Cols −',fn:()=>set(st.r,st.c-1)},{t:'Cols +',go:true,fn:()=>set(st.r,st.c+1)},{t:'Turn ↻',fn:turn},{t:st.split?'Split: on':'Split',on:st.split,fn:()=>{st.split=!st.split;rebuild(true);A.redraw();}}],
-    demo(n){if(n==='grow'){st.split=false;st.r=1;st.c=7;rebuild(false);const l=[];for(let r=2;r<=12;r++)l.push([350,()=>set(r,7)]);l.push([800,()=>A.say('12 rows of 7 = 84')]);A.seq(l);}
+    demo(n){if(n==='show'){st.split=false;set(12,7,true);return;}if(n==='splitnow'){st.split=true;rebuild(true);A.redraw();return;}if(n==='grow'){st.split=false;st.r=1;st.c=7;rebuild(false);const l=[];for(let r=2;r<=12;r++)l.push([350,()=>set(r,7)]);l.push([800,()=>A.say('12 rows of 7 = 84')]);A.seq(l);}
       if(n==='split'){st.r=12;st.c=7;st.split=false;rebuild(false);A.seq([[800,()=>{st.split=true;rebuild(true);A.redraw();}],[1400,()=>A.say('10 × 7 = 70 and 2 × 7 = 14. 70 + 14 = 84.')]]);}},
     task(r){st.setup=true;st.split=false;st.r=1;st.c=1;rebuild(false);let txt;
       if(r===0){const a=rnd(11,12),b=rnd(6,12);st.want=(x,y)=>(x===a&&y===b)||(x===b&&y===a);txt='Show *'+a+' × '+b+'*. What is the product?';}

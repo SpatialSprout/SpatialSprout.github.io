@@ -56,7 +56,7 @@ P.lesson({id:'times01',title:'Multiplying by 0.1 and 0.01',strand:'Number',codes
     controls:()=>{if(mode==='play'&&st.ask)return choices(game,st.ask.o,st.ask.ans,st.ask.ok);
       return [{t:'× 0.1',big:true,go:true,fn:()=>apply(1,10,'× 0.1',1)},{t:'× 0.01',big:true,go:true,fn:()=>apply(1,100,'× 0.01',2)},{t:'× 10',fn:()=>apply(10,1,'× 10',-1)},{t:'× 100',fn:()=>apply(100,1,'× 100',-2)},
         {t:'Start over',fn:()=>{st.v=st.start;render();}}].concat(mode==='learn'?[{t:'New number',fn:()=>{st.v=st.start=rnd(2,99)*100;render();}}]:[]);},
-    demo(n){st.ask=null;if(n==='x01'){st.v=st.start=3400;render();A.seq([[900,()=>apply(1,10,'34 × 0.1',1)]]);}if(n==='x001'){st.v=st.start=52000;render();A.seq([[900,()=>apply(1,100,'520 × 0.01',2)]]);}},
+    demo(n){if(n==='v3400'){st.v=st.start=3400;render();return;}if(n==='ax01'){apply(1,10,'34 × 0.1',1);return;}st.ask=null;if(n==='x01'){st.v=st.start=3400;render();A.seq([[900,()=>apply(1,10,'34 × 0.1',1)]]);}if(n==='x001'){st.v=st.start=52000;render();A.seq([[900,()=>apply(1,100,'520 × 0.01',2)]]);}},
     task(r){st.setup=true;st.ask=null;let a,t,txt;
       if(r===0){a=rnd(12,98);t=a*10;txt='What is *'+a+' × 0.1*? Make it.';}
       else if(r===1){a=rnd(2,9)*10*rnd(1,9);a=Math.min(a,980);t=a;txt='Make *'+fmt(a)+' × 0.01*.';}
@@ -125,7 +125,7 @@ P.lesson({id:'addsub5',title:'Adding and subtracting to 100 000',strand:'Number'
   return {info:()=>st.col<st.n?'Answer digit for the '+st.labels[st.col]+' column':'Solved!',
     controls:()=>{const c=[];if(st.col<st.n){const a=colAnswer();if(a.borrow)c.push({t:'Regroup',go:true,big:true,fn:doBorrow});else for(let d=0;d<=9;d++)c.push({t:String(d),big:true,fn:()=>answer(d)});}
       if(mode==='learn')c.push({t:'Show me',fn:showMe},{t:'New + problem',fn:()=>setup(rnd(12000,48000),rnd(11000,48000),'+',0)},{t:'New decimal −',fn:()=>{const a=rnd(2000,9800);setup(a,rnd(1100,a-300),'−',2);}});return c;},
-    demo(n){busy=false;if(n==='add')setup(46875,28349,'+',0);if(n==='sub')setup(8240,3675,'−',2);A.seq([[700,showMe]]);},
+    demo(n){if(n==='show'){setup(46875,28349,'+',0);return;}if(n==='showme'){showMe();return;}busy=false;if(n==='add')setup(46875,28349,'+',0);if(n==='sub')setup(8240,3675,'−',2);A.seq([[700,showMe]]);},
     task(r){busy=false;st.setup=true;if(r===0)setup(rnd(12000,48000),rnd(12000,48000),'+',0);else if(r===1){const a=rnd(50000,95000);setup(a,rnd(12000,a-8000),'−',0);}
       else if(r===2)setup(rnd(1200,4800),rnd(1200,4800),'+',2);else if(r===3){const a=rnd(4000,9800);setup(a,rnd(1200,a-500),'−',2);}else setup(rnd(1500,6999),rnd(1500,2999),'+',2);
       st.setup=false;return r===4?'You buy items for *$'+f(st.a)+'* and *$'+f(st.b)+'*. Find the total.':'Solve *'+f(st.a)+(st.op==='+'?' + ':' − ')+f(st.b)+'*, one column at a time.';}};}
@@ -176,7 +176,7 @@ P.lesson({id:'fracadd5',title:'Adding and subtracting fractions',strand:'Number'
       else{const o=shuffle([res+'/'+st.d,st.op==='+'?res+'/'+2*st.d:(st.a+st.b)+'/'+st.d,(res+1)+'/'+st.d].filter((x,i,a)=>a.indexOf(x)===i));
         o.forEach(x=>c.push({t:x,big:true,fn:()=>{if(x===res+'/'+st.d){st.shown=true;A.redraw();const msg=st.a+'/'+st.d+(st.op==='+'?' + ':' − ')+st.b+'/'+st.d+' = '+res+'/'+st.d+(res>st.d?' = '+mixed(res,st.d):'');if(mode==='play'&&!st.setup)game.solved(msg+'!');else A.good(msg);}else A.bad(/\/\d+$/.test(x)&&+x.split('/')[1]!==st.d?'Keep the denominator: the pieces are still '+st.d+'ths.':'Count the pieces again.');}}));}
       if(mode==='learn')c.push({t:'New problem',fn:fresh});return c;},
-    demo(n){if(n==='add'){setUp(8,3,2,'+');A.seq([[900,addOne],[800,addOne],[900,()=>{st.shown=true;A.redraw();A.say('3/8 + 2/8 = 5/8');}]]);}
+    demo(n){if(n==='show'){setUp(8,3,2,'+');return;}if(n==='add1'){addOne();return;}if(n==='add'){setUp(8,3,2,'+');A.seq([[900,addOne],[800,addOne],[900,()=>{st.shown=true;A.redraw();A.say('3/8 + 2/8 = 5/8');}]]);}
       if(n==='sub'){setUp(6,7,4,'−');A.seq([[900,()=>takeAway(6)],[600,()=>takeAway(5)],[600,()=>takeAway(4)],[600,()=>takeAway(3)],[900,()=>{st.shown=true;A.redraw();A.say('7/6 − 4/6 = 3/6');}]]);}},
     task(r){st.setup=true;let d,a,b,op,ctx;
       if(r===0){d=pick([5,6,8]);a=rnd(1,d-2);b=rnd(1,d-a-1);op='+';ctx='Add *'+a+'/'+d+' + '+b+'/'+d+'*.';}
@@ -231,7 +231,7 @@ P.lesson({id:'mult5',title:'Multiplying two-digit numbers',strand:'Number',codes
     controls:()=>{const ans=st.a*st.b;const ready=st.shown.every(x=>x);
       if(ready)return choices(mode==='play'&&!st.setup?game:null,opts(ans,[10,-10,100,-100,20,-20]),ans,st.a+' × '+st.b+' = '+ans+'!').concat(mode==='learn'?[{t:'New problem',fn:()=>setUp(rnd(12,49),rnd(12,79))}]:[]);
       return [{t:'Reveal all',fn:()=>[0,1,2,3].forEach(reveal)}].concat(mode==='learn'?[{t:'New problem',go:true,fn:()=>setUp(rnd(12,49),rnd(12,79))}]:[]);},
-    demo(n){setUp(23,47);if(n==='parts')A.seq([[800,()=>reveal(0)],[1100,()=>reveal(1)],[1100,()=>reveal(2)],[1100,()=>reveal(3)],[1200,()=>A.say('800 + 140 + 120 + 21 = 1081')]]);
+    demo(n){if(n==='show'){setUp(23,47);return;}if(/^r\d$/.test(n)){reveal(+n[1]);return;}setUp(23,47);if(n==='parts')A.seq([[800,()=>reveal(0)],[1100,()=>reveal(1)],[1100,()=>reveal(2)],[1100,()=>reveal(3)],[1200,()=>A.say('800 + 140 + 120 + 21 = 1081')]]);
       if(n==='rows')A.seq([[800,()=>{reveal(2);reveal(3);A.say('3 × 47 = 120 + 21 = 141');}],[1800,()=>{reveal(0);reveal(1);A.say('20 × 47 = 800 + 140 = 940');}],[1800,()=>A.say('141 + 940 = 1081')]]);},
     task(r){st.setup=true;const a=r===0?rnd(11,19):rnd(21,49),b=r<2?rnd(21,59):rnd(31,89);setUp(a,b===a?b+1:b);st.setup=false;
       return r===4?'A theatre has *'+st.a+' rows* of *'+st.b+' seats*. How many seats? Tap each block.':'Find *'+st.a+' × '+st.b+'*. Tap each block, then choose the product.';}};}
@@ -281,7 +281,7 @@ P.lesson({id:'divide5',title:'Dividing by two-digit numbers',strand:'Number',cod
     controls:()=>{const q=used(),r=left();if(done){const ans=q+(r?' R'+r:'');const o=shuffle([ans,(q+1)+(r?' R'+r:''),q+(r?' R'+(r+1<st.d?r+1:Math.max(0,r-1)):' R1')].filter((x,i,a)=>a.indexOf(x)===i));
         return o.map(x=>({t:x,big:true,fn:()=>{if(x===ans){const m=st.n+' ÷ '+st.d+' = '+ans+'. Check: '+st.d+' × '+q+(r?' + '+r:'')+' = '+st.n+'.';if(mode==='play'&&!st.setup)game.solved(m);else A.good(m);}else A.bad('Count the groups in your chunks, and what is left.');}})).concat(mode==='learn'?[{t:'New problem',fn:fresh}]:[]);}
       return [{t:'10 groups',big:true,go:true,fn:()=>add(10)},{t:'5 groups',big:true,fn:()=>add(5)},{t:'1 group',big:true,fn:()=>add(1)},{t:'Undo',fn:()=>{st.chunks.pop();done=false;draw();}}].concat(mode==='learn'?[{t:'New problem',fn:fresh}]:[]);},
-    demo(n){if(n==='build'){setUp(384,16);A.seq([[900,()=>add(10)],[1300,()=>add(10)],[1300,()=>add(1)],[900,()=>add(1)],[900,()=>add(1)],[900,()=>add(1)],[1000,()=>A.say('10 + 10 + 4 = 24. 384 ÷ 16 = 24')]]);}
+    demo(n){if(n==='show'){setUp(384,16);return;}if(n==='a10'){add(10);return;}if(n==='a1'){add(1);return;}if(n==='a4'){add(1);add(1);add(1);add(1);return;}if(n==='build'){setUp(384,16);A.seq([[900,()=>add(10)],[1300,()=>add(10)],[1300,()=>add(1)],[900,()=>add(1)],[900,()=>add(1)],[900,()=>add(1)],[1000,()=>A.say('10 + 10 + 4 = 24. 384 ÷ 16 = 24')]]);}
       if(n==='rem'){setUp(250,12);A.seq([[900,()=>add(10)],[1300,()=>add(10)],[1300,()=>A.say('10 left, less than 12: 250 ÷ 12 = 20 R10')]]);}},
     task(r){st.setup=true;const d=[12,15,21,24,32][r]+rnd(0,3),q=rnd(11,29),rem=r%2?rnd(1,d-1):0;let n=d*q+rem;if(n>999)n=999;setUp(n,d);st.setup=false;
       return r===4?'*'+n+'* books go into boxes of *'+d+'*. How many full boxes, and how many books left?':'Divide *'+n+' ÷ '+d+'*. Add chunks, then choose the answer.';}};
@@ -336,7 +336,7 @@ P.lesson({id:'unitfrac5',title:'Multiplying and dividing by unit fractions',stra
       else{const ans=st.op==='×'?st.w+'/'+st.d:String(st.w*st.d);const o=shuffle(st.op==='×'?[ans,st.w+'/'+(st.d*st.w),String(st.w*st.d)]:[ans,st.w+'/'+st.d,String(st.w+st.d)]).filter((x,i,a)=>a.indexOf(x)===i);
         o.forEach(x=>c.push({t:x,big:true,fn:()=>{if(x===ans){st.shown=true;A.redraw();const m=st.w+' '+st.op+' 1/'+st.d+' = '+ans;if(mode==='play'&&!st.setup)game.solved(m+'!');else A.good(m);}else A.bad(st.op==='×'?'Count the pieces: each one is 1/'+st.d+'.':'Count all the pieces in all the wholes.');}}));}
       if(mode==='learn')c.push({t:'New ×',fn:()=>setUp('×',rnd(2,7),pick([3,4,5,6,8,10]))},{t:'New ÷',fn:()=>setUp('÷',rnd(2,5),pick([2,3,4,5]))});return c;},
-    demo(n){if(n==='mul'){setUp('×',3,4);A.seq([[800,addOne],[700,addOne],[700,addOne],[900,()=>{st.shown=true;A.redraw();A.say('3 × 1/4 = 3/4');}]]);}
+    demo(n){if(n==='m0'){setUp('×',3,4);return;}if(n==='add1'){addOne();return;}if(n==='d0'){setUp('÷',3,4);return;}if(n==='cut4'){cut(4);return;}if(n==='mul'){setUp('×',3,4);A.seq([[800,addOne],[700,addOne],[700,addOne],[900,()=>{st.shown=true;A.redraw();A.say('3 × 1/4 = 3/4');}]]);}
       if(n==='div'){setUp('÷',3,4);A.seq([[900,()=>cut(4)],[1500,()=>{st.shown=true;A.redraw();A.say('12 fourths: 3 ÷ 1/4 = 12');}]]);}},
     task(r){st.setup=true;if(r===0)setUp('×',rnd(2,5),pick([6,8,10]));else if(r===1)setUp('÷',rnd(2,4),pick([2,3,4]));else if(r===2)setUp('×',rnd(5,9),pick([3,4,5]));else if(r===3)setUp('÷',rnd(3,5),pick([2,5]));else setUp('÷',rnd(2,3),3);st.setup=false;
       return r===4?'How many *1/3-cup* scoops are in *'+st.w+' cups*? Cut, then count.':st.op==='×'?'Show *'+st.w+' × 1/'+st.d+'*.':'Find *'+st.w+' ÷ 1/'+st.d+'*. How many pieces fit?';}};}
@@ -382,7 +382,7 @@ P.lesson({id:'ratio5',title:'Equivalent ratios and rates',strand:'Number',codes:
   draw();
   return {info:()=>st.a*st.n+' : '+st.b*st.n,
     controls:()=>[{t:'− batch',fn:()=>setN(st.n-1)},{t:'+ batch',go:true,big:true,fn:()=>setN(st.n+1)}].concat(mode==='learn'?[{t:'New recipe',fn:()=>{st.kind='paint';st.a=rnd(1,4);st.b=rnd(1,4);if(st.a===st.b)st.b++;st.n=1;draw();}}]:[]),
-    demo(n){if(n==='grow'){st.kind='paint';st.a=2;st.b=3;st.n=1;draw();A.seq([[900,()=>setN(2)],[1000,()=>setN(3)],[1000,()=>setN(4)],[900,()=>A.say('2 : 3 = 4 : 6 = 6 : 9 = 8 : 12')]]);}
+    demo(n){if(n==='show'){st.kind='paint';st.a=2;st.b=3;st.n=1;draw();return;}if(/^n\d$/.test(n)){setN(+n[1]);return;}if(n==='grow'){st.kind='paint';st.a=2;st.b=3;st.n=1;draw();A.seq([[900,()=>setN(2)],[1000,()=>setN(3)],[1000,()=>setN(4)],[900,()=>A.say('2 : 3 = 4 : 6 = 6 : 9 = 8 : 12')]]);}
       if(n==='rate'){st.kind='muffin';st.a=3;st.b=2;st.n=1;draw();A.seq([[900,()=>setN(2)],[1000,()=>setN(3)],[900,()=>A.say('$3 for 2 = $6 for 4 = $9 for 6')]]);}},
     task(r){st.setup=true;st.n=1;let txt;
       if(r===3){st.kind='muffin';st.a=3;st.b=2;const k=rnd(3,6);st.target=n=>n===k;txt='Muffins cost *$3 for 2*. Show how many muffins *$'+3*k+'* buys.';}

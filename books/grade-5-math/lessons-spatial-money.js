@@ -293,7 +293,7 @@ P.lesson({id:'metric5',title:'Metric units and converting',strand:'Spatial Sense
     controls:()=>{if(mode==='play'&&st.ask&&(st.need==null||st.i===st.need))return choices(st.setup?null:game,st.ask.o,st.ask.ans,st.ask.ok);
       const c=[{t:'▲ bigger unit (÷10)',fn:()=>step(-1)},{t:'▼ smaller unit (×10)',go:true,big:true,fn:()=>step(1)}];
       return mode==='learn'?c.concat(Object.keys(MU).map(k=>({t:k,on:st.kind===k,fn:()=>{st.kind=k;drawStairs();}})),[{t:'New amount',fn:()=>{st.start=st.i=rnd(0,3);st.q=rnd(11,95)*Math.pow(10,6-st.i-1);drawStairs();}}]):c;},
-    demo(n){st.hide=false;st.ask=null;st.need=null;st.kind='length';if(n==='down'){st.q=3000000;st.i=st.start=0;drawStairs();A.seq([[800,()=>step(1)],[700,()=>step(1)],[700,()=>step(1)],[900,()=>A.say('3 km = 3000 m')]]);}
+    demo(n){if(n==='show'){st.hide=false;st.kind='length';st.q=3000000;st.i=st.start=0;drawStairs();return;}if(n==='st'){step(1);return;}st.hide=false;st.ask=null;st.need=null;st.kind='length';if(n==='down'){st.q=3000000;st.i=st.start=0;drawStairs();A.seq([[800,()=>step(1)],[700,()=>step(1)],[700,()=>step(1)],[900,()=>A.say('3 km = 3000 m')]]);}
       if(n==='decimal'){st.q=1750000;st.i=st.start=3;drawStairs();A.seq([[800,()=>step(1)],[700,()=>step(1)],[900,()=>A.say('1.75 m = 175 cm')]]);}},
     task(r){st.setup=true;st.ask=null;st.need=null;st.hide=true;let txt;const conv=(kind,from,to,val)=>{st.kind=kind;st.start=st.i=from;st.q=Math.round(val*Math.pow(10,6-from));st.need=to;drawStairs();
         const a=mfmt(st.q,to),U=MU[kind];const alt=[mfmt(st.q,to-1),mfmt(st.q,Math.min(6,to+1))];st.ask={ans:a,o:shuffle([a,...alt]).filter((x,i,arr)=>arr.indexOf(x)===i),ok:'Yes! '+mfmt(st.q,from)+' '+U[from]+' = '+a+' '+U[to]+'.'};
@@ -350,7 +350,7 @@ P.lesson({id:'protractor5',title:'Measuring angles with a protractor',strand:'Sp
   return {info:()=>st.a+'°',
     controls:()=>{if(mode==='play'&&st.ask)return choices(st.setup?null:game,st.ask.o,st.ask.ans,st.ask.ok,x=>typeof x==='number'?x+'°':String(x)).concat([{t:st.wedges?'Wedges: on':'Wedges',on:st.wedges,fn:()=>{st.wedges=!st.wedges;draw();}}]);
       return [{t:'−5°',fn:()=>setA(st.a-5)},{t:'+5°',go:true,fn:()=>setA(st.a+5)},{t:'45°',fn:()=>setA(45)},{t:'90°',fn:()=>setA(90)},{t:'135°',fn:()=>setA(135)},{t:st.wedges?'Wedges: on':'Wedges',on:st.wedges,fn:()=>{st.wedges=!st.wedges;draw();}}];},
-    demo(n){st.ask=null;st.want=null;if(n==='wedges'){st.wedges=true;st.a=5;draw();const l=[];[15,30,45,60,75,90].forEach(a=>l.push([450,()=>setA(a)]));l.push([700,()=>A.say('6 wedges × 15° = 90°')]);A.seq(l);}
+    demo(n){if(/^a\d+$/.test(n)){setA(+n.slice(1));return;}st.ask=null;st.want=null;if(n==='wedges'){st.wedges=true;st.a=5;draw();const l=[];[15,30,45,60,75,90].forEach(a=>l.push([450,()=>setA(a)]));l.push([700,()=>A.say('6 wedges × 15° = 90°')]);A.seq(l);}
       if(n==='build'){st.wedges=false;st.a=5;draw();const l=[];for(let a=20;a<=130;a+=15)l.push([280,()=>setA(Math.min(a,130))]);l.push([300,()=>setA(130)],[700,()=>A.say('130°: a little less than the 135° benchmark.')]);A.seq(l);}},
     task(r){st.setup=true;st.ask=null;st.want=null;st.wedges=false;
       if(r===0){st.a=30;st.want=pick([110,120,140,150]);}else if(r===1){st.a=170;st.want=pick([35,40,55,65]);}
@@ -413,7 +413,7 @@ P.lesson({id:'area5',title:'Area of parallelograms and triangles',strand:'Spatia
       if(st.kind==='rect')return [{t:'Longer',go:true,fn:()=>setR(st.w+1,st.rh)},{t:'Shorter',fn:()=>setR(st.w-1,st.rh)},{t:'Taller',go:true,fn:()=>setR(st.w,st.rh+1)},{t:'Lower',fn:()=>setR(st.w,st.rh-1)}].concat(mode==='learn'?[{t:'Parallelogram',fn:()=>setShape('para',6,4,2)},{t:'Triangle',fn:()=>setShape('tri',6,4,2)}]:[]);
       return [st.kind==='para'?{t:'Cut & slide',go:true,big:true,fn:cut}:{t:'Copy & turn',go:true,big:true,fn:turnCopy},{t:'Base −',fn:()=>{if(st.b>st.o+1)setShape(st.kind,st.b-1,st.h,st.o);}},{t:'Base +',fn:()=>{if(st.b+st.o<NX)setShape(st.kind,st.b+1,st.h,st.o);}},{t:'Height −',fn:()=>{if(st.h>1)setShape(st.kind,st.b,st.h-1,st.o);}},{t:'Height +',fn:()=>{if(st.h<NY)setShape(st.kind,st.b,st.h+1,st.o);}},{t:'Reset',fn:()=>setShape(st.kind,st.b,st.h,st.o)}]
         .concat(mode==='learn'?[{t:st.kind==='para'?'Triangle':'Parallelogram',fn:()=>setShape(st.kind==='para'?'tri':'para',st.b,st.h,st.o)},{t:'Rectangles',fn:()=>{st.kind='rect';draw();}}]:[]);},
-    demo(n){st.ask=null;st.want=null;if(n==='cut'){setShape('para',6,4,2);A.seq([[1000,cut]]);}if(n==='tri'){setShape('tri',6,4,2);A.seq([[1000,turnCopy]]);}},
+    demo(n){if(n==='cutnow'){cut();return;}st.ask=null;st.want=null;if(n==='cut'){setShape('para',6,4,2);A.seq([[1000,cut]]);}if(n==='tri'){setShape('tri',6,4,2);A.seq([[1000,turnCopy]]);}},
     task(r){st.setup=true;st.ask=null;st.want=null;let txt;
       if(r===0){const b=rnd(4,8),h=rnd(2,6),o=rnd(1,Math.min(3,NX-b));setShape('para',b,h,o);const a=b*h;st.ask={ans:a,o:shuffle([a,a/2,(b+o)*h]).filter((x,i,arr)=>arr.indexOf(x)===i),ok:'Yes! '+b+' × '+h+' = '+a+' cm².'};txt='Find the *area* of the parallelogram. (Cut & slide can help.)';}
       else if(r===1){let b=rnd(4,9),h=rnd(2,6);if(b*h%2)b++;const o=rnd(1,Math.max(1,b-1));setShape('tri',b,h,Math.min(o,NX-b));const a=b*h/2;st.ask={ans:a,o:shuffle([a,b*h,a+b]).filter((x,i,arr)=>arr.indexOf(x)===i),ok:'Yes! '+b+' × '+h+' ÷ 2 = '+a+' cm².'};txt='Find the *area* of the triangle.';}
@@ -466,7 +466,7 @@ P.lesson({id:'tax5',title:'Sales tax and where taxes go',strand:'Financial Liter
   fill();
   return {info:()=>'Cart: '+money(r2(st.cart.reduce((a,i)=>a+GOODS5[i].p,0)))+' before tax',
     controls:()=>{if(mode==='play'&&st.ask&&!st.need)return choices(st.setup?null:game,st.ask.o,st.ask.ans,st.ask.ok);return [{t:'Empty cart',fn:()=>{st.cart=[];fill();}}];},
-    demo(n){st.hide=false;st.ask=null;st.need=null;if(n==='cart'){st.cart=[];fill();A.seq([[700,()=>addC(0)],[900,()=>addC(3)],[900,()=>A.say('$3.49 + $12.50 = $15.99')]]);}if(n==='tax'){st.cart=[0,3];fill();A.say('HST: 13% of $15.99 ≈ $2.08. Total $18.07');}},
+    demo(n){if(n==='show'){st.cart=[0,3];fill();return;}st.hide=false;st.ask=null;st.need=null;if(n==='cart'){st.cart=[];fill();A.seq([[700,()=>addC(0)],[900,()=>addC(3)],[900,()=>A.say('$3.49 + $12.50 = $15.99')]]);}if(n==='tax'){st.cart=[0,3];fill();A.say('HST: 13% of $15.99 ≈ $2.08. Total $18.07');}},
     task(r){st.setup=true;st.ask=null;st.need=null;st.after=null;st.hide=true;st.cart=[];fill();let txt;
       if(r===0){const it=shuffle([0,1,2,3,4,5]).slice(0,2);st.need=it;st.after=()=>{const s=r2(it.reduce((a,i)=>a+GOODS5[i].p,0));st.ask={ans:money(s),o:shuffle([money(s),money(r2(s+1)),money(r2(s+.1))]),ok:'Yes! The subtotal is '+money(s)+'.'};};txt='Put the *'+it.map(i=>GOODS5[i].n.toLowerCase()).join('* and the *')+'* in the cart. Then choose the *subtotal*.';}
       else if(r===1){st.cart=shuffle([0,1,2,3,4,5]).slice(0,3);fill();const s=st.cart.reduce((a,i)=>a+GOODS5[i].p,0);const e=Math.round(s);st.ask={ans:'about $'+e,o:shuffle(['about $'+e,'about $'+(e+10),'about $'+Math.max(1,e-8)]),ok:'Yes! Round each price to the nearest dollar and add.'};txt='*Estimate* the subtotal of the cart.';}
@@ -572,7 +572,7 @@ P.lesson({id:'value5',title:'Unit rates and best value',strand:'Financial Litera
   return {info:()=>DEALS[st.di][0].it+': which is the best value?',
     controls:()=>{const c=[{t:'Unit price',go:true,fn:splitIt},{t:'Whole packs',fn:()=>{st.split=false;draw();}}];if(mode==='play'&&st.ask)return choices(st.setup?null:game,st.ask.o,st.ask.ans,st.ask.ok).concat(c);
       return mode==='learn'?c.concat([{t:'Next deal',fn:()=>{st.di=(st.di+1)%DEALS.length;st.split=false;st.reveal=false;draw();}}]):c;},
-    demo(n){st.ask=null;st.want=false;st.reveal=true;st.split=false;st.di=n==='three'?3:0;draw();A.seq([[1000,splitIt]]);},
+    demo(n){if(n==='show'){st.reveal=true;st.split=false;st.di=0;draw();return;}if(n==='splitnow'){splitIt();return;}st.ask=null;st.want=false;st.reveal=true;st.split=false;st.di=n==='three'?3:0;draw();A.seq([[1000,splitIt]]);},
     task(r){st.setup=true;st.ask=null;st.want=false;st.split=false;st.reveal=false;st.di=r;
       if(r===2){const q=DEALS[2][0];const a=money(q.p/q.n);st.ask={ans:a,o:shuffle([a,money(q.p*q.n>99?9:q.p/2),money(q.p)]).filter((x,i,arr)=>arr.indexOf(x)===i),ok:'Yes! '+money(q.p)+' ÷ '+q.n+' = '+a+' per hour.'};draw();st.setup=false;return 'Bike rental: *'+money(q.p)+' for '+q.n+' hours*. What is the *unit rate* per hour?';}
       st.want=true;draw();st.setup=false;return 'Tap the *best value* for '+DEALS[r][0].it+'. Use Unit price to help.';}};}
