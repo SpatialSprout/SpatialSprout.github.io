@@ -1,0 +1,2 @@
+window.BOOK={grade:6,subject:'Math',tiles:['M','A','T','H'],key:'6m',strands:'all five Ontario strands',
+  files:['lessons-number-a.js','lessons-number-b.js','lessons-algebra-data.js','lessons-spatial-money.js']};
