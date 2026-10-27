@@ -203,7 +203,51 @@ window.CATALOG = {
         { t: "Interest rates, accounts and loans", s: "Financial Literacy", c: ["F1.5", "F1.6"] }
       ]
     },
-    { grade: 8, subject: "Math", status: "planned", colors: ["#34d1bf", "#0f766e", "#134e4a"] }
+    {
+      grade: 8, subject: "Math", status: "live", colors: ["#34d1bf", "#0f766e", "#134e4a"], slug: "grade-8-math",
+      title: "The Interactive Classroom: Grade 8 Math",
+      author: "M. A. Mafodh",
+      blurb: "37 lessons covering all 44 Grade 8 math expectations: scientific notation, real numbers and square roots, percents above 100%, integer and fraction operations, linear patterns, multi-term equations and inequalities, scatter plots, tree diagrams, tessellations, the Pythagorean theorem, financial plans, interest and credit.",
+      lessons: [
+        { t: "Scientific notation", s: "Number", c: ["B1.1"] },
+        { t: "Rational and irrational numbers", s: "Number", c: ["B1.2"] },
+        { t: "Square roots and perfect squares", s: "Number", c: ["B1.3", "B2.2"] },
+        { t: "Percents above 100% and below 1%", s: "Number", c: ["B1.4"] },
+        { t: "Mental math with powers of ten", s: "Number", c: ["B2.3"] },
+        { t: "Adding and subtracting integers", s: "Number", c: ["B2.4"] },
+        { t: "Multiplying and dividing integers", s: "Number", c: ["B2.7"] },
+        { t: "Adding and subtracting fractions", s: "Number", c: ["B2.5"] },
+        { t: "Multiplying and dividing fractions", s: "Number", c: ["B2.6"] },
+        { t: "Comparing proportional situations", s: "Number", c: ["B2.8"] },
+        { t: "Multi-step problems and order of operations", s: "Number", c: ["B2.1"] },
+        { t: "Linear growing and shrinking patterns", s: "Algebra", c: ["C1.1", "C1.2"] },
+        { t: "Pattern rules and predictions", s: "Algebra", c: ["C1.3", "C1.4"] },
+        { t: "Adding binomials with algebra tiles", s: "Algebra", c: ["C2.1"] },
+        { t: "Evaluating algebraic expressions", s: "Algebra", c: ["C2.2"] },
+        { t: "Solving multi-term equations", s: "Algebra", c: ["C2.3"] },
+        { t: "Solving and graphing inequalities", s: "Algebra", c: ["C2.4"] },
+        { t: "Coding to analyse data", s: "Algebra", c: ["C3.1", "C3.2"] },
+        { t: "Two-variable data and collecting it", s: "Data", c: ["D1.1", "D1.2"] },
+        { t: "Scatter plots and relationships", s: "Data", c: ["D1.3", "D1.4", "D1.5"] },
+        { t: "Misleading graphs and fair conclusions", s: "Data", c: ["D1.6"] },
+        { t: "Venn diagrams and probability", s: "Data", c: ["D2.1"] },
+        { t: "Tree diagrams and multiple events", s: "Data", c: ["D2.1", "D2.2"] },
+        { t: "Tessellations", s: "Spatial Sense", c: ["E1.1"] },
+        { t: "Building models from views", s: "Spatial Sense", c: ["E1.2"] },
+        { t: "Scale drawings: lengths and areas", s: "Spatial Sense", c: ["E1.3"] },
+        { t: "Transformations, including dilations", s: "Spatial Sense", c: ["E1.4"] },
+        { t: "Mega to pico: metric prefixes", s: "Spatial Sense", c: ["E2.1"] },
+        { t: "Angles, parallel lines and polygons", s: "Spatial Sense", c: ["E2.2"] },
+        { t: "Composite shapes and objects", s: "Spatial Sense", c: ["E2.3"] },
+        { t: "The Pythagorean theorem", s: "Spatial Sense", c: ["E2.4"] },
+        { t: "Paying in other currencies", s: "Financial Literacy", c: ["F1.1"] },
+        { t: "A financial plan with income and tax", s: "Financial Literacy", c: ["F1.2"] },
+        { t: "Balancing a budget", s: "Financial Literacy", c: ["F1.3"] },
+        { t: "Simple and compound interest over time", s: "Financial Literacy", c: ["F1.4"] },
+        { t: "Sales, loyalty programs and best value", s: "Financial Literacy", c: ["F1.5"] },
+        { t: "Comparing credit cards and contracts", s: "Financial Literacy", c: ["F1.6"] }
+      ]
+    }
   ],
   moreSubjects: ["Science and Technology", "Language", "Social Studies", "History and Geography"]
 };
