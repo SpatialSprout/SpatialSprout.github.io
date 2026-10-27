@@ -26,7 +26,7 @@
         return '<a class="book live" href="books/' + esc(b.slug) + '/index.html"' + bg + '>' +
           '<span class="pill">Open now</span>' +
           '<span class="ttl">Grade ' + b.grade + ' ' + esc(b.subject) + '</span>' +
-          '<span class="tiles" aria-hidden="true"><span>M</span><span>A</span><span>T</span><span>H</span></span>' +
+          '<span class="tiles" aria-hidden="true">' + (b.tiles || ["M", "A", "T", "H"]).map(function (t) { return "<span>" + esc(t) + "</span>"; }).join("") + '</span>' +
           '<span class="by">The Interactive Classroom · by ' + esc(b.author) + '</span>' +
           '<span class="open">Open the book <span aria-hidden="true">→</span></span></a>';
       }
@@ -51,15 +51,16 @@
   var legend = $("legend"), lessons = $("lessons"), tabs = $("bookTabs");
   function showBook(i) {
     var live = lives[i]; if (!live || !lessons) return;
-    var order = Object.keys(C.strands), n = 0;
+    var SM = live.strands || C.strands, order = Object.keys(SM), n = 0;
     set("insideEyebrow", "Inside Grade " + live.grade + " " + live.subject);
-    set("insideTitle", "Every Grade " + live.grade + " expectation, page by page.");
+    set("insideTitle", live.strands ? "Every Grade " + live.grade + " " + live.subject + " unit, page by page." : "Every Grade " + live.grade + " expectation, page by page.");
+    if (legend) legend.innerHTML = order.map(function (s) { var k = SM[s]; return '<span><i style="background:' + k.color + '">' + k.letter + "</i>" + esc(s) + "</span>"; }).join("");
     var open = $("insideOpen"); if (open) open.href = "books/" + live.slug + "/index.html";
     if (tabs) Array.prototype.forEach.call(tabs.children, function (t, k) { t.setAttribute("aria-selected", k === i ? "true" : "false"); t.classList.toggle("on", k === i); });
     lessons.innerHTML = order.map(function (s) {
       var items = live.lessons.filter(function (l) { return l.s === s; });
       if (!items.length) return "";
-      var k = C.strands[s];
+      var k = SM[s];
       return '<div class="strand"><h3><i style="background:' + k.color + '"></i>' + k.letter + " · " + esc(s) + "</h3><ol>" +
         items.map(function (l) {
           n++;

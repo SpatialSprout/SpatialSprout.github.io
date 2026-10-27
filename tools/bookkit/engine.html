@@ -176,7 +176,7 @@ document.documentElement.style.setProperty('--bg',TH.bg);
 const W=4.6,D=6.2,MAT_Y=.04,COVER_T=.1,BLOCK_T=.17,PY=MAT_Y+COVER_T+BLOCK_T+.004;
 const CW=1024,CH=1380,PS=1.25,PX=CH/D,X0=96,TW=832;
 const INK='#1b2236',RED='#cf3f2a',BLUE='#2a62c9',GREY='#6b7183',YEL='#f6d45c',PAPER=TH.paper||mixHex('#fdfdfb',TH.mat,.055),PAPER_HI=mixHex(PAPER,'#ffffff',.3),TEAL='#3f7479';
-const STRAND={'Number':'#2f7de1','Algebra':'#8b5cf6','Data':'#f08a24','Spatial Sense':'#16a36f','Financial Literacy':'#e4572e'};
+const STRAND=Object.assign({'Number':'#2f7de1','Algebra':'#8b5cf6','Data':'#f08a24','Spatial Sense':'#16a36f','Financial Literacy':'#e4572e'},BK.strandColors||{});
 const VIBE=['#ff8a5b','#ffb347','#ffd24a','#5cc46a','#4fb3ff','#8b5cf6'];
 let ACC=TEAL;
 const tint=(hex,a)=>{const n=parseInt(hex.slice(1),16);return 'rgba('+(n>>16)+','+((n>>8)&255)+','+(n&255)+','+a+')';};
@@ -257,8 +257,8 @@ const WORLDS={
  8:{name:'Coral Reef',ground:'reef',motif:'bubble',far:['coral','coral','seaweed','seaweed','coralfan','rockr','coral','seaweed','coralfan','chest'],air:['fish','fish','fish','fish','fish','bubbles','turtle'],
     moods:[{sky:'#9fe3e0',gr:'#e8d9b0',hm:'#e6fffd'},{sky:'#a9d8ff',gr:'#e5d6b4',hm:'#e8f4ff'},{sky:'#b9f0d2',gr:'#e7dcb0',hm:'#eafff2'},{sky:'#c6c9ff',gr:'#ded4bc',hm:'#eeefff'},{sky:'#ffd1c4',gr:'#eed7b5',hm:'#fff0ea'}]}};
 const WKEYS={meadow:1,dino:2,beach:3,forest:4,space:5,canyon:6,snow:7,reef:8};
-const HOMEW=String(WORLDS[BK.grade]?BK.grade:3);let WD=WORLDS[HOMEW];
-const STRANDI={'Number':0,'Algebra':1,'Data':2,'Spatial Sense':3,'Financial Literacy':4};
+const HOMEW=String(BK.world&&WORLDS[WKEYS[BK.world]||BK.world]?(WKEYS[BK.world]||BK.world):WORLDS[BK.grade]?BK.grade:3);let WD=WORLDS[HOMEW];
+const STRANDI=BK.strandColors?Object.fromEntries(Object.keys(BK.strandColors).map((k,i)=>[k,i%5])):{'Number':0,'Algebra':1,'Data':2,'Spatial Sense':3,'Financial Literacy':4};
 let moodI=0;const moodNow={sky:new THREE.Color(WD.moods[0].sky),gr:new THREE.Color(WD.moods[0].gr),hm:new THREE.Color(WD.moods[0].hm)};
 function wrnd(seed){let s=seed;return ()=>{s=(s*16807)%2147483647;return s/2147483647;};}
 /* little 2D motifs for the rug and the ground */
@@ -465,10 +465,10 @@ function drawCover(g){g.setTransform(PS,0,0,PS,0,0);
   let sd=11;const rnd=()=>{sd=(sd*16807)%2147483647;return sd/2147483647;};const cols=['#ffd24a','#ff8a5b','#7fe0c8','#ffffff','#ffb347','#b9d1ff'];
   for(let i=0;i<80;i++){const x=rnd()*CW,y=rnd()*CH,s=10+rnd()*26,c=cols[Math.floor(rnd()*cols.length)],k=i%5;if(Math.hypot((x-CW/2)/1.15,y-875)<330||y>1170)continue;g.save();g.globalAlpha=.24;g.translate(x,y);g.rotate(rnd()*6);g.fillStyle=c;g.strokeStyle=c;g.lineWidth=6;
     if(k===0){g.beginPath();g.arc(0,0,s/2,0,Math.PI*2);g.fill();}else if(k===1)g.fillRect(-s/2,-s/2,s,s);else if(k===2){g.beginPath();g.moveTo(0,-s/2);g.lineTo(s/2,s/2);g.lineTo(-s/2,s/2);g.closePath();g.fill();}
-    else if(k===3){g.beginPath();g.moveTo(-s/2,0);g.lineTo(s/2,0);g.moveTo(0,-s/2);g.lineTo(0,s/2);g.stroke();}else{g.font=ZS(Math.round(s*1.6));g.fillText(String(Math.floor(rnd()*10)),-s/2,s/2);}g.restore();}
+    else if(k===3){g.beginPath();g.moveTo(-s/2,0);g.lineTo(s/2,0);g.moveTo(0,-s/2);g.lineTo(0,s/2);g.stroke();}else{g.font=ZS(Math.round(s*1.6));const gl=BK.glyphs||'0123456789';g.fillText(gl[Math.floor(rnd()*gl.length)],-s/2,s/2);}g.restore();}
   rr(g,X0,64,500,54,27);g.fillStyle='#fff';g.fill();g.font=FT.eyebrow;g.fillStyle=TEAL;let x=X0+30;for(const ch of 'ONTARIO CURRICULUM EDITION'){g.fillText(ch,x,99);x+=g.measureText(ch).width+3;}
   g.save();g.shadowColor='rgba(10,20,60,.3)';g.shadowOffsetY=6;T(g,TITLE.split(' ').slice(0,2).join(' '),X0,226,ZS(88),'#fff');T(g,'Classroom',X0,340,ZS(112),'#fff');g.restore();
-  const tc=['#ffd24a','#ff8a5b','#7fe0c8','#ffb347','#b9d1ff','#c7f0a4','#ffc4a8'];BK.tiles.forEach((L,i)=>{g.save();g.translate(X0+64+i*142,470);g.rotate((i%2?1:-1)*.07);
+  const tc=['#ffd24a','#ff8a5b','#7fe0c8','#ffb347','#b9d1ff','#c7f0a4','#ffc4a8'];const tsp=Math.min(142,560/Math.max(1,BK.tiles.length-1+.6)),tsc=Math.min(1,tsp/142);BK.tiles.forEach((L,i)=>{g.save();g.translate(X0+64*tsc+i*tsp,470);g.rotate((i%2?1:-1)*.07);g.scale(tsc,tsc);
     rr(g,-60,-52,120,120,24);g.fillStyle='rgba(10,20,60,.25)';g.fill();rr(g,-60,-60,120,120,24);g.fillStyle=tc[i];g.fill();g.lineWidth=5;g.strokeStyle='#fff';g.stroke();T(g,L,0,30,ZS(90),INK,'center');g.restore();});
   g.save();g.translate(CW-165,470);g.beginPath();for(let i=0;i<24;i++){const r=i%2?92:114,a=i/24*Math.PI*2;i?g.lineTo(Math.cos(a)*r,Math.sin(a)*r):g.moveTo(Math.cos(a)*r,Math.sin(a)*r);}g.closePath();g.fillStyle='#ffd24a';g.fill();
   T(g,'GRADE',0,-30,'700 25px "Atkinson Hyperlegible", sans-serif',INK,'center');T(g,GR,0,60,ZS(100),INK,'center');g.restore();
@@ -860,7 +860,7 @@ const INTRO={id:'intro',kind:'intro',title:'Welcome',strand:'',color:TEAL,num:''
   g.font=FT.eyebrow;g.fillStyle='rgba(255,255,255,.92)';spaced(g,'ONTARIO CURRICULUM EDITION',X0,96,3);
   T(g,'The Interactive',X0,196,ZS(76),'#fff');T(g,'Classroom',X0,290,ZS(96),'#fff');
   const tc=['#ffd24a','#ff8a5b','#7fe0c8'];let x=X0;['Grade',GR,SUBJ].forEach((w,i)=>{g.font=ZS(52);const tw=g.measureText(w).width+36;rr(g,x,330,tw,74,18);g.fillStyle=tc[i];g.fill();T(g,w,x+18,385,ZS(52),INK);x+=tw+14;});
-  let y=wrap(g,'A math book that stands up off the page. Every lesson has a *Learn* spread with the idea and a model that shows it, and a *Practice* spread with questions and a 3D game.',X0,600,TW,42,{font:FT.body,bold:FT.bodyB});
+  let y=wrap(g,BK.introLine||'A math book that stands up off the page. Every lesson has a *Learn* spread with the idea and a model that shows it, and a *Practice* spread with questions and a 3D game.',X0,600,TW,42,{font:FT.body,bold:FT.bodyB});
   y+=24;T(g,'How to use this book',X0,y,FT.h3);y+=52;
   ['Read the idea on the left page.','Press play: the model shows you how it works.','Touch, drag and build with the model.','Then play the game and win 5 rounds.','Earn points, stars and stamps, and grow your rank!'].forEach((s,i)=>{
     g.beginPath();g.arc(X0+20,y-9,20,0,Math.PI*2);g.fillStyle=VIBE[i];g.fill();T(g,String(i+1),X0+20,y,FT.smallB,'#fff','center');T(g,s,X0+56,y,FT.body);y+=50;});
@@ -1084,7 +1084,7 @@ function openToc(){let h='<div class="eyebrow">'+TITLE+' · '+SUB+'</div><h2>Con
   sheet(h+'</ol>');document.querySelectorAll('.toclist button').forEach(b=>b.onclick=()=>{$('#sheet').hidden=true;const i=+b.dataset.i;bookOpen?goSpread(i):openBook(i);});}
 $('#bToc').onclick=openToc;$('#badge').onclick=openToc;
 $('#bGuide').onclick=()=>{const s=bookOpen&&cur>=0?SP[cur]:SP[0];const L=s.L;
-  if(!L){sheet('<div class="eyebrow">For parents and teachers</div><h2>About this book</h2><p><b>'+TITLE+': '+SUB+'</b> by '+AUTHOR+', published by '+BRANDNAME+', follows the Ontario Grade '+GR+' '+(BK.curriculum||'mathematics')+' curriculum (2020) across all five content strands: Number, Algebra, Data, Spatial Sense and Financial Literacy.</p><h3>How a lesson runs</h3><ul><li><b>Learn spread:</b> the theory, key words and a prediction flap on the left; a 3D model on the right that demonstrates the idea when you press play, and that children can touch, drag and build.</li><li><b>Practice spread:</b> three lift-the-flap questions and a five-round 3D game with fresh puzzles every time.</li></ul><p class="muted">Each lesson lists its Ontario expectation codes in the footer and in this guide. Read-aloud is on the speaker button. Progress is saved in this browser.</p>');return;}
+  if(!L){sheet('<div class="eyebrow">For parents and teachers</div><h2>About this book</h2><p><b>'+TITLE+': '+SUB+'</b> by '+AUTHOR+', published by '+BRANDNAME+', '+(BK.about||('follows the Ontario Grade '+GR+' '+(BK.curriculum||'mathematics')+' curriculum (2020) across all five content strands: Number, Algebra, Data, Spatial Sense and Financial Literacy.'))+'</p><h3>How a lesson runs</h3><ul><li><b>Learn spread:</b> the theory, key words and a prediction flap on the left; a 3D model on the right that demonstrates the idea when you press play, and that children can touch, drag and build.</li><li><b>Practice spread:</b> three lift-the-flap questions and a five-round 3D game with fresh puzzles every time.</li></ul><p class="muted">Each lesson lists its Ontario expectation codes in the footer and in this guide. Read-aloud is on the speaker button. Progress is saved in this browser.</p>'+(BK.credits?'<p class="muted">'+BK.credits+'</p>':''));return;}
   const g=L.guide||{};sheet('<div class="eyebrow">Lesson '+L.n+' · '+L.strand+'</div><h2>'+L.title+'</h2><div class="codes">'+L.codes.map(c=>'<span>Ontario '+GR+'.'+c+'</span>').join('')+'</div><h3>Learning goal</h3><p>'+(g.goal||'')+'</p><h3>Key vocabulary</h3><p>'+(g.words||'')+'</p><h3>Questions to ask</h3><ul>'+(g.ask||[]).map(a=>'<li>'+a+'</li>').join('')+'</ul><h3>Try at home</h3><p>'+(g.home||'')+'</p><p class="muted">'+TITLE+' by '+AUTHOR+' · '+BRANDNAME+'</p>');};
 
 /* ================= loop ================= */
