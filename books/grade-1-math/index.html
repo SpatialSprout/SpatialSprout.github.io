@@ -894,7 +894,8 @@ function practiceLeft(p,S,L){const g=p.g;let y=header(p,S);y=para(p,y,'Your crew
   if(nx){rr(g,X0+330,y+106,TW-360,18,9);g.fillStyle='rgba(27,34,54,.1)';g.fill();const f=(PTS-RANKS[i][0])/(nx[0]-RANKS[i][0]);rr(g,X0+330,y+106,Math.max(18,(TW-360)*f),18,9);g.fillStyle='#16a36f';g.fill();
     T(g,(nx[0]-PTS)+' points to '+nx[1],X0+330,y+154,FT.small,GREY);}y+=212;
   T(g,'This lesson',X0,y+10,FT.smallB,GREY);starsRow(g,X0+190,y+16,S.game.stars,5,40);if(S.st.won)drawStamp(g,X0+TW-70,y,52);y+=60;
-  const tips=L.explore||[];if(tips.length){T(g,'Tips',X0,y+20,FT.h3);y+=40;tips.forEach((t,k)=>{g.beginPath();g.arc(X0+12,y+12,8,0,Math.PI*2);g.fillStyle=VIBE[k%6];g.fill();y=wrap(g,t,X0+34,y+22,TW-40,32,{font:FT.small,bold:FT.smallB})+8;});}}
+  const tips=L.explore||[];if(tips.length){T(g,'Tips',X0,y+20,FT.h3);y+=40;tips.forEach((t,k)=>{g.beginPath();g.arc(X0+12,y+12,8,0,Math.PI*2);g.fillStyle=VIBE[k%6];g.fill();y=wrap(g,t,X0+34,y+22,TW-40,32,{font:FT.small,bold:FT.smallB})+8;});}
+  if(PM.practiceMore)try{PM.practiceMore(L,p,S,y);}catch(e){console.error(e);}}
 function practiceRight(p,S,L){const g=p.g;let y=cyOf(L.rz==null?.55:L.rz);if(L.readout)y=L.readout(p,S,y)||y;y+=24;const Gm=S.game;
   const tt=Gm.done?'You won all 5 rounds! Press Play again for new puzzles.':Gm.phase==='howto'?'Get ready. The first question is coming!':(Gm.text||'');const th=wrap(g,tt,0,0,TW-60,38,{font:FT.bodyB,dry:true});const h=Math.max(150,th+110);
   box(p,y,h,'Round '+Math.min(Gm.round+1,5)+' of 5');starsRow(g,X0+TW-210,y+44,Gm.stars,5,34);wrap(g,tt,X0+30,y+96,TW-60,38,{font:FT.bodyB,boldColor:ACC});
@@ -1135,9 +1136,14 @@ const loaded=new Promise(r=>{if(document.readyState==='complete')r();else window
 Promise.all([Promise.race([Promise.all([fl,imgs]),new Promise(r=>setTimeout(r,3000))]).catch(()=>{}),loaded]).then(start);
 })();
 </script>
-<script src="lessons-number.js"></script>
-<script src="lessons-algebra-data.js"></script>
-<script src="lessons-spatial-money.js"></script>
+<script src="kit.js"></script>
+<script src="lessons-a.js"></script>
+<script src="lessons-b.js"></script>
+<script src="lessons-c.js"></script>
+<script src="lessons-d.js"></script>
+<script src="lessons-e.js"></script>
+<script src="lessons-f.js"></script>
+<script src="lessons-g.js"></script>
 <script src="stories.js"></script>
 <script src="theory.js"></script>
 
