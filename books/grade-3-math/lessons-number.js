@@ -74,7 +74,7 @@ P.lesson({id:'place',title:'Hundreds, tens and ones',strand:'Number',codes:['B1.
   return {
     info:()=>value()+' = '+expand(value()),
     controls:()=>[{t:'+100',fn:()=>add('h'),big:true},{t:'+10',fn:()=>add('t'),big:true},{t:'+1',fn:()=>add('o'),big:true},{t:'Trade 10 ones → 1 ten',fn:()=>trade('o'),dis:st.c.o<10},{t:'Trade 10 tens → 1 hundred',fn:()=>trade('t'),dis:st.c.t<10},{t:'Clear',fn:()=>set(0,0,0)}],
-    demo(n){if(n==='build'){set(0,0,0);A.seq([[600,()=>{add('h');add('h');A.say('2 hundreds');}],[1300,()=>{for(let i=0;i<4;i++)add('t');A.say('4 tens');}],[1300,()=>{for(let i=0;i<7;i++)add('o');A.say('7 ones. That makes 247!');}]]);}
+    demo(n){if(n==='show'){set(2,4,7);return;}if(n==='build'){set(0,0,0);A.seq([[600,()=>{add('h');add('h');A.say('2 hundreds');}],[1300,()=>{for(let i=0;i<4;i++)add('t');A.say('4 tens');}],[1300,()=>{for(let i=0;i<7;i++)add('o');A.say('7 ones. That makes 247!');}]]);}
       if(n==='regroup'){set(1,2,9);A.seq([[1200,()=>{add('o');}],[1200,()=>trade('o')],[1600,()=>A.say('9 ones + 1 one = 10 ones = 1 ten. Now it is 130.')]]);}},
     task(r){st.c={h:0,t:0,o:0};render(false);let n,txt;
       if(r===0){n=rnd(1,9)*100+rnd(1,9)*10+rnd(1,9);txt='Build the number *'+n+'*.';}
@@ -133,7 +133,7 @@ P.lesson({id:'skip',title:'Skip counting to 1000',strand:'Number',codes:['B1.4',
   return {tick(dt,t){if(!hopping)frog.rotation.y=Math.sin(t*2)*.15;},
     info:()=>'At '+st.pos+'. Counting by '+st.step+'s.',
     controls:()=>[10,50,100,200].map(s=>({t:'by '+s+'s',on:st.step===s,fn:()=>{st.step=s;A.redraw();}})).concat([{t:'Hop →',go:true,big:true,fn:()=>jump(1)},{t:'← Hop back',fn:()=>jump(-1)},{t:'Start over',fn:()=>reset(st.start)}]),
-    demo(n){const s=n==='by100'?100:50,k=n==='by100'?10:6;st.step=s;reset(0);const list=[];for(let i=0;i<k;i++)list.push([i?650:500,()=>jump(1)]);A.seq(list);A.redraw();},
+    demo(n){if(n==='reset'){A.stopSeq();hopping=false;st.step=100;reset(0);return;}if(n==='j100'){st.step=100;hopping=false;jump(1);return;}const s=n==='by100'?100:50,k=n==='by100'?10:6;st.step=s;reset(0);const list=[];for(let i=0;i<k;i++)list.push([i?650:500,()=>jump(1)]);A.seq(list);A.redraw();},
     task(r){const T5=[[0,100,700],[0,50,350],[0,200,1000],[300,50,150],[470,10,520]],q=T5[r];const [s,need,tg]=[q[0]+(r===0?0:0),q[1],q[2]];st.need=need;st.target=tg;st.step=need===10?50:100;reset(s);
       return (tg>s?'Count by ':'Count back by ')+'*'+need+'s* from '+s+' to *'+tg+'*.';}};}
 });
@@ -188,7 +188,7 @@ P.lesson({id:'round',title:'Rounding and estimating',strand:'Number',codes:['B1.
   return {info:()=>st.ask&&st.ask.est?st.ask.q:(st.n+(st.res!=null?' rounds to '+st.res:'  →  nearest '+st.mode)),
     controls:()=>{if(mode==='play'){if(st.ask&&st.ask.est)return choices(game,st.ask.opts,st.ask.ans,'Good estimate!');return [{t:'Rolls to '+lo(),big:true,fn:()=>guess(0)},{t:'Rolls to '+(lo()+st.mode),big:true,fn:()=>guess(1)}];}
       return [-100,-10,-1,1,10,100].map(d=>({t:(d>0?'+':'−')+Math.abs(d),fn:()=>set(st.n+d)})).concat([{t:'Roll ↓',go:true,fn:()=>roll()},{t:'Nearest 10',on:st.mode===10,fn:()=>setMode(10)},{t:'Nearest 100',on:st.mode===100,fn:()=>setMode(100)}]);},
-    demo(n){if(n==='roll'){st.mode=10;set(47);A.seq([[1200,()=>roll()]]);}if(n==='hundred'){st.mode=100;set(365);A.seq([[1400,()=>roll()]]);}},
+    demo(n){if(n==='r47'){st.mode=10;set(47);return;}if(n==='rollnow'){roll();return;}if(n==='roll'){st.mode=10;set(47);A.seq([[1200,()=>roll()]]);}if(n==='hundred'){st.mode=100;set(365);A.seq([[1400,()=>roll()]]);}},
     task(r){st.ask=null;if(r<3){const m=r===1?100:10;st.mode=m;const n=m===10?rnd(11,98):rnd(110,980);set(n===Math.floor(n/m)*m?n+3:n);return 'Where will *'+st.n+'* roll? Round it to the nearest *'+(m===10?'ten':'hundred')+'*.';}
       if(r===3){const a=rnd(21,68),b=rnd(21,48),ra=Math.round(a/10)*10,rb=Math.round(b/10)*10,ans=ra+rb;st.mode=10;set(a);st.ask={est:true,ans,opts:shuffle([ans,ans+10,ans-10]),q:'Estimate '+a+' + '+b};return 'Estimate *'+a+' + '+b+'* by rounding each number to the nearest ten.';}
       const a=rnd(2,6)*100+rnd(55,95),b=rnd(1,3)*100+rnd(5,40),ans=Math.round(a/100)*100-Math.round(b/100)*100;st.mode=100;set(a);st.ask={est:true,ans,opts:shuffle([ans,ans+100,ans+200]),q:'Estimate '+a+' − '+b};return 'Estimate *'+a+' − '+b+'* by rounding to the nearest hundred.';}};}
@@ -255,7 +255,7 @@ P.lesson({id:'addsub',title:'Adding and subtracting to 1000',strand:'Number',cod
     if(mode==='learn')out.push({t:'New + problem',fn:()=>newP('+')},{t:'New − problem',fn:()=>newP('-')});return out;};
   function newP(op){if(op==='+'){const a=rnd(1,5)*100+rnd(1,8)*10+rnd(3,9),b=rnd(1,3)*100+rnd(1,8)*10+rnd(4,9);setProblem(a,b,'+');}else{const a=rnd(3,9)*100+rnd(0,4)*10+rnd(0,4),b=rnd(1,2)*100+rnd(1,8)*10+rnd(5,9);setProblem(a,b,'-');}}
   return {info:()=>st.a+' '+(st.op==='+'?'+':'−')+' '+st.b+(st.done?' = '+(st.op==='+'?st.a+st.b:st.a-st.b):''),controls:ctl,
-    demo(n){if(n==='add'){setProblem(247,135,'+');A.seq([[1200,()=>combine('o')],[1500,()=>trade('o')],[1800,()=>combine('t')],[1500,()=>combine('h')]]);}
+    demo(n){if(n==='show'){setProblem(247,135,'+');return;}if(n==='co'){combine('o');return;}if(n==='tro'){trade('o');return;}if(n==='ct'){combine('t');return;}if(n==='ch'){combine('h');return;}if(n==='add'){setProblem(247,135,'+');A.seq([[1200,()=>combine('o')],[1500,()=>trade('o')],[1800,()=>combine('t')],[1500,()=>combine('h')]]);}
       if(n==='sub'){setProblem(352,127,'-');A.seq([[1400,()=>trade('o')],[1500,()=>combine('o')],[1500,()=>combine('t')],[1500,()=>combine('h')]]);}},
     task(r){newP(r===2||r===4?'-':'+');return (st.op==='+'?'Add':'Subtract')+' *'+st.a+' '+(st.op==='+'?'+':'−')+' '+st.b+'*. Do each place in order.';}};}
 });
@@ -299,7 +299,7 @@ P.lesson({id:'arrays',title:'Multiplying with arrays',strand:'Number',codes:['B2
   rebuild(false);if(st.turned)arr.rotation.y=Math.PI/2;
   return {info:()=>st.r+' rows of '+st.c+' = '+st.r*st.c,
     controls:()=>[{t:'Rows −',fn:()=>set(st.r-1,st.c)},{t:'Rows +',fn:()=>set(st.r+1,st.c)},{t:'In each row −',fn:()=>set(st.r,st.c-1)},{t:'In each row +',fn:()=>set(st.r,st.c+1)},{t:'Skip count',go:true,fn:skip},{t:'Turn ↻',on:st.turned,fn:turn}],
-    demo(n){if(n==='skip'){set(3,4);A.seq([[900,skip]]);}if(n==='turn'){set(3,4);A.seq([[800,turn],[2400,turn]]);}},
+    demo(n){if(n==='show'){if(st.turned)turn();if(st.r!==3||st.c!==4)set(3,4);return;}if(n==='turnnow'){turn();return;}if(n==='skip'){set(3,4);A.seq([[900,skip]]);}if(n==='turn'){set(3,4);A.seq([[800,turn],[2400,turn]]);}},
     task(r){st.r=1;st.c=1;st.turned=false;arr.rotation.y=0;rebuild(false);const L5=[[3,5],[2,7],null,[5,6],[10,3]];let w;
       if(r===2){const c=rnd(3,6);w={rows:4,cols:c};st.want=w;return 'Make an array with *4 rows* that shows *'+(4*c)+'* tulips.';}
       const [a,b]=r===1?[2,rnd(6,9)]:r===4?[10,rnd(2,6)]:L5[r];w={a,b};st.want=w;return 'Build an array for *'+a+' × '+b+'*.';}};}
@@ -359,7 +359,7 @@ P.lesson({id:'share',title:'Fair shares and dividing',strand:'Number',codes:['B1
   return {info:()=>st.n+' cookies, '+st.f+' friends',
     controls:()=>{const o=[{t:'Deal one each',go:true,fn:deal},{t:'Cut the leftovers',fn:cut,dis:st.cut},{t:'Start over',fn:()=>setup(st.n,st.f)}];
       if(mode==='learn')o.push({t:'Cookies −',fn:()=>setup(Math.max(1,st.n-1),st.f)},{t:'Cookies +',fn:()=>setup(Math.min(20,st.n+1),st.f)},{t:'Friends −',fn:()=>setup(st.n,Math.max(2,st.f-1))},{t:'Friends +',fn:()=>setup(st.n,Math.min(10,st.f+1))});return o;},
-    demo(n){if(n==='deal'){setup(12,3);const l=[];for(let i=0;i<4;i++)l.push([900,deal]);A.seq(l);}if(n==='cut'){setup(7,2);A.seq([[800,deal],[900,deal],[900,deal],[1200,cut]]);}},
+    demo(n){if(n==='show'){setup(12,3);return;}if(n==='dealall'){deal();A.later(deal,900);A.later(deal,1800);A.later(deal,2700);return;}if(n==='deal'){setup(12,3);const l=[];for(let i=0;i<4;i++)l.push([900,deal]);A.seq(l);}if(n==='cut'){setup(7,2);A.seq([[800,deal],[900,deal],[900,deal],[1200,cut]]);}},
     task(r){const T5=[[12,3],[15,5],[7,2],[20,10],[10,4]][r];setup(T5[0],T5[1]);return 'Share *'+T5[0]+' cookies* among *'+T5[1]+' friends* fairly.'+(T5[0]%T5[1]?' Cut the leftovers!':'');}};}
 });
 
@@ -400,7 +400,7 @@ P.lesson({id:'fractions',title:'Fractions of a whole',strand:'Number',codes:['B1
   function check(){if(mode==='play'&&st.want&&st.den===st.want[1]&&st.sh.length===st.want[0])game.solved('Yes! That is '+st.want[0]+'/'+st.want[1]+'.');}
   build(false);
   return {info:()=>st.sh.length+'/'+st.den+' of the cake',controls:()=>[2,3,4,5,6,8,10].map(v=>({t:'Cut into '+v,on:v===st.den,fn:()=>cut(v)})).concat([{t:'Put back',fn:()=>{st.sh=[];sl.forEach(place);A.redraw();}}]),
-    demo(n){if(n==='unit'){cut(4);st.sh=[];sl.forEach(place);const l=[];for(let i=0;i<4;i++)l.push([900,()=>{toggle(sl[i]);A.say((i+1)+'/4'+(i===3?' = one whole':''));}]);A.seq(l);}
+    demo(n){if(n==='four'||n==='f1'||n==='f3'){if(st.den!==4)cut(4);st.sh=n==='four'?[]:n==='f1'?[0]:[0,1,2];sl.forEach(place);A.pop();A.redraw();return;}if(n==='unit'){cut(4);st.sh=[];sl.forEach(place);const l=[];for(let i=0;i<4;i++)l.push([900,()=>{toggle(sl[i]);A.say((i+1)+'/4'+(i===3?' = one whole':''));}]);A.seq(l);}
       if(n==='compare'){A.seq([[300,()=>{cut(3);toggle(sl[0]);A.say('One third');}],[2200,()=>{cut(8);toggle(sl[0]);A.say('One eighth is smaller');}]]);}},
     task(r){const L=[[2,3],[3,5],[5,8],[6,6],[7,10]][r];st.want=L;st.den=2;st.sh=[];build(false);return r===3?'Show *one whole* cut into *sixths*.':'Show *'+L[0]+'/'+L[1]+'* of the cake.';}};}
 });
@@ -441,7 +441,7 @@ P.lesson({id:'equiv',title:'Equivalent fractions',strand:'Number',codes:['B1.7']
   function lightL(d,n){st.lit[d]=[];for(let i=0;i<n;i++)st.lit[d].push(i);paint();A.pop();A.redraw();}
   paint();
   return {info:()=>matches(st)||'Tap bricks to light them up.',controls:()=>[{t:'Clear',fn:()=>{st.lit={};paint();A.redraw();}},{t:'Show 1/2',fn:()=>lightL(2,1)},{t:'Show 1/3',fn:()=>lightL(3,1)},{t:'Show 1/5',fn:()=>lightL(5,1)}],
-    demo(n){st.lit={};paint();if(n==='half')A.seq([[600,()=>{lightL(2,1);A.say('1/2');}],[1400,()=>{lightL(4,2);A.say('2/4');}],[1400,()=>{lightL(8,4);A.say('4/8. All the same length!');}]]);
+    demo(n){if(n==='clear'){st.lit={};paint();A.redraw();return;}const LL={l2:[2,1],l4:[4,2],l8:[8,4],l3:[3,1],l6:[6,2]};if(LL[n]){lightL(LL[n][0],LL[n][1]);return;}st.lit={};paint();if(n==='half')A.seq([[600,()=>{lightL(2,1);A.say('1/2');}],[1400,()=>{lightL(4,2);A.say('2/4');}],[1400,()=>{lightL(8,4);A.say('4/8. All the same length!');}]]);
       if(n==='third')A.seq([[600,()=>{lightL(3,1);A.say('1/3');}],[1400,()=>{lightL(6,2);A.say('2/6 is the same length');}]]);},
     task(r){st.lit={};paint();const L=[{q:'1/2',d:4,n:2},{q:'1/3',d:6,n:2},{q:'1/5',d:10,n:2},{q:'3/4',d:8,n:6},{q:'2/3',d:6,n:4}][r];st.want=L;return 'Show *'+L.q+'* using *'+(L.d===4?'fourths':L.d===6?'sixths':L.d===8?'eighths':'tenths')+'*.';}};}
 });
@@ -490,7 +490,7 @@ P.lesson({id:'ratio',title:'Ratios: scaling up',strand:'Number',codes:['B2.9'],
   layout(false);
   return {info:()=>{const K={bike:[2,'wheels'],hand:[5,'fingers'],frame:[10,'counters']}[st.kind];return st.n+' groups → '+st.n*K[0]+' '+K[1];},
     controls:()=>{const o=[{t:'− group',big:true,fn:()=>set(st.n-1)},{t:'+ group',big:true,go:true,fn:()=>set(st.n+1)}];if(mode==='learn')o.unshift({t:'Bikes 1:2',on:st.kind==='bike',fn:()=>kind('bike')},{t:'Hands 1:5',on:st.kind==='hand',fn:()=>kind('hand')},{t:'Ten-frames 1:10',on:st.kind==='frame',fn:()=>kind('frame')});return o;},
-    demo(n){const k=n==='bikes'?'bike':'frame';kind(k);const l=[];for(let i=2;i<=4;i++)l.push([1300,()=>{set(i);const K=k==='bike'?2:10;A.say(i+(k==='bike'?' bikes, ':' ten-frames, ')+i*K+(k==='bike'?' wheels':' counters'));}]);A.seq(l);},
+    demo(n){if(n==='b1'){kind('bike');return;}if(/^n\d$/.test(n)){set(+n[1]);return;}const k=n==='bikes'?'bike':'frame';kind(k);const l=[];for(let i=2;i<=4;i++)l.push([1300,()=>{set(i);const K=k==='bike'?2:10;A.say(i+(k==='bike'?' bikes, ':' ten-frames, ')+i*K+(k==='bike'?' wheels':' counters'));}]);A.seq(l);},
     task(r){const L=[{kind:'bike',n:4,q:'Build enough *bikes* for *8 wheels*.',ok:'4 bikes have 8 wheels!'},{kind:'hand',n:6,q:'How many fingers on *6 hands*? Build 6 hands.',ok:'6 hands have 30 fingers!'},{kind:'frame',n:4,q:'Show *40 counters* with ten-frames.',ok:'4 ten-frames hold 40 counters!'},
       {kind:'bike',n:7,q:'Build *7 bikes*. How many wheels is that?',ok:'7 bikes have 14 wheels!'},{kind:'hand',n:7,q:'You need *35 fingers*. Build the right number of hands.',ok:'7 hands have 35 fingers!'}][r];st.want=L;st.kind=L.kind;st.n=1;layout(false);return L.q;}};}
 });

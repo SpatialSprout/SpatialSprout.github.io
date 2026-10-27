@@ -957,7 +957,7 @@ function setStep(i){lineCut=false;const sp=SP[cur];stepI=Math.max(0,Math.min(sp.
   if(s.go&&S&&!S.game.done){A.stopSeq();A.later(()=>startGame(S),250);}
   showStory(s.story?sp:null);if(s.story){guideMode='hello';guideT=0;if(PLAY)A.later(()=>mascotCheer(false,true),700);}
   const tk=++playTok;const adv=()=>{if(tk!==playTok||!playing)return;if(stepI<sp.steps.length-1)setStep(stepI+1);else if((sp.kind==='intro'||sp.kind==='learn')&&cur<SP.length-1)goSpread(cur+1,0,true);else setPlay(false);};
-  const txt=s.speech||s.say;const t0=Date.now();lineBusy=true;const spoke=speak(txt,()=>{if(tk===playTok)lineBusy=false;setTimeout(adv,Math.max(s.demo&&!s.quietDemo?2400:s.story?1400:(s.cues?1700:1100),holdMs-(Date.now()-t0)));});if(!spoke)lineBusy=false;
+  const txt=s.speech||s.say;const t0=Date.now();lineBusy=true;const spoke=speak(txt,()=>{if(tk===playTok)lineBusy=false;setTimeout(adv,Math.max((s.demo&&!s.quietDemo?2400:s.story?1400:(s.cues?1700:1100))*(BK.grade>=6?.6:1),holdMs-(Date.now()-t0)));});if(!spoke)lineBusy=false;
   if(s.cues&&s.cues.length)startCues(s,txt,spoke);
   if(playing&&!spoke)setTimeout(adv,Math.max(holdMs,s.demo?6000:3800,txt.split(' ').length*380));
   if(s.howto&&!playing){const tk2=playTok;setTimeout(()=>{if(tk2===playTok&&SP[cur]===sp&&stepI===i&&S&&S.game.phase==='howto')setStep(stepI+1);},holdMs+2500);}

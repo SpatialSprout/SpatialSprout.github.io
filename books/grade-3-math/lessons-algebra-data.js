@@ -48,7 +48,7 @@ P.lesson({id:'patterns',title:'Repeating and growing patterns',strand:'Algebra',
   return {info:()=>'Start at '+st.start+', add '+st.add+': '+[0,1,2,3,4].map(i=>st.start+st.add*i).join(', ')+', …',
     controls:()=>{if(mode==='play'&&st.ask)return choices(game,st.ask.opts,st.ask.ans,st.ask.ok);
       return [{t:'Start −',fn:()=>set(st.start-1,st.add)},{t:'Start +',fn:()=>set(st.start+1,st.add)},{t:'Add −',fn:()=>set(st.start,st.add-1)},{t:'Add +',fn:()=>set(st.start,st.add+1)},{t:'Show term 6',go:true,fn:reveal}];},
-    demo(n){if(n==='grow'){st.start=1;st.add=2;st.show6=false;rebuild(true);A.redraw();}if(n==='next')A.seq([[1200,reveal]]);},
+    demo(n){if(n==='show'){st.start=1;st.add=2;st.show6=false;rebuild(false);A.redraw();return;}if(n==='reveal'){reveal();return;}if(n==='grow'){st.start=1;st.add=2;st.show6=false;rebuild(true);A.redraw();}if(n==='next')A.seq([[1200,reveal]]);},
     task(r){st.ask=null;st.want=null;st.show6=false;
       if(r===0||r===3){const s=rnd(1,4),a=rnd(1,3);st.want=[s,a];st.start=s===1?2:1;st.add=a===1?2:1;rebuild(false);return 'Build the pattern *'+[0,1,2,3].map(i=>s+a*i).join(', ')+'*.';}
       const s=rnd(1,4),a=rnd(1,3);st.start=s;st.add=a;rebuild(false);
@@ -103,7 +103,7 @@ P.lesson({id:'balance',title:'Balance and equations',strand:'Algebra',codes:['C2
   rebuild();ang=tAng;place();
   return {tick(dt){ang+=(tAng-ang)*Math.min(1,dt*4);place();},info:()=>st.Ltxt+' = □ + '+st.Rb+'   (□ = '+st.x+')',
     controls:()=>{const o=[{t:'□ −1',big:true,fn:()=>set(st.x-1)},{t:'□ +1',big:true,go:true,fn:()=>set(st.x+1)}];if(mode==='learn')o.push({t:'New puzzle',fn:()=>{const a=rnd(3,9),b=rnd(2,8),c=rnd(1,a+b-1);puzzle([a,b],a+' + '+b,c);}});return o;},
-    demo(n){puzzle([7,5],'7 + 5',4);const l=[];for(let i=1;i<=8;i++)l.push([i===1?900:350,()=>set(i)]);A.seq(l);},
+    demo(n){if(n==='show'){puzzle([7,5],'7 + 5',4);return;}if(n==='x4'){set(4);return;}if(n==='x8'){set(8);return;}puzzle([7,5],'7 + 5',4);const l=[];for(let i=1;i<=8;i++)l.push([i===1?900:350,()=>set(i)]);A.seq(l);},
     task(r){if(r===3){const a=rnd(2,4),b=rnd(3,4),c=rnd(2,a*b-2);puzzle([a*b],a+' × '+b,c);}else if(r===4){const a=rnd(14,20),b=rnd(2,6),c=rnd(2,a-b-2);puzzle([a-b],a+' − '+b,c);}
       else{const a=rnd(4,9),b=rnd(3,8),c=rnd(2,a+b-2);puzzle([a,b],a+' + '+b,c);}return 'Balance the scale: *'+st.Ltxt+' = □ + '+st.Rb+'*. What is □?';}};}
 });
@@ -163,7 +163,7 @@ P.lesson({id:'coding',title:'Code a robot',strand:'Algebra',codes:['C3.1','C3.2'
   return {tick(dt,t){if(goal)goal.rotation.y=t*1.5;if(running){timer-=dt;if(timer<=0){timer=.5;step();}}},info:()=>'Level '+(st.li+1)+': get the robot to the star.',
     controls:()=>[{t:'↑ Forward',fn:()=>add('F')},{t:'↺ Left',fn:()=>add('L')},{t:'↻ Right',fn:()=>add('R')},{t:'× repeat',fn:rep},{t:'▶ Run',go:true,fn:run},{t:'Undo',fn:()=>{if(!running){st.prog.pop();A.redraw();}}},{t:'Clear',fn:()=>{if(!running){st.prog=[];reset();}}}]
       .concat(mode==='learn'?[{t:'Next level',fn:()=>{st.li=(st.li+1)%LEVELS.length;st.prog=[];load();A.redraw();}}]:[]),
-    demo(n){st.li=1;st.prog=[{cmd:'F',n:3},{cmd:'R',n:1},{cmd:'F',n:3}];load();A.redraw();A.seq([[900,run]]);},
+    demo(n){if(n==='show'){st.li=1;st.prog=[{cmd:'F',n:3},{cmd:'R',n:1},{cmd:'F',n:3}];load();A.redraw();return;}if(n==='runnow'){run();return;}st.li=1;st.prog=[{cmd:'F',n:3},{cmd:'R',n:1},{cmd:'F',n:3}];load();A.redraw();A.seq([[900,run]]);},
     task(r){st.li=r;st.prog=[];load();return 'Level *'+(r+1)+'*: write a program that takes the robot to the star.'+(r>=2?' Use repeat blocks!':'');}};}
 });
 
@@ -218,7 +218,7 @@ P.lesson({id:'sorting',title:'Sorting with Venn diagrams',strand:'Data',codes:['
   function autoSort(){const l=[];ITEMS.forEach((it,i)=>l.push([550,()=>{const reg=correct(it);st.placed[i]=reg;const n=Object.values(st.placed).filter(r=>r===reg).length;meshes[i].userData.spot=spot(reg,n);hop(meshes[i],meshes[i].userData.spot,.6,.5);A.say(it.c+' '+it.s+': '+(reg==='both'?'both':reg==='none'?'neither':reg==='a'?RULES[st.ri].a[0]:RULES[st.ri].b[0]));A.redraw();}]));A.seq(l);}
   setup();
   return {info:()=>'Rules: '+RULES[st.ri].a[0]+' and '+RULES[st.ri].b[0],controls:()=>mode==='learn'?[{t:'New rules',fn:()=>{st.ri=(st.ri+1)%RULES.length;setup();}},{t:'Start over',fn:setup},{t:'Show me',go:true,fn:autoSort}]:[{t:'Start over',fn:setup}],
-    demo(){st.ri=0;setup();A.seq([[700,autoSort]]);},task(r){st.ri=r;setup();return 'Sort every shape. The rules are *'+RULES[r].a[0]+'* and *'+RULES[r].b[0]+'*.';}};}
+    demo(n){if(n==='show'){st.ri=0;setup();return;}if(n==='auto'){autoSort();return;}st.ri=0;setup();A.seq([[700,autoSort]]);},task(r){st.ri=r;setup();return 'Sort every shape. The rules are *'+RULES[r].a[0]+'* and *'+RULES[r].b[0]+'*.';}};}
 });
 
 /* =========================================================
@@ -267,7 +267,7 @@ P.lesson({id:'graphs',title:'Pictographs and bar graphs',strand:'Data',codes:['D
   return {info:()=>FRUIT.map((f,i)=>f+' '+st.v[i]).join(' · '),
     controls:()=>{const o=[];FRUIT.forEach((f,i)=>{o.push({t:f.slice(0,5)+' −',fn:()=>ch(i,-1)},{t:f.slice(0,5)+' +',fn:()=>ch(i,1)});});
       o.push({t:'Bar graph',on:!st.pict,fn:()=>{st.pict=false;all();check();A.redraw();}},{t:'Pictograph',on:st.pict,fn:()=>{st.pict=true;all();check();A.redraw();}},{t:'Key: 1',on:st.scale===1,fn:()=>{st.scale=1;all();check();A.redraw();}},{t:'Key: 2',on:st.scale===2,fn:()=>{st.scale=2;all();check();A.redraw();}});return o;},
-    demo(n){if(n==='build'){st.pict=false;st.scale=1;st.v=[0,0,0,0];all();const tgt=[8,12,5,10],l=[];for(let k=0;k<12;k++)l.push([140,()=>{for(let i=0;i<4;i++)if(st.v[i]<tgt[i])ch(i,1);}]);A.seq(l);}
+    demo(n){if(n==='show'){st.pict=false;st.scale=1;st.v=[8,12,5,10];all();A.redraw();return;}if(n==='build'){st.pict=false;st.scale=1;st.v=[0,0,0,0];all();const tgt=[8,12,5,10],l=[];for(let k=0;k<12;k++)l.push([140,()=>{for(let i=0;i<4;i++)if(st.v[i]<tgt[i])ch(i,1);}]);A.seq(l);}
       if(n==='pict'){st.pict=true;st.scale=2;st.v=[8,12,5,10];all();A.redraw();}},
     task(r){st.v=[rnd(3,9),rnd(3,9),rnd(3,9),rnd(3,9)];st.pict=false;st.scale=1;all();
       const L=[[s=>{const m=Math.max(...s.v);return s.v[2]===m&&s.v.filter(v=>v===m).length===1;},'Make *Bananas* the mode (the most votes).'],
@@ -313,7 +313,7 @@ P.lesson({id:'mean',title:'Mean and mode',strand:'Data',codes:['D1.4','D2.2'],
   function newData(){const mean=rnd(2,6);const v=[mean,mean,mean,mean,mean];for(let k=0;k<6;k++){const a=rnd(0,4),b=rnd(0,4);if(v[a]>1&&v[b]<9){v[a]--;v[b]++;}}if(v.every(x=>x===v[0])){v[0]--;v[1]++;}return v;}
   rebuild();
   return {info:()=>'Total '+st.v.reduce((a,b)=>a+b,0)+' books, 5 friends',controls:()=>mode==='learn'?[{t:'Even it out for me',go:true,fn:evenOut},{t:'Start over',fn:()=>setData(st.orig)},{t:'New data',fn:()=>setData(newData())}]:[{t:'Start over',fn:()=>setData(st.orig)}],
-    demo(){setData([2,6,4,7,1]);A.seq([[800,evenOut]]);},task(r){setData(newData());return 'Even out the towers to find the *mean* of '+st.v.join(', ')+'.';}};}
+    demo(n){if(n==='show'){setData([2,6,4,7,1]);return;}if(n==='even'){evenOut();return;}setData([2,6,4,7,1]);A.seq([[800,evenOut]]);},task(r){setData(newData());return 'Even out the towers to find the *mean* of '+st.v.join(', ')+'.';}};}
 });
 
 /* =========================================================
@@ -360,7 +360,7 @@ P.lesson({id:'chance',title:'How likely is it?',strand:'Data',codes:['D2.1'],
     controls:()=>{const sp=[0,1,2,3,4].map(i=>({t:'Spinner '+'ABCDE'[i],on:i===st.si,fn:()=>setup(i)}));const go=[{t:'Spin',go:true,fn:()=>spin(1)},{t:'Spin 10 times',fn:()=>spin(10)}];
       if(mode==='play'&&st.want&&st.want.word)return CHANCE.slice().reverse().map(w=>({t:w,fn:()=>{if(w===CHANCE[st.si])game.solved('Yes! Blue is '+w+' on this spinner.');else A.bad('Not quite. Look at how much of the spinner is blue.');}})).concat(go);
       return sp.concat(go);},
-    demo(){setup(1);A.seq([[900,()=>spin(10)]]);},
+    demo(n){if(n==='sp1'){setup(1);return;}if(n==='sp2'){setup(2);return;}setup(1);A.seq([[900,()=>spin(10)]]);},
     task(r){st.tally=[0,0];if(r===3){st.want={pickSpinner:0,ok:'Spinner A is all blue: yellow is impossible!'};st.si=2;paint();return 'Pick the spinner where landing on *yellow* is *impossible*.';}
       if(r===4){st.want={pickSpinner:2,ok:'Spinner C: blue and yellow are equally likely!'};st.si=0;paint();return 'Pick the spinner where blue and yellow are *equally likely*.';}
       st.si=[1,3,4][r];st.want={word:true};paint();return 'How likely is it that this spinner lands on *blue*? Spin it to test, then pick the word.';}};}

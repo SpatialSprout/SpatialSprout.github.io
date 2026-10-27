@@ -55,7 +55,7 @@ P.lesson({id:'shapes',title:'Faces, edges and vertices',strand:'Spatial Sense',c
   grs[st.sel].position.copy(LIFT);grs[st.sel].scale.setScalar(1.15);
   return {tick(dt){if(st.spin)grs[st.sel].rotation.y+=dt*.7;},info:()=>SHAPES[st.sel].name+': '+SHAPES[st.sel].v+(SHAPES[st.sel].v===1?' vertex':' vertices'),
     controls:()=>[{t:st.showV?'Vertices: on':'Vertices: off',on:st.showV,fn:()=>tv()},{t:st.spin?'Spin: on':'Spin: off',on:st.spin,fn:()=>{st.spin=!st.spin;A.redraw();}},{t:'Roll test',fn:rollTest}].concat(mode==='learn'?[{t:'Next shape',go:true,fn:()=>pickS((st.sel+1)%6,false)}]:[]),
-    demo(n){if(n==='tour'){tv(true);const l=[];for(let i=0;i<6;i++)l.push([i?1700:400,()=>{pickS(i,false);A.say(SHAPES[i].name+': '+SHAPES[i].v+(SHAPES[i].v===1?' vertex':' vertices'));}]);A.seq(l);}if(n==='roll')A.seq([[300,rollTest]]);},
+    demo(n){if(n==='cube'){tv(false);pickS(0,false);return;}if(n==='vt'){tv(true);return;}if(n==='tour'){tv(true);const l=[];for(let i=0;i<6;i++)l.push([i?1700:400,()=>{pickS(i,false);A.say(SHAPES[i].name+': '+SHAPES[i].v+(SHAPES[i].v===1?' vertex':' vertices'));}]);A.seq(l);}if(n==='roll')A.seq([[300,rollTest]]);},
     task(r){st.want=RIDDLES[r].a;return 'Riddle: *'+RIDDLES[r].t+'* Tap the shape.';}};}
 });
 
@@ -108,7 +108,7 @@ P.lesson({id:'length',title:'Measuring length',strand:'Spatial Sense',codes:['E2
   return {info:()=>st.on==null?'Drag something onto the ruler.':'The '+OBJ[st.on].name+': '+OBJ[st.on].cm+' cm',
     controls:()=>{const u=[{t:'cm',on:st.unit==='cm',fn:()=>unit('cm')},{t:'mm',on:st.unit==='mm',fn:()=>unit('mm')},{t:'paper clips',on:st.unit==='clip',fn:()=>unit('clip')}];
       if(mode==='play'&&st.ask)return choices(game,st.ask.opts,st.ask.ans,st.ask.ok).concat(u);return OBJ.map((o,i)=>({t:'Measure '+o.name,fn:()=>measure(i)})).concat(u);},
-    demo(n){if(n==='measure'){unit('cm');A.seq([[700,()=>measure(0)],[1600,()=>{unit('mm');A.say('14 cm is 140 mm.');}]]);}if(n==='clips'){measure(0);A.seq([[600,()=>unit('clip')],[1500,()=>A.say('7 paper clips long.')]]);}},
+    demo(n){if(n==='m0'){unit('cm');measure(0);return;}if(n==='mm'){unit('mm');return;}if(n==='measure'){unit('cm');A.seq([[700,()=>measure(0)],[1600,()=>{unit('mm');A.say('14 cm is 140 mm.');}]]);}if(n==='clips'){measure(0);A.seq([[600,()=>unit('clip')],[1500,()=>A.say('7 paper clips long.')]]);}},
     task(r){st.ask=null;st.want=null;if(st.on!=null){moveTo(objs[st.on],{pos:objs[st.on].userData.home,k:10});st.on=null;label2();showClips();}unit('cm');
       if(r===0){const o=pick(OBJ);st.want=o.id;return 'Find the object that is *'+o.cm+' cm* long. Drag it onto the ruler.';}
       if(r===1){st.ask={ans:60,opts:[6,60,600],ok:'Yes! 6 cm = 60 mm.'};return 'Measure the *eraser*. How long is it in *millimetres*?';}
@@ -185,7 +185,7 @@ P.lesson({id:'mass',title:'Mass and capacity',strand:'Spatial Sense',codes:['E2.
     controls:()=>{if(mode==='play'&&st.ask)return choices(game,st.ask.opts,st.ask.ans,st.ask.ok);const o=[{t:'Mass',on:st.mode==='mass',fn:()=>setMode('mass')},{t:'Capacity',on:st.mode==='cap',fn:()=>setMode('cap')}];
       if(st.mode==='mass')return o.concat(THINGS.map((t,i)=>({t:t.name,on:st.obj===i,fn:()=>setObj(i)})),[{t:'Cube −',fn:()=>setCubes(st.cubes-1)},{t:'Cube +',go:true,fn:()=>setCubes(st.cubes+1)}]);
       return o.concat(POTS.map((t,i)=>({t:t.name,on:st.pot===i,fn:()=>setPot(i)})),[{t:'Pour a cup',go:true,fn:pour},{t:'Empty',fn:()=>setPot(st.pot)}]);},
-    demo(n){if(n==='mass'){setMode('mass');setObj(0);const l=[];for(let i=1;i<=6;i++)l.push([i===1?900:450,()=>setCubes(i)]);A.seq(l);}if(n==='pour'){setMode('cap');setPot(0);const l=[];for(let i=0;i<6;i++)l.push([i?1100:600,pour]);A.seq(l);}},
+    demo(n){if(n==='apple'){st.mode='mass';setObj(0);return;}if(/^c\d$/.test(n)){setCubes(+n[1]);return;}if(n==='mass'){setMode('mass');setObj(0);const l=[];for(let i=1;i<=6;i++)l.push([i===1?900:450,()=>setCubes(i)]);A.seq(l);}if(n==='pour'){setMode('cap');setPot(0);const l=[];for(let i=0;i<6;i++)l.push([i?1100:600,pour]);A.seq(l);}},
     task(r){st.ask=null;st.want=null;
       if(r===0){setMode('mass');setObj(1);st.want='book';return 'Put cubes on the balance until it is level. How many cubes is the *book*?';}
       if(r===1){setMode('mass');st.obj=null;fillL();fillR();tilt();st.ask={ans:'apple',opts:['apple','toy car'],ok:'Yes! The apple (6 cubes) is heavier than the car (4 cubes).'};return 'Weigh them if you like. Which is *heavier*: the apple or the toy car?';}
@@ -237,7 +237,7 @@ P.lesson({id:'area',title:'Perimeter and area',strand:'Spatial Sense',codes:['E2
   rebuild(false);
   return {info:()=>'Area '+st.w*st.h+' · Perimeter '+2*(st.w+st.h)+'  (drag the yellow corner!)',
     controls:()=>[{t:'Longer',go:true,fn:()=>set(st.w+1,st.h)},{t:'Shorter',fn:()=>set(st.w-1,st.h)},{t:'Wider',go:true,fn:()=>set(st.w,st.h+1)},{t:'Narrower',fn:()=>set(st.w,st.h-1)}],
-    demo(n){if(n==='tile'){st.w=1;st.h=1;rebuild(false);A.seq([[500,()=>set(4,1)],[900,()=>set(4,2)],[900,()=>set(4,3)],[900,()=>A.say('4 × 3 = 12 squares inside. 14 units of fence around.')]]);}
+    demo(n){if(n==='show'){st.w=4;st.h=3;rebuild(false);A.redraw();return;}if(n==='tile'){st.w=1;st.h=1;rebuild(false);A.seq([[500,()=>set(4,1)],[900,()=>set(4,2)],[900,()=>set(4,3)],[900,()=>A.say('4 × 3 = 12 squares inside. 14 units of fence around.')]]);}
       if(n==='same')A.seq([[400,()=>set(3,4)],[1800,()=>set(2,6)],[1600,()=>A.say('Both have area 12. The perimeters are 14 and 16.')]]);},
     task(r){st.w=1;st.h=1;rebuild(false);const L=[[(w,h)=>w*h===12&&2*(w+h)===14,'Make a garden with *area 12* and *perimeter 14*.'],[(w,h)=>w*h===12&&2*(w+h)===16,'Make a garden with *area 12* and *perimeter 16*.'],
       [(w,h)=>2*(w+h)===10,'Make a garden with a *perimeter of 10*.'],[(w,h)=>w===4&&h===4,'Make a *square* garden with an *area of 16*.'],[(w,h)=>w*h===18&&(w===6||h===6),'Make *area 18* with one side *6* long.']][r];st.want=L[0];return L[1];}};}
@@ -294,7 +294,7 @@ P.lesson({id:'time',title:'Telling time',strand:'Spatial Sense',codes:['E2.6'],
   disp();hp.rotation.z=ha;mp.rotation.z=ma;
   return {tick(dt){const th=-st.tm*.5*Math.PI/180,tmn=-st.tm*6*Math.PI/180,k=Math.min(1,dt*8);ha+=(th-ha)*k;ma+=(tmn-ma)*k;hp.rotation.z=ha;mp.rotation.z=ma;},info:()=>fmt(st.tm,st.pm),
     controls:()=>[{t:'−1 hour',fn:()=>add(-60)},{t:'+1 hour',fn:()=>add(60)},{t:'−5 min',fn:()=>add(-5)},{t:'+5 min',go:true,fn:()=>add(5)},{t:st.pm?'p.m.':'a.m.',on:true,fn:()=>{st.pm=!st.pm;disp();A.redraw();}}],
-    demo(n){if(n==='count5'){st.tm=3*60;disp();const l=[];for(let i=1;i<=12;i++)l.push([i===1?600:480,()=>{add(5);A.say(String(i*5)+(i===12?' minutes: one hour!':''));}]);A.seq(l);}
+    demo(n){if(n==='nine'){st.tm=9*60;st.pm=false;disp();A.redraw();return;}if(n==='p15'){add(15);return;}if(n==='count5'){st.tm=3*60;disp();const l=[];for(let i=1;i<=12;i++)l.push([i===1?600:480,()=>{add(5);A.say(String(i*5)+(i===12?' minutes: one hour!':''));}]);A.seq(l);}
       if(n==='quarter'){st.tm=7*60;disp();A.seq([[700,()=>{add(15);A.say('Quarter past 7: 7:15');}],[1800,()=>{add(15);A.say('Half past 7: 7:30');}]]);}},
     task(r){const L=[[3*60+45,'Set the clock to *3:45*.'],[7*60+15,'Show *quarter past 7*.'],[11*60+30,'Show *half past 11*.'],[3*60+10,'What time is it *20 minutes after 2:50*? Set the clock.'],[8*60+55,'Show *5 minutes to 9*.']][r];
       st.want=L[0];st.tm=r===3?2*60+50:12*60;disp();return L[1];}};}
@@ -373,7 +373,7 @@ P.lesson({id:'money',title:'Coins, bills and change',strand:'Financial Literacy'
   return {info:()=>STORE[st.item].name+' costs '+money(STORE[st.item].price)+' · tray '+money(sum()),
     controls:()=>{if(st.phase==='change')return st.opts.map(o=>({t:'Change: '+money(o),big:true,fn:()=>pickCh(o)}));if(st.phase==='done')return mode==='learn'?[{t:'Next item →',go:true,fn:()=>newItem((st.item+1)%STORE.length)}]:[];
       return [{t:'Pay',go:true,big:true,fn:pay},{t:'Empty tray',fn:()=>{st.paid=[];rebuildTray();A.redraw();}}].concat(mode==='learn'?[{t:'Next item →',fn:()=>newItem((st.item+1)%STORE.length)}]:[]);},
-    demo(){newItem(0);A.seq([[800,()=>add(3)],[1000,pay],[1600,()=>A.say('Count up: 65 to 75 is 10 cents, 75 to 100 is 25 cents. Change: 35 cents.')],[2600,()=>pickCh(35)]]);},
+    demo(n){if(n==='item0'){newItem(0);return;}if(n==='loonie'){add(3);return;}if(n==='pay'){pay();return;}if(n==='ch35'){pickCh(35);return;}newItem(0);A.seq([[800,()=>add(3)],[1000,pay],[1600,()=>A.say('Count up: 65 to 75 is 10 cents, 75 to 100 is 25 cents. Change: 35 cents.')],[2600,()=>pickCh(35)]]);},
     task(r){const order=[0,3,7,5,6];newItem(order[r]);return 'Buy the *'+STORE[st.item].name.toLowerCase()+'* for *'+money(STORE[st.item].price)+'*. Pay, then choose your change.';}};}
 });
 })();
