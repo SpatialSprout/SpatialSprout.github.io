@@ -824,7 +824,7 @@ function pickObjs(spec){const root=popGrp;if(!root||!spec)return [];if(typeof sp
   return [...new Set(units)];}
 function cueLabel(text,sz){const s=label(text,{size:sz||.3,bg:'#ffe066',border:INK,color:INK});s.material.depthTest=false;s.renderOrder=30;s.userData.base=s.scale.clone();s.userData.cueTag=true;return s;}
 const STOPW=new Set(['a','an','the','is','are','and','of','on','in','to','it','its','has','have','this','that','we','our','so','be','at','by','for','with','one','more','look','here','now','then','lets']);
-function hlFor(cue){if(cue.hl===false)return null;if(cue.hl!=null)return cue.hl;const ws=String(cue.w||'').split(/\s+/).concat(String(cue.l||'').split(/\s+/)).map(hlNorm).filter(w=>w&&!STOPW.has(w)&&!/^\d+$/.test(w));
+function hlFor(cue){if(cue.hl===false)return null;if(cue.hl!=null)return cue.hl;const ws=String(cue.w||'').split(/\s+/).concat(String(cue.l||'').split(/\s+/)).map(hlNorm).filter(w=>w&&!STOPW.has(w)&&/[a-z]/.test(w));
   return {words:new Set(ws),phr:hlNorm(String(cue.l||cue.w||'').replace(/\s+/g,''))};}
 function spotOn(cue){if(!cue.keep)spotOff(true);const objs=pickObjs(cue.p);const sp={cue,recs:[],lab:null,t:0,chk:0};
   sp.recs=objs.map(o=>lightRec(o,sp)).filter(Boolean);

@@ -824,7 +824,7 @@ function pickObjs(spec){const root=popGrp;if(!root||!spec)return [];if(typeof sp
   return [...new Set(units)];}
 function cueLabel(text,sz){const s=label(text,{size:sz||.3,bg:'#ffe066',border:INK,color:INK});s.material.depthTest=false;s.renderOrder=30;s.userData.base=s.scale.clone();s.userData.cueTag=true;return s;}
 const STOPW=new Set(['a','an','the','is','are','and','of','on','in','to','it','its','has','have','this','that','we','our','so','be','at','by','for','with','one','more','look','here','now','then','lets']);
-function hlFor(cue){if(cue.hl===false)return null;if(cue.hl!=null)return cue.hl;const ws=String(cue.w||'').split(/\s+/).concat(String(cue.l||'').split(/\s+/)).map(hlNorm).filter(w=>w&&!STOPW.has(w)&&!/^\d+$/.test(w));
+function hlFor(cue){if(cue.hl===false)return null;if(cue.hl!=null)return cue.hl;const ws=String(cue.w||'').split(/\s+/).concat(String(cue.l||'').split(/\s+/)).map(hlNorm).filter(w=>w&&!STOPW.has(w)&&/[a-z]/.test(w));
   return {words:new Set(ws),phr:hlNorm(String(cue.l||cue.w||'').replace(/\s+/g,''))};}
 function spotOn(cue){if(!cue.keep)spotOff(true);const objs=pickObjs(cue.p);const sp={cue,recs:[],lab:null,t:0,chk:0};
   sp.recs=objs.map(o=>lightRec(o,sp)).filter(Boolean);
@@ -965,7 +965,7 @@ function setStep(i){lineCut=false;const sp=SP[cur];stepI=Math.max(0,Math.min(sp.
   if(s.go&&S&&!S.game.done){A.stopSeq();A.later(()=>startGame(S),250);}
   showStory(s.story?sp:null);if(s.story){guideMode='hello';guideT=0;if(PLAY)A.later(()=>mascotCheer(false,true),700);}
   const tk=++playTok;const adv=()=>{if(tk!==playTok||!playing)return;if(stepI<sp.steps.length-1)setStep(stepI+1);else if((sp.kind==='intro'||sp.kind==='learn')&&cur<SP.length-1)goSpread(cur+1,0,true);else setPlay(false);};
-  const txt=s.speech||s.say;const t0=Date.now();lineBusy=true;const spoke=speak(txt,()=>{if(tk===playTok)lineBusy=false;setTimeout(adv,Math.max(s.demo&&!s.quietDemo?2400:s.story?1400:(s.cues?1700:1100),holdMs-(Date.now()-t0)));});if(!spoke)lineBusy=false;
+  const txt=s.speech||s.say;const t0=Date.now();lineBusy=true;const spoke=speak(txt,()=>{if(tk===playTok)lineBusy=false;setTimeout(adv,Math.max((s.demo&&!s.quietDemo?2400:s.story?1400:(s.cues?1700:1100))*(BK.grade>=6?.6:1),holdMs-(Date.now()-t0)));});if(!spoke)lineBusy=false;
   if(s.cues&&s.cues.length)startCues(s,txt,spoke);
   if(playing&&!spoke)setTimeout(adv,Math.max(holdMs,s.demo?6000:3800,txt.split(' ').length*380));
   if(s.howto&&!playing){const tk2=playTok;setTimeout(()=>{if(tk2===playTok&&SP[cur]===sp&&stepI===i&&S&&S.game.phase==='howto')setStep(stepI+1);},holdMs+2500);}
