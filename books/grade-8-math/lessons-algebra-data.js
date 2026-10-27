@@ -446,7 +446,7 @@ P.lesson({id:'mislead8',title:'Misleading graphs and fair conclusions',strand:'D
   y=para(p,y,'Graphs can mislead by the *way* they are drawn. Always ask questions before drawing a conclusion.')+14;
   g.fillStyle='#93c5fd';g.fillRect(X0+20,y+120,60,40);g.fillRect(X0+110,y+80,60,80);T(g,'fair: ×2 height',X0+20,y+190,FT.smallB,'#2563eb');
   g.fillStyle='#fda4af';g.fillRect(X0+330,y+120,40,40);g.fillRect(X0+400,y+80,80,80);T(g,'misleading: ×2 sides = ×4 area',X0+330,y+190,FT.smallB,'#be185d');y+=214;
-  [['What is the scale? Does it start at 0?'],['Are pictures scaled fairly?'],['Who made the graph, and why?'],['Is a relationship really cause and effect?']].forEach(([q],i)=>{T(g,'?',X0+12,y+i*44+30,ZS(30),acc());T(g,q,X0+50,y+i*44+30,FT.body);});y+=190;
+  [['What is the scale? Does it start at 0?'],['Are pictures scaled fairly?'],['Who made the graph, and why?'],['Is a relationship really cause and effect?']].forEach(([q],i)=>{T(g,'?',X0+12,y+i*40+26,ZS(30),acc());T(g,q,X0+50,y+i*40+26,FT.body);});y+=196;
   y=para(p,y,'*Correlation is not causation:* ice-cream sales and sunburns rise together because of a third factor, *sunny weather*.')+10;
   y=keyWords(p,y,[['causation','one thing directly makes another happen'],['hidden variable','a third factor that affects both']]);
   predict(p,y,S,'p21','A cube icon doubles every edge. How many times bigger is its volume?','*8 times.* 2 × 2 × 2.');},

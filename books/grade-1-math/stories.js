@@ -1,0 +1,27 @@
+/* lesson stories: the purpose of each lesson, told as a short 3D story */
+(function(){var P=window.PM;if(!P)return;P.why=Object.assign(P.why||{},{
+"count50": "Freddy the frog wants to cross the pond on fifty lily pads. Let's help him count every hop!",
+"tens50": "Ten little cubes love to hold hands and make a tower. Let's see how big numbers are built from tens and ones!",
+"compare50": "Two friends built block towers. Who has more blocks? Let's find out!",
+"estimate50": "A jar full of shiny marbles! Can we make a smart guess before we count them all?",
+"share1": "Cookie time! Let's share the cookies so every friend gets the same. That's fair!",
+"pieces1": "One yummy sandwich, and more and more friends come to share it. What happens to the pieces?",
+"facts10": "Pink and yellow counters are playing in the ten frame. Let's add them and take some away!",
+"make10": "Ten is a magic number! Let's use it to add big numbers fast.",
+"story50": "Fish swim in, birds fly away. Let's hop along the number line to solve fun stories!",
+"groups1": "Strawberries for everyone! Let's put the same number on every plate.",
+"patterns1": "Ball, cube, ball, cube! Patterns are like a song that repeats. Let's find what comes next.",
+"grow1": "These block towers grow and grow! Let's find the secret rule that makes them grow.",
+"change1": "Every day in the garden, some things change and some things stay the same. Let's watch!",
+"equal1": "A balance scale is like a seesaw. When both sides are equal, it stays level. Let's try it!",
+"coding1": "A hungry bunny wants a carrot! Let's write steps that tell the bunny where to hop.",
+"sort1": "Oh no, the toys are all mixed up! Let's sort them into groups.",
+"graph1": "What fruit does our class love best? Let's vote and build a graph to find out!",
+"chance1": "Spin the spinner! Will it land on red? Let's learn the words certain, possible and impossible.",
+"shapes1": "Some shapes roll, and some shapes stack. Let's play with solids and build a castle!",
+"mirror1": "A butterfly's wings match on both sides. Let's make pictures with matching halves!",
+"where1": "Where did the ball go? On, under, beside? Let's play a game of hide and find!",
+"measure1": "Which pencil is longest? Which toy is heavier? Let's compare things like a scientist!",
+"calendar1": "Every day has a name and a place on the calendar. Let's explore days, weeks and months!",
+"money1": "Let's open the piggy bank and meet Canada's coins and bills!"
+});})();

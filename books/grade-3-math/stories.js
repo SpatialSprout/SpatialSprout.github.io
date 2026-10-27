@@ -1,0 +1,25 @@
+/* lesson stories: the purpose of each lesson, told as a short 3D story */
+(function(){var P=window.PM;if(!P)return;P.why=Object.assign(P.why||{},{
+"place": "Every digit has a special job, like players on a team. Let's see what each one is worth!",
+"skip": "Freddy the frog is ready for super jumps all the way to one thousand!",
+"round": "A ball on a bumpy hill always rolls to the nearest valley. That's how rounding works!",
+"addsub": "Let's add and subtract big numbers, one place at a time, and trade when we need to.",
+"arrays": "Chairs in rows, eggs in a carton! Arrays help us multiply. Let's build some.",
+"share": "Cookies for three friends! Dividing means sharing so everyone gets the same.",
+"fractions": "A cake cut into equal slices! Let's name the pieces with fractions.",
+"equiv": "Different fractions can be the same size. Let's discover them on the fraction wall!",
+"ratio": "Every bike has two wheels. Let's see how ratios grow as we add more bikes!",
+"patterns": "Towers that repeat and towers that grow! Let's find each pattern's rule.",
+"balance": "A scale with a mystery box! Let's keep it balanced to find the missing number.",
+"coding": "Let's give a robot a list of steps and watch it follow our program!",
+"sorting": "Some shapes fit one rule, some fit two! Let's sort them in a Venn diagram.",
+"graphs": "Our class voted for favourite fruits! Let's turn the votes into graphs.",
+"mean": "Five friends read books. Let's even out the towers to find the mean!",
+"chance": "Round and round the spinner goes! Let's describe how likely each colour is.",
+"shapes": "Let's count faces, edges and corners on solids we see every day!",
+"length": "Grab a ruler! Let's measure things in centimetres and metres.",
+"mass": "Which is heavier, the apple or the cubes? Let's use a balance to measure mass and capacity.",
+"area": "Let's plant a garden and find its area and the fence around it!",
+"time": "The clock hands are moving! Let's learn to tell time to the minute.",
+"money": "Let's go shopping and count our change like a real cashier!"
+});})();
