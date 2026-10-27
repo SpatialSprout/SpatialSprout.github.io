@@ -42,7 +42,42 @@ window.CATALOG = {
         { t: "Canadian coins and bills", s: "Financial Literacy", c: ["F1.1"] }
       ]
     },
-    { grade: 2, subject: "Math", status: "planned", colors: ["#ff8cc6", "#d26ad8", "#7a5cf0"] },
+    {
+      grade: 2, subject: "Math", status: "live", colors: ["#ff8cc6", "#d26ad8", "#7a5cf0"], slug: "grade-2-math",
+      title: "The Interactive Classroom: Grade 2 Math",
+      author: "M. A. Mafodh",
+      blurb: "28 playful lessons covering all 39 Grade 2 math expectations: numbers to 200, skip counting by 20s, 25s and 50s, even and odd, thirds and sixths, facts to 20, adding and subtracting to 100, equal groups and sharing, mystery numbers, two robots coding at once, Venn and Carroll diagrams, maps, centimetres and metres, time and money.",
+      lessons: [
+        { t: "Hundreds, tens and ones", s: "Number", c: ["B1.1"] },
+        { t: "Comparing and ordering to 200", s: "Number", c: ["B1.2"] },
+        { t: "Estimate, then count to 200", s: "Number", c: ["B1.3"] },
+        { t: "Skip counting to 200", s: "Number", c: ["B1.4"] },
+        { t: "Even and odd numbers", s: "Number", c: ["B1.5"] },
+        { t: "Fair shares and thirds", s: "Number", c: ["B1.6", "B1.7"] },
+        { t: "Facts to 20", s: "Number", c: ["B2.2"] },
+        { t: "Mental math strategies", s: "Number", c: ["B2.3"] },
+        { t: "Adding and subtracting to 100", s: "Number", c: ["B2.4"] },
+        { t: "Equal groups and multiplying", s: "Number", c: ["B2.5", "B2.1"] },
+        { t: "Sharing equally: dividing", s: "Number", c: ["B2.6"] },
+        { t: "Patterns in designs", s: "Algebra", c: ["C1.1", "C1.2"] },
+        { t: "Number patterns to 100", s: "Algebra", c: ["C1.3", "C1.4"] },
+        { t: "Mystery numbers", s: "Algebra", c: ["C2.1"] },
+        { t: "Making both sides equal", s: "Algebra", c: ["C2.2", "C2.3"] },
+        { t: "Two robots at once", s: "Algebra", c: ["C3.1", "C3.2"] },
+        { t: "Venn and Carroll diagrams", s: "Data", c: ["D1.1"] },
+        { t: "Two-way tally tables", s: "Data", c: ["D1.2"] },
+        { t: "Line plots, bar graphs and mode", s: "Data", c: ["D1.3", "D1.4", "D1.5"] },
+        { t: "Likely or unlikely?", s: "Data", c: ["D2.1", "D2.2"] },
+        { t: "Sides, corners and symmetry", s: "Spatial Sense", c: ["E1.1"] },
+        { t: "Building shapes from shapes", s: "Spatial Sense", c: ["E1.2"] },
+        { t: "Same size, same shape", s: "Spatial Sense", c: ["E1.3"] },
+        { t: "Maps of familiar places", s: "Spatial Sense", c: ["E1.4", "E1.5"] },
+        { t: "Measuring with units", s: "Spatial Sense", c: ["E2.1"] },
+        { t: "Centimetres and metres", s: "Spatial Sense", c: ["E2.2", "E2.3"] },
+        { t: "Seconds, minutes and hours", s: "Spatial Sense", c: ["E2.4"] },
+        { t: "Many ways to make money amounts", s: "Financial Literacy", c: ["F1.1"] }
+      ]
+    },
     {
       grade: 3, subject: "Math", status: "live", colors: ["#1fb0a6", "#2f7de1", "#5b4fd8"], slug: "grade-3-math",
       title: "The Interactive Classroom: Grade 3 Math",
