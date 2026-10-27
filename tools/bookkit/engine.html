@@ -691,13 +691,13 @@ const mascot=new THREE.Group();mascot.visible=false;scene.add(mascot);
 const SKIN=['#f8d9bf','#efc09a','#d39a6a','#b0764a','#8a5634','#5e3a22'];
 const CREWS={
  1:[{n:'Kai',s:0,h:'#7a4a24',st:'spiky',c:'#14b8a6'},{n:'Zara',s:4,h:'#16110e',st:'puffs',c:'#f97316'},{n:'Leo',s:0,h:'#c2571c',st:'curly',c:'#22c55e'},{n:'Amara',s:0,h:'#e2b04a',st:'pony',c:'#3b82f6'},{n:'Milo',s:1,h:'#5b3a1e',st:'cap',c:'#eab308',cap:'#ef4444'},{n:'Suki',s:1,h:'#141414',st:'bob',c:'#8b5cf6'}],
- 2:[{n:'Jayden',s:4,h:'#141414',st:'short',c:'#ef4444'},{n:'Priya',s:3,h:'#141414',st:'braid',c:'#14b8a6'},{n:'Omar',s:2,h:'#1d1a17',st:'curly',c:'#3b82f6',gl:1},{n:'Luna',s:0,h:'#e2b04a',st:'pony',c:'#22c55e'},{n:'Theo',s:1,h:'#6b4423',st:'spiky',c:'#f97316'},{n:'Ayo',s:5,h:'#141414',st:'puffs',c:'#eab308'}],
- 3:[{n:'Max',s:0,h:'#8a5a2b',st:'short',c:'#3b82f6'},{n:'Aisha',s:3,h:'#141414',st:'scarf',c:'#f97316',scarf:'#0f766e'},{n:'Diego',s:2,h:'#1d1a17',st:'curly',c:'#22c55e'},{n:'Mei',s:1,h:'#141414',st:'bob',c:'#ef4444'},{n:'Eli',s:4,h:'#1d1a17',st:'short',c:'#eab308',chair:1},{n:'Nova',s:0,h:'#d9a441',st:'pony',c:'#8b5cf6',gl:1}],
- 4:[{n:'Ravi',s:3,h:'#141414',st:'short',c:'#14b8a6'},{n:'Isla',s:0,h:'#b5541c',st:'braid',c:'#3b82f6'},{n:'Kofi',s:5,h:'#141414',st:'short',c:'#f97316',gl:1},{n:'Hana',s:1,h:'#141414',st:'bun',c:'#22c55e'},{n:'Finn',s:0,h:'#e2b04a',st:'cap',c:'#ef4444',cap:'#1e3a8a'},{n:'Tala',s:2,h:'#1d1a17',st:'braid',c:'#eab308'}],
- 5:[{n:'Zane',s:1,h:'#3d2a1a',st:'spiky',c:'#3b82f6'},{n:'Layla',s:2,h:'#1d1a17',st:'long',c:'#14b8a6'},{n:'Mateo',s:2,h:'#141414',st:'short',c:'#f97316'},{n:'Keiko',s:1,h:'#141414',st:'pony',c:'#ef4444',gl:1},{n:'Jordan',s:4,h:'#141414',st:'cap',c:'#22c55e',cap:'#eab308'},{n:'Amani',s:5,h:'#141414',st:'puffs',c:'#8b5cf6'}],
- 6:[{n:'Arjun',s:3,h:'#141414',st:'short',c:'#ef4444'},{n:'Chloe',s:0,h:'#6b4423',st:'long',c:'#3b82f6'},{n:'Malik',s:5,h:'#141414',st:'short',c:'#eab308'},{n:'Yuna',s:1,h:'#141414',st:'bun',c:'#14b8a6'},{n:'Ezra',s:0,h:'#c2571c',st:'curly',c:'#22c55e',chair:1},{n:'Lucia',s:2,h:'#1d1a17',st:'braid',c:'#f97316',gl:1}],
- 7:[{n:'Tariq',s:3,h:'#141414',st:'short',c:'#14b8a6'},{n:'Maya',s:2,h:'#1d1a17',st:'long',c:'#ef4444'},{n:'Liam',s:0,h:'#e2b04a',st:'spiky',c:'#3b82f6'},{n:'Ines',s:4,h:'#141414',st:'puffs',c:'#eab308'},{n:'Kenji',s:1,h:'#141414',st:'bob',c:'#22c55e',gl:1},{n:'Zuri',s:5,h:'#141414',st:'bun',c:'#f97316'}],
- 8:[{n:'Rohan',s:3,h:'#141414',st:'short',c:'#3b82f6',gl:1},{n:'Elena',s:0,h:'#6b4423',st:'pony',c:'#14b8a6'},{n:'Jalen',s:5,h:'#141414',st:'short',c:'#f97316'},{n:'Sana',s:2,h:'#141414',st:'scarf',c:'#22c55e',scarf:'#1e3a8a'},{n:'Marcus',s:1,h:'#3d2a1a',st:'cap',c:'#ef4444',cap:'#141414'},{n:'Ana',s:2,h:'#1d1a17',st:'braid',c:'#8b5cf6'}]};
+ 2:[{n:'Jayden',s:0,h:'#141414',st:'short',c:'#ef4444'},{n:'Priya',s:3,h:'#141414',st:'braid',c:'#14b8a6'},{n:'Omar',s:1,h:'#1d1a17',st:'curly',c:'#3b82f6',gl:1},{n:'Luna',s:0,h:'#e2b04a',st:'pony',c:'#22c55e'},{n:'Theo',s:1,h:'#6b4423',st:'spiky',c:'#f97316'},{n:'Ayo',s:5,h:'#141414',st:'puffs',c:'#eab308'}],
+ 3:[{n:'Max',s:0,h:'#8a5a2b',st:'short',c:'#3b82f6'},{n:'Aisha',s:3,h:'#141414',st:'scarf',c:'#f97316',scarf:'#0f766e'},{n:'Diego',s:1,h:'#1d1a17',st:'curly',c:'#22c55e'},{n:'Mei',s:1,h:'#141414',st:'bob',c:'#ef4444'},{n:'Eli',s:4,h:'#1d1a17',st:'short',c:'#eab308',chair:1},{n:'Nova',s:0,h:'#d9a441',st:'pony',c:'#8b5cf6',gl:1}],
+ 4:[{n:'Ravi',s:3,h:'#141414',st:'short',c:'#14b8a6'},{n:'Isla',s:0,h:'#b5541c',st:'braid',c:'#3b82f6'},{n:'Kofi',s:5,h:'#141414',st:'short',c:'#f97316',gl:1},{n:'Hana',s:1,h:'#141414',st:'bun',c:'#22c55e'},{n:'Finn',s:0,h:'#e2b04a',st:'cap',c:'#ef4444',cap:'#1e3a8a'},{n:'Tala',s:1,h:'#1d1a17',st:'braid',c:'#eab308'}],
+ 5:[{n:'Zane',s:1,h:'#3d2a1a',st:'spiky',c:'#3b82f6'},{n:'Layla',s:0,h:'#1d1a17',st:'long',c:'#14b8a6'},{n:'Mateo',s:1,h:'#141414',st:'short',c:'#f97316'},{n:'Keiko',s:1,h:'#141414',st:'pony',c:'#ef4444',gl:1},{n:'Jordan',s:4,h:'#141414',st:'cap',c:'#22c55e',cap:'#eab308'},{n:'Amani',s:5,h:'#141414',st:'puffs',c:'#8b5cf6'}],
+ 6:[{n:'Arjun',s:3,h:'#141414',st:'short',c:'#ef4444'},{n:'Chloe',s:0,h:'#6b4423',st:'long',c:'#3b82f6'},{n:'Malik',s:5,h:'#141414',st:'short',c:'#eab308'},{n:'Yuna',s:1,h:'#141414',st:'bun',c:'#14b8a6'},{n:'Ezra',s:0,h:'#c2571c',st:'curly',c:'#22c55e',chair:1},{n:'Lucia',s:1,h:'#1d1a17',st:'braid',c:'#f97316',gl:1}],
+ 7:[{n:'Tariq',s:3,h:'#141414',st:'short',c:'#14b8a6'},{n:'Maya',s:0,h:'#1d1a17',st:'long',c:'#ef4444'},{n:'Liam',s:0,h:'#e2b04a',st:'spiky',c:'#3b82f6'},{n:'Ines',s:1,h:'#141414',st:'puffs',c:'#eab308'},{n:'Kenji',s:1,h:'#141414',st:'bob',c:'#22c55e',gl:1},{n:'Zuri',s:5,h:'#141414',st:'bun',c:'#f97316'}],
+ 8:[{n:'Rohan',s:3,h:'#141414',st:'short',c:'#3b82f6',gl:1},{n:'Elena',s:0,h:'#6b4423',st:'pony',c:'#14b8a6'},{n:'Jalen',s:5,h:'#141414',st:'short',c:'#f97316'},{n:'Sana',s:2,h:'#141414',st:'scarf',c:'#22c55e',scarf:'#1e3a8a'},{n:'Marcus',s:1,h:'#3d2a1a',st:'cap',c:'#ef4444',cap:'#141414'},{n:'Ana',s:0,h:'#1d1a17',st:'braid',c:'#8b5cf6'}]};
 const CREW=(BK.crew||CREWS[BK.grade]||CREWS[3]).map(p=>Object.assign({},p));
 function crewOf(L){return L&&L.n?CREW[(L.n-1)%CREW.length]:CREW[0];}
 /* a chunky low-poly kid, about 1 unit tall */
@@ -806,7 +806,9 @@ function pickObjs(spec){const root=popGrp;if(!root||!spec)return [];if(typeof sp
     root.traverse(o=>{if(!test(o)||inGuide(o)||!shown(o))return;let u=o;const p=o.parent;
       if(spec.u==='parent'){if(p&&p!==root)u=p;}
       else if(spec.u!=='self'&&p&&p!==root&&p.parent&&p.parent!==root&&p.type==='Group'){const ms=[];p.traverse(x=>{if(x.isMesh)ms.push(x);});if(ms.length>1&&ms.filter(test).length>=ms.length*.6)u=p;}set.add(u);});units=[...set];}
+  if(spec.all){root.traverse(o=>{if(o.isMesh&&o.visible&&!inGuide(o)&&shown(o)&&!(o.material&&o.material.opacity===0))units.push(o);});}
   if(spec.t){const want=String(spec.t).toLowerCase();root.traverse(o=>{if(o.isSprite&&o.userData.text!=null&&!inGuide(o)&&shown(o)&&!o.userData.cueTag){const tx=o.userData.text.toLowerCase();if(spec.exact?tx===want:tx.includes(want))units.push(!spec.only&&o.parent&&o.parent!==root&&o.parent.type==='Group'&&o.parent.children.length<6?o.parent:o);}});}
+  if(spec.cell)units=units.filter(o=>{let ok=false;o.traverse(m=>{if(m.isMesh&&[].concat(m.material).some(x=>x&&x.map))ok=true;});return ok;});
   const lp=o=>root.worldToLocal(o.getWorldPosition(new THREE.Vector3()));
   if(spec.box){const bx=spec.box;units=units.filter(o=>{const q=lp(o);return (!bx.x||q.x>=bx.x[0]&&q.x<=bx.x[1])&&(!bx.z||q.z>=bx.z[0]&&q.z<=bx.z[1])&&(!bx.y||q.y>=bx.y[0]&&q.y<=bx.y[1]);});}
   if(spec.row!=null){const rows=new Map();units.forEach(o=>{const k=Math.round(lp(o).z*8);if(!rows.has(k))rows.set(k,[]);rows.get(k).push(o);});const ks=[...rows.keys()].sort((x,y)=>x-y);const rs=Array.isArray(spec.row)?spec.row:[spec.row];units=rs.flatMap(i=>rows.get(ks[i<0?ks.length+i:i])||[]);}
@@ -827,7 +829,7 @@ function placeLabel(sp){const b=new THREE.Box3();let any=false;sp.recs.forEach(r
   const c=any?b.getCenter(new THREE.Vector3()):V(W/2,PY+.6,-1.4);sp.lab.position.set(c.x,(any?b.max.y-(sp.recs[0]?sp.recs[0].dy:0):PY+.3)+.42+(sp.cue.ly||0),c.z+(sp.cue.lz||0));sp.lab.userData.y0=sp.lab.position.y;}
 /* lift and grow are applied on top of whatever the lesson does, and taken off at the start of every frame */
 function spotsUndo(){for(const sp of spots)for(const r of sp.recs){if(r.dy){r.o.position.y-=r.dy;r.dy=0;}if(r.sc!==1){r.o.scale.multiplyScalar(1/r.sc);r.sc=1;}}}
-function unRec(r){if(r.dy){r.o.position.y-=r.dy;r.dy=0;}if(r.sc!==1){r.o.scale.multiplyScalar(1/r.sc);r.sc=1;}r.mats.forEach(([m,orig,cl])=>{m.material=orig;cl.forEach(c=>c.dispose());});}
+function unRec(r){if(r.dy){r.o.position.y-=r.dy;r.dy=0;}if(r.sc!==1){r.o.scale.multiplyScalar(1/r.sc);r.sc=1;}r.mats.forEach(([m,orig,cl])=>{const now=m.material;if(now===cl[0]||(Array.isArray(now)&&now[0]===cl[0]))m.material=orig;cl.forEach(c=>c.dispose());});}
 function spotOff(quiet){if(!spots.length&&!HL)return;spotsUndo();spots.splice(0).forEach(sp=>{sp.recs.forEach(unRec);if(sp.lab){scene.remove(sp.lab);sp.lab.material.map.dispose();sp.lab.material.dispose();}});const had=!!HL;HL=null;if(had&&!quiet&&cur>=0)A.redraw();}
 function animSpots(dt){for(const sp of spots){sp.t+=dt;sp.chk+=dt;const k=Math.min(1,sp.t/.45),e=easeSoftBack(k);
   if(sp.chk>.3){sp.chk=0;const gone=sp.recs.filter(r=>!r.o.parent);if(gone.length){gone.forEach(r=>r.mats.forEach(([m,o,cl])=>cl.forEach(c=>c.dispose())));sp.recs=sp.recs.filter(r=>r.o.parent);pickObjs(sp.cue.p).forEach(o=>{const r=lightRec(o,sp);if(r){r.t0=sp.t;sp.recs.push(r);}});if(sp.lab)placeLabel(sp);}}
@@ -841,7 +843,7 @@ function tickCues(){const cr=cueRun;if(!cr||busy)return;if(cr.tok!==playTok){cue
   if(cr.spoke&&!(voClock&&voClock.tok===voTok)&&now-cr.t0>1800){cr.spoke=false;cr.t0=now-600;}
   if(cr.spoke){const vc=voClock;if(!vc||vc.tok!==voTok)return;ch=vc.dev?Math.max(vc.ch,(now-vc.t0)/1000*12):(now-vc.t0)/1000/Math.max(.5,vc.dur)*cr.len*1.04+2;}
   else ch=(now-cr.t0)/1000*13;
-  while(cr.k<cr.list.length&&cr.list[cr.k].i<=ch){const q=cr.list[cr.k++];try{if(q.demo&&curApi.demo)curApi.demo(q.demo);}catch(e){console.error(e);}if(q.p||q.l)spotOn(q);else if(q.hl){setHL(q.hl);A.redraw();}}
+  while(cr.k<cr.list.length&&cr.list[cr.k].i<=ch){const q=cr.list[cr.k++];try{if(q.demo&&q.demo!=='hold'&&curApi.demo)curApi.demo(q.demo);}catch(e){console.error(e);}if(q.p||q.l)spotOn(q);else if(q.hl){setHL(q.hl);A.redraw();}}
   if(cr.k>=cr.list.length)cueRun=null;}
 PM.spot={on:spotOn,off:spotOff,pick:pickObjs,stop(){cueRun=null;},get run(){return cueRun;},get list(){return spots;}};
 /* ================= exports for lesson files ================= */
@@ -949,7 +951,7 @@ function setPlay(on){playing=on;if(!on){if(lineBusy)lineCut=true;lineBusy=false;
 function setStep(i){lineCut=false;const sp=SP[cur];stepI=Math.max(0,Math.min(sp.steps.length-1,i));const s=sp.steps[stepI];
   document.documentElement.style.setProperty('--lesson',sp.color);$('#capNum').textContent=sp.L?String(sp.L.n)+(sp.kind==='play'?'P':''):'';setCaption(s.say);drawDots();spotOff();cueRun=null;setView(s.view==='cover'?s.view:(pagePick||'book'));
   autoCam=sp.kind==='intro'||((s.view==='model'||s.view==='theory')&&(!!s.demo||!!s.howto));autoT=0;
-  if(s.demo&&curApi.demo){try{curApi.demo(s.demo);}catch(e){console.error(e);}}
+  if(s.demo&&s.demo!=='hold'&&curApi.demo){try{curApi.demo(s.demo);}catch(e){console.error(e);}}
   const S=sp.S;let holdMs=0;
   if(s.howto&&S&&!S.game.done){S.game.phase='howto';const d=(sp.L.learn.find(x=>x.demo)||{}).demo;if(d&&curApi.demo){try{curApi.demo(d);}catch(e){console.error(e);}}holdMs=7000;refreshDock();}
   if(s.go&&S&&!S.game.done){A.stopSeq();A.later(()=>startGame(S),250);}

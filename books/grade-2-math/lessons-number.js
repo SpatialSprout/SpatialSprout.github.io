@@ -55,7 +55,7 @@ P.lesson({id:'num200',title:'Hundreds, tens and ones',strand:'Number',codes:['B1
   draw();
   return {info:()=>String(tot()),
     controls:()=>{const c=[{t:'+ hundred',fn:()=>add('h',1)},{t:'+ ten',go:true,fn:()=>add('t',1)},{t:'+ one',fn:()=>add('o',1)},{t:'− hundred',fn:()=>add('h',-1)},{t:'− ten',fn:()=>add('t',-1)},{t:'− one',fn:()=>add('o',-1)},{t:'Break a hundred',fn:()=>brk('h')},{t:'Break a ten',fn:()=>brk('t')}];if(mode==='play'&&st.ask)return choices(st.setup?null:game,st.ask.o,st.ask.ans,st.ask.ok).concat(c);return c;},
-    demo(n){st.ask=null;st.need=null;if(n==='build'){st.h=0;st.t=0;st.o=0;draw();const s2=[[500,()=>add('h',1)]];for(let i=0;i<4;i++)s2.push([350,()=>add('t',1)]);for(let i=0;i<6;i++)s2.push([250,()=>add('o',1)]);A.seq(s2);}if(n==='break'){st.h=1;st.t=4;st.o=6;draw();A.seq([[900,()=>brk('h')]]);}},
+    demo(n){if(n==='show'){st.h=1;st.t=4;st.o=6;draw();return;}st.ask=null;st.need=null;if(n==='build'){st.h=0;st.t=0;st.o=0;draw();const s2=[[500,()=>add('h',1)]];for(let i=0;i<4;i++)s2.push([350,()=>add('t',1)]);for(let i=0;i<6;i++)s2.push([250,()=>add('o',1)]);A.seq(s2);}if(n==='break'){st.h=1;st.t=4;st.o=6;draw();A.seq([[900,()=>brk('h')]]);}},
     task(r){st.setup=true;st.ask=null;st.need=null;st.h=0;st.t=0;st.o=0;let txt;
       if(r<2){const n=r?rnd(150,199):rnd(110,149);st.need=s=>tot()===n;st.needOk=()=>'Yes! You built '+n+'!';txt='Build *'+n+'*.';}
       else if(r===2){const n=rnd(52,98);st.need=s=>tot()===n;st.needOk=()=>'Yes! '+n+'!';txt='Build *'+n+'*.';}
@@ -140,7 +140,7 @@ P.lesson({id:'estimate200',title:'Estimate, then count to 200',strand:'Number',c
   draw();
   return {info:()=>st.n+(st.counted?'c':''),
     controls:()=>{const c=[{t:'Count',go:true,fn:count},{t:'New jar',fn:()=>{st.n=rnd(30,195);st.counted=false;draw();}}];if(mode==='play'&&st.ask)return choices(st.setup?null:game,st.ask.o,st.ask.ans,st.ask.ok).concat(c);return c;},
-    demo(n){st.ask=null;if(n==='count'){st.n=118;st.counted=false;draw();A.seq([[1800,count]]);}if(n==='small'){st.n=47;st.counted=false;draw();A.seq([[1400,count]]);}},
+    demo(n){if(n==='jar'){st.n=118;st.counted=false;draw();return;}if(n==='countnow'){count();return;}st.ask=null;if(n==='count'){st.n=118;st.counted=false;draw();A.seq([[1800,count]]);}if(n==='small'){st.n=47;st.counted=false;draw();A.seq([[1400,count]]);}},
     task(r){st.setup=true;st.counted=false;let txt;
       if(r<3){const tg=[50,100,150][r];st.n=tg+rnd(-6,6);st.ask={ans:'About '+tg,o:['About 50','About 100','About 150'],ok:'Great estimate! There are '+st.n+'.'};txt='About how many beads? Use the *cup of 10* as a benchmark.';}
       else if(r===3){st.n=rnd(121,139);st.counted=true;st.ask={ans:String(st.n),o:shuffle([String(st.n),String(st.n+10),String(st.n-10)]),ok:'Yes! '+st.n+'.'};txt='Count the rows of 10. How many beads?';}
@@ -178,7 +178,7 @@ P.lesson({id:'count200',title:'Skip counting to 200',strand:'Number',codes:['B1.
   place();
   return {info:()=>st.pos+'/'+st.step,
     controls:()=>{const c=[10,20,25,50].map(s=>({t:'by '+s,on:st.step===s,fn:()=>{st.step=s;A.redraw();}})).concat([{t:'Hop',go:true,fn:()=>jump(1)},{t:'Hop back',fn:()=>jump(-1)},{t:'Start over',fn:()=>reset(st.start||0)}]);if(mode==='play'&&st.ask)return choices(st.setup?null:game,st.ask.o,st.ask.ans,st.ask.ok);return c;},
-    demo(n){st.ask=null;st.target=null;st.need=null;st.start=0;reset(0);st.step=n==='by25'?25:20;const k=200/st.step;A.seq(Array.from({length:k},()=>[520,()=>jump(1)]));},
+    demo(n){if(n==='reset'){A.stopSeq();busy=false;st.start=0;reset(0);return;}if(n==='j50'||n==='j20'){st.step=n==='j50'?50:20;busy=false;jump(1);return;}st.ask=null;st.target=null;st.need=null;st.start=0;reset(0);st.step=n==='by25'?25:20;const k=200/st.step;A.seq(Array.from({length:k},()=>[520,()=>jump(1)]));},
     task(r){st.setup=true;st.ask=null;st.target=null;st.need=null;st.start=0;let txt;
       if(r===0){st.need=25;st.target=pick([125,150,175]);txt='Count by *25s* from 0 to *'+st.target+'*.';}
       else if(r===1){st.need=20;st.target=pick([120,160,180]);txt='Count by *20s* from 0 to *'+st.target+'*.';}
@@ -217,7 +217,7 @@ P.lesson({id:'evenodd2',title:'Even and odd numbers',strand:'Number',codes:['B1.
   draw();
   return {info:()=>String(st.n),
     controls:()=>{const c=[{t:'Pair up',go:true,fn:()=>{st.paired=true;A.pop();draw();A.say(st.n+' is '+(st.n%2?'odd':'even'));}},{t:'number +',fn:()=>{st.n=Math.min(24,st.n+1);st.paired=false;draw();}},{t:'number −',fn:()=>{st.n=Math.max(1,st.n-1);st.paired=false;draw();}}];if(mode==='play'&&st.ask)return choices(st.setup?null:game,st.ask.o,st.ask.ans,st.ask.ok).concat(c);return c;},
-    demo(n){st.ask=null;if(n==='pair'){st.n=8;st.paired=false;draw();A.seq([[800,()=>{st.paired=true;draw();A.say('8 is even');}],[1300,()=>{st.n=7;st.paired=false;draw();}],[800,()=>{st.paired=true;draw();A.say('7 is odd');}]]);}if(n==='big'){st.n=24;st.paired=true;draw();A.say('26 ends in 6: even!');}},
+    demo(n){if(n==='show8'){st.n=8;st.paired=true;draw();return;}if(n==='show7'){st.n=7;st.paired=true;draw();return;}st.ask=null;if(n==='pair'){st.n=8;st.paired=false;draw();A.seq([[800,()=>{st.paired=true;draw();A.say('8 is even');}],[1300,()=>{st.n=7;st.paired=false;draw();}],[800,()=>{st.paired=true;draw();A.say('7 is odd');}]]);}if(n==='big'){st.n=24;st.paired=true;draw();A.say('26 ends in 6: even!');}},
     task(r){st.setup=true;st.paired=false;let txt;const O=['Even','Odd'];
       if(r<3){st.n=[rnd(5,9)*2,rnd(4,9)*2+1,rnd(6,11)*2+1][r];const a=st.n%2?'Odd':'Even';st.ask={ans:a,o:O,ok:'Yes! '+st.n+' is '+a.toLowerCase()+'.'};txt='Is *'+st.n+'* even or odd? Press *Pair up* to check.';}
       else if(r===3){st.n=10;st.ask={ans:'Even',o:O,ok:'Yes! 136 ends in 6.'};txt='Is *136* even or odd? (Look at the ones digit!)';}
@@ -263,7 +263,7 @@ P.lesson({id:'share2',title:'Fair shares and thirds',strand:'Number',codes:['B1.
   return {info:()=>st.n+'/'+st.k,
     controls:()=>{const c=[2,3,4,6].map(k=>({t:k+' friends',on:st.k===k,fn:()=>{st.k=k;st.dealt=false;st.cut=false;st.view='share';draw();}})).concat([{t:'Share',go:true,fn:share},{t:'Cut leftovers',fn:cut},{t:'muffins +',fn:()=>{st.n=Math.min(10,st.n+1);st.dealt=false;st.cut=false;draw();}},{t:'muffins −',fn:()=>{st.n=Math.max(2,st.n-1);st.dealt=false;st.cut=false;draw();}},{t:'Pizzas',fn:()=>{st.view=st.view==='pizza'?'share':'pizza';draw();}}]);
       if(mode==='play'&&st.ask)return choices(st.setup?null:game,st.ask.o,st.ask.ans,st.ask.ok).concat(c.slice(4,6));return c;},
-    demo(n){st.ask=null;if(n==='deal'){st.view='share';st.n=7;st.k=2;st.dealt=false;st.cut=false;draw();A.seq([[800,share],[1300,cut]]);}if(n==='pizza'){st.view='pizza';draw();}},
+    demo(n){if(n==='reset7'){st.view='share';st.n=7;st.k=2;st.dealt=false;st.cut=false;draw();return;}if(n==='sharenow'){share();return;}if(n==='cutnow'){cut();return;}st.ask=null;if(n==='deal'){st.view='share';st.n=7;st.k=2;st.dealt=false;st.cut=false;draw();A.seq([[800,share],[1300,cut]]);}if(n==='pizza'){st.view='pizza';draw();}},
     task(r){st.setup=true;st.view='share';st.dealt=false;st.cut=false;let txt;
       if(r===0){st.n=7;st.k=2;st.ask={ans:'3 and 1 half',o:shuffle(['3 and 1 half','3','4 and 1 half']),ok:'Yes! 3 each, and the leftover is cut in half.'};txt='Share *7 muffins* among *2 friends*. How much does each get?';}
       else if(r===1){st.n=9;st.k=3;st.ask={ans:'3',o:shuffle(['3','4','2']),ok:'Yes! 9 shares evenly into 3 groups of 3.'};txt='Share *9 muffins* among *3 friends*.';}
@@ -303,7 +303,7 @@ P.lesson({id:'facts20',title:'Facts to 20',strand:'Number',codes:['B2.2'],
   draw();
   return {info:()=>st.a+'+'+st.b,
     controls:()=>{const c=[{t:'+ orange',fn:()=>add('a',1)},{t:'− orange',fn:()=>add('a',-1)},{t:'+ yellow',go:true,fn:()=>add('b',1)},{t:'− yellow',fn:()=>add('b',-1)},{t:'Take away yellow',fn:()=>{st.sub=!st.sub;A.pop();draw();}}];if(mode==='play'&&st.ask)return choices(st.setup?null:game,st.ask.o,st.ask.ans,st.ask.ok).concat(c);return c;},
-    demo(n){st.ask=null;st.need=null;st.sub=false;st.a=8;st.b=7;draw();if(n==='sub')A.seq([[1000,()=>{st.sub=true;draw();A.say('15 − 7 = 8');}]]);},
+    demo(n){if(n==='subnow'){st.a=8;st.b=7;st.sub=true;draw();return;}st.ask=null;st.need=null;st.sub=false;st.a=8;st.b=7;draw();if(n==='sub')A.seq([[1000,()=>{st.sub=true;draw();A.say('15 − 7 = 8');}]]);},
     task(r){st.setup=true;st.ask=null;st.need=null;st.sub=false;st.a=0;st.b=0;let txt;
       if(r===0){st.need=[rnd(7,9),rnd(5,9)];txt='Build *'+st.need[0]+' + '+st.need[1]+'*.';}
       else if(r===1){const a=rnd(6,9),b=rnd(6,9);st.a=a;st.b=b;st.ask={ans:String(a+b),o:shuffle([String(a+b),String(a+b+1),String(a+b-2)]),ok:'Yes! '+a+' + '+b+' = '+(a+b)+'.'};txt='What is *'+a+' + '+b+'*?';}
@@ -340,7 +340,7 @@ P.lesson({id:'mental50',title:'Mental math strategies',strand:'Number',codes:['B
   place();
   return {info:()=>String(st.pos),
     controls:()=>{const c=[{t:'+10',go:true,fn:()=>hopBy(10)},{t:'+1',fn:()=>hopBy(1)},{t:'−10',fn:()=>hopBy(-10)},{t:'−1',fn:()=>hopBy(-1)},{t:'Start',fn:()=>{st.pos=st.start;place();}}];if(mode==='play'&&st.ask)return choices(st.setup?null:game,st.ask.o,st.ask.ans,st.ask.ok).concat(c);return c;},
-    demo(n){st.ask=null;st.target=null;if(n==='nine'){st.start=26;st.pos=26;place();A.seq([[700,()=>hopBy(10)],[800,()=>hopBy(-1)]]);}if(n==='sub'){st.start=45;st.pos=45;place();A.seq([[700,()=>hopBy(-10)],[700,()=>hopBy(-10)],[700,()=>hopBy(-1)],[400,()=>hopBy(-1)]]);}},
+    demo(n){if(n==='start26'||n==='start24'){A.stopSeq();busy=Promise.resolve();st.start=st.pos=n==='start26'?26:24;place();return;}if(n==='h10'){hopBy(10);return;}if(n==='hm1'){hopBy(-1);return;}if(n==='h3'){hopBy(1);hopBy(1);hopBy(1);return;}st.ask=null;st.target=null;if(n==='nine'){st.start=26;st.pos=26;place();A.seq([[700,()=>hopBy(10)],[800,()=>hopBy(-1)]]);}if(n==='sub'){st.start=45;st.pos=45;place();A.seq([[700,()=>hopBy(-10)],[700,()=>hopBy(-10)],[700,()=>hopBy(-1)],[400,()=>hopBy(-1)]]);}},
     task(r){st.setup=true;st.ask=null;st.target=null;let txt;
       if(r===0){const a=rnd(14,38);st.start=a;st.target=a+9;txt='Find *'+a+' + 9*. Try +10, then −1!';}
       else if(r===1){const a=rnd(12,25),b=rnd(11,19);st.start=a;st.target=a+b;txt='Find *'+a+' + '+b+'*. Jump the ten, then the ones.';}
@@ -384,7 +384,7 @@ P.lesson({id:'addsub100',title:'Adding and subtracting to 100',strand:'Number',c
   return {info:()=>st.a+st.op+st.b+':'+st.stage,
     controls:()=>{const c=[{t:st.stage===0?(st.op==='+'?'Combine':'Trade'):st.stage===1?(st.op==='+'?'Trade':'Take away'):'Done',go:true,fn:go},{t:'Start over',fn:()=>{st.stage=0;draw();}},{t:'New problem',fn:()=>{st.op=pick(['+','-']);if(st.op==='+'){st.a=rnd(25,55);st.b=rnd(15,100-st.a);}else{st.a=rnd(40,99);st.b=rnd(11,st.a-5);}st.stage=0;draw();}}];
       if(mode==='play'&&st.ask)return choices(st.setup?null:game,st.ask.o,st.ask.ans,st.ask.ok).concat(c.slice(0,2));return c;},
-    demo(n){st.ask=null;st.stage=0;if(n==='add'){st.op='+';st.a=47;st.b=35;draw();A.seq([[900,go],[1300,go]]);}if(n==='sub'){st.op='-';st.a=52;st.b=27;draw();A.seq([[900,go],[1300,go]]);}},
+    demo(n){if(n==='add0'){st.op='+';st.a=47;st.b=35;st.stage=0;draw();return;}if(n==='go'){go();return;}st.ask=null;st.stage=0;if(n==='add'){st.op='+';st.a=47;st.b=35;draw();A.seq([[900,go],[1300,go]]);}if(n==='sub'){st.op='-';st.a=52;st.b=27;draw();A.seq([[900,go],[1300,go]]);}},
     task(r){st.setup=true;st.stage=0;let txt;const Q=[['+',47,35,'You have *47 stickers*. You get *35 more*. How many now?'],['-',52,27,'There are *52 birds*. *27* fly away. How many are left?'],['+',38,46,'*38 red* beads and *46 blue* beads. How many beads?'],['-',90,45,'A book has *90 pages*. You read *45*. How many pages are left?'],['-',63,38,'*63 − 38 = ?*']][r];
       st.op=Q[0];st.a=Q[1];st.b=Q[2];const ans=String(st.op==='+'?st.a+st.b:st.a-st.b);const w=st.op==='+'?String(st.a+st.b-10):String(st.a-st.b+10);st.ask={ans,o:shuffle([ans,w,String(+ans+1)]),ok:'Yes! '+st.a+' '+(st.op==='+'?'+':'−')+' '+st.b+' = '+ans+'.'};txt=Q[3];
       draw();st.setup=false;return txt;}};}
@@ -421,7 +421,7 @@ P.lesson({id:'multiply2',title:'Equal groups and multiplying',strand:'Number',co
   draw();
   return {info:()=>st.g+'x'+st.e,
     controls:()=>{const c=[{t:'groups +',go:true,fn:()=>{st.g=Math.min(10,st.g+1);A.pop();draw();}},{t:'groups −',fn:()=>{st.g=Math.max(1,st.g-1);draw();}},{t:'each +',fn:()=>setE(1)},{t:'each −',fn:()=>setE(-1)}];if(mode==='play'&&st.ask)return choices(st.setup?null:game,st.ask.o,st.ask.ans,st.ask.ok).concat(c);return c;},
-    demo(n){st.ask=null;st.need=null;if(n==='grow'){st.e=3;st.g=1;draw();A.seq([2,3,4].map(k=>[650,()=>{st.g=k;draw();A.pop();}]).concat([[400,()=>A.say('4 × 3 = 12')]]));}if(n==='fourth'){st.e=.25;st.g=8;draw();A.say('8 fourths = 2 wholes');}},
+    demo(n){if(n==='show'){st.g=4;st.e=3;draw();return;}st.ask=null;st.need=null;if(n==='grow'){st.e=3;st.g=1;draw();A.seq([2,3,4].map(k=>[650,()=>{st.g=k;draw();A.pop();}]).concat([[400,()=>A.say('4 × 3 = 12')]]));}if(n==='fourth'){st.e=.25;st.g=8;draw();A.say('8 fourths = 2 wholes');}},
     task(r){st.setup=true;st.ask=null;st.need=null;st.g=1;st.e=1;let txt;
       if(r===0){st.need=[pick([3,4]),pick([2,5])];txt='Make *'+st.need[0]+' groups of '+st.need[1]+'*.';}
       else if(r===1){st.g=5;st.e=2;st.ask={ans:'5 × 2 = 10',o:shuffle(['5 × 2 = 10','5 + 2 = 7','2 + 5 = 7']),ok:'Yes! 2 + 2 + 2 + 2 + 2 = 5 × 2.'};txt='Which sentence matches *5 groups of 2*?';}
@@ -461,7 +461,7 @@ P.lesson({id:'divide2',title:'Sharing equally: dividing',strand:'Number',codes:[
   draw();
   return {info:()=>st.n+'/'+st.k,
     controls:()=>{const c=[{t:'Deal',go:true,fn:deal},{t:'apples +',fn:()=>{st.n=Math.min(12,st.n+1);st.dealt=0;draw();}},{t:'apples −',fn:()=>{st.n=Math.max(2,st.n-1);st.dealt=0;draw();}},{t:'baskets +',fn:()=>{st.k=Math.min(6,st.k+1);st.dealt=0;draw();}},{t:'baskets −',fn:()=>{st.k=Math.max(2,st.k-1);st.dealt=0;draw();}}];if(mode==='play'&&st.ask)return choices(st.setup?null:game,st.ask.o,st.ask.ans,st.ask.ok).concat(c.slice(0,1));return c;},
-    demo(n){st.ask=null;st.need=null;st.n=12;st.k=n==='four'?4:3;st.dealt=0;draw();A.seq([[600,deal]]);},
+    demo(n){if(n==='show'){st.n=12;st.k=3;st.dealt=0;draw();return;}if(n==='dealnow'){deal();return;}st.ask=null;st.need=null;st.n=12;st.k=n==='four'?4:3;st.dealt=0;draw();A.seq([[600,deal]]);},
     task(r){st.setup=true;st.ask=null;st.need=null;st.dealt=0;let txt;
       if(r===0){st.n=12;st.k=2;st.need=[12,4];txt='Share *12 apples* into *4 baskets*. Set the baskets, then Deal.';}
       else if(r===1){st.n=10;st.k=2;st.ask={ans:'5',o:shuffle(['5','8','2']),ok:'Yes! 10 ÷ 2 = 5.'};txt='*10 ÷ 2 = ?* Deal to check.';}

@@ -45,7 +45,7 @@ P.lesson({id:'geopat2',title:'Patterns in designs',strand:'Algebra',codes:['C1.1
   draw();
   return {info:()=>st.kind+st.n,
     controls:()=>{const c=Object.keys(GP).map(k=>({t:GP[k].n,on:st.kind===k,fn:()=>{st.kind=k;st.n=5;draw();}})).concat([{t:'Next',go:true,fn:next},{t:st.nums?'Hide numbers':'Show numbers',fn:()=>{st.nums=!st.nums;draw();}}]);if(mode==='play'&&st.ask)return choices(st.setup?null:game,st.ask.o,st.ask.ans,st.ask.ok).concat(c.slice(-1));if(mode==='play'&&st.want)return c.slice(-1);return c;},
-    demo(n){st.ask=null;st.want=false;st.nums=false;if(n==='turn'){st.kind='turn';st.n=1;draw();A.seq([2,3,4,5,6].map(k=>[550,()=>{st.n=k;draw();}]));}if(n==='grow'){st.kind='grow';st.n=1;draw();A.seq([2,3,4].map(k=>[650,()=>{st.n=k;draw();}]));}},
+    demo(n){if(n==='show'){st.want=false;st.nums=false;st.kind='turn';st.n=5;draw();return;}if(n==='grow4'){st.want=false;st.nums=false;st.kind='grow';st.n=4;draw();return;}st.ask=null;st.want=false;st.nums=false;if(n==='turn'){st.kind='turn';st.n=1;draw();A.seq([2,3,4,5,6].map(k=>[550,()=>{st.n=k;draw();}]));}if(n==='grow'){st.kind='grow';st.n=1;draw();A.seq([2,3,4].map(k=>[650,()=>{st.n=k;draw();}]));}},
     task(r){st.setup=true;st.ask=null;st.want=false;st.nums=false;st.perm=null;let txt;
       if(r<3){st.kind=['turn','col','grow'][r];st.n=r===2?4:6;st.want=true;txt='What comes *next*? Tap it!';}
       else if(r===3){st.kind='col';st.n=6;st.nums=false;st.ask={ans:'4, 3, 6, 4, 3, 6',o:shuffle(['4, 3, 6, 4, 3, 6','3, 4, 6, 3, 4, 6','4, 4, 3, 3, 6, 6']),ok:'Yes! Square 4, triangle 3, hexagon 6.'};txt='Show this pattern with *numbers of sides*.';}
@@ -85,7 +85,7 @@ P.lesson({id:'chart2',title:'Number patterns to 100',strand:'Algebra',codes:['C1
   draw();
   return {info:()=>st.start+'+'+st.d,
     controls:()=>{const c=[{t:'Show pattern',go:true,fn:show},{t:'start +',fn:()=>{st.start=Math.min(10,st.start+1);st.lit=st.start;draw();}},{t:'start −',fn:()=>{st.start=Math.max(1,st.start-1);st.lit=st.start;draw();}}].concat([2,5,10].map(d=>({t:'add '+d,on:st.d===d,fn:()=>{st.d=d;st.lit=st.start;draw();}})));if(mode==='play'&&st.ask)return choices(st.setup?null:game,st.ask.o,st.ask.ans,st.ask.ok);return c;},
-    demo(n){st.ask=null;st.want=null;if(n==='by5'){st.start=5;st.d=5;show();}if(n==='by10'){st.start=3;st.d=10;show();}},
+    demo(n){if(n==='blank'){st.start=3;st.d=10;st.lit=0;draw();return;}if(n==='by10now'){st.start=3;st.d=10;show();return;}if(n==='by5now'){st.start=5;st.d=5;show();return;}st.ask=null;st.want=null;if(n==='by5'){st.start=5;st.d=5;show();}if(n==='by10'){st.start=3;st.d=10;show();}},
     task(r){st.setup=true;st.ask=null;st.want=null;let txt;
       if(r===0){st.start=pick([2,4,6]);st.d=10;st.lit=st.start+30;st.want=st.start+40;txt='Rule: *add 10*. Tap the *next* number.';}
       else if(r===1){st.start=5;st.d=5;st.lit=35;st.want=40;txt='Rule: *add 5*. Tap the *next* number after 35.';}
@@ -127,7 +127,7 @@ P.lesson({id:'symbol2',title:'Mystery numbers',strand:'Algebra',codes:['C2.1'],
   draw();
   return {info:()=>st.sym+st.hid,
     controls:()=>{const c=[{t:st.open?'Close the box':'Open the box',go:true,fn:open},{t:'New mystery',fn:()=>{st.hid=rnd(2,8);st.see=rnd(2,8);st.sym=pick(['□','★','▲','n']);st.op=pick(['+','-']);st.open=false;draw();}}];if(mode==='play'&&st.ask)return choices(st.setup?null:game,st.ask.o,st.ask.ans,st.ask.ok).concat(c);return c;},
-    demo(n){st.ask=null;st.open=false;if(n==='open'){st.hid=5;st.see=4;st.sym='□';st.op='+';draw();A.seq([[1200,open]]);}if(n==='star'){st.hid=5;st.see=7;st.sym='★';st.op='-';draw();A.seq([[1400,open]]);}},
+    demo(n){if(n==='show'){st.open=false;st.hid=5;st.see=4;st.sym='□';st.op='+';draw();return;}if(n==='opennow'){st.open=false;open();return;}st.ask=null;st.open=false;if(n==='open'){st.hid=5;st.see=4;st.sym='□';st.op='+';draw();A.seq([[1200,open]]);}if(n==='star'){st.hid=5;st.see=7;st.sym='★';st.op='-';draw();A.seq([[1400,open]]);}},
     task(r){st.setup=true;st.open=false;let txt;
       if(r<3){st.op=r===2?'-':'+';st.hid=rnd(3,8);st.see=rnd(2,7);st.sym=['□','★','▲'][r];const a=String(st.hid);st.ask={ans:a,o:shuffle([a,String(st.hid+st.see),String(st.hid+1)]),ok:'Yes! '+st.sym+' = '+st.hid+'.'};txt='What number is *'+st.sym+'*?';}
       else if(r===3){st.op='+';st.hid=4;st.see=4;st.sym='★';st.ask={ans:'4',o:shuffle(['4','8','2']),ok:'Yes! 4 + 4 = 8, so ★ = 4.'};txt='*★ + ★ = 8*. Both stars are the same number. What is ★?';}
@@ -167,7 +167,7 @@ P.lesson({id:'equal2',title:'Making both sides equal',strand:'Algebra',codes:['C
   draw();
   return {tick(dt){if(arm){cur+=(tilt-cur)*Math.min(1,dt*4);arm.rotation.z=-cur;}},info:()=>st.L.join('+')+'|'+st.R.join(','),
     controls:()=>{const c=[{t:'right + 1',go:true,fn:()=>set(1)},{t:'right − 1',fn:()=>set(-1)},{t:'right + 10',fn:()=>set(10)},{t:'right − 10',fn:()=>set(-10)}];if(mode==='play'&&st.ask)return choices(st.setup?null:game,st.ask.o,st.ask.ans,st.ask.ok);return c;},
-    demo(n){st.ask=null;st.need=false;if(n==='fix'){st.L=[7,5];st.R=[10,0];draw();A.seq([[800,()=>set(1)],[600,()=>set(1)]]);}if(n==='sub'){st.L=[15,0];st.R=[19,0];draw();A.seq([0,1,2,3].map(()=>[500,()=>set(-1)]));}},
+    demo(n){if(n==='show'){st.L=[7,5];st.R=[10,0];draw();return;}if(n==='plus2'){st.L=[7,5];st.R=[10,2];A.pop();draw();return;}st.ask=null;st.need=false;if(n==='fix'){st.L=[7,5];st.R=[10,0];draw();A.seq([[800,()=>set(1)],[600,()=>set(1)]]);}if(n==='sub'){st.L=[15,0];st.R=[19,0];draw();A.seq([0,1,2,3].map(()=>[500,()=>set(-1)]));}},
     task(r){st.setup=true;st.ask=null;st.need=false;let txt;
       if(r===0){st.L=[rnd(6,9),rnd(5,9)];st.R=[10,0];st.need=true;txt='Make *'+st.L.join(' + ')+' = 10 + □*. Change the right side.';}
       else if(r===1){st.L=[30,20];st.R=[40,0];st.need=true;txt='Make *30 + 20 = 40 + □*.';}
@@ -217,7 +217,7 @@ P.lesson({id:'coding2',title:'Two robots at once',strand:'Algebra',codes:['C3.1'
   reset();stars();
   return {info:()=>st.B.join(''),
     controls:()=>{const c=['↑','↓','←','→'].map(a=>({t:'orange '+a,fn:()=>{if(st.B.length>=8)return;st.B.push(a);A.pop();reset();A.redraw();}})).concat([{t:'Undo',fn:()=>{st.B.pop();A.redraw();}},{t:'Clear',fn:()=>{st.B=[];reset();A.redraw();}},{t:'Run',go:true,fn:run}]);if(mode==='play'&&st.ask)return choices(st.setup?null:game,st.ask.o,st.ask.ans,st.ask.ok);return c;},
-    demo(n){st.ask=null;st.need=false;st.A=['→','→','→','↑'];if(n==='run'){st.B=['↑','←','←','←'];reset();A.seq([[700,run]]);}if(n==='fix'){st.B=['←','←','←','↑'];reset();A.seq([[400,run],[2400,()=>{st.B=['↑','←','←','←'];reset();A.redraw();}],[600,run]]);}},
+    demo(n){if(n==='show'){st.A=['→','→','→','↑'];st.B=['↑','←','←','←'];reset();A.redraw();return;}if(n==='runok'){st.A=['→','→','→','↑'];st.B=['↑','←','←','←'];run();return;}st.ask=null;st.need=false;st.A=['→','→','→','↑'];if(n==='run'){st.B=['↑','←','←','←'];reset();A.seq([[700,run]]);}if(n==='fix'){st.B=['←','←','←','↑'];reset();A.seq([[400,run],[2400,()=>{st.B=['↑','←','←','←'];reset();A.redraw();}],[600,run]]);}},
     task(r){st.setup=true;st.ask=null;st.need=true;st.A=['→','→','→','↑'];let txt;
       if(r===0){st.B=[];txt='Write code for the *orange* robot to reach the *orange star*. The blue code is done. Then *Run*!';}
       else if(r===1){st.B=['←','←','←','↑'];txt='This orange code makes the robots *bump*. Fix it so both reach their stars!';}
@@ -265,7 +265,7 @@ P.lesson({id:'sort2',title:'Venn and Carroll diagrams',strand:'Data',codes:['D1.
   draw();
   return {info:()=>st.view,
     controls:()=>{const c=[{t:'Venn',on:st.view==='venn',fn:()=>{st.view='venn';draw();}},{t:'Carroll',on:st.view==='carroll',fn:()=>{st.view='carroll';draw();}},{t:st.sorted?'Mix':'Sort',go:true,fn:()=>{st.sorted=!st.sorted;A.pop();draw();}}];if(mode==='play'&&st.ask)return choices(st.setup?null:game,st.ask.o,st.ask.ans,st.ask.ok).concat(c.slice(0,2));return c;},
-    demo(n){st.ask=null;st.want=null;st.view=n==='carroll'?'carroll':'venn';st.sorted=false;draw();A.seq([[900,()=>{st.sorted=true;draw();A.pop();}]]);},
+    demo(n){if(n==='venn'){st.view='venn';st.sorted=true;draw();return;}st.ask=null;st.want=null;st.view=n==='carroll'?'carroll':'venn';st.sorted=false;draw();A.seq([[900,()=>{st.sorted=true;draw();A.pop();}]]);},
     task(r){st.setup=true;st.ask=null;st.want=null;st.sorted=false;st.view='venn';let txt;
       if(r===0){st.want=o=>o.ci===0&&o.s===4;st.wantOk='Yes! A red square goes in the overlap.';txt='Tap a shape that belongs in the *overlap* (red *and* square).';}
       else if(r===1){st.want=o=>o.ci!==0&&o.s!==4;st.wantOk='Yes! It is not red and not a square.';txt='Tap a shape that goes *outside both circles*.';}
@@ -309,7 +309,7 @@ P.lesson({id:'tally2',title:'Two-way tally tables',strand:'Data',codes:['D1.2'],
   draw();
   return {info:()=>JSON.stringify(st.t),
     controls:()=>{const c=[{t:'Clear',fn:()=>{st.t=[[0,0,0],[0,0,0]];draw();}}];if(mode==='play'&&st.ask)return choices(st.setup?null:game,st.ask.o,st.ask.ans,st.ask.ok);return c;},
-    demo(n){st.ask=null;st.need=null;if(n==='fill'){st.t=[[0,0,0],[0,0,0]];draw();const seq=[[0,0],[1,1],[1,0],[0,2],[1,1],[0,0],[1,1],[0,1],[1,0],[1,2],[0,0],[1,1]];A.seq(seq.map(([j,i])=>[260,()=>tap(j,i)]));}if(n==='read'){st.t=[[4,2,3],[5,6,2]];draw();A.say('Grade 2, bus: 6');}},
+    demo(n){if(n==='show'){st.t=[[4,2,3],[5,6,2]];draw();return;}st.ask=null;st.need=null;if(n==='fill'){st.t=[[0,0,0],[0,0,0]];draw();const seq=[[0,0],[1,1],[1,0],[0,2],[1,1],[0,0],[1,1],[0,1],[1,0],[1,2],[0,0],[1,1]];A.seq(seq.map(([j,i])=>[260,()=>tap(j,i)]));}if(n==='read'){st.t=[[4,2,3],[5,6,2]];draw();A.say('Grade 2, bus: 6');}},
     task(r){st.setup=true;st.ask=null;st.need=null;st.t=[[4,2,3],[5,6,2]];let txt;
       if(r===0){st.ask={ans:'6',o:shuffle(['6','2','8']),ok:'Yes! Row Grade 2, column bus: 6.'};txt='How many *Grade 2* students take the *bus*?';}
       else if(r===1){st.ask={ans:'9',o:shuffle(['9','5','4']),ok:'Yes! 4 + 5 = 9.'};txt='How many students *walk* in all?';}
@@ -353,7 +353,7 @@ P.lesson({id:'graph2',title:'Line plots, bar graphs and mode',strand:'Data',code
   draw();
   return {info:()=>st.view,
     controls:()=>{const c=[{t:'Line plot',on:st.view==='plot',fn:()=>{st.view='plot';draw();}},{t:'Bar graph',on:st.view==='bar',go:true,fn:()=>{st.view='bar';draw();}}];if(mode==='play'&&st.ask)return choices(st.setup?null:game,st.ask.o,st.ask.ans,st.ask.ok).concat(c);return c;},
-    demo(n){st.ask=null;st.want=null;st.data=PETS.slice();if(n==='plot'){st.view='plot';st.data=[];draw();A.seq(PETS.map(v=>[200,()=>{st.data.push(v);draw();}]));}if(n==='bar'){st.view='bar';draw();}},
+    demo(n){if(n==='plotall'){st.view='plot';st.data=PETS.slice();draw();return;}st.ask=null;st.want=null;st.data=PETS.slice();if(n==='plot'){st.view='plot';st.data=[];draw();A.seq(PETS.map(v=>[200,()=>{st.data.push(v);draw();}]));}if(n==='bar'){st.view='bar';draw();}},
     task(r){st.setup=true;st.ask=null;st.want=null;st.data=PETS.slice();st.view='plot';let txt;
       if(r===0){st.want=i=>i===1;st.wantOk='Yes! The mode is 1 pet.';txt='Tap the *mode*: the most common number of pets.';}
       else if(r===1){st.view='bar';st.ask={ans:'4',o:shuffle(['4','2','3']),ok:'Yes! The bar for 2 pets is 4 tall.'};txt='How many students have *2 pets*?';}
@@ -397,7 +397,7 @@ P.lesson({id:'chance2',title:'Likely or unlikely?',strand:'Data',codes:['D2.1','
   draw();
   return {info:()=>st.r+'/'+st.b,
     controls:()=>{const c=[{t:'red +',fn:()=>{st.r=Math.min(10,st.r+1);st.res=[];draw();}},{t:'red −',fn:()=>{st.r=Math.max(0,st.r-1);st.res=[];draw();}},{t:'blue +',fn:()=>{st.b=Math.min(10,st.b+1);st.res=[];draw();}},{t:'blue −',fn:()=>{st.b=Math.max(0,st.b-1);st.res=[];draw();}},{t:'Pick',fn:pick1},{t:'Pick 20',go:true,fn:many}];if(mode==='play'&&st.ask)return choices(st.setup?null:game,st.ask.o,st.ask.ans,st.ask.ok).concat(c.slice(4));return c;},
-    demo(n){st.ask=null;st.r=8;st.b=2;st.res=[];draw();if(n==='pick')A.seq([[700,pick1]]);if(n==='many')A.seq([[500,many]]);},
+    demo(n){if(n==='picknow'){pick1();return;}st.ask=null;st.r=8;st.b=2;st.res=[];draw();if(n==='pick')A.seq([[700,pick1]]);if(n==='many')A.seq([[500,many]]);},
     task(r){st.setup=true;st.res=[];let txt;const O=['Certain','Likely','Unlikely','Impossible'];
       if(r===0){st.r=8;st.b=2;st.ask={ans:'Likely',o:O,ok:'Yes! 8 of 10 are red.'};txt='Picking *red* from this bag is…';}
       else if(r===1){st.r=8;st.b=2;st.ask={ans:'Unlikely',o:O,ok:'Yes! Only 2 of 10 are not red.'};txt='Picking *not red* from this bag is…';}

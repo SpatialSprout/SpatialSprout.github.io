@@ -48,7 +48,7 @@ P.lesson({id:'shapes2',title:'Sides, corners and symmetry',strand:'Spatial Sense
   draw();
   return {info:()=>SH2[st.sel].n,
     controls:()=>{const c=[{t:'Symmetry lines',on:st.sym,go:true,fn:()=>{st.sym=!st.sym;draw();}}];if(mode==='play'&&st.ask)return choices(st.setup?null:game,st.ask.o,st.ask.ans,st.ask.ok).concat(c);return c;},
-    demo(n){st.ask=null;st.want=null;if(n==='tour'){st.sym=false;A.seq(SH2.map((s,i)=>[800,()=>tap(i)]));}if(n==='sym'){st.sel=1;st.sym=true;draw();}},
+    demo(n){if(n==='show'){st.sel=1;st.sym=false;draw();return;}if(n==='symnow'){st.sel=1;st.sym=true;draw();return;}st.ask=null;st.want=null;if(n==='tour'){st.sym=false;A.seq(SH2.map((s,i)=>[800,()=>tap(i)]));}if(n==='sym'){st.sel=1;st.sym=true;draw();}},
     task(r){st.setup=true;st.ask=null;st.want=null;st.sym=false;st.sel=0;let txt;
       if(r===0){st.want=i=>SH2[i].sides===5;st.wantOk='Yes! A pentagon has 5 sides.';txt='Tap the shape with *5 sides*.';}
       else if(r===1){st.want=i=>SH2[i].sides===6;st.wantOk='Yes! A hexagon has 6 sides.';txt='Tap the *hexagon*.';}
@@ -94,7 +94,7 @@ P.lesson({id:'compose2',title:'Building shapes from shapes',strand:'Spatial Sens
   draw();
   return {info:()=>st.hex?'hex':st.cfg,
     controls:()=>{const c=[{t:'Square',on:!st.hex&&st.cfg==='square',fn:()=>setCfg('square')},{t:'Triangle',on:!st.hex&&st.cfg==='tri',go:true,fn:()=>setCfg('tri')},{t:'Parallelogram',on:!st.hex&&st.cfg==='para',fn:()=>setCfg('para')},{t:'Hexagon',on:st.hex,fn:()=>{st.hex=true;st.apart=false;draw();}},{t:'Decompose',fn:()=>{st.hex=true;st.apart=!st.apart;A.pop();draw();}}];if(mode==='play'&&st.ask)return choices(st.setup?null:game,st.ask.o,st.ask.ans,st.ask.ok).concat(c);return c;},
-    demo(n){st.ask=null;st.need=null;if(n==='move'){st.hex=false;st.cfg='square';draw();A.seq([[1000,()=>setCfg('tri')]]);}if(n==='hex'){st.hex=true;st.apart=false;draw();A.seq([[1000,()=>{st.apart=true;draw();A.say('6 triangles!');}]]);}},
+    demo(n){if(n==='square'){st.hex=false;st.cfg='square';draw();return;}if(n==='tri'){setCfg('tri');return;}if(n==='hexshow'){st.hex=true;st.apart=false;draw();return;}if(n==='apart'){st.hex=true;st.apart=true;A.pop();draw();return;}st.ask=null;st.need=null;if(n==='move'){st.hex=false;st.cfg='square';draw();A.seq([[1000,()=>setCfg('tri')]]);}if(n==='hex'){st.hex=true;st.apart=false;draw();A.seq([[1000,()=>{st.apart=true;draw();A.say('6 triangles!');}]]);}},
     task(r){st.setup=true;st.ask=null;st.need=null;st.hex=false;st.cfg='square';let txt;
       if(r===0){st.need='tri';txt='Rearrange the two triangles into *one big triangle*.';}
       else if(r===1){st.need='para';txt='Rearrange them into a *parallelogram* (a slanted shape).';}
@@ -139,7 +139,7 @@ P.lesson({id:'congruent2',title:'Same size, same shape',strand:'Spatial Sense',c
   draw();
   return {info:()=>st.tgt+'/'+st.sel,
     controls:()=>{const c=[{t:'Try it',go:true,fn:tryIt},{t:'New blue shape',fn:()=>{st.tgt=pick([0,3]);st.sel=opts()[0];st.fit=0;draw();}}];if(mode==='play'&&st.ask)return choices(st.setup?null:game,st.ask.o,st.ask.ans,st.ask.ok).concat(c);return c;},
-    demo(n){st.ask=null;st.want=null;st.fit=0;if(n==='match'){st.tgt=0;st.sel=1;draw();A.seq([[700,tryIt]]);}if(n==='nomatch'){st.tgt=3;st.sel=4;draw();A.seq([[700,tryIt]]);}},
+    demo(n){if(n==='show'){st.tgt=0;st.sel=1;st.fit=0;draw();return;}if(n==='try'){tryIt();return;}st.ask=null;st.want=null;st.fit=0;if(n==='match'){st.tgt=0;st.sel=1;draw();A.seq([[700,tryIt]]);}if(n==='nomatch'){st.tgt=3;st.sel=4;draw();A.seq([[700,tryIt]]);}},
     task(r){st.setup=true;st.ask=null;st.want=null;st.fit=0;let txt;
       if(r===0){st.tgt=0;st.sel=2;st.want=true;txt='Find the orange shape that is *congruent* to blue A. Tap it, then *Try it*.';}
       else if(r===1){st.tgt=1;st.sel=2;st.want=true;txt='Find the shape *congruent* to blue B. (It may be turned!)';}
@@ -189,7 +189,7 @@ P.lesson({id:'map2',title:'Maps of familiar places',strand:'Spatial Sense',codes
   place();
   return {info:()=>st.pos.join(','),
     controls:()=>{const c=[{t:'forward ↑',go:true,fn:()=>step([0,1],'forward')},{t:'back ↓',fn:()=>step([0,-1],'back')},{t:'left ←',fn:()=>step([-1,0],'left')},{t:'right →',fn:()=>step([1,0],'right')},{t:'Back to slide',fn:()=>{st.pos=[0,0];st.steps=0;place();A.redraw();}}];if(mode==='play'&&st.ask)return choices(st.setup?null:game,st.ask.o,st.ask.ans,st.ask.ok);return c;},
-    demo(n){st.ask=null;st.goal=null;st.steps=0;if(n==='walk'){st.pos=[0,0];place();A.seq([0,1,2,3].map(()=>[500,()=>step([1,0],'right')]));}if(n==='path'){st.pos=[4,0];place();A.seq([[500,()=>step([0,1],'forward')],[450,()=>step([0,1],'forward')],[450,()=>step([0,1],'forward')],[500,()=>step([1,0],'right')]]);}},
+    demo(n){if(n==='home'){st.pos=[0,0];st.steps=0;place();return;}if(n==='r'){step([1,0],'right');return;}st.ask=null;st.goal=null;st.steps=0;if(n==='walk'){st.pos=[0,0];place();A.seq([0,1,2,3].map(()=>[500,()=>step([1,0],'right')]));}if(n==='path'){st.pos=[4,0];place();A.seq([[500,()=>step([0,1],'forward')],[450,()=>step([0,1],'forward')],[450,()=>step([0,1],'forward')],[500,()=>step([1,0],'right')]]);}},
     task(r){st.setup=true;st.ask=null;st.goal=null;st.steps=0;let txt;
       if(r===0){st.pos=[0,0];st.goal='swings';txt='Walk from the slide to the *swings*.';}
       else if(r===1){st.pos=[4,0];st.goal='tree';txt='Walk from the swings to the *tree*.';}
@@ -232,7 +232,7 @@ P.lesson({id:'units2',title:'Measuring with units',strand:'Spatial Sense',codes:
   draw();
   return {info:()=>UN[st.u].n,
     controls:()=>{const c=UN.map((u,i)=>({t:u.n,on:st.u===i,fn:()=>{st.u=i;st.done=false;draw();}})).concat([{t:'Measure',go:true,fn:measure}]);if(mode==='play'&&st.ask)return choices(st.setup?null:game,st.ask.o,st.ask.ans,st.ask.ok).concat(c);return c;},
-    demo(n){st.ask=null;st.L=1.8;if(n==='clips'){st.u=0;st.done=false;draw();A.seq([[500,measure]]);}if(n==='all'){st.u=1;st.done=false;draw();A.seq([[400,measure],[2000,()=>{st.u=2;st.done=false;draw();}],[300,measure]]);}},
+    demo(n){if(n==='u0'){st.L=1.8;st.u=0;st.done=true;draw();return;}if(n==='u2now'){st.L=1.8;st.u=2;st.done=false;measure();return;}st.ask=null;st.L=1.8;if(n==='clips'){st.u=0;st.done=false;draw();A.seq([[500,measure]]);}if(n==='all'){st.u=1;st.done=false;draw();A.seq([[400,measure],[2000,()=>{st.u=2;st.done=false;draw();}],[300,measure]]);}},
     task(r){st.setup=true;st.done=false;st.L=1.8;let txt;
       if(r===0){st.u=0;st.ask={ans:'6',o:shuffle(['6','9','3']),ok:'Yes! 6 paper clips.'};txt='Measure the box with *paper clips*. How many?';}
       else if(r===1){st.u=1;st.ask={ans:'9',o:shuffle(['9','6','3']),ok:'Yes! 9 cubes.'};txt='Measure the box with *cubes*. How many?';}
@@ -272,7 +272,7 @@ P.lesson({id:'cm2',title:'Centimetres and metres',strand:'Spatial Sense',codes:[
   draw();
   return {info:()=>st.start+'+'+st.len,
     controls:()=>{const c=[{t:'slide ←',fn:()=>{st.start=Math.max(0,st.start-1);A.pop();draw();}},{t:'slide →',go:true,fn:()=>{st.start=Math.min(15-st.len,st.start+1);A.pop();draw();}},{t:'longer',fn:()=>{st.len=Math.min(15-st.start,st.len+1);draw();}},{t:'shorter',fn:()=>{st.len=Math.max(2,st.len-1);draw();}}];if(mode==='play'&&st.ask)return choices(st.setup?null:game,st.ask.o,st.ask.ans,st.ask.ok).concat(c);return c;},
-    demo(n){st.ask=null;st.len=9;if(n==='zero'){st.start=0;draw();A.say('9 cm');}if(n==='start'){st.start=0;draw();A.seq([1,2,3].map(s=>[500,()=>{st.start=s;draw();}]).concat([[500,()=>A.say('from 3 to 12: still 9 cm')]]));}},
+    demo(n){if(n==='start3'){st.len=9;st.start=3;A.pop();draw();return;}st.ask=null;st.len=9;if(n==='zero'){st.start=0;draw();A.say('9 cm');}if(n==='start'){st.start=0;draw();A.seq([1,2,3].map(s=>[500,()=>{st.start=s;draw();}]).concat([[500,()=>A.say('from 3 to 12: still 9 cm')]]));}},
     task(r){st.setup=true;let txt;
       if(r===0){st.start=0;st.len=rnd(6,12);st.ask={ans:st.len+' cm',o:shuffle([st.len+' cm',(st.len+1)+' cm',(st.len-1)+' cm']),ok:'Yes! '+st.len+' cm.'};txt='How long is the crayon?';}
       else if(r===1){st.start=3;st.len=7;st.ask={ans:'7 cm',o:shuffle(['7 cm','10 cm','3 cm']),ok:'Yes! From 3 to 10 is 7 cm.'};txt='The crayon starts at *3*. How long is it?';}
@@ -314,7 +314,7 @@ P.lesson({id:'time2',title:'Seconds, minutes and hours',strand:'Spatial Sense',c
   draw();
   return {info:()=>st.start+'/'+st.now,
     controls:()=>{const c=[{t:'+5 minutes',go:true,fn:()=>adv(5)},{t:'+15 minutes',fn:()=>adv(15)},{t:'+1 hour',fn:()=>adv(60)},{t:'Reset',fn:()=>{st.now=st.start;draw();}}];if(mode==='play'&&st.ask)return choices(st.setup?null:game,st.ask.o,st.ask.ans,st.ask.ok).concat(c);return c;},
-    demo(n){st.ask=null;st.start=180;st.now=180;draw();if(n==='hour')A.seq([[600,()=>adv(60)]]);if(n==='half')A.seq([[600,()=>adv(15)],[900,()=>adv(15)]]);},
+    demo(n){if(n==='reset'){st.start=180;st.now=180;draw();return;}if(n==='m15'){adv(15);return;}st.ask=null;st.start=180;st.now=180;draw();if(n==='hour')A.seq([[600,()=>adv(60)]]);if(n==='half')A.seq([[600,()=>adv(15)],[900,()=>adv(15)]]);},
     task(r){st.setup=true;st.start=180;st.now=180;let txt;
       if(r===0){st.now=210;st.ask={ans:'30 minutes',o:shuffle(['30 minutes','3 hours','30 seconds']),ok:'Yes! Half an hour.'};txt='The game started at *3:00* and ended at *3:30*. How long did it last?';}
       else if(r===1){st.start=600+15;st.now=630;st.ask={ans:'15 minutes',o:shuffle(['15 minutes','30 minutes','1 hour']),ok:'Yes! 10:15 to 10:30 is 15 minutes.'};txt='Recess is from *10:15* to *10:30*. How long is it?';}
@@ -362,7 +362,7 @@ P.lesson({id:'money2',title:'Many ways to make money amounts',strand:'Financial 
   draw();
   return {info:()=>fmtM(total(st)),
     controls:()=>{const c=[{t:'Undo',fn:()=>{st.tray.pop();draw();}},{t:'Clear',go:true,fn:()=>{st.tray=[];draw();}}];if(mode==='play'&&st.ask)return choices(st.setup?null:game,st.ask.o,st.ask.ans,st.ask.ok).concat(c);return c;},
-    demo(n){st.ask=null;st.need=null;st.tray=[];draw();if(n==='cents')A.seq([[500,()=>add(2)],[400,()=>add(2)],[400,()=>add(2)],[900,()=>{st.tray=[];draw();}],[400,()=>add(2)],[300,()=>add(2)],[300,()=>add(1)],[300,()=>add(1)],[300,()=>add(0)]]);
+    demo(n){if(n==='clear'){st.tray=[];draw();return;}const MI={q:2,b5:5,b10:6,b20:7};if(MI[n]!=null){add(MI[n]);return;}st.ask=null;st.need=null;st.tray=[];draw();if(n==='cents')A.seq([[500,()=>add(2)],[400,()=>add(2)],[400,()=>add(2)],[900,()=>{st.tray=[];draw();}],[400,()=>add(2)],[300,()=>add(2)],[300,()=>add(1)],[300,()=>add(1)],[300,()=>add(0)]]);
       if(n==='dollars')A.seq([[500,()=>add(7)],[400,()=>add(6)],[400,()=>add(5)]]);},
     task(r){st.setup=true;st.ask=null;st.need=null;st.tray=[];let txt;
       if(r===0){st.need=s=>total(s)===75;st.needOk=s=>'Yes! '+s.tray.length+' coins make 75¢.';txt='Make *75¢* with coins.';}
