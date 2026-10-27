@@ -8,7 +8,7 @@ const rnd=(a,b)=>a+Math.floor(Math.random()*(b-a+1)),pick=a=>a[Math.floor(Math.r
 const ONES=['zero','one','two','three','four','five','six','seven','eight','nine','ten','eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen','eighteen','nineteen'];
 const TENS=['','','twenty','thirty','forty','fifty'];const words=n=>n<20?ONES[n]:TENS[Math.floor(n/10)]+(n%10?'-'+ONES[n%10]:'');
 function choices(game,list,ans,ok,lab){return list.map(o=>({t:lab?lab(o):String(o),big:true,fn:()=>{if(o===ans){if(game)game.solved(ok);else A.good(ok);}else A.bad('Not quite. Try again!');}}));}
-const COL=['#ff4f8b','#ff8a3d','#ffc04d','#5fd38a','#2f7de1','#8b5cf6'];
+const COL=['#ff6b35','#ff8a3d','#ffc04d','#5fd38a','#2f7de1','#8b5cf6'];
 function bead(col,r){return mk(G('g1b'+(r||.12),()=>new THREE.SphereGeometry(r||.12,18,14)),lam(col),0);}
 function cube(col,s){return mk(G('g1c'+(s||.2),()=>new THREE.BoxGeometry((s||.2)*.92,(s||.2)*.92,(s||.2)*.92)),lam(col),20);}
 function frog(){const g=new THREE.Group();const b=mk(new THREE.SphereGeometry(.17,18,14),lam('#5cc46a'),0);b.scale.set(1.1,.8,1);b.position.y=.14;g.add(b);
@@ -23,7 +23,7 @@ function boardTex(n,cols,hi){const cv=document.createElement('canvas');const cw=
 P.lesson({id:'count50',title:'Counting to 50',strand:'Number',codes:['B1.1','B1.5'],
  guide:{goal:'Read and represent whole numbers up to 50, describe how numbers are used in everyday life, and count to 50 by 1s, 2s, 5s and 10s.',words:'count, number, skip count, by 2s, by 5s, by 10s, chart',
   ask:['Where do you see numbers at home?','What comes after 29?','What pattern do you see when you count by 10s?'],home:'Count the stairs, the spoons, or the steps to the door. Try counting by 2s with socks and by 5s with fingers!'},
- learn:[{say:'Count with the frog!',speech:'Let’s count! The frog hops on every number: one, two, three, four, five… all the way to fifty. Numbers are everywhere: on clocks, doors and sports shirts!',view:'model',demo:'ones'},
+ learn:[{say:'Count with the frog!',speech:'Let’s count with Kai! The frog hops on every number: one, two, three, four, five… all the way to fifty. Numbers are everywhere: on clocks, doors and sports shirts!',view:'model',demo:'ones'},
         {say:'Read about skip counting.',speech:'Skip counting is a fast way to count. Count by twos: two, four, six. Count by fives: five, ten, fifteen. Count by tens: ten, twenty, thirty, forty, fifty!',view:'read'},
         {say:'Watch: count by 10s.',speech:'Watch the frog jump by tens. Ten, twenty, thirty, forty, fifty! Each jump goes down one row.',view:'model',demo:'tens'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -66,7 +66,7 @@ P.lesson({id:'count50',title:'Counting to 50',strand:'Number',codes:['B1.1','B1.
 P.lesson({id:'tens50',title:'Tens and ones',strand:'Number',codes:['B1.2'],
  guide:{goal:'Compose and decompose whole numbers up to 50, using a variety of tools and strategies.',words:'ten, one, rod, group, make, break apart',
   ask:['How many ones make a ten?','How can you make 34 with tens and ones?','Can you make 34 another way?'],home:'Group spoons or crayons in bundles of 10. How many tens? How many ones left?'},
- learn:[{say:'Ten ones make one ten.',speech:'Ten little cubes snap together to make one rod. That is one ten! Watch: three tens and four ones make thirty-four.',view:'model',demo:'make'},
+ learn:[{say:'Ten ones make one ten.',speech:'Zara snaps ten little cubes together to make one rod. That is one ten! Watch: three tens and four ones make thirty-four.',view:'model',demo:'make'},
         {say:'Read about tens and ones.',speech:'A number like thirty-four has three tens and four ones. You can count the tens: ten, twenty, thirty. Then count on the ones: thirty-one, thirty-two, thirty-three, thirty-four.',view:'read'},
         {say:'Watch: break a ten.',speech:'You can break a ten into ten ones. Now there are two tens and fourteen ones. It is still thirty-four!',view:'model',demo:'break'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -110,7 +110,7 @@ function tower(n,x,z,grp,col){const s=.12;const g=new THREE.Group();const t=Math
 P.lesson({id:'compare50',title:'More, fewer and the same',strand:'Number',codes:['B1.3'],
  guide:{goal:'Compare and order whole numbers up to 50, in various contexts.',words:'more, fewer, greater, less, same, equal, order, first, last',
   ask:['Which is more, 32 or 23? How do you know?','How can tens help you compare?','Put 15, 41 and 28 in order.'],home:'Compare two piles of buttons or blocks. Which has more? Count to check!'},
- learn:[{say:'Which tower is taller?',speech:'Here are thirty-two cubes and twenty-three cubes. Look at the tens first. Three tens is more than two tens. So thirty-two is more than twenty-three!',view:'model',demo:'cmp'},
+ learn:[{say:'Which tower is taller?',speech:'Leo has thirty-two cubes. Amara has twenty-three cubes. Look at the tens first. Three tens is more than two tens. So thirty-two is more than twenty-three. Leo has more!',view:'model',demo:'cmp'},
         {say:'Read about comparing.',speech:'To compare two numbers, look at the tens first. If the tens are the same, look at the ones. The bigger number is greater. The smaller number is less.',view:'read'},
         {say:'Watch: put them in order.',speech:'Let’s put three towers in order, from least to greatest: fifteen, twenty-eight, forty-one. They line up like stairs!',view:'model',demo:'order'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -121,13 +121,13 @@ P.lesson({id:'compare50',title:'More, fewer and the same',strand:'Number',codes:
  init:k=>({nums:[32,23],want:null,ask:null}),
  left(p,S){const g=p.g;let y=header(p,S);
   y=para(p,y,'To *compare*, look at the *tens* first. Then look at the *ones*.')+16;
-  [[32,'#2f7de1'],[23,'#ff4f8b']].forEach(([n,c],j)=>{const t=Math.floor(n/10),o=n%10;for(let k=0;k<t;k++){g.fillStyle=c;g.fillRect(X0+30+j*300+k*30,y+20,24,200);}for(let i=0;i<o;i++){g.fillStyle=tint(c,.45);g.fillRect(X0+30+j*300+t*30+6,y+200-i*20,22,18);}T(g,String(n),X0+80+j*300,y+260,ZS(48),c,'center');});
+  [[32,'#2f7de1'],[23,'#ff6b35']].forEach(([n,c],j)=>{const t=Math.floor(n/10),o=n%10;for(let k=0;k<t;k++){g.fillStyle=c;g.fillRect(X0+30+j*300+k*30,y+20,24,200);}for(let i=0;i<o;i++){g.fillStyle=tint(c,.45);g.fillRect(X0+30+j*300+t*30+6,y+200-i*20,22,18);}T(g,String(n),X0+80+j*300,y+260,ZS(48),c,'center');});
   T(g,'32 is more than 23',X0+640,y+120,FT.hand||FT.bodyB,INK,'center');T(g,'32 > 23',X0+640,y+180,ZS(50),acc(),'center');y+=290;
   rr(g,X0,y,TW,100,18);g.fillStyle=tint(acc(),.12);g.fill();T(g,'In order, least to greatest:',X0+20,y+38,FT.bodyB,acc());T(g,'15,  28,  41',X0+20,y+80,ZS(36),INK);y+=124;
   y=keyWords(p,y,[['greater','more'],['less','fewer']]);
   predict(p,y,S,'p3','Which is greater: 18 or 21?','*21!* 2 tens beat 1 ten.');},
  readout(p,S,y){const g=p.g,st=S.st;const [a,b]=st.nums;T(g,st.nums.length===2?(a>b?a+' > '+b+'  ('+a+' is more)':a<b?a+' < '+b+'  ('+b+' is more)':a+' = '+b):st.nums.slice().sort((x,y)=>x-y).join(', '),X0,y+54,ZS(46),acc());return y+70;},
- build(S,grp,mode,game){const st=S.st;const g2=new THREE.Group();grp.add(g2);const cols=['#2f7de1','#ff4f8b','#5fd38a'];
+ build(S,grp,mode,game){const st=S.st;const g2=new THREE.Group();grp.add(g2);const cols=['#2f7de1','#ff6b35','#5fd38a'];
   function draw(){clearGroup(g2);const n=st.nums.length;st.nums.forEach((v,i)=>{const x=n===2?(i?1.0:-1.0):-1.5+i*1.5;const tw=tower(v,x,-2.0,g2,cols[i]);const pad=mk(new THREE.BoxGeometry(1.1,.04,.6),lam(tint(cols[i],.2)),20);pad.position.set(x,.02,-2.0);g2.add(pad);A.drag(pad,{tap:()=>tap(i)});tw.children.forEach(c=>A.drag(c,{tap:()=>tap(i)}));
       const l=label(String(v),{size:.34,bg:'#ffffff',border:cols[i]});l.position.set(x,Math.min(10,v)*.12+.4,-2.0);g2.add(l);});A.redraw();}
   function tap(i){A.pop();A.say(String(st.nums[i]));if(mode==='play'&&!st.setup&&st.want){if(st.want(i))game.solved(st.wantOk);else A.bad('Look at the tens first!');}}
@@ -151,7 +151,7 @@ P.lesson({id:'compare50',title:'More, fewer and the same',strand:'Number',codes:
 P.lesson({id:'estimate50',title:'Estimate, then count',strand:'Number',codes:['B1.4'],
  guide:{goal:'Estimate the number of objects in collections of up to 50, and verify estimates by counting.',words:'estimate, about, guess, count, group, check',
   ask:['What is a good estimate?','Why is it faster to count in groups of 10?','Was your estimate close?'],home:'Fill a cup with pasta or buttons. Estimate how many, then count in groups of 10 to check.'},
- learn:[{say:'Estimate first!',speech:'How many marbles are in the jar? An estimate is a smart guess. It looks like about thirty. Now let’s count to check! We put them in groups of ten: ten, twenty, thirty, and two more. Thirty-two! Our estimate was close.',view:'model',demo:'count'},
+ learn:[{say:'Estimate first!',speech:'How many marbles are in Amara’s jar? An estimate is a smart guess. It looks like about thirty. Now let’s count to check! We put them in groups of ten: ten, twenty, thirty, and two more. Thirty-two! Amara’s estimate was close.',view:'model',demo:'count'},
         {say:'Read about estimating.',speech:'To estimate, look at the group and think: is it closer to ten, twenty, thirty, forty or fifty? Then count to check. Counting in groups of ten makes it easy.',view:'read'},
         {say:'Watch: a small group.',speech:'This jar has fewer marbles. It looks like about ten. Let’s count: nine! Very close!',view:'model',demo:'small'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -195,7 +195,7 @@ function cookie(){const g=new THREE.Group();const c=mk(G('g1ck',()=>new THREE.Cy
 P.lesson({id:'share1',title:'Fair shares',strand:'Number',codes:['B1.6','B1.7'],
  guide:{goal:'Use drawings to represent and solve fair-share problems with 2 and 4 sharers and remainders of 1 or 2, and recognize that one half and two fourths of the same whole are equal.',words:'share, fair, equal, left over, half, halves, fourths, quarter',
   ask:['What does a fair share mean?','What can we do with a cookie that is left over?','Is one half the same as two fourths?'],home:'Share grapes or crackers between 2 people, then 4 people. Are there any left over?'},
- learn:[{say:'Share it fairly!',speech:'Nine cookies for two friends. We give one to each friend, again and again. Each friend gets four cookies, and one is left over. To be fair, we can cut the last cookie in half!',view:'model',demo:'deal'},
+ learn:[{say:'Share it fairly!',speech:'Milo has nine cookies for two friends. He gives one to each friend, again and again. Each friend gets four cookies, and one is left over. To be fair, Milo cuts the last cookie in half!',view:'model',demo:'deal'},
         {say:'Read about halves and fourths.',speech:'When we cut something into two equal parts, each part is one half. When we cut it into four equal parts, each part is one fourth. Two fourths are the same as one half!',view:'read'},
         {say:'Watch: half and two fourths.',speech:'Look at two pizzas. One is cut in half. One is cut into fourths. One half covers the same amount as two fourths!',view:'model',demo:'pizza'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -243,7 +243,7 @@ P.lesson({id:'share1',title:'Fair shares',strand:'Number',codes:['B1.6','B1.7'],
 P.lesson({id:'pieces1',title:'More sharers, smaller pieces',strand:'Number',codes:['B1.8'],
  guide:{goal:'Use drawings to compare and order unit fractions that result when a whole is shared by different numbers of sharers, up to 10.',words:'whole, equal parts, piece, bigger, smaller, half, third, fourth',
   ask:['If more friends share a sandwich, are the pieces bigger or smaller?','Which is bigger: 1 of 3 pieces or 1 of 6 pieces?','Why?'],home:'Fold a paper in 2, then a new paper in 4. Which piece is bigger?'},
- learn:[{say:'Share one sandwich.',speech:'Two friends share one sandwich. Each gets a big piece: one half. Now four friends share the same sandwich. Each piece is smaller! The more friends, the smaller the pieces.',view:'model',demo:'more'},
+ learn:[{say:'Share one sandwich.',speech:'Suki and Kai share one sandwich. Each gets a big piece: one half. Now four friends share the same sandwich. Each piece is smaller! The more friends, the smaller the pieces.',view:'model',demo:'more'},
         {say:'Read about pieces.',speech:'When a whole is shared by more people, each piece gets smaller. One half is bigger than one third. One third is bigger than one fourth.',view:'read'},
         {say:'Watch: compare two sandwiches.',speech:'This sandwich is shared by three. That one is shared by six. A piece of the first one is bigger!',view:'model',demo:'cmp'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -283,30 +283,30 @@ function tenFrame(grp,x,z,n1,n2,c1,c2,hide){const fr=mk(new THREE.BoxGeometry(2.
 P.lesson({id:'facts10',title:'Adding and subtracting to 10',strand:'Number',codes:['B2.1','B2.2'],
  guide:{goal:'Recall and demonstrate addition facts for numbers up to 10 and related subtraction facts, and use the properties of addition and subtraction to solve problems and check calculations.',words:'add, plus, subtract, minus, equals, turn-around fact, fact family',
   ask:['If 6 + 3 = 9, what is 3 + 6?','If 6 + 3 = 9, what is 9 − 3?','How can adding check a subtraction?'],home:'Use 10 small toys. Hide some under a cup. How many are hiding? Make up adding and subtracting stories.'},
- learn:[{say:'Fill the ten frame.',speech:'Six pink counters plus three yellow counters. Count them all: nine! Six plus three equals nine. Now turn it around: three plus six is also nine. That is a turn-around fact!',view:'model',demo:'add'},
+ learn:[{say:'Fill the ten frame.',speech:'Kai puts six orange counters and three yellow counters in the ten frame. Count them all: nine! Six plus three equals nine. Now turn it around: three plus six is also nine. That is a turn-around fact!',view:'model',demo:'add'},
         {say:'Read about fact families.',speech:'Six plus three equals nine, so nine minus three equals six, and nine minus six equals three. These facts are a family! Adding can check subtracting.',view:'read'},
         {say:'Watch: take away.',speech:'Nine counters. Take away three yellow counters. Six are left. Nine minus three equals six.',view:'model',demo:'sub'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
-        {say:'Your turn: make a fact!',speech:'Your turn! Add pink and yellow counters to make a fact.',view:'model'}],
+        {say:'Your turn: make a fact!',speech:'Your turn! Add orange and yellow counters to make a fact.',view:'model'}],
  fig:'A ten frame with two colours of counters.',rz:.35,
- explore:['Add *pink* or *yellow* counters.','Press *Turn around* to swap the colours.','Press *Take away yellow* to subtract.'],
+ explore:['Add *orange* or *yellow* counters.','Press *Turn around* to swap the colours.','Press *Take away yellow* to subtract.'],
  howTo:'Make the fact on the ten frame, or choose the answer.',
  init:k=>({a:6,b:3,hide:false,need:null,ask:null}),
  left(p,S){const g=p.g;let y=header(p,S);
   y=para(p,y,'A *ten frame* has 10 spaces. It helps us add and subtract.')+16;
-  const s=64;for(let i=0;i<10;i++){const x=X0+(i%5)*s,yy=y+Math.floor(i/5)*s;g.strokeStyle='#94a3b8';g.lineWidth=3;g.strokeRect(x,yy,s,s);if(i<9){g.beginPath();g.arc(x+s/2,yy+s/2,24,0,Math.PI*2);g.fillStyle=i<6?'#ff4f8b':'#ffc04d';g.fill();}}
+  const s=64;for(let i=0;i<10;i++){const x=X0+(i%5)*s,yy=y+Math.floor(i/5)*s;g.strokeStyle='#94a3b8';g.lineWidth=3;g.strokeRect(x,yy,s,s);if(i<9){g.beginPath();g.arc(x+s/2,yy+s/2,24,0,Math.PI*2);g.fillStyle=i<6?'#ff6b35':'#ffc04d';g.fill();}}
   T(g,'6 + 3 = 9',X0+380,y+50,ZS(44),acc());T(g,'3 + 6 = 9',X0+380,y+110,ZS(44),acc());y+=160;
   rr(g,X0,y,TW,150,18);g.fillStyle=tint(acc(),.12);g.fill();T(g,'Fact family',X0+20,y+36,FT.bodyB,acc());T(g,'6 + 3 = 9     3 + 6 = 9',X0+20,y+80,FT.hand||FT.body);T(g,'9 − 3 = 6     9 − 6 = 3',X0+20,y+124,FT.hand||FT.body);y+=172;
   y=keyWords(p,y,[['turn-around fact','3 + 6 and 6 + 3 give the same answer'],['fact family','add and subtract facts with the same 3 numbers']]);
   predict(p,y,S,'p7','If 7 + 2 = 9, what is 9 − 2?','*7!*');},
  readout(p,S,y){const g=p.g,st=S.st;T(g,st.hide?(st.a+st.b)+' − '+st.b+' = '+st.a:st.a+' + '+st.b+' = '+(st.a+st.b),X0,y+58,ZS(60),acc());return y+72;},
  build(S,grp,mode,game){const st=S.st;const g2=new THREE.Group();grp.add(g2);
-  function draw(){clearGroup(g2);tenFrame(g2,0,-2.0,st.a,st.b,'#ff4f8b','#ffc04d',st.hide);const l=label(st.hide?(st.a+st.b)+' − '+st.b+' = '+st.a:st.a+' + '+st.b+' = '+(st.a+st.b),{size:.36,bg:'#ffffff'});l.position.set(0,.9,-2.8);g2.add(l);check();A.redraw();}
+  function draw(){clearGroup(g2);tenFrame(g2,0,-2.0,st.a,st.b,'#ff6b35','#ffc04d',st.hide);const l=label(st.hide?(st.a+st.b)+' − '+st.b+' = '+st.a:st.a+' + '+st.b+' = '+(st.a+st.b),{size:.36,bg:'#ffffff'});l.position.set(0,.9,-2.8);g2.add(l);check();A.redraw();}
   function check(){if(mode==='play'&&!st.setup&&st.need&&st.a===st.need[0]&&st.b===st.need[1]&&!st.hide)game.solved('Yes! '+st.a+' + '+st.b+' = '+(st.a+st.b)+'!');}
   const add=(k,d)=>{st.hide=false;if(d>0&&st.a+st.b>=10){A.bad('The ten frame is full!');return;}if(st[k]+d<0)return;st[k]+=d;A.pop();draw();};
   draw();
   return {info:()=>st.a+'+'+st.b,
-    controls:()=>{const c=[{t:'+ pink',fn:()=>add('a',1)},{t:'− pink',fn:()=>add('a',-1)},{t:'+ yellow',go:true,fn:()=>add('b',1)},{t:'− yellow',fn:()=>add('b',-1)},{t:'Turn around',fn:()=>{st.hide=false;[st.a,st.b]=[st.b,st.a];A.pop();draw();}},{t:'Take away yellow',fn:()=>{st.hide=!st.hide;A.pop();draw();}}];if(mode==='play'&&st.ask)return choices(st.setup?null:game,st.ask.o,st.ask.ans,st.ask.ok).concat(c);return c;},
+    controls:()=>{const c=[{t:'+ orange',fn:()=>add('a',1)},{t:'− orange',fn:()=>add('a',-1)},{t:'+ yellow',go:true,fn:()=>add('b',1)},{t:'− yellow',fn:()=>add('b',-1)},{t:'Turn around',fn:()=>{st.hide=false;[st.a,st.b]=[st.b,st.a];A.pop();draw();}},{t:'Take away yellow',fn:()=>{st.hide=!st.hide;A.pop();draw();}}];if(mode==='play'&&st.ask)return choices(st.setup?null:game,st.ask.o,st.ask.ans,st.ask.ok).concat(c);return c;},
     demo(n){st.ask=null;st.need=null;st.hide=false;if(n==='add'){st.a=6;st.b=0;draw();A.seq([0,1,2].map(()=>[450,()=>add('b',1)]).concat([[900,()=>{[st.a,st.b]=[st.b,st.a];draw();A.say('3 + 6 = 9');}]]));}if(n==='sub'){st.a=6;st.b=3;draw();A.seq([[1000,()=>{st.hide=true;draw();A.say('9 − 3 = 6');}]]);}},
     task(r){st.setup=true;st.ask=null;st.need=null;st.hide=false;st.a=0;st.b=0;let txt;
       if(r===0){st.need=[rnd(3,6),rnd(2,4)];txt='Make *'+st.need[0]+' + '+st.need[1]+'* on the ten frame.';}
@@ -323,7 +323,7 @@ P.lesson({id:'facts10',title:'Adding and subtracting to 10',strand:'Number',code
 P.lesson({id:'make10',title:'Make 10 and doubles',strand:'Number',codes:['B2.3'],
  guide:{goal:'Use mental math strategies, including estimation, to add and subtract whole numbers that add up to no more than 20, and explain the strategies used.',words:'make ten, double, near double, count on, estimate, strategy',
   ask:['How does making 10 help you add 8 + 5?','What is double 6?','How can 6 + 6 help you find 6 + 7?'],home:'Roll two dice. Add the dots using make 10 or doubles. Explain your strategy!'},
- learn:[{say:'Make a ten first!',speech:'Eight plus five. Fill the first ten frame: move two counters over to make ten. Now there are ten and three more. Ten plus three is thirteen! So eight plus five is thirteen.',view:'model',demo:'make'},
+ learn:[{say:'Make a ten first!',speech:'Zara wants to add eight plus five. She fills the first ten frame: move two counters over to make ten. Now there are ten and three more. Ten plus three is thirteen! So eight plus five is thirteen.',view:'model',demo:'make'},
         {say:'Read about doubles.',speech:'Doubles are facts like six plus six, which is twelve. Near doubles are one more: six plus seven is twelve plus one, thirteen. Doubles are easy to remember!',view:'read'},
         {say:'Watch: a double.',speech:'Seven plus seven. Both ten frames have seven. Double seven is fourteen!',view:'model',demo:'double'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -335,14 +335,14 @@ P.lesson({id:'make10',title:'Make 10 and doubles',strand:'Number',codes:['B2.3']
  left(p,S){const g=p.g;let y=header(p,S);
   y=para(p,y,'*Make 10:* move some counters to fill a ten frame first.')+16;
   const f=(ox,n,c)=>{const s=40;for(let i=0;i<10;i++){const x=ox+(i%5)*s,yy=y+Math.floor(i/5)*s;g.strokeStyle='#94a3b8';g.lineWidth=2;g.strokeRect(x,yy,s,s);if(i<n){g.beginPath();g.arc(x+s/2,yy+s/2,15,0,Math.PI*2);g.fillStyle=c(i);g.fill();}}};
-  f(X0,10,i=>i<8?'#ff4f8b':'#ffc04d');f(X0+230,3,()=>'#ffc04d');T(g,'8 + 5 = 10 + 3 = 13',X0+470,y+50,FT.bodyB,acc());y+=110;
+  f(X0,10,i=>i<8?'#ff6b35':'#ffc04d');f(X0+230,3,()=>'#ffc04d');T(g,'8 + 5 = 10 + 3 = 13',X0+470,y+50,FT.bodyB,acc());y+=110;
   rr(g,X0,y,TW,150,18);g.fillStyle=tint(acc(),.12);g.fill();T(g,'Doubles and near doubles',X0+20,y+38,FT.bodyB,acc());T(g,'6 + 6 = 12      7 + 7 = 14',X0+20,y+82,FT.hand||FT.body);T(g,'6 + 7 = 12 + 1 = 13',X0+20,y+124,FT.hand||FT.body);y+=172;
   y=para(p,y,'*Estimate:* 9 + 9 is a bit less than 10 + 10, so it is less than 20.')+10;
   y=keyWords(p,y,[['make ten','fill a ten first, then add the rest'],['double','a number plus itself']]);
   predict(p,y,S,'p8','What is 9 + 4? (Hint: make 10!)','*13.* 10 + 3.');},
  readout(p,S,y){const g=p.g,st=S.st,s=st.a+st.b;T(g,st.a+' + '+st.b+' = '+s,X0,y+52,ZS(54),acc());T(g,st.a===st.b?'double '+st.a+'!':Math.abs(st.a-st.b)===1?'near double!':st.made?'10 + '+(s-10)+' = '+s:'',X0,y+96,FT.bodyB);return y+104;},
  build(S,grp,mode,game){const st=S.st;const g2=new THREE.Group();grp.add(g2);
-  function draw(){clearGroup(g2);let a=st.a,b=st.b;if(st.made&&a+b>=10){const mv=10-a;tenFrame(g2,-1.2,-2.0,a,mv,'#ff4f8b','#ffc04d');tenFrame(g2,1.2,-2.0,0,b-mv,'#ff4f8b','#ffc04d');}else{tenFrame(g2,-1.2,-2.0,a,0,'#ff4f8b','#ffc04d');tenFrame(g2,1.2,-2.0,0,b,'#ff4f8b','#ffc04d');}
+  function draw(){clearGroup(g2);let a=st.a,b=st.b;if(st.made&&a+b>=10){const mv=10-a;tenFrame(g2,-1.2,-2.0,a,mv,'#ff6b35','#ffc04d');tenFrame(g2,1.2,-2.0,0,b-mv,'#ff6b35','#ffc04d');}else{tenFrame(g2,-1.2,-2.0,a,0,'#ff6b35','#ffc04d');tenFrame(g2,1.2,-2.0,0,b,'#ff6b35','#ffc04d');}
     const l=label(st.a+' + '+st.b+(st.made&&st.a+st.b>=10?' = 10 + '+(st.a+st.b-10):'')+' = '+(st.a+st.b),{size:.3,bg:'#ffffff'});l.position.set(0,.85,-2.8);g2.add(l);A.redraw();}
   function make(){if(st.a+st.b<10){A.bad('Not enough to make 10. Just count on!');return;}st.made=true;A.pop();draw();A.say('10 + '+(st.a+st.b-10)+' = '+(st.a+st.b));}
   const set=(k,d)=>{st[k]=Math.max(0,Math.min(10,st[k]+d));st.made=false;draw();};
@@ -365,7 +365,7 @@ P.lesson({id:'make10',title:'Make 10 and doubles',strand:'Number',codes:['B2.3']
 P.lesson({id:'story50',title:'Story problems to 50',strand:'Number',codes:['B2.4'],
  guide:{goal:'Use objects, diagrams and equations to represent, describe and solve addition and subtraction situations with whole numbers that add up to no more than 50.',words:'join, take away, compare, how many more, number line, equation',
   ask:['Do you join or take away in this story?','How can jumps of 10 help on a number line?','How many more is 30 than 25?'],home:'Make a story: “I had 15 stickers and got 12 more.” Act it out with toys and write the equation.'},
- learn:[{say:'Hop to solve stories!',speech:'There are twenty-three fish. Twelve more swim in. How many now? Start at twenty-three. Jump ten to thirty-three, then two more to thirty-five. Twenty-three plus twelve equals thirty-five!',view:'model',demo:'add'},
+ learn:[{say:'Hop to solve stories!',speech:'Leo sees twenty-three fish. Twelve more swim in. How many now? Start at twenty-three. Jump ten to thirty-three, then two more to thirty-five. Twenty-three plus twelve equals thirty-five!',view:'model',demo:'add'},
         {say:'Read about story problems.',speech:'Some stories join groups: add. Some stories take away: subtract. You can use a number line, cubes, or a drawing to solve them.',view:'read'},
         {say:'Watch: take away.',speech:'There are forty birds. Fifteen fly away. Start at forty. Jump back ten to thirty, then five to twenty-five. Twenty-five birds are left.',view:'model',demo:'sub'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -396,7 +396,7 @@ P.lesson({id:'story50',title:'Story problems to 50',strand:'Number',codes:['B2.4
       if(r===0){const a=rnd(11,25),b=rnd(11,20);st.start=a;st.target=a+b;txt='There are *'+a+' fish*. *'+b+' more* swim in. Hop to find how many now!';}
       else if(r===1){const a=rnd(35,48),b=rnd(11,19);st.start=a;st.target=a-b;txt='There are *'+a+' birds*. *'+b+'* fly away. Hop to find how many are left!';}
       else if(r===2){st.start=20;st.ask={ans:'15',o:shuffle(['15','55','10']),ok:'Yes! 20 + 15 = 35.'};txt='*20 + ___ = 35*. How many more jumps?';}
-      else if(r===3){st.start=25;st.ask={ans:'5 more',o:shuffle(['5 more','55 more','10 more']),ok:'Yes! From 25 to 30 is 5.'};txt='Sam has *30* cards. Mia has *25*. How many *more* does Sam have?';}
+      else if(r===3){st.start=25;st.ask={ans:'5 more',o:shuffle(['5 more','55 more','10 more']),ok:'Yes! From 25 to 30 is 5.'};txt='Milo has *30* cards. Suki has *25*. How many *more* does Milo have?';}
       else{st.start=30;st.ask={ans:'Add',o:['Add','Subtract'],ok:'Yes! More children join: add.'};txt='*30 children* are at the park. *12 more* come. Do we *add* or *subtract*?';}
       st.pos=st.start;place();st.setup=false;return txt;}};}
 });
@@ -407,7 +407,7 @@ P.lesson({id:'story50',title:'Story problems to 50',strand:'Number',codes:['B2.4
 P.lesson({id:'groups1',title:'Equal groups',strand:'Number',codes:['B2.5'],
  guide:{goal:'Represent and solve equal-group problems where the total is no more than 10, including problems in which each group is a half, using tools and drawings.',words:'equal groups, group of, each, in all, half, halves, whole',
   ask:['What makes groups equal?','How many in all: 3 groups of 2?','4 children each get half an apple. How many apples?'],home:'Put 2 grapes on each of 4 plates. How many grapes in all? Then try halves of a sandwich!'},
- learn:[{say:'Same number in each group.',speech:'Equal groups have the same number in each group. Here are three plates with two strawberries each. Two, four, six! Three groups of two make six.',view:'model',demo:'grow'},
+ learn:[{say:'Same number in each group.',speech:'Equal groups have the same number in each group. Amara has three plates with two strawberries each. Two, four, six! Three groups of two make six.',view:'model',demo:'grow'},
         {say:'Read about halves.',speech:'A group can be half of something. Two halves make one whole. If four children each get half an apple, we need two whole apples.',view:'read'},
         {say:'Watch: halves.',speech:'Each plate gets half an apple. Two halves make one apple. Four plates need two apples!',view:'model',demo:'half'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},

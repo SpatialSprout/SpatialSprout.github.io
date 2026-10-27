@@ -27,13 +27,13 @@ function numLine(grp,x0,L,z,a,b,sub,lab){const tr=mk(new THREE.BoxGeometry(L*(b-
    1. Whole numbers to one million
    ========================================================= */
 const PV=[{k:'ht',n:'Hundred thousands',s:'100 000s',v:100000,txt:'100 000',col:'#c2410c',max:10},{k:'tt',n:'Ten thousands',s:'10 000s',v:10000,txt:'10 000',col:'#8b5cf6',max:12},{k:'th',n:'Thousands',s:'1000s',v:1000,txt:'1000',col:'#16a36f',max:12},
-  {k:'h',n:'Hundreds',s:'100s',v:100,txt:'100',col:'#2f7de1',max:12},{k:'t',n:'Tens',s:'10s',v:10,txt:'10',col:'#e2457a',max:12},{k:'o',n:'Ones',s:'1s',v:1,txt:'1',col:'#e89a00',max:12}];
+  {k:'h',n:'Hundreds',s:'100s',v:100,txt:'100',col:'#2f7de1',max:12},{k:'t',n:'Tens',s:'10s',v:10,txt:'10',col:'#e4572e',max:12},{k:'o',n:'Ones',s:'1s',v:1,txt:'1',col:'#e89a00',max:12}];
 const pvVal=c=>PV.reduce((a,q)=>a+c[q.k]*q.v,0);
 const pvExp=n=>{if(n>=1000000)return '1 000 000';const p=PV.map(q=>Math.floor(n/q.v)%10*q.v).filter(x=>x);return p.length?p.map(fmt).join(' + '):'0';};
 P.lesson({id:'million6',title:'Whole numbers to one million',strand:'Number',codes:['B1.1'],
  guide:{goal:'Read and represent whole numbers up to one million with place-value models and in standard, expanded and word form, and describe how large numbers are used in everyday life.',words:'one million, hundred thousands, period, place value, expanded form, standard form',
   ask:['How many thousands make one million?','Why do we leave a space every three digits?','Where have you seen numbers in the hundreds of thousands?'],home:'Look up the population of your town or city and of Ontario. Read them aloud and write them in expanded form.'},
- learn:[{say:'Six places, then a million.',speech:'Hundred thousands is the sixth place. Watch the model build four hundred seven thousand, two hundred fifty.',view:'model',demo:'build'},
+ learn:[{say:'Six places, then a million.',speech:'Hundred thousands is the sixth place. Arjun’s city has four hundred seven thousand, two hundred fifty people. Watch the model build it.',view:'model',demo:'build'},
         {say:'Read about periods and forms.',speech:'Digits are grouped in threes called periods: the thousands period and the ones period. Four hundred seven thousand is read first, then two hundred fifty.',view:'read'},
         {say:'Watch: ten hundred thousands make a million.',speech:'Watch the hundred thousands mat fill up to ten. Ten hundred thousands is one million: a one followed by six zeros.',view:'model',demo:'million'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the yellow flap to check.',view:'read'},
@@ -95,7 +95,7 @@ P.lesson({id:'million6',title:'Whole numbers to one million',strand:'Number',cod
 P.lesson({id:'integers6',title:'Integers on number lines',strand:'Number',codes:['B1.2','B1.3'],
  guide:{goal:'Read and represent integers using horizontal and vertical number lines, and compare and order integers in contexts such as temperature, elevation and money.',words:'integer, positive, negative, zero, opposite, number line, greater than, less than',
   ask:['Which is colder, −4 °C or −9 °C? How do you know?','What is the opposite of 6?','Why is −1 greater than −10?'],home:'Check the weather in winter. Put the temperatures for a week on a number line, from coldest to warmest.'},
- learn:[{say:'Below zero are negative integers.',speech:'Integers are the whole numbers and their opposites. A thermometer is a vertical number line. Watch the temperature drop from five degrees to minus three.',view:'model',demo:'drop'},
+ learn:[{say:'Below zero are negative integers.',speech:'Integers are the whole numbers and their opposites. A thermometer is a vertical number line. Watch Chloe’s thermometer drop from five degrees to minus three.',view:'model',demo:'drop'},
         {say:'Read about integers.',speech:'Positive integers are greater than zero. Negative integers are less than zero. On a number line, numbers get greater as you move right or up.',view:'read'},
         {say:'Watch: opposites.',speech:'Six and negative six are opposites. They are the same distance from zero, on opposite sides. Watch the two markers.',view:'model',demo:'opp'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -146,7 +146,7 @@ P.lesson({id:'integers6',title:'Integers on number lines',strand:'Number',codes:
 P.lesson({id:'thousandths6',title:'Decimals to thousandths',strand:'Number',codes:['B1.4','B1.6'],
  guide:{goal:'Read, represent, compare and order decimal numbers up to thousandths, and show equivalences between fractions and decimals up to thousandths.',words:'thousandth, hundredth, tenth, decimal point, equivalent, terminating decimal',
   ask:['How many thousandths are in one hundredth?','Why is 0.4 greater than 0.389?','How can you write 3/8 as a decimal?'],home:'Look at sports results to the thousandth of a second, like 9.582 s. Read them aloud and put them in order.'},
- learn:[{say:'Cut a whole into 1000 parts.',speech:'A big cube is one whole. A flat is one tenth, a rod is one hundredth, and a tiny cube is one thousandth. Watch the model build one point two four five.',view:'model',demo:'build'},
+ learn:[{say:'Cut a whole into 1000 parts.',speech:'A big cube is one whole. A flat is one tenth, a rod is one hundredth, and a tiny cube is one thousandth. Malik’s race time is one point two four five seconds. Watch the model build it.',view:'model',demo:'build'},
         {say:'Read the place-value chart.',speech:'In one point two four five, the five is in the thousandths place. We read it: one and two hundred forty-five thousandths.',view:'read'},
         {say:'Watch: three eighths as a decimal.',speech:'Three eighths is three hundred seventy-five thousandths. Watch zero point three seven five appear: three flats, seven rods and five tiny cubes.',view:'model',demo:'frac'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -157,7 +157,7 @@ P.lesson({id:'thousandths6',title:'Decimals to thousandths',strand:'Number',code
  init:k=>({w:1,t:2,h:4,th:5,target:null}),
  left(p,S){const g=p.g;let y=header(p,S);
   y=para(p,y,'1 whole = 10 tenths = 100 hundredths = *1000 thousandths*. The third place after the decimal point is the *thousandths* place.')+16;
-  const cw=TW/5;[['Ones','1','#2f7de1'],['.','',INK],['Tenths','2','#16a36f'],['Hundredths','4','#e89a00'],['Thousandths','5','#e2457a']].forEach(([a,b,c],i)=>{if(a==='.'){T(g,'.',X0+i*cw+cw/2,y+96,ZS(80),INK,'center');return;}rr(g,X0+i*cw+5,y,cw-10,120,14);g.fillStyle=tint(c,.14);g.fill();T(g,a,X0+i*cw+cw/2,y+34,FT.cap,c,'center');T(g,b,X0+i*cw+cw/2,y+100,ZS(56),INK,'center');});y+=150;
+  const cw=TW/5;[['Ones','1','#2f7de1'],['.','',INK],['Tenths','2','#16a36f'],['Hundredths','4','#e89a00'],['Thousandths','5','#e4572e']].forEach(([a,b,c],i)=>{if(a==='.'){T(g,'.',X0+i*cw+cw/2,y+96,ZS(80),INK,'center');return;}rr(g,X0+i*cw+5,y,cw-10,120,14);g.fillStyle=tint(c,.14);g.fill();T(g,a,X0+i*cw+cw/2,y+34,FT.cap,c,'center');T(g,b,X0+i*cw+cw/2,y+100,ZS(56),INK,'center');});y+=150;
   T(g,'1.245',X0,y+20,ZS(60),acc());T(g,'one and two hundred forty-five thousandths',X0+200,y+8,FT.small,GREY);y+=60;
   rr(g,X0,y,TW,130,16);g.fillStyle=tint(acc(),.1);g.fill();[['1/8','0.125'],['3/8','0.375'],['1/4','0.25'],['1/2','0.5 = 0.500']].forEach(([a,b],i)=>{const x=X0+20+(i%2)*TW/2,yy=y+48+Math.floor(i/2)*52;T(g,a+' = '+b,x,yy,FT.bodyB);});y+=156;
   y=para(p,y,'To *compare*, line up the places: *0.4 = 0.400 > 0.389*.')+10;
@@ -165,14 +165,14 @@ P.lesson({id:'thousandths6',title:'Decimals to thousandths',strand:'Number',code
   predict(p,y,S,'p3','Order from least to greatest: 0.307, 0.37, 0.3','*0.3, 0.307, 0.37.* Think: 300, 307 and 370 thousandths.');},
  readout(p,S,y){const g=p.g,st=S.st,v=st.w*1000+st.t*100+st.h*10+st.th;T(g,(v/1000).toFixed(3),X0,y+56,ZS(62),acc());T(g,'= '+v+' thousandths',X0+240,y+48,FT.bodyB);return y+76;},
  build(S,grp,mode,game){const st=S.st,u=.08;const gW=new THREE.Group(),gT=new THREE.Group(),gH=new THREE.Group(),gK=new THREE.Group();grp.add(gW,gT,gH,gK);
-  [['ones',-1.85,'#2f7de1'],['tenths',-.7,'#16a36f'],['hundredths',.35,'#e89a00'],['thousandths',1.6,'#e2457a']].forEach(([t,x,c])=>{const l=label(t,{size:.16,color:c});l.position.set(x,.3,-3.05);grp.add(l);});
-  const x0=-2.0,L=2.0,Zl=-.3;numLine(grp,x0,L,Zl,0,2,10);const mkr=mk(new THREE.ConeGeometry(.1,.24,16),lam('#e2457a'),0);mkr.rotation.x=Math.PI;grp.add(mkr);const ml=label('',{size:.22,bg:'#ffffff'});grp.add(ml);
+  [['ones',-1.85,'#2f7de1'],['tenths',-.7,'#16a36f'],['hundredths',.35,'#e89a00'],['thousandths',1.6,'#e4572e']].forEach(([t,x,c])=>{const l=label(t,{size:.16,color:c});l.position.set(x,.3,-3.05);grp.add(l);});
+  const x0=-2.0,L=2.0,Zl=-.3;numLine(grp,x0,L,Zl,0,2,10);const mkr=mk(new THREE.ConeGeometry(.1,.24,16),lam('#e4572e'),0);mkr.rotation.x=Math.PI;grp.add(mkr);const ml=label('',{size:.22,bg:'#ffffff'});grp.add(ml);
   const cubeM=[lam('#2f7de1'),lam('#2f7de1'),cellMat('#2f7de1',10,10),lam('#2f7de1'),cellMat('#2f7de1',10,10),lam('#2f7de1')],flatM=[lam('#16a36f'),lam('#16a36f'),cellMat('#16a36f',10,10),lam('#16a36f'),lam('#16a36f'),lam('#16a36f')],rodM=[lam('#e89a00'),lam('#e89a00'),cellMat('#e89a00',1,10),lam('#e89a00'),lam('#e89a00'),lam('#e89a00')];
   function render(){[gW,gT,gH,gK].forEach(clearGroup);
     for(let i=0;i<st.w;i++){const m=mk(G('w6',()=>new THREE.BoxGeometry(u*10,u*10,u*10)),cubeM,20);m.position.set(-1.85,u*5+.02,-2.45+i*1.0);gW.add(m);A.drag(m,{tap:()=>change(-1,0,0,0)});}
     for(let i=0;i<st.t;i++){const m=mk(G('f6',()=>new THREE.BoxGeometry(u*10,u*.95,u*10)),flatM,20);m.position.set(-.7,u/2+.02+(i%10)*u,i<10?-2.45:-1.45);gT.add(m);A.drag(m,{tap:()=>change(0,-1,0,0)});}
     for(let i=0;i<st.h;i++){const m=mk(G('r6',()=>new THREE.BoxGeometry(u*.95,u*.95,u*10)),rodM,20);m.position.set(-.05+(i%10)*u*1.05,u/2+.02,i<10?-2.45:-1.45);gH.add(m);A.drag(m,{tap:()=>change(0,0,-1,0)});}
-    for(let i=0;i<st.th;i++){const m=mk(G('k6',()=>new THREE.BoxGeometry(u*.9,u*.9,u*.9)),lam('#e2457a'),20);m.position.set(1.2+(i%5)*u*1.4,u/2+.02,-2.8+Math.floor(i/5)*u*1.4);gK.add(m);A.drag(m,{tap:()=>change(0,0,0,-1)});}
+    for(let i=0;i<st.th;i++){const m=mk(G('k6',()=>new THREE.BoxGeometry(u*.9,u*.9,u*.9)),lam('#e4572e'),20);m.position.set(1.2+(i%5)*u*1.4,u/2+.02,-2.8+Math.floor(i/5)*u*1.4);gK.add(m);A.drag(m,{tap:()=>change(0,0,0,-1)});}
     const v=(st.w*1000+st.t*100+st.h*10+st.th)/1000;mkr.position.set(x0+v*L,.4,Zl);ml.userData.set(v.toFixed(3));ml.position.set(x0+v*L,.8,Zl);check();A.redraw();}
   function change(dw,dt,dh,dk){const w=st.w+dw,t=st.t+dt,h=st.h+dh,k=st.th+dk;if(w<0||t<0||h<0||k<0)return;if(w>2){A.bad('The number line stops at 2.');return;}if(t>19||h>19||k>19){A.bad('Trade 10 for 1 bigger piece first!');return;}
     if(w*1000+t*100+h*10+k>2000){A.bad('The number line stops at 2.');return;}st.w=w;st.t=t;st.h=h;st.th=k;A.pop();render();}
@@ -198,7 +198,7 @@ P.lesson({id:'thousandths6',title:'Decimals to thousandths',strand:'Number',code
 P.lesson({id:'order6',title:'Ordering integers, decimals and fractions',strand:'Number',codes:['B1.3'],
  guide:{goal:'Compare and order integers, decimal numbers and fractions, separately and in combination, using a number line, benchmarks and equivalents.',words:'compare, order, integer, decimal, fraction, benchmark, number line',
   ask:['Which is greater, −1.5 or −1/2?','How can you compare 3/4 and 0.7?','Where does 5/4 go between 1 and 2?'],home:'Write five numbers on sticky notes, like −2, 0.5, 3/4, 1.25 and −1/2. Put them on a hallway “number line”.'},
- learn:[{say:'All numbers share one line.',speech:'Integers, decimals and fractions all have a place on the same number line. Watch these cards jump to their places: negative one and a half, three quarters, and one point two.',view:'model',demo:'order'},
+ learn:[{say:'All numbers share one line.',speech:'Integers, decimals and fractions all have a place on the same number line. Watch Yuna’s cards jump to their places: negative one and a half, three quarters, and one point two.',view:'model',demo:'order'},
         {say:'Read the strategies.',speech:'Change fractions to decimals, or decimals to fractions, so they are easier to compare. Remember that negative numbers are less than zero, and the further left, the smaller.',view:'read'},
         {say:'Watch: two negatives.',speech:'Which is less, negative one half or negative one point five? Negative one point five is further from zero on the left, so it is less.',view:'model',demo:'neg'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -211,13 +211,13 @@ P.lesson({id:'order6',title:'Ordering integers, decimals and fractions',strand:'
   y=para(p,y,'To order mixed kinds of numbers, put them on *one number line*, or write them all in the *same form*.')+16;
   const lx=X0+20,lw=TW-40,toX=v=>lx+(v+3)/6*lw;g.strokeStyle=INK;g.lineWidth=4;g.beginPath();g.moveTo(lx,y+70);g.lineTo(lx+lw,y+70);g.stroke();
   for(let v=-3;v<=3;v++){g.beginPath();g.moveTo(toX(v),y+56);g.lineTo(toX(v),y+84);g.stroke();T(g,v<0?'−'+(-v):String(v),toX(v),y+116,FT.bodyB,v<0?'#2563eb':v>0?'#dc2626':INK,'center');}
-  [[-1.5,'−1.5','#2563eb'],[-.5,'−1/2','#8b5cf6'],[.75,'3/4','#16a36f'],[1.2,'1.2','#e2457a'],[2.25,'2 1/4','#f08a24']].forEach(([v,t,c],i)=>{g.beginPath();g.arc(toX(v),y+70,11,0,Math.PI*2);g.fillStyle=c;g.fill();T(g,t,toX(v),y+(i%2?30:40),FT.smallB,c,'center');});y+=150;
+  [[-1.5,'−1.5','#2563eb'],[-.5,'−1/2','#8b5cf6'],[.75,'3/4','#16a36f'],[1.2,'1.2','#e4572e'],[2.25,'2 1/4','#f08a24']].forEach(([v,t,c],i)=>{g.beginPath();g.arc(toX(v),y+70,11,0,Math.PI*2);g.fillStyle=c;g.fill();T(g,t,toX(v),y+(i%2?30:40),FT.smallB,c,'center');});y+=150;
   [['Fraction → decimal','3/4 = 0.75, so 3/4 > 0.7'],['Negatives','−1.5 < −0.5: further left is less'],['Mixed numbers','2 1/4 = 2.25']].forEach(([a,b],i)=>{rr(g,X0,y+i*58,TW,50,12);g.fillStyle=tint(acc(),.1);g.fill();T(g,a,X0+18,y+i*58+34,FT.smallB,acc());T(g,b,X0+300,y+i*58+34,FT.body);});y+=190;
   y=keyWords(p,y,[['benchmark','a friendly number to compare with, like 0, 1/2 or 1'],['order','arrange from least to greatest']]);
   predict(p,y,S,'p4','Order from least to greatest: 0.6, −2, 1/2, −0.25','*−2, −0.25, 1/2, 0.6.* Negatives first, then 0.5 before 0.6.');},
  readout(p,S,y){const g=p.g,st=S.st;const srt=st.items.slice().sort((a,b)=>a.v-b.v);T(g,st.placed.length===st.items.length?srt.map(q=>q.t).join('  <  '):'Placed: '+st.placed.length+' of '+st.items.length,X0,y+50,ZS(42),acc());
   T(g,st.mode==='great'?'Tap the greatest number.':'Tap from least to greatest.',X0,y+92,FT.bodyB);return y+100;},
- build(S,grp,mode,game){const st=S.st,x0=-2.1,L=.7,Zl=-.6,ROWS=[-2.8,-2.3,-1.8,-1.3],COLS=['#2f7de1','#e2457a','#16a36f','#f08a24'];
+ build(S,grp,mode,game){const st=S.st,x0=-2.1,L=.7,Zl=-.6,ROWS=[-2.8,-2.3,-1.8,-1.3],COLS=['#2f7de1','#e4572e','#16a36f','#f08a24'];
   numLine(grp,x0,L,Zl,-3,3,4,null);const cards=new THREE.Group(),barsG=new THREE.Group();grp.add(cards,barsG);let busy=false;const zeroX=x0+3*L;
   const zl=mk(new THREE.BoxGeometry(.02,.4,2.0),lam('#94a3b8'),0);zl.position.set(zeroX,.2,-2.05);grp.add(zl);
   function draw(){clearGroup(cards);clearGroup(barsG);const k=st.items.length;st.items.forEach((q,i)=>{const c=new THREE.Group();const b=mk(G('oc6',()=>new THREE.BoxGeometry(.95,.1,.5)),lam('#ffffff'),20);b.position.y=.05;c.add(b);
@@ -253,7 +253,7 @@ const PLACES=[{n:'whole number',b:1000,d:0},{n:'tenth',b:100,d:1},{n:'hundredth'
 P.lesson({id:'round6',title:'Rounding terminating and repeating decimals',strand:'Number',codes:['B1.5'],
  guide:{goal:'Round terminating and repeating decimal numbers to the nearest whole number, tenth or hundredth, as fits the context.',words:'round, nearest, terminating decimal, repeating decimal, ellipsis, halfway',
   ask:['What does the “…” in 0.666… mean?','Round 2.718 to the nearest hundredth. Which digit do you look at?','Why do we round money to the nearest hundredth?'],home:'Divide $10 among 3 people on a calculator. Talk about why the answer repeats, and round it to the nearest cent.'},
- learn:[{say:'Choose the place, find the neighbours.',speech:'Round four point two six eight to the nearest tenth. It is between four point two and four point three. The ball rolls to the nearer one: four point three.',view:'model',demo:'roll'},
+ learn:[{say:'Choose the place, find the neighbours.',speech:'Ezra rounds four point two six eight to the nearest tenth. It is between four point two and four point three. The ball rolls to the nearer one: four point three.',view:'model',demo:'roll'},
         {say:'Read about repeating decimals.',speech:'Some decimals never end. Two thirds is zero point six six six, repeating forever. We round them too: to the nearest hundredth, two thirds is about zero point six seven.',view:'read'},
         {say:'Watch: a repeating decimal.',speech:'One third is zero point three three three, repeating. To the nearest hundredth it rolls down to zero point three three.',view:'model',demo:'rep'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -275,7 +275,7 @@ P.lesson({id:'round6',title:'Rounding terminating and repeating decimals',strand
   const pts=[];for(let i=0;i<=60;i++){const u=i/60;pts.push(V(xOf(u),.12+yOf(u),Z));}grp.add(mk(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts),120,.07,10,false),lam('#fdba74'),0));
   for(let i=0;i<=10;i++){const u=i/10;const post=mk(new THREE.CylinderGeometry(.02,.02,.12+yOf(u),6),lam(i%5?'#cbd':'#c2410c'),0);post.position.set(xOf(u),(.12+yOf(u))/2,Z);grp.add(post);}
   const base=mk(new THREE.BoxGeometry(L+.4,.05,.5),lam('#ffedd5'),20);base.position.set(0,.025,Z);grp.add(base);
-  const ball=mk(new THREE.SphereGeometry(.17,24,16),lam('#e2457a'),0);grp.add(ball);const flag=label('',{size:.28,bg:'#ffffff'});grp.add(flag);
+  const ball=mk(new THREE.SphereGeometry(.17,24,16),lam('#e4572e'),0);grp.add(ball);const flag=label('',{size:.28,bg:'#ffffff'});grp.add(flag);
   const vl=[label('',{size:.28,bg:'#ffffff',border:'#c2410c'}),label('',{size:.28,bg:'#ffffff',border:'#c2410c'})],mid=label('',{size:.18,color:GREY});vl.forEach(l=>grp.add(l));grp.add(mid);
   const pads=[-1,1].map(s=>{const pd=mk(new THREE.CylinderGeometry(.3,.3,.06,28),lam('#ffd24a'),30);pd.position.set(s*(L/2+.02),.06,Z+.55);grp.add(pd);return pd;});
   let u=0,rolling=false;const lohi=()=>{const b=PLACES[st.pl].b,lo=Math.floor(st.x/b)*b;return [lo,lo+b];};
@@ -309,7 +309,7 @@ const DIVR=[[2,'last digit is even'],[3,'sum of the digits is divisible by 3'],[
 P.lesson({id:'factors6',title:'Divisibility rules and prime factors',strand:'Number',codes:['B2.2','B2.6'],
  guide:{goal:'Understand and use divisibility rules for 2, 3, 4, 5, 6, 8, 9 and 10, and write composite numbers as a product of prime factors using factor trees.',words:'divisible, factor, prime number, composite number, prime factorization, factor tree',
   ask:['How can you tell if 4152 is divisible by 3 without dividing?','Why is 1 neither prime nor composite?','Do different factor trees for 60 give the same primes?'],home:'Read licence plates or house numbers. Use the rules to test if each number is divisible by 2, 3, 5, 9 or 10.'},
- learn:[{say:'Break a number into primes.',speech:'Sixty is composite. Split it: two times thirty. Thirty is two times fifteen. Fifteen is three times five. Watch the factor tree grow until every branch ends in a prime.',view:'model',demo:'tree'},
+ learn:[{say:'Break a number into primes.',speech:'Sixty is composite. Lucia splits it: two times thirty. Thirty is two times fifteen. Fifteen is three times five. Watch the factor tree grow until every branch ends in a prime.',view:'model',demo:'tree'},
         {say:'Read the divisibility rules.',speech:'Divisibility rules are shortcuts. A number is divisible by two if its last digit is even, by three if its digits add to a multiple of three, by five if it ends in zero or five, and by nine if its digits add to a multiple of nine.',view:'read'},
         {say:'Watch: a different tree, the same primes.',speech:'Start sixty another way: three times twenty. Twenty is two times ten, and ten is two times five. The primes are the same: two, two, three and five.',view:'model',demo:'tree2'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -365,7 +365,7 @@ function leafs(st){const out=st.split.slice();out.push(st.split.reduce((a,d)=>a/
 P.lesson({id:'percent6',title:'Percents with mental math',strand:'Number',codes:['B2.3'],
  guide:{goal:'Use mental math strategies to find 1%, 5%, 10%, 15%, 25% and 50% of whole numbers, and explain the strategies.',words:'percent, of, half, quarter, tenth, mental math, strategy',
   ask:['How does 10% help you find 5% and 15%?','Why is 25% the same as dividing by 4?','What is 1% of 600?'],home:'At a restaurant, find a 15% tip together: 10% + half of 10%.'},
- learn:[{say:'Percent of a number.',speech:'Here are eighty coins arranged in a hundred grid. Each square holds zero point eight of a coin, so the whole grid is eighty. Ten percent is one row: eight. Watch it light up.',view:'model',demo:'ten'},
+ learn:[{say:'Percent of a number.',speech:'Here are Arjun’s eighty coins arranged in a hundred grid. Each square holds zero point eight of a coin, so the whole grid is eighty. Ten percent is one row: eight. Watch it light up.',view:'model',demo:'ten'},
         {say:'Read the mental math strategies.',speech:'Fifty percent is half. Twenty-five percent is a quarter. Ten percent is divide by ten. Five percent is half of ten percent. Fifteen percent is ten percent plus five percent. One percent is divide by one hundred.',view:'read'},
         {say:'Watch: fifteen percent.',speech:'Fifteen percent of eighty. Ten percent is eight, and five percent is half of that, four. Eight plus four is twelve.',view:'model',demo:'fifteen'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -382,7 +382,7 @@ P.lesson({id:'percent6',title:'Percents with mental math',strand:'Number',codes:
   y=keyWords(p,y,[['percent','a part out of 100'],['15%','10% plus half of 10%']]);
   predict(p,y,S,'p7','What is 15% of $40?','*$6.* 10% is $4, 5% is $2, and $4 + $2 = $6.');},
  readout(p,S,y){const g=p.g,st=S.st,v=Math.round(st.p*st.N)/100;T(g,st.p+'% of '+st.N+' = '+v,X0,y+56,ZS(58),acc());T(g,'each square = '+st.N/100,X0,y+96,FT.body,GREY);return y+104;},
- build(S,grp,mode,game){const st=S.st,u=.27,x0=-1.95,z0=-3.0;const tiles=[];const RC=['#2f7de1','#3b8be6','#16a36f','#22b07c','#e2457a','#ea5a8c','#e89a00','#f0a91c','#8b5cf6','#9a6cf8'];
+ build(S,grp,mode,game){const st=S.st,u=.27,x0=-1.95,z0=-3.0;const tiles=[];const RC=['#2f7de1','#3b8be6','#16a36f','#22b07c','#e4572e','#e8603c','#e89a00','#f0a91c','#8b5cf6','#9a6cf8'];
   const base=mk(new THREE.BoxGeometry(u*10+.1,.04,u*10+.1),lam('#dfe5ef'),20);base.position.set(x0+u*5,.02,z0+u*5);grp.add(base);
   for(let k=0;k<100;k++){const r=Math.floor(k/10),c=k%10;const m=mk(G('pc6',()=>new THREE.CylinderGeometry(u*.42,u*.42,.06,18)),lam('#f4f6fa'),20);m.position.set(x0+(c+.5)*u,.06,z0+(r+.5)*u);grp.add(m);tiles.push(m);A.drag(m,{tap:()=>setP(st.p===k+1?k:k+1)});}
   const wl=label('',{size:.3,bg:'#ffffff',border:'#8b5cf6'});wl.position.set(1.55,1.1,-2.4);grp.add(wl);const pl=label('',{size:.34,bg:'#ffffff'});pl.position.set(1.55,.55,-1.4);grp.add(pl);

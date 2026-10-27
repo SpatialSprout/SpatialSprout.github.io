@@ -22,13 +22,13 @@ function drawFrac(g,n,d,x,y,size,col){g.font=ZS(size);const w=Math.max(g.measure
 /* =========================================================
    1. Place value to 10 000
    ========================================================= */
-const PV=[{k:'th',n:'Thousands',v:1000,col:'#16a36f',max:9},{k:'h',n:'Hundreds',v:100,col:'#2f7de1',max:12},{k:'t',n:'Tens',v:10,col:'#e2457a',max:12},{k:'o',n:'Ones',v:1,col:'#e89a00',max:12}];
+const PV=[{k:'th',n:'Thousands',v:1000,col:'#16a36f',max:9},{k:'h',n:'Hundreds',v:100,col:'#2f7de1',max:12},{k:'t',n:'Tens',v:10,col:'#e4572e',max:12},{k:'o',n:'Ones',v:1,col:'#e89a00',max:12}];
 const pvVal=c=>c.th*1000+c.h*100+c.t*10+c.o;
 const pvExp=n=>{const p=[Math.floor(n/1000)*1000,Math.floor(n/100)%10*100,Math.floor(n/10)%10*10,n%10].filter(x=>x);return p.length?p.map(fmt).join(' + '):'0';};
 P.lesson({id:'thousands',title:'Place value to 10 000',strand:'Number',codes:['B1.1','B1.2'],
  guide:{goal:'Read, represent, compose and decompose whole numbers up to 10 000 with place-value disks, write them in standard, expanded and word form, and compare and order them.',words:'thousands, hundreds, tens, ones, place value, expanded form, compose, decompose, greater than, less than',
   ask:['Why is the 4 in 4205 worth 4000?','How do 10 hundreds become 1 thousand?','How can you tell which of 6098 and 6908 is greater without building them?'],home:'Look for big numbers around you: the odometer in a car, a price for a bike, the number of seats in an arena. Read them aloud together.'},
- learn:[{say:'Every place is worth 10 times more.',speech:'Each place is worth ten times the place to its right. Watch the model build three thousand, four hundred six.',view:'model',demo:'build'},
+ learn:[{say:'Every place is worth 10 times more.',speech:'Each place is worth ten times the place to its right. Watch Ravi build three thousand, four hundred six.',view:'model',demo:'build'},
         {say:'Read the chart and the three forms.',speech:'Three thousands, four hundreds, zero tens and six ones make three thousand four hundred six. The zero holds the tens place.',view:'read'},
         {say:'Watch: 10 hundreds make 1 thousand.',speech:'Watch the hundreds. When there are ten of them, we trade them for one thousand. This is regrouping.',view:'model',demo:'regroup'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the yellow flap to check.',view:'read'},
@@ -93,7 +93,7 @@ P.lesson({id:'thousands',title:'Place value to 10 000',strand:'Number',codes:['B
 P.lesson({id:'round4',title:'Rounding to 10, 100 and 1000',strand:'Number',codes:['B1.3'],
  guide:{goal:'Round whole numbers to the nearest ten, hundred or thousand, and explain why rounding is useful in everyday contexts.',words:'round, nearest, halfway, round up, round down, estimate, about',
   ask:['Why does 4500 round up to 5000?','When would rounding to the nearest thousand be more useful than to the nearest ten?','Which two thousands is 6738 between?'],home:'Read the number of kilometres on a car or the attendance at a game, then round it to the nearest hundred and thousand.'},
- learn:[{say:'Rounding finds the nearest landmark.',speech:'To round, find the two landmark numbers on each side. The ball always rolls down to the nearest valley. Watch three thousand four hundred eighty-two.',view:'model',demo:'roll'},
+ learn:[{say:'Rounding finds the nearest landmark.',speech:'To round, find the two landmark numbers on each side. Isla’s ball always rolls down to the nearest valley. Watch three thousand four hundred eighty-two.',view:'model',demo:'roll'},
         {say:'Read the rounding rule.',speech:'Look at the digit to the right of the place you are rounding to. Zero to four rounds down. Five to nine rounds up.',view:'read'},
         {say:'Watch: a number right at halfway.',speech:'Six thousand five hundred is exactly halfway between six thousand and seven thousand. When a number is halfway, we round up.',view:'model',demo:'half'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -107,9 +107,9 @@ P.lesson({id:'round4',title:'Rounding to 10, 100 and 1000',strand:'Number',codes
   y=para(p,y,'*Rounding* changes a number to a nearby *landmark* number that is easier to use. Find the landmarks on each side, then see which is closer.')+16;
   const lx=X0+30,lw=TW-60,toX=v=>lx+(v-3400)/100*lw;g.strokeStyle=INK;g.lineWidth=4;g.beginPath();g.moveTo(lx,y+110);g.quadraticCurveTo(lx+lw/2,y-20,lx+lw,y+110);g.stroke();
   [[3400,'3400'],[3450,'halfway 3450'],[3500,'3500']].forEach(([v,t],i)=>{const x=toX(v);T(g,t,x,y+150,i===1?FT.small:FT.bodyB,i===1?GREY:INK,'center');});
-  const bx=toX(3482);g.beginPath();g.arc(bx,y+58,18,0,Math.PI*2);g.fillStyle='#e2457a';g.fill();T(g,'3482',bx,y+20,FT.smallB,'#e2457a','center');T(g,'rolls this way →',bx-180,y+92,FT.hand,BLUE);y+=190;
+  const bx=toX(3482);g.beginPath();g.arc(bx,y+58,18,0,Math.PI*2);g.fillStyle='#e4572e';g.fill();T(g,'3482',bx,y+20,FT.smallB,'#e4572e','center');T(g,'rolls this way →',bx-180,y+92,FT.hand,BLUE);y+=190;
   rr(g,X0,y,TW,120,18);g.fillStyle=tint(acc(),.1);g.fill();T(g,'Look at the digit to the right of the rounding place:',X0+24,y+42,FT.smallB);
-  T(g,'0, 1, 2, 3, 4  →  round down',X0+24,y+82,FT.body,BLUE);T(g,'5, 6, 7, 8, 9  →  round up',X0+430,y+82,FT.body,'#e2457a');y+=150;
+  T(g,'0, 1, 2, 3, 4  →  round down',X0+24,y+82,FT.body,BLUE);T(g,'5, 6, 7, 8, 9  →  round up',X0+430,y+82,FT.body,'#e4572e');y+=150;
   y=para(p,y,'3*4*82 to the nearest hundred: the tens digit is 8, so it rounds *up to 3500*. To the nearest thousand: the hundreds digit is 4, so it rounds *down to 3000*.')+12;
   y=keyWords(p,y,[['round','change a number to the nearest landmark'],['estimate','an answer that is close, not exact']]);
   predict(p,y,S,'p2','Round 5650 to the nearest thousand.','*6000.* The hundreds digit is 6, so round up.');},
@@ -120,7 +120,7 @@ P.lesson({id:'round4',title:'Rounding to 10, 100 and 1000',strand:'Number',codes
   const curve=new THREE.CatmullRomCurve3(pts);const track=mk(new THREE.TubeGeometry(curve,120,.07,10,false),lam('#8fd9b6'),0);grp.add(track);
   for(let i=0;i<=10;i++){const u=i/10;const post=mk(new THREE.CylinderGeometry(.02,.02,.12+yOf(u),6),lam(i%5?'#bcd':'#16a36f'),0);post.position.set(xOf(u),(.12+yOf(u))/2,Z);grp.add(post);}
   const base=mk(new THREE.BoxGeometry(L+.4,.05,.5),lam('#d7f1e5'),20);base.position.set(0,.025,Z);grp.add(base);
-  const ball=mk(new THREE.SphereGeometry(.17,24,16),lam('#e2457a'),0);grp.add(ball);
+  const ball=mk(new THREE.SphereGeometry(.17,24,16),lam('#e4572e'),0);grp.add(ball);
   const flag=label('',{size:.3,bg:'#ffffff'});grp.add(flag);
   const vl=[label('',{size:.3,bg:'#ffffff',border:'#16a36f'}),label('',{size:.3,bg:'#ffffff',border:'#16a36f'})],mid=label('',{size:.2,color:GREY});vl.forEach(l=>grp.add(l));grp.add(mid);
   const pads=[-1,1].map(s=>{const pd=mk(new THREE.CylinderGeometry(.3,.3,.06,28),lam('#ffd24a'),30);pd.position.set(s*(L/2+.02),.06,Z+.55);grp.add(pd);return pd;});
@@ -152,7 +152,7 @@ P.lesson({id:'round4',title:'Rounding to 10, 100 and 1000',strand:'Number',codes
 P.lesson({id:'fractions4',title:'Fractions from halves to tenths',strand:'Number',codes:['B1.4','B1.6'],
  guide:{goal:'Represent fractions from halves to tenths with fraction bars and standard notation, explain the numerator and denominator, and count by fractions past one whole.',words:'fraction, numerator, denominator, unit fraction, whole, mixed number',
   ask:['What does the 5 in 3/5 tell you?','Why is 1/8 smaller than 1/3?','How many fourths make 2 wholes?'],home:'Cut a sandwich or a sheet of paper into equal parts. Name each part, then count the parts: one third, two thirds, three thirds…'},
- learn:[{say:'Equal parts make fractions.',speech:'A fraction names equal parts of a whole. Watch the bar split into fifths, and three of the five parts light up. That is three fifths.',view:'model',demo:'fifths'},
+ learn:[{say:'Equal parts make fractions.',speech:'A fraction names equal parts of a whole. Watch Kofi’s bar split into fifths, and three of the five parts light up. That is three fifths.',view:'model',demo:'fifths'},
         {say:'Read about numerators and denominators.',speech:'The bottom number, the denominator, tells how many equal parts make one whole. The top number, the numerator, tells how many parts we are counting.',view:'read'},
         {say:'Watch: counting by fourths.',speech:'Now count by fourths: one fourth, two fourths, three fourths, four fourths makes one whole, five fourths is one and one fourth.',view:'model',demo:'count'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -175,7 +175,7 @@ P.lesson({id:'fractions4',title:'Fractions from halves to tenths',strand:'Number
   if(whole>0)T(g,'= '+(r?whole+' and '+r+'/'+st.d:whole+' whole'+(whole>1?'s':'')),x,y+86,FT.bodyB,'#16a36f');return y+104;},
  build(S,grp,mode,game){const st=S.st,Zb=-2.05,Zl=-.95,L1=2.0,x0=-2.0;
   const bars=new THREE.Group();grp.add(bars);const line=new THREE.Group();grp.add(line);let pieces=[];
-  const tok=mk(new THREE.ConeGeometry(.13,.3,20),lam('#e2457a'),0);tok.rotation.x=Math.PI;grp.add(tok);const tl=label('',{size:.24,bg:'#ffffff'});grp.add(tl);
+  const tok=mk(new THREE.ConeGeometry(.13,.3,20),lam('#e4572e'),0);tok.rotation.x=Math.PI;grp.add(tok);const tl=label('',{size:.24,bg:'#ffffff'});grp.add(tl);
   function rebuild(){clearGroup(bars);clearGroup(line);pieces=[];const d=st.d,w=L1/d;
     for(let b=0;b<2;b++)for(let i=0;i<d;i++){const k=b*d+i;const m=mk(G('fp'+d,()=>new THREE.BoxGeometry(w-.035,.3,.6)),lam(k<st.n?(b?'#16a36f':'#2f7de1'):'#eef2f8'),20);
       m.position.set(x0+b*L1+(i+.5)*w,.15+(k<st.n?.06:0),Zb);bars.add(m);pieces.push(m);A.drag(m,{tap:()=>setN(st.n===k+1?k:k+1)});}
@@ -204,7 +204,7 @@ const SHR=[2,3,4,5,6,8,10];
 P.lesson({id:'fairshare',title:'Comparing fair shares',strand:'Number',codes:['B1.5'],
  guide:{goal:'Use models to represent, compare and order the fair-share portions that result from sharing one whole among different numbers of people (2, 3, 4, 5, 6, 8 and 10).',words:'fair share, portion, unit fraction, compare, greater than, less than',
   ask:['Would you rather share a pizza with 3 friends or with 7? Why?','Why is 1/6 less than 1/4 even though 6 is more than 4?','Put 1/2, 1/10 and 1/5 in order.'],home:'Cut two equal pieces of toast, one into 3 pieces and one into 6. Compare one piece of each.'},
- learn:[{say:'More sharers, smaller shares.',speech:'Two tables, two pizzas the same size. Four friends share one, and six friends share the other. Watch: one sixth is smaller than one fourth.',view:'model',demo:'compare'},
+ learn:[{say:'More sharers, smaller shares.',speech:'Hana sets two tables, with two pizzas the same size. Four friends share one, and six friends share the other. Watch: one sixth is smaller than one fourth.',view:'model',demo:'compare'},
         {say:'Read about comparing unit fractions.',speech:'When the same whole is shared by more people, each share is smaller. So one tenth is less than one fifth.',view:'read'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
         {say:'Your turn: change the tables.',speech:'Your turn. Change how many people sit at each table, and compare one share from each pizza.',view:'model'}],
@@ -215,7 +215,7 @@ P.lesson({id:'fairshare',title:'Comparing fair shares',strand:'Number',codes:['B
  init:k=>({a:4,b:6,ask:null}),
  left(p,S){const g=p.g;let y=header(p,S);
   y=para(p,y,'When one whole is shared *fairly*, everyone gets the same size *portion*. The more people share it, the *smaller* each portion.')+18;
-  [[3,X0+170,'#2f7de1'],[6,X0+590,'#e2457a']].forEach(([n,cx,col])=>{const cy=y+120,r=110;for(let i=0;i<n;i++){g.beginPath();g.moveTo(cx,cy);g.arc(cx,cy,r,i*2*Math.PI/n-Math.PI/2,(i+1)*2*Math.PI/n-Math.PI/2);g.closePath();g.fillStyle=i===0?col:'#ffe3a8';g.fill();g.lineWidth=3;g.strokeStyle=INK;g.stroke();}
+  [[3,X0+170,'#2f7de1'],[6,X0+590,'#e4572e']].forEach(([n,cx,col])=>{const cy=y+120,r=110;for(let i=0;i<n;i++){g.beginPath();g.moveTo(cx,cy);g.arc(cx,cy,r,i*2*Math.PI/n-Math.PI/2,(i+1)*2*Math.PI/n-Math.PI/2);g.closePath();g.fillStyle=i===0?col:'#ffe3a8';g.fill();g.lineWidth=3;g.strokeStyle=INK;g.stroke();}
     T(g,'shared by '+n,cx,cy+r+44,FT.bodyB,INK,'center');T(g,'each gets 1/'+n,cx,cy+r+80,FT.small,col,'center');});
   T(g,'>',X0+380,y+140,ZS(80),INK,'center');y+=362;
   y=para(p,y,'So *1/3 > 1/6*. For unit fractions, a *bigger denominator* means a *smaller* piece.')+12;
@@ -227,7 +227,7 @@ P.lesson({id:'fairshare',title:'Comparing fair shares',strand:'Number',codes:['B
     const tb=mk(new THREE.CylinderGeometry(1.05,1.05,.06,40),lam(i?'#fde3ec':'#dbe8fb'),30);tb.position.y=.03;g.add(tb);const pz=new THREE.Group();pz.position.y=.08;g.add(pz);g.userData.pz=pz;
     const ppl=new THREE.Group();g.add(ppl);g.userData.ppl=ppl;const lb=label('',{size:.28,bg:'#ffffff'});lb.position.set(0,1.55,0);g.add(lb);g.userData.lb=lb;A.drag(g,{tap:()=>pickT(i)});return g;});
   function fill(i,n){const t=tables[i],pz=t.userData.pz,ppl=t.userData.ppl;clearGroup(pz);clearGroup(ppl);
-    for(let k=0;k<n;k++){const a0=k*2*Math.PI/n,a1=(k+1)*2*Math.PI/n;const m=mk(wedgeGeo(R,.12,a0+.02,a1-.02),lam(k===0?(i?'#e2457a':'#2f7de1'):'#ffd27a'),30);
+    for(let k=0;k<n;k++){const a0=k*2*Math.PI/n,a1=(k+1)*2*Math.PI/n;const m=mk(wedgeGeo(R,.12,a0+.02,a1-.02),lam(k===0?(i?'#e4572e':'#2f7de1'):'#ffd27a'),30);
       if(k===0){const mid=(a0+a1)/2;m.position.set(Math.cos(mid)*.16,.32,-Math.sin(mid)*.16);}pz.add(m);
       const ang=(k+.5)*2*Math.PI/n;const pe=new THREE.Group();const bd=mk(G('pbody',()=>new THREE.CylinderGeometry(.06,.08,.22,12)),lam(VIBE[k%6]),0);bd.position.y=.11;pe.add(bd);
       const hd=mk(G('phead',()=>new THREE.SphereGeometry(.07,12,10)),lam('#f2c9a0'),0);hd.position.y=.29;pe.add(hd);pe.position.set(Math.cos(ang)*.98,.06,-Math.sin(ang)*.98);ppl.add(pe);}
@@ -253,7 +253,7 @@ P.lesson({id:'fairshare',title:'Comparing fair shares',strand:'Number',codes:['B
 P.lesson({id:'decimals',title:'Decimal tenths',strand:'Number',codes:['B1.7','B1.8','B1.9'],
  guide:{goal:'Read, represent, compare and order decimal tenths, round decimals to the nearest whole number, and show that tenths can be written as fractions or decimals.',words:'decimal, decimal point, tenth, whole, round, equivalent',
   ask:['Why is 0.7 the same as 7/10?','Which is greater, 2.9 or 3.1? How do you know?','What is 4.5 rounded to the nearest whole number?'],home:'Measure things with a ruler in centimetres and tenths (millimetres). A pencil might be 14.6 cm long.'},
- learn:[{say:'Tenths come after the decimal point.',speech:'A whole bar is made of ten tenths. Watch the model build two and seven tenths: two whole bars and seven tenth pieces. We write it two point seven.',view:'model',demo:'build'},
+ learn:[{say:'Tenths come after the decimal point.',speech:'A whole bar is made of ten tenths. Watch Finn build two and seven tenths: two whole bars and seven tenth pieces. We write it two point seven.',view:'model',demo:'build'},
         {say:'Read about decimals and fractions.',speech:'Seven tenths can be written as the fraction seven over ten, or as the decimal zero point seven. They mean the same amount.',view:'read'},
         {say:'Watch: rounding to the nearest whole.',speech:'Two point seven is between two and three. It is closer to three, so it rounds up to three.',view:'model',demo:'round'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -280,7 +280,7 @@ P.lesson({id:'decimals',title:'Decimal tenths',strand:'Number',codes:['B1.7','B1
   const L=4.2,lx=-2.1,toX=v=>lx+v/5*L;const tr=mk(new THREE.BoxGeometry(L+.1,.05,.12),lam('#cbd5e6'),0);tr.position.set(0,.03,Zl);grp.add(tr);
   for(let k=0;k<=50;k++){const big=k%10===0;const t=new THREE.Mesh(G('dtk'+big,()=>new THREE.BoxGeometry(.015,big?.22:.1,.015)),lam(INK));t.position.set(toX(k/10),.05+(big?.11:.05),Zl);grp.add(t);
     if(big){const l=label(String(k/10),{size:.24});l.position.set(toX(k/10),.42,Zl+.28);grp.add(l);}}
-  const mk1=mk(new THREE.ConeGeometry(.12,.28,18),lam('#e2457a'),0);mk1.rotation.x=Math.PI;grp.add(mk1);const ml=label('',{size:.22,bg:'#ffffff'});grp.add(ml);
+  const mk1=mk(new THREE.ConeGeometry(.12,.28,18),lam('#e4572e'),0);mk1.rotation.x=Math.PI;grp.add(mk1);const ml=label('',{size:.22,bg:'#ffffff'});grp.add(ml);
   function bar(i){const g=new THREE.Group();for(let k=0;k<10;k++){const m=mk(G('tenp',()=>new THREE.BoxGeometry(u*.92,u,u*1.4)),lam('#2f7de1'),20);m.position.x=(k-4.5)*u;g.add(m);}return g;}
   function render(){clearGroup(wholes);clearGroup(tenths);for(let i=0;i<st.w;i++){const b=bar(i);b.position.set(-2.55+u*5+ (i%2)*2.1,u/2+.03+Math.floor(i/2)*u,Zw);wholes.add(b);A.drag(b,{tap:()=>change(-1,0)});}
     for(let k=0;k<st.t;k++){const m=mk(G('tenp',()=>new THREE.BoxGeometry(u*.92,u,u*1.4)),lam('#16a36f'),20);m.position.set(-2.55+u/2+(k%10)*u*1.08,u/2+.03+Math.floor(k/10)*u,Zt);tenths.add(m);A.drag(m,{tap:()=>change(0,-1)});}
@@ -311,7 +311,7 @@ P.lesson({id:'decimals',title:'Decimal tenths',strand:'Number',codes:['B1.7','B1
 P.lesson({id:'facts',title:'Multiplication facts',strand:'Number',codes:['B2.2','B2.1'],
  guide:{goal:'Recall and demonstrate multiplication facts to 10 × 10 and related division facts, and use properties of operations (commutative and distributive) to find facts.',words:'factor, product, array, row, column, commutative, distributive, related division fact',
   ask:['How can 5 × 8 help you find 7 × 8?','Why is 6 × 4 the same as 4 × 6?','Which division facts go with 9 × 7 = 63?'],home:'Arrange cutlery, coins or LEGO in rows and columns. Name the multiplication and division facts you see.'},
- learn:[{say:'Rows times columns.',speech:'An array has equal rows. Seven rows of eight is seven times eight. Watch the array grow to fifty-six.',view:'model',demo:'grow'},
+ learn:[{say:'Rows times columns.',speech:'An array has equal rows. Tala sets out seven rows of eight chairs. That is seven times eight. Watch the array grow to fifty-six.',view:'model',demo:'grow'},
         {say:'Read about factors and products.',speech:'The numbers you multiply are factors. The answer is the product. Fifty-six divided by seven is eight: that is the related division fact.',view:'read'},
         {say:'Watch: split a hard fact.',speech:'Seven times eight is hard? Split it into five times eight plus two times eight. Forty plus sixteen is fifty-six. This is the distributive property.',view:'model',demo:'split'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -336,7 +336,7 @@ P.lesson({id:'facts',title:'Multiplication facts',strand:'Number',codes:['B2.2',
   const base=mk(new THREE.BoxGeometry(u*N+.12,.03,u*N+.12),[lam('#eef2f8'),lam('#eef2f8'),cellMat('#f6f8fc',N,N),lam('#eef2f8'),lam('#eef2f8'),lam('#eef2f8')],20);base.position.set(x0+u*N/2,.015,Z0+u*N/2);grp.add(base);
   const arr=new THREE.Group();grp.add(arr);const cg=G('fcube',()=>new THREE.BoxGeometry(u*.86,u*.86,u*.86));
   const corner=mk(new THREE.SphereGeometry(.13,16,12),lam('#ffd24a'),0);grp.add(corner);
-  const lr=label('',{size:.26,color:'#2f7de1'}),lc=label('',{size:.26,color:'#e2457a'});grp.add(lr,lc);
+  const lr=label('',{size:.26,color:'#2f7de1'}),lc=label('',{size:.26,color:'#e4572e'});grp.add(lr,lc);
   function rebuild(drop){clearGroup(arr);for(let r=0;r<st.r;r++)for(let c=0;c<st.c;c++){const m=mk(cg,lam(st.split&&r>=5?'#f08a24':'#2f7de1'),20);
       const p=V(x0+(c+.5)*u,.03+u*.43,Z0+(r+.5)*u+(st.split&&r>=5?.18:0));m.position.copy(p);if(drop){m.position.y+=.5+(r*st.c+c)*.004;moveTo(m,{pos:p,k:12});}arr.add(m);}
     corner.position.set(x0+st.c*u,.3,Z0+st.r*u+(st.split&&st.r>5?.18:0));lr.userData.set(st.r+' rows');lr.position.set(x0-.42,.35,Z0+st.r*u/2);lc.userData.set(st.c+' columns');lc.position.set(x0+st.c*u/2,.35,Z0-.25);}

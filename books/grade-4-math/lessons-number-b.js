@@ -18,11 +18,11 @@ function digitCube(t,bg,s,fg){const geo=G('dcube'+s,()=>new THREE.BoxGeometry(s,
 /* =========================================================
    7. Multiplying by 10, 100 and 1000; dividing by 10
    ========================================================= */
-const PL=['Ten thousands','Thousands','Hundreds','Tens','Ones','Tenths'],PLC=['#8b5cf6','#16a36f','#2f7de1','#e2457a','#e89a00','#0fa5a5'];
+const PL=['Ten thousands','Thousands','Hundreds','Tens','Ones','Tenths'],PLC=['#8b5cf6','#16a36f','#2f7de1','#e4572e','#e89a00','#0fa5a5'];
 P.lesson({id:'times10',title:'Multiplying by 10, 100 and 1000',strand:'Number',codes:['B2.3'],
  guide:{goal:'Use mental math to multiply whole numbers by 10, 100 and 1000 and divide whole numbers by 10, by seeing how digits shift on a place-value chart.',words:'place-value chart, shift, multiply, divide, mental math, tenths',
   ask:['What happens to each digit when you multiply by 10?','Why is it wrong to say “just add a zero” for 4.5 × 10?','What is 360 ÷ 10? How did the digits move?'],home:'Price check: if 1 pack costs $3, what do 10, 100 or 1000 packs cost? Say the answers without paper.'},
- learn:[{say:'×10 moves every digit one place left.',speech:'When you multiply by ten, every digit moves one place to the left, and each one is worth ten times as much. Watch thirty-four become three hundred forty.',view:'model',demo:'x10'},
+ learn:[{say:'×10 moves every digit one place left.',speech:'When you multiply by ten, every digit moves one place to the left, and each one is worth ten times as much. Watch Ravi’s thirty-four become three hundred forty.',view:'model',demo:'x10'},
         {say:'Read the place-value shifts.',speech:'Times ten moves the digits one place left. Times one hundred moves them two places. Times one thousand moves them three places. Divide by ten moves them one place right.',view:'read'},
         {say:'Watch: dividing by 10.',speech:'Now divide forty-five by ten. The digits move one place to the right. The five lands in the tenths place: four point five.',view:'model',demo:'d10'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -36,8 +36,8 @@ P.lesson({id:'times10',title:'Multiplying by 10, 100 and 1000',strand:'Number',c
   y=para(p,y,'Each place is worth *10 times* the place to its right. So multiplying by 10 makes every digit *move one place left*.')+18;
   const cw=TW/6;['Th','H','T','O','.','t'].forEach((h,i)=>{if(h==='.'){T(g,'.',X0+i*cw+cw/2,y+150,ZS(80),INK,'center');return;}rr(g,X0+i*cw+6,y,cw-12,44,10);g.fillStyle=tint(PLC[i+1>4?5:i+1],.18);g.fill();T(g,h,X0+i*cw+cw/2,y+32,FT.smallB,PLC[i+1>4?5:i+1],'center');});
   const row=(dig,yy,lab,col)=>{dig.forEach((d,i)=>{if(d==null)return;rr(g,X0+i*cw+16,yy,cw-32,64,10);g.fillStyle=col;g.fill();T(g,d,X0+i*cw+cw/2,yy+50,ZS(46),'#fff','center');});T(g,lab,X0+TW,yy+44,FT.bodyB,INK,'right');};
-  row([null,null,'3','4',null,null],y+60,'34',BLUE);row([null,'3','4','0',null,null],y+136,'× 10 = 340','#e2457a');
-  g.strokeStyle='#e2457a';g.lineWidth=4;[2,3].forEach(i=>{const x=X0+i*cw+cw/2;g.beginPath();g.moveTo(x,y+126);g.lineTo(x-cw+20,y+136);g.stroke();});y+=232;
+  row([null,null,'3','4',null,null],y+60,'34',BLUE);row([null,'3','4','0',null,null],y+136,'× 10 = 340','#e4572e');
+  g.strokeStyle='#e4572e';g.lineWidth=4;[2,3].forEach(i=>{const x=X0+i*cw+cw/2;g.beginPath();g.moveTo(x,y+126);g.lineTo(x-cw+20,y+136);g.stroke();});y+=232;
   [['× 10','1 place left'],['× 100','2 places left'],['× 1000','3 places left'],['÷ 10','1 place right']].forEach(([a,b],i)=>{const x=X0+(i%2)*TW/2,yy=y+Math.floor(i/2)*54;rr(g,x,yy,TW/2-12,46,14);g.fillStyle=tint(acc(),.1);g.fill();T(g,a,x+20,yy+33,FT.bodyB,acc());T(g,b,x+150,yy+33,FT.body);});y+=128;
   y=keyWords(p,y,[['shift','move each digit to a new place'],['tenths','the place right of the decimal point']]);
   predict(p,y,S,'p7','What is 52 × 1000?','*52 000.* Each digit moves three places left, and three zeros fill the empty places.');},
@@ -73,7 +73,7 @@ P.lesson({id:'times10',title:'Multiplying by 10, 100 and 1000',strand:'Number',c
 P.lesson({id:'addsub4',title:'Adding and subtracting to 10 000',strand:'Number',codes:['B2.4'],
  guide:{goal:'Represent and solve addition and subtraction problems with whole numbers up to 10 000 and with decimal tenths, using the standard algorithm with regrouping, and check answers by estimating.',words:'algorithm, column, regroup, carry, borrow, decimal point, estimate',
   ask:['Why do we line up the decimal points?','What does the little 1 above a column mean?','How can rounding help you check 4985 + 2017?'],home:'Plan a road trip on a map: add the kilometres between towns, then subtract to see how far is left.'},
- learn:[{say:'Add column by column, from the right.',speech:'Line up the places. Start with the ones. Eight plus seven is fifteen: write five, and carry one ten to the next column. Watch the model.',view:'model',demo:'add'},
+ learn:[{say:'Add column by column, from the right.',speech:'Line up the places, just like Isla. Start with the ones. Eight plus seven is fifteen: write five, and carry one ten to the next column. Watch the model.',view:'model',demo:'add'},
         {say:'Read about regrouping.',speech:'When a column adds to ten or more, regroup ten into one of the next place. When subtracting, if the top digit is too small, regroup one from the next place into ten.',view:'read'},
         {say:'Watch: subtracting with regrouping.',speech:'Now subtract. Two minus six does not work, so we regroup one ten into ten ones. Twelve minus six is six.',view:'model',demo:'sub'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -136,7 +136,7 @@ P.lesson({id:'addsub4',title:'Adding and subtracting to 10 000',strand:'Number',
 P.lesson({id:'multiply4',title:'Multiplying bigger numbers',strand:'Number',codes:['B2.5'],
  guide:{goal:'Represent and solve problems that multiply two- and three-digit numbers by one-digit numbers using an area model (partial products), and multiply by 10, 100 and 1000.',words:'area model, partial product, expanded form, factor, product, estimate',
   ask:['How does splitting 236 into 200 + 30 + 6 make 4 × 236 easier?','What are the three partial products for 3 × 152?','Estimate 6 × 398 before you calculate.'],home:'A box holds 125 crackers. How many are in 4 boxes? Split 125 into 100 + 20 + 5 to find out.'},
- learn:[{say:'Split the big number into places.',speech:'To find four times two hundred thirty-six, split two hundred thirty-six into two hundred, thirty, and six. Watch each part of the area model fill in.',view:'model',demo:'parts'},
+ learn:[{say:'Split the big number into places.',speech:'Kofi needs four times two hundred thirty-six. Split two hundred thirty-six into two hundred, thirty, and six. Watch each part of the area model fill in.',view:'model',demo:'parts'},
         {say:'Read about partial products.',speech:'Multiply each part: four times two hundred is eight hundred, four times thirty is one hundred twenty, four times six is twenty-four. Add the partial products.',view:'read'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
         {say:'Your turn: reveal and add.',speech:'Your turn. Tap each part of the model to see its product, then choose the total.',view:'model'}],
@@ -147,7 +147,7 @@ P.lesson({id:'multiply4',title:'Multiplying bigger numbers',strand:'Number',code
  init:k=>({m:4,n:236,shown:[false,false,false]}),
  left(p,S){const g=p.g;let y=header(p,S);
   y=para(p,y,'Split the bigger factor into its *places*. Multiply each part, then add the *partial products*.')+18;
-  const parts=[[200,'#2f7de1'],[30,'#e2457a'],[6,'#e89a00']],ws=[360,180,90],h=150;let x=X0+60;T(g,'4',X0+20,y+h/2+16,ZS(48),INK,'center');
+  const parts=[[200,'#2f7de1'],[30,'#e4572e'],[6,'#e89a00']],ws=[360,180,90],h=150;let x=X0+60;T(g,'4',X0+20,y+h/2+16,ZS(48),INK,'center');
   parts.forEach(([v,c],i)=>{rr(g,x,y,ws[i]-8,h,10);g.fillStyle=tint(c,.25);g.fill();g.lineWidth=3;g.strokeStyle=c;g.stroke();T(g,String(v),x+ws[i]/2-4,y-12,FT.bodyB,c,'center');T(g,'4 × '+v,x+ws[i]/2-4,y+h/2-4,FT.small,INK,'center');T(g,String(4*v),x+ws[i]/2-4,y+h/2+38,ZS(38),INK,'center');x+=ws[i];});
   y+=h+50;T(g,'800 + 120 + 24 = 944',X0,y,ZS(48),acc());T(g,'so 4 × 236 = 944',X0+520,y,FT.bodyB);y+=46;
   y=para(p,y,'*Check with an estimate:* 236 is about 240, and 4 × 240 = 960. 944 is close, so the answer is reasonable.')+12;
@@ -155,7 +155,7 @@ P.lesson({id:'multiply4',title:'Multiplying bigger numbers',strand:'Number',code
   predict(p,y,S,'p9','What are the partial products for 3 × 125?','*300, 60 and 15.* 3 × 100, 3 × 20 and 3 × 5. Total: 375.');},
  readout(p,S,y){const g=p.g,st=S.st,parts=split(st.n);T(g,st.m+' × '+st.n+' = '+parts.map((v,i)=>st.shown[i]?String(st.m*v):'?').join(' + '),X0,y+50,ZS(44),acc());
   if(st.shown.slice(0,parts.length).every(x=>x))T(g,'= '+st.m*st.n,X0,y+94,ZS(40));return y+104;},
- build(S,grp,mode,game){const st=S.st,Z=-1.8,H=1.6,cols=['#2f7de1','#e2457a','#e89a00'];const blocks=new THREE.Group();grp.add(blocks);const tags=new THREE.Group();grp.add(tags);
+ build(S,grp,mode,game){const st=S.st,Z=-1.8,H=1.6,cols=['#2f7de1','#e4572e','#e89a00'];const blocks=new THREE.Group();grp.add(blocks);const tags=new THREE.Group();grp.add(tags);
   function draw(){clearGroup(blocks);clearGroup(tags);const parts=split(st.n);const wts=parts.map(v=>Math.max(.5,Math.log10(v)+.3));const tot=wts.reduce((a,b)=>a+b,0);const sc=3.9/tot;let x=-1.85;
     const ml=label(String(st.m),{size:.4,color:INK});ml.position.set(-2.12,.4,Z);tags.add(ml);
     parts.forEach((v,i)=>{const w=wts[i]*sc-.08;const ht=st.shown[i]?.12+Math.min(.9,st.m*v/1500):.12;const b=mk(new THREE.BoxGeometry(w,ht,H),[lam(cols[i]),lam(cols[i]),cellMat(st.shown[i]?cols[i]:'#ffffff',Math.max(1,Math.round(w*4)),st.m),lam(cols[i]),lam(cols[i]),lam(cols[i])],20);
@@ -179,7 +179,7 @@ function split(n){const s=String(n);return s.split('').map((d,i)=>+d*Math.pow(10
 P.lesson({id:'divide4',title:'Dividing and remainders',strand:'Number',codes:['B2.6'],
  guide:{goal:'Represent and solve problems that divide two- and three-digit numbers by one-digit numbers by sharing base-ten blocks, regrouping when needed, and express a remainder as a fraction when it makes sense.',words:'divide, dividend, divisor, quotient, remainder, share, regroup',
   ask:['Why do we break a ten into ten ones when we cannot share it?','When does a remainder become a fraction? When does it not?','How can multiplication check 75 ÷ 4?'],home:'Share a bag of crackers among family members. What do you do with the leftovers?'},
- learn:[{say:'Share the biggest blocks first.',speech:'To divide fifty-seven by four, share the tens first: one ten to each plate. One ten is left, so break it into ten ones. Then share the ones.',view:'model',demo:'deal'},
+ learn:[{say:'Share the biggest blocks first.',speech:'To divide Hana’s fifty-seven beads by four, share the tens first: one ten to each plate. One ten is left, so break it into ten ones. Then share the ones.',view:'model',demo:'deal'},
         {say:'Read about remainders.',speech:'Fifty-seven divided by four is fourteen with one left over. The leftover can be cut into four equal parts, so each plate gets fourteen and one fourth.',view:'read'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
         {say:'Your turn: deal the blocks.',speech:'Your turn. Press Deal to share blocks, Break to trade a block for ten smaller ones, then choose the answer.',view:'model'}],
@@ -191,7 +191,7 @@ P.lesson({id:'divide4',title:'Dividing and remainders',strand:'Number',codes:['B
  left(p,S){const g=p.g;let y=header(p,S);
   y=para(p,y,'*Dividing* shares a number into equal groups. Share the *biggest blocks first*. If you cannot share a block, *break* it into 10 smaller ones.')+18;
   const pl=[0,1,2,3];pl.forEach(i=>{const cx=X0+100+i*200,cy=y+90;g.beginPath();g.ellipse(cx,cy,86,56,0,0,Math.PI*2);g.fillStyle='#fff4dc';g.fill();g.lineWidth=3;g.strokeStyle='#e8c98a';g.stroke();
-    g.fillStyle='#e2457a';g.fillRect(cx-50,cy-30,14,60);for(let k=0;k<4;k++){g.fillStyle='#e89a00';g.fillRect(cx-22+k*18,cy-6,14,14);}});
+    g.fillStyle='#e4572e';g.fillRect(cx-50,cy-30,14,60);for(let k=0;k<4;k++){g.fillStyle='#e89a00';g.fillRect(cx-22+k*18,cy-6,14,14);}});
   T(g,'57 ÷ 4 = 14 R1',X0,y+200,ZS(46),acc());T(g,'each plate: 1 ten and 4 ones',X0+370,y+194,FT.body,GREY);y+=240;
   y=para(p,y,'The *remainder* is what is left. If it can be cut, share it too: 57 ÷ 4 = *14 and 1/4*. Check: 4 × 14 + 1 = 57.')+12;
   y=keyWords(p,y,[['quotient','the answer to a division'],['remainder','the amount left over after sharing equally']]);
@@ -199,7 +199,7 @@ P.lesson({id:'divide4',title:'Dividing and remainders',strand:'Number',codes:['B
  readout(p,S,y){const g=p.g,st=S.st;const q=Math.floor(st.n/st.d),r=st.n%st.d;T(g,st.n+' ÷ '+st.d+(st.done?' = '+q+(r?' R'+r+'  or  '+q+' '+r+'/'+st.d:''):' = ?'),X0,y+52,ZS(48),acc());
   T(g,st.done?'Check: '+st.d+' × '+q+(r?' + '+r:'')+' = '+st.n:'Pool: '+st.pool.h+' hundreds, '+st.pool.t+' tens, '+st.pool.o+' ones',X0,y+92,FT.bodyB);return y+102;},
  build(S,grp,mode,game){const st=S.st,u=.1,Zp=-2.5,Zpl=-.95;const pool=new THREE.Group(),plates=new THREE.Group(),items=new THREE.Group();grp.add(pool,plates,items);
-  const mkB=k=>k==='h'?unitBox(10,1,10,'#6ea8f5',u):k==='t'?unitBox(1,1,10,'#f57fa1',u):unitBox(1,1,1,'#ffcf3f',u);
+  const mkB=k=>k==='h'?unitBox(10,1,10,'#6ea8f5',u):k==='t'?unitBox(1,1,10,'#f79a5c',u):unitBox(1,1,1,'#ffcf3f',u);
   function setUp(n,d){st.n=n;st.d=d;st.pool={h:Math.floor(n/100),t:Math.floor(n/10)%10,o:n%10};st.share=[];for(let i=0;i<d;i++)st.share.push({h:0,t:0,o:0});st.done=false;draw();}
   const px=i=>-1.95+(i+.5)*(3.9/st.d);
   function draw(){clearGroup(pool);clearGroup(plates);clearGroup(items);
@@ -236,7 +236,7 @@ P.lesson({id:'divide4',title:'Dividing and remainders',strand:'Number',codes:['B
 P.lesson({id:'unitfrac',title:'Adding unit fractions',strand:'Number',codes:['B2.7'],
  guide:{goal:'Show that adding a unit fraction several times is the same as multiplying the unit fraction by a whole number, using fraction strips and standard notation.',words:'unit fraction, repeated addition, multiply, numerator, denominator, improper fraction',
   ask:['Why is 1/4 + 1/4 + 1/4 the same as 3 × 1/4?','How many fifths make 2 wholes?','Is 7 × 1/8 more or less than 1? How do you know?'],home:'Measure with a 1/4 cup. How many scoops make 2 cups? Write it as a multiplication.'},
- learn:[{say:'Repeated addition is multiplication.',speech:'One fourth plus one fourth plus one fourth is three times one fourth, which is three fourths. Watch the pieces line up.',view:'model',demo:'add'},
+ learn:[{say:'Repeated addition is multiplication.',speech:'Finn takes one fourth plus one fourth plus one fourth. That is three times one fourth, which is three fourths. Watch the pieces line up.',view:'model',demo:'add'},
         {say:'Read the rule.',speech:'When you multiply a unit fraction by a whole number, the whole number tells how many pieces. Five times one third is five thirds, which is one and two thirds.',view:'read'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
         {say:'Your turn: add pieces.',speech:'Your turn. Choose a unit fraction and add pieces to the track. Watch the multiplication sentence grow.',view:'model'}],
@@ -247,7 +247,7 @@ P.lesson({id:'unitfrac',title:'Adding unit fractions',strand:'Number',codes:['B2
  init:k=>({d:4,n:3,target:null}),
  left(p,S){const g=p.g;let y=header(p,S);
   y=para(p,y,'A *unit fraction* is one piece, like 1/4. Adding the same unit fraction again and again is the same as *multiplying*.')+18;
-  for(let i=0;i<3;i++){rr(g,X0+i*150,y,140,64,10);g.fillStyle=['#2f7de1','#16a36f','#e2457a'][i];g.fill();T(g,'1/4',X0+i*150+70,y+44,ZS(36),'#fff','center');}
+  for(let i=0;i<3;i++){rr(g,X0+i*150,y,140,64,10);g.fillStyle=['#2f7de1','#16a36f','#e4572e'][i];g.fill();T(g,'1/4',X0+i*150+70,y+44,ZS(36),'#fff','center');}
   g.strokeStyle=INK;g.lineWidth=3;g.strokeRect(X0,y-6,600,76);T(g,'1 whole',X0+640,y+42,FT.small,GREY);y+=110;
   T(g,'1/4 + 1/4 + 1/4  =  3 × 1/4  =  3/4',X0,y,ZS(42),acc());y+=56;
   y=para(p,y,'The *whole number* tells how many pieces. *5 × 1/3 = 5/3 = 1 and 2/3*. When the numerator is bigger than the denominator, the amount is more than 1.')+12;
@@ -274,11 +274,11 @@ P.lesson({id:'unitfrac',title:'Adding unit fractions',strand:'Number',codes:['B2
 /* =========================================================
    12. Rates
    ========================================================= */
-const RATES=[{it:'egg carton',each:'eggs',per:6,col:'#f3e3c3',dot:'#fffaf0'},{it:'tricycle',each:'wheels',per:3,col:'#e2457a',dot:'#1b2236'},{it:'bag',each:'apples',per:4,col:'#c9e7a3',dot:'#e0453a'},{it:'pack',each:'juice boxes',per:5,col:'#bfe2ff',dot:'#f08a24'},{it:'spider',each:'legs',per:8,col:'#8b5cf6',dot:'#1b2236'}];
+const RATES=[{it:'egg carton',each:'eggs',per:6,col:'#f3e3c3',dot:'#fffaf0'},{it:'tricycle',each:'wheels',per:3,col:'#e4572e',dot:'#1b2236'},{it:'bag',each:'apples',per:4,col:'#c9e7a3',dot:'#e0453a'},{it:'pack',each:'juice boxes',per:5,col:'#bfe2ff',dot:'#f08a24'},{it:'spider',each:'legs',per:8,col:'#8b5cf6',dot:'#1b2236'}];
 P.lesson({id:'rates',title:'Rates: for every one',strand:'Number',codes:['B2.8'],
  guide:{goal:'Show simple multiplicative relationships involving whole-number rates (such as 6 eggs per carton) using models, tables and drawings.',words:'rate, per, for every, table of values, multiply, relationship',
   ask:['If one carton has 6 eggs, how can you find the eggs in 7 cartons without counting?','What stays the same in a rate table? What changes?','How many cartons do you need for 30 eggs?'],home:'Find rates at home: wheels per car, legs per chair, slices per pizza. Make a table for 1 to 5 of each.'},
- learn:[{say:'A rate compares two amounts.',speech:'A rate tells how much of one thing for every one of another. One carton holds six eggs. Watch: two cartons, twelve eggs. Three cartons, eighteen eggs.',view:'model',demo:'grow'},
+ learn:[{say:'A rate compares two amounts.',speech:'A rate tells how much of one thing for every one of another. One of Tala’s cartons holds six eggs. Watch: two cartons, twelve eggs. Three cartons, eighteen eggs.',view:'model',demo:'grow'},
         {say:'Read the rate table.',speech:'In a rate table, the number of cartons goes up by one, and the number of eggs goes up by six each time. Multiply by six to get the eggs.',view:'read'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
         {say:'Your turn: add groups.',speech:'Your turn. Add or remove groups and watch the total change. Try a different rate.',view:'model'}],
@@ -290,7 +290,7 @@ P.lesson({id:'rates',title:'Rates: for every one',strand:'Number',codes:['B2.8']
  left(p,S){const g=p.g;let y=header(p,S);
   y=para(p,y,'A *rate* compares two amounts: *6 eggs for every 1 carton*. We say *6 eggs per carton*.')+18;
   const cw=110;rr(g,X0,y,cw*6+140,120,14);g.fillStyle=tint(acc(),.08);g.fill();T(g,'cartons',X0+20,y+48,FT.smallB);T(g,'eggs',X0+20,y+98,FT.smallB);
-  for(let i=1;i<=5;i++){T(g,String(i),X0+140+(i-.5)*cw,y+48,ZS(36),INK,'center');T(g,String(6*i),X0+140+(i-.5)*cw,y+98,ZS(36),'#e2457a','center');}
+  for(let i=1;i<=5;i++){T(g,String(i),X0+140+(i-.5)*cw,y+48,ZS(36),INK,'center');T(g,String(6*i),X0+140+(i-.5)*cw,y+98,ZS(36),'#e4572e','center');}
   T(g,'+6',X0+140+1.0*cw,y+150,FT.hand,BLUE,'center');T(g,'+6',X0+140+2*cw,y+150,FT.hand,BLUE,'center');T(g,'× 6',X0+cw*6+80,y+80,FT.hand,BLUE,'center');y+=190;
   y=para(p,y,'To find the total, *multiply* the number of groups by the rate: 7 cartons × 6 eggs = *42 eggs*. To find the groups, ask *how many 6s* make the total.')+12;
   y=keyWords(p,y,[['rate','how much of one thing for every one of another'],['per','for each one']]);

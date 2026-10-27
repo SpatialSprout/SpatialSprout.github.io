@@ -20,11 +20,11 @@ const SUP=['⁰','¹','²','³','⁴','⁵','⁶','⁷','⁸','⁹'];const pw=k=
 /* =========================================================
    1. Numbers to one billion and powers of ten
    ========================================================= */
-const PCOL=['#e89a00','#e2457a','#2f7de1','#16a36f','#8b5cf6','#c2410c','#0fa5a5','#db2777','#4f46e5','#1b2236'];
+const PCOL=['#e89a00','#e4572e','#2f7de1','#16a36f','#8b5cf6','#c2410c','#0fa5a5','#ea580c','#4f46e5','#1b2236'];
 P.lesson({id:'billion7',title:'Numbers to one billion',strand:'Number',codes:['B1.1'],
  guide:{goal:'Represent and compare whole numbers up to one billion, including in expanded form using powers of ten, and describe how such numbers are used in everyday life.',words:'billion, million, power of ten, exponent, expanded form, period',
   ask:['How many millions make one billion?','What does 4 × 10⁶ mean?','How do you compare 45 600 000 and 456 000 000?'],home:'Look up big numbers in the news: Canada’s population, a city budget, the distance to the Sun. Write one in expanded form with powers of ten.'},
- learn:[{say:'Each place is a power of ten.',speech:'Every place value is a power of ten. Ten to the zero is one, ten to the third is one thousand, ten to the sixth is one million, and ten to the ninth is one billion. Watch the towers build forty-five million, three hundred thousand.',view:'model',demo:'build'},
+ learn:[{say:'Each place is a power of ten.',speech:'Every place value is a power of ten. Ten to the zero is one, ten to the third is one thousand, ten to the sixth is one million, and ten to the ninth is one billion. Tariq’s country has forty-five million, three hundred thousand people. Watch the towers build it.',view:'model',demo:'build'},
         {say:'Read about expanded form with powers.',speech:'Forty-five million, three hundred thousand is four times ten to the seventh, plus five times ten to the sixth, plus three times ten to the fifth.',view:'read'},
         {say:'Watch: one billion.',speech:'One thousand millions make one billion: a one followed by nine zeros. Watch the billions tower light up.',view:'model',demo:'billion'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -71,7 +71,7 @@ function exp(d){return d.map((v,k)=>v?v+' × '+pw(k):null).filter(Boolean).rever
 P.lesson({id:'squares7',title:'Perfect squares and square roots',strand:'Number',codes:['B1.2'],
  guide:{goal:'Identify and represent perfect squares, and determine their square roots, in various contexts.',words:'perfect square, square root, √, side length, area, squared',
   ask:['Why is 36 called a perfect square?','What is √64? How do you know?','Can 50 tiles make a square with no tiles left over?'],home:'Arrange coins or LEGO into squares: 4, 9, 16, 25… What do you notice about the side lengths?'},
- learn:[{say:'Squares from tiles.',speech:'A perfect square is a number of tiles that makes a square. Watch the squares grow: one, four, nine, sixteen, twenty-five. Each is a side length times itself.',view:'model',demo:'grow'},
+ learn:[{say:'Squares from tiles.',speech:'A perfect square is a number of tiles that makes a square. Watch Maya’s squares grow: one, four, nine, sixteen, twenty-five. Each is a side length times itself.',view:'model',demo:'grow'},
         {say:'Read about square roots.',speech:'The square root of a perfect square is its side length. The square root of forty-nine is seven, because seven times seven is forty-nine.',view:'read'},
         {say:'Watch: not a perfect square.',speech:'Can forty tiles make a square? Six by six uses thirty-six, with four left over. Seven by seven needs forty-nine. So forty is not a perfect square.',view:'model',demo:'not'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -115,7 +115,7 @@ P.lesson({id:'squares7',title:'Perfect squares and square roots',strand:'Number'
 P.lesson({id:'rational7',title:'Rational numbers on the number line',strand:'Number',codes:['B1.3','B1.5','B1.6'],
  guide:{goal:'Read, represent, compare and order rational numbers, including negative fractions and decimals to thousandths; generate numbers between any two quantities; and round decimals as needed.',words:'rational number, negative fraction, opposite, between, density, round',
   ask:['Which is greater, −3/4 or −0.7?','Name a number between 0.25 and 0.26.','Is there always another number between two numbers?'],home:'Name a temperature between −2.5 °C and −2.4 °C. Then find one between those two!'},
- learn:[{say:'Every rational number has a place.',speech:'A rational number can be written as a fraction. It can be positive or negative. Watch these cards find their places: negative one point two five, negative three quarters, two fifths and one point five.',view:'model',demo:'order'},
+ learn:[{say:'Every rational number has a place.',speech:'A rational number can be written as a fraction. It can be positive or negative. Watch Liam’s cards find their places: negative one point two five, negative three quarters, two fifths and one point five.',view:'model',demo:'order'},
         {say:'Read about numbers between.',speech:'Between any two rational numbers, there is always another one. Between zero point two five and zero point two six is zero point two five five. Zoom in and there are always more.',view:'read'},
         {say:'Watch: zoom in between.',speech:'Zoom in between zero point two and zero point three. Ten new tick marks appear: zero point two one, zero point two two, and so on. We can keep zooming forever.',view:'model',demo:'zoom'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -169,7 +169,7 @@ P.lesson({id:'rational7',title:'Rational numbers on the number line',strand:'Num
 P.lesson({id:'simplify7',title:'Simplifying fractions',strand:'Number',codes:['B1.4'],
  guide:{goal:'Use equivalent fractions and common factors to simplify fractions when appropriate.',words:'simplify, lowest terms, common factor, greatest common factor, equivalent fraction',
   ask:['How does grouping pieces show that 6/8 = 3/4?','How do you know 9/16 is already in lowest terms?','When is it NOT helpful to simplify?'],home:'Cut a pizza into 8 slices and eat 4. Talk about why 4/8 and 1/2 mean the same amount.'},
- learn:[{say:'Group the pieces.',speech:'Six eighths. Group the pieces in twos: the eight pieces become four groups, and the six shaded pieces become three groups. Six eighths equals three quarters.',view:'model',demo:'group'},
+ learn:[{say:'Group the pieces.',speech:'Ines has six eighths. Group the pieces in twos: the eight pieces become four groups, and the six shaded pieces become three groups. Six eighths equals three quarters.',view:'model',demo:'group'},
         {say:'Read about lowest terms.',speech:'To simplify, divide the numerator and the denominator by a common factor. Use the greatest common factor to get to lowest terms in one step.',view:'read'},
         {say:'Watch: twelve sixteenths.',speech:'Twelve sixteenths. Group by two: six eighths. Group by two again: three quarters. Or group by four at once.',view:'model',demo:'twice'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -208,7 +208,7 @@ const fdps=(n,d)=>{const v=n/d;const rep=[3,6,7,9].some(x=>d%x===0)&&d!==25&&d!=
 P.lesson({id:'fdp7',title:'Fractions, decimals and percents',strand:'Number',codes:['B1.7','B2.2'],
  guide:{goal:'Convert between fractions, decimals and percents, and recall commonly used equivalents.',words:'percent, decimal, fraction, equivalent, repeating decimal, benchmark',
   ask:['How do you change 3/8 into a percent?','Why is 1/3 written as 33.3…%?','Which is greater: 0.45, 4/9 or 44%?'],home:'Find a sale sign like “25% off”. Say it as a fraction and as a decimal.'},
- learn:[{say:'Three scales, one amount.',speech:'This slider has three scales: fractions, decimals and percents. Watch the marker move to three eighths. It is zero point three seven five, and thirty-seven point five percent, all at once.',view:'model',demo:'slide'},
+ learn:[{say:'Three scales, one amount.',speech:'Kenji’s slider has three scales: fractions, decimals and percents. Watch the marker move to three eighths. It is zero point three seven five, and thirty-seven point five percent, all at once.',view:'model',demo:'slide'},
         {say:'Read the conversions.',speech:'To change a fraction to a decimal, divide the numerator by the denominator. To change a decimal to a percent, multiply by one hundred. Some fractions, like one third, make repeating decimals.',view:'read'},
         {say:'Watch: common equivalents.',speech:'Learn the common ones by heart: one half is fifty percent, one quarter is twenty-five percent, one fifth is twenty percent, one eighth is twelve point five percent, and one third is about thirty-three point three percent.',view:'model',demo:'tour'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -225,7 +225,7 @@ P.lesson({id:'fdp7',title:'Fractions, decimals and percents',strand:'Number',cod
   y=keyWords(p,y,[['repeating decimal','a decimal with digits that repeat forever, like 0.333…'],['percent','per hundred']]);
   predict(p,y,S,'p5','Order from least to greatest: 0.45, 4/9, 44%.','*44%, 4/9, 0.45.* 4/9 = 0.444…, and 44% = 0.44.');},
  readout(p,S,y){const g=p.g,st=S.st,f=fdps(st.n,st.d);T(g,st.n+'/'+st.d+'  =  '+f.dec+'  =  '+f.pct,X0,y+56,ZS(46),acc());return y+76;},
- build(S,grp,mode,game){const st=S.st,x0=-2.0,L=4.0;const rows=[[-2.6,'fraction','#2f7de1'],[-1.8,'decimal','#16a36f'],[-1.0,'percent','#e2457a']];
+ build(S,grp,mode,game){const st=S.st,x0=-2.0,L=4.0;const rows=[[-2.6,'fraction','#2f7de1'],[-1.8,'decimal','#16a36f'],[-1.0,'percent','#e4572e']];
   rows.forEach(([z,t,c])=>{const tr=mk(new THREE.BoxGeometry(L+.1,.05,.12),lam(tint(c,.5)),0);tr.position.set(0,.03,z);grp.add(tr);const l=label(t,{size:.16,color:c});l.position.set(-2.0,.25,z-.28);grp.add(l);
     for(let k=0;k<=10;k++){const tk=new THREE.Mesh(G('f7t',()=>new THREE.BoxGeometry(.015,.16,.015)),lam(INK));tk.position.set(x0+k*L/10,.1,z);grp.add(tk);if(k%5===0||t!=='fraction'){const lab=t==='decimal'?(k/10).toFixed(1):t==='percent'?k*10+'%':['0','','','','','1/2','','','','','1'][k];if(lab){const ll=label(lab,{size:.14,color:GREY});ll.position.set(x0+k*L/10,.28,z+.2);grp.add(ll);}}}});
   const rod=mk(new THREE.BoxGeometry(.04,.5,2.0),new THREE.MeshLambertMaterial({color:'#f59e0b',transparent:true,opacity:.7}),0);grp.add(rod);const tags=[0,1,2].map(i=>{const l=label('',{size:.24,bg:'#ffffff',border:rows[i][2]});grp.add(l);return l;});
@@ -253,7 +253,7 @@ P.lesson({id:'fdp7',title:'Fractions, decimals and percents',strand:'Number',cod
 P.lesson({id:'pctchange7',title:'Increasing and decreasing by percents',strand:'Number',codes:['B2.3'],
  guide:{goal:'Use mental math strategies to increase and decrease a whole number by 1%, 5%, 10%, 25%, 50% and 100%, and explain the strategies.',words:'increase, decrease, percent, discount, markup, original amount',
   ask:['How can you increase 80 by 25% in your head?','Is decreasing by 50% the same as halving?','What happens when you increase a number by 100%?'],home:'A $60 jacket is 25% off. Find the sale price together without a calculator.'},
- learn:[{say:'The bar starts at 100%.',speech:'The blue bar is the original amount, eighty. It is one hundred percent. Increase it by twenty-five percent: add one quarter of eighty, which is twenty. The new amount is one hundred.',view:'model',demo:'up'},
+ learn:[{say:'The bar starts at 100%.',speech:'The blue bar is the original price of Zuri’s game, eighty dollars. It is one hundred percent. Increase it by twenty-five percent: add one quarter of eighty, which is twenty. The new price is one hundred.',view:'model',demo:'up'},
         {say:'Read the strategies.',speech:'Find the percent of the number first, then add it for an increase or subtract it for a decrease. Ten percent is divide by ten; five percent is half of that; fifty percent is half; one hundred percent doubles.',view:'read'},
         {say:'Watch: a discount.',speech:'A sixty dollar jacket is ten percent off. Ten percent of sixty is six. Sixty minus six is fifty-four dollars.',view:'model',demo:'down'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -292,7 +292,7 @@ P.lesson({id:'pctchange7',title:'Increasing and decreasing by percents',strand:'
 P.lesson({id:'integers7',title:'Adding and subtracting integers',strand:'Number',codes:['B2.4'],
  guide:{goal:'Use counters, number lines and equations to represent, describe and solve addition and subtraction of integers.',words:'integer, zero pair, positive, negative, opposite, number line',
   ask:['Why does a zero pair have a value of 0?','How is (+3) + (−5) like a temperature change?','Why does subtracting a negative make a number bigger?'],home:'Play “elevator”: start on floor 2, go down 5, then up 3. Write each move as an integer equation.'},
- learn:[{say:'Zero pairs cancel.',speech:'A yellow counter is plus one. A red counter is minus one. Together they make a zero pair. Three plus negative five: three yellows and five reds. Three zero pairs cancel, and two reds are left. The answer is negative two.',view:'model',demo:'add'},
+ learn:[{say:'Zero pairs cancel.',speech:'A yellow counter is plus one. A red counter is minus one. Together they make a zero pair. Tariq goes up three floors, then down five: three plus negative five. Three zero pairs cancel, and two reds are left. The answer is negative two.',view:'model',demo:'add'},
         {say:'Read the rules.',speech:'To add integers, combine the counters and remove zero pairs. To subtract, take counters away. If there are not enough to take away, add zero pairs first.',view:'read'},
         {say:'Watch: subtracting a negative.',speech:'Two minus negative three. There are no red counters to take away, so add three zero pairs. Now take away three reds. Five yellows are left: the answer is five.',view:'model',demo:'sub'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -319,8 +319,8 @@ P.lesson({id:'integers7',title:'Adding and subtracting integers',strand:'Number'
     if(st.stage===0&&st.op==='+'){for(let i=0;i<Math.abs(st.b);i++){const c=coin(st.b>0);c.position.set(-1.9+i*.36,.06,-.25);side.add(c);}const l=label('waiting: '+sgn(st.b),{size:.18,color:GREY});l.position.set(1.6,.2,-.25);side.add(l);}
     A.redraw();}
   function setUp(a,b,op){st.a=a;st.b=b;st.op=op;st.pos=Math.max(0,a);st.neg=Math.max(0,-a);st.stage=0;draw();}
-  function combine(){if(st.op!=='+'||st.stage>0)return;if(st.b>0)st.pos+=st.b;else st.neg+=-st.b;st.stage=1;A.pop();A.say('Combined. Now cancel the zero pairs.');draw();}
-  function cancel(){const pr=Math.min(st.pos,st.neg);if(!pr){A.bad('No zero pairs to cancel.');return;}const kids=cG.children.slice(0,pr*3);kids.forEach(o=>moveTo(o,{scale:.01,k:10}));A.later(()=>{st.pos-=pr;st.neg-=pr;if(st.op==='+'&&st.stage>=1)st.stage=3;A.pop();A.say(pr+' zero pairs cancelled.');draw();},500);}
+  function combine(){if(st.op!=='+'||st.stage>0)return;if(st.b>0)st.pos+=st.b;else st.neg+=-st.b;st.stage=1;A.pop();if(!Math.min(st.pos,st.neg)){st.stage=3;A.say('Combined! All the counters are the same colour, so there are no zero pairs. Count them.');}else A.say('Combined. Now cancel the zero pairs.');draw();}
+  function cancel(){const pr=Math.min(st.pos,st.neg);if(!pr){if(st.op==='+'&&st.stage>=1&&st.stage<3){st.stage=3;A.say('No zero pairs here: every counter is the same colour. Count them!');draw();return;}A.bad('No zero pairs to cancel.');return;}const kids=cG.children.slice(0,pr*3);kids.forEach(o=>moveTo(o,{scale:.01,k:10}));A.later(()=>{st.pos-=pr;st.neg-=pr;if(st.op==='+'&&st.stage>=1)st.stage=3;A.pop();A.say(pr+' zero pairs cancelled.');draw();},500);}
   function addPairs(){st.pos++;st.neg++;A.pop();A.say('Added a zero pair: the value does not change.');draw();}
   function takeAway(){if(st.op!=='−'||st.stage>=3)return;const need=Math.abs(st.b),pos=st.b>0;if((pos?st.pos:st.neg)<need){A.bad('Not enough '+(pos?'yellow':'red')+' counters. Add zero pairs first!');return;}if(pos)st.pos-=need;else st.neg-=need;st.stage=3;A.pop();A.say('Took away '+sgn(st.b)+'.');draw();}
   draw();setUp(st.a,st.b,st.op);

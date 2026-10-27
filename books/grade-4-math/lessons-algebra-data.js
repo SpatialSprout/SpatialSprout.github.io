@@ -18,7 +18,7 @@ function card(text,bg,w,d,fg){const geo=new THREE.BoxGeometry(w,.06,d);const s=l
 P.lesson({id:'patterns4',title:'Patterns, tables and graphs',strand:'Algebra',codes:['C1.1','C1.2','C1.3','C1.4'],
  guide:{goal:'Identify, describe, create and extend repeating and growing patterns, show them in tables of values and graphs, use pattern rules to predict and find missing terms, and make patterns with decimal tenths.',words:'pattern rule, term, term number, table of values, growing pattern, shrinking pattern, repeating pattern',
   ask:['What is the pattern rule? How do you know?','What will term 10 be? How can you predict it without building it?','How is a pattern of 0.2, 0.4, 0.6 like 2, 4, 6?'],home:'Stack coins in a growing pattern: 1, 3, 5, 7… Record the term number and the number of coins in a table.'},
- learn:[{say:'Growing patterns follow a rule.',speech:'This pattern starts at three and adds two each time. Watch the towers grow: three, five, seven, nine. The tops of the towers make a straight line on the graph.',view:'model',demo:'grow'},
+ learn:[{say:'Growing patterns follow a rule.',speech:'Ravi’s pattern starts at three and adds two each time. Watch the towers grow: three, five, seven, nine. The tops of the towers make a straight line on the graph.',view:'model',demo:'grow'},
         {say:'Read about tables of values.',speech:'A table of values shows each term number and its value. The pattern rule here is: start at three and add two each time.',view:'read'},
         {say:'Watch: a decimal pattern.',speech:'Now each cube is worth one tenth. The same towers show zero point three, zero point five, zero point seven. Decimal patterns grow the same way.',view:'model',demo:'decimal'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -37,7 +37,7 @@ P.lesson({id:'patterns4',title:'Patterns, tables and graphs',strand:'Algebra',co
   y=keyWords(p,y,[['term','one step in a pattern'],['table of values','a table pairing each term number with its value']]);
   predict(p,y,S,'p13','Rule: start at 2, add 5. What is term 6?','*27.* 2, 7, 12, 17, 22, 27.');},
  readout(p,S,y){const g=p.g,st=S.st,f=v=>st.dec?(v/10).toFixed(1):String(v);T(g,'Term',X0,y+36,FT.smallB);T(g,'Value',X0,y+80,FT.smallB);
-  for(let n=1;n<=6;n++){const v=st.a+st.b*(n-1);const hide=n-1===st.miss;T(g,String(n),X0+150+(n-1)*110,y+36,ZS(32),INK,'center');T(g,hide?(st.user?f(st.user):'?'):f(v),X0+150+(n-1)*110,y+80,ZS(32),hide?'#e2457a':'#8b5cf6','center');}
+  for(let n=1;n<=6;n++){const v=st.a+st.b*(n-1);const hide=n-1===st.miss;T(g,String(n),X0+150+(n-1)*110,y+36,ZS(32),INK,'center');T(g,hide?(st.user?f(st.user):'?'):f(v),X0+150+(n-1)*110,y+80,ZS(32),hide?'#e4572e':'#8b5cf6','center');}
   T(g,'Rule: start at '+f(st.a)+', '+(st.b>=0?'add '+f(st.b):'subtract '+f(-st.b)),X0,y+122,FT.bodyB,acc());return y+130;},
  build(S,grp,mode,game){const st=S.st,u=.15,Z=-1.6,xs=n=>-1.9+n*.76;const towers=new THREE.Group();grp.add(towers);
   const base=mk(new THREE.BoxGeometry(4.5,.03,1.1),[lam('#efe9ff'),lam('#efe9ff'),cellMat('#f7f3ff',18,4),lam('#efe9ff'),lam('#efe9ff'),lam('#efe9ff')],20);base.position.set(0,.015,Z);grp.add(base);
@@ -46,7 +46,7 @@ P.lesson({id:'patterns4',title:'Patterns, tables and graphs',strand:'Algebra',co
   function draw(){clearGroup(towers);clearGroup(line);const tops=[];
     for(let n=0;n<6;n++){const isM=n===st.miss;const h=isM?st.user:val(n);const g=new THREE.Group();g.position.set(xs(n),0,Z);towers.add(g);
       for(let k=0;k<h;k++){const c=unitBox(1,1,1,isM?'#ffd24a':VIBE[n%6],u);c.position.y=u/2+.03+k*u;g.add(c);}
-      if(isM){const ring=mk(new THREE.BoxGeometry(u+.14,.02,u+.14),lam('#e2457a'),0);ring.position.y=.04;g.add(ring);A.drag(g,{tap:()=>setU(st.user+1)});const q=label(st.user?String(st.dec?(st.user/10).toFixed(1):st.user):'?',{size:.24,bg:'#ffffff',border:'#e2457a'});q.position.y=h*u+.4;g.add(q);}
+      if(isM){const ring=mk(new THREE.BoxGeometry(u+.14,.02,u+.14),lam('#e4572e'),0);ring.position.y=.04;g.add(ring);A.drag(g,{tap:()=>setU(st.user+1)});const q=label(st.user?String(st.dec?(st.user/10).toFixed(1):st.user):'?',{size:.24,bg:'#ffffff',border:'#e4572e'});q.position.y=h*u+.4;g.add(q);}
       else{const l=label(st.dec?(h/10).toFixed(1):String(h),{size:.2,color:INK});l.position.y=h*u+.25;g.add(l);tops.push(V(xs(n),h*u+.06,Z+.3));}
       const tn=label('term '+(n+1),{size:.15,color:GREY});tn.position.set(0,.2,.6);g.add(tn);}
     for(let i=0;i<tops.length-1;i++){const a=tops[i],b=tops[i+1];const len=a.distanceTo(b);const seg=new THREE.Mesh(new THREE.CylinderGeometry(.02,.02,len,6),lam('#8b5cf6'));seg.position.copy(a).add(b).multiplyScalar(.5);
@@ -71,7 +71,7 @@ P.lesson({id:'patterns4',title:'Patterns, tables and graphs',strand:'Algebra',co
 P.lesson({id:'equations4',title:'Variables and equations',strand:'Algebra',codes:['C2.1','C2.2'],
  guide:{goal:'Use symbols and letters as variables in expressions and equations, and solve equations involving whole numbers up to 50 using a balance model, then verify the solution.',words:'variable, expression, equation, solve, verify, balance, equivalent',
   ask:['What does n stand for in n + 17 = 42?','How can you check that your value of n is correct?','Why can 3 × n be shown as three bags with the same amount?'],home:'Make up a mystery number puzzle: “I am thinking of a number. I add 9 and get 30.” Write it with a letter.'},
- learn:[{say:'A letter can stand for a number.',speech:'In n plus seventeen equals forty-two, the letter n is a variable. Watch the balance. We change n until both sides are equal.',view:'model',demo:'solve'},
+ learn:[{say:'A letter can stand for a number.',speech:'In Isla’s equation, n plus seventeen equals forty-two. The letter n is a variable. Watch the balance. We change n until both sides are equal.',view:'model',demo:'solve'},
         {say:'Read about solving and verifying.',speech:'To solve an equation, find the value that makes both sides equal. To verify, put your answer back in and check that both sides match.',view:'read'},
         {say:'Watch: three bags of n.',speech:'Three times n equals twenty-four means three bags with the same amount in each. Each bag must hold eight.',view:'model',demo:'bags'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -124,7 +124,7 @@ P.lesson({id:'equations4',title:'Variables and equations',strand:'Algebra',codes
 P.lesson({id:'inequal',title:'Inequalities on a number line',strand:'Algebra',codes:['C2.3'],
  guide:{goal:'Solve inequalities involving addition and subtraction of whole numbers up to 20, verify the solutions, and graph them on a number line.',words:'inequality, less than (<), greater than (>), solution, graph, verify',
   ask:['How is x + 6 < 14 different from x + 6 = 14?','Is 8 a solution? How do you check?','Why does the graph of x − 3 > 9 go to the right?'],home:'“You need more than 12 points to win. You have 5. How many more could you get?” List all the answers.'},
- learn:[{say:'An inequality has many answers.',speech:'x plus six is less than fourteen. Which whole numbers work? Watch: zero works, one works, all the way up to seven. Eight does not, because eight plus six is fourteen, not less.',view:'model',demo:'solve'},
+ learn:[{say:'An inequality has many answers.',speech:'Kofi needs x plus six to be less than fourteen. Which whole numbers work? Watch: zero works, one works, all the way up to seven. Eight does not, because eight plus six is fourteen, not less.',view:'model',demo:'solve'},
         {say:'Read how to graph solutions.',speech:'We graph the solutions by marking each one on a number line. Less than means the solutions are on the small side.',view:'read'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
         {say:'Your turn: mark the solutions.',speech:'Your turn. Tap numbers on the number line to test them. Mark every solution, then press Check.',view:'model'}],
@@ -178,7 +178,7 @@ const LV4=[{s:[0,5,0],goal:[2,5],rocks:[[1,5],[1,4]],hint:'↑ ↑ ↻ in a loop
 P.lesson({id:'coding4',title:'Coding with nested loops',strand:'Algebra',codes:['C3.1','C3.2'],
  guide:{goal:'Write, run, read and alter code that uses sequential, repeating and nested events, and describe how changing the code changes the outcome.',words:'program, sequence, loop, nested loop, repeat, debug, outcome',
   ask:['What happens if you change Repeat 3 to Repeat 4?','Why is a nested loop shorter than writing every step?','The robot stopped one square short. Which number is the bug?'],home:'Write “dance code” with a nested loop: Repeat 3 { clap, clap, spin }. Act it out together.'},
- learn:[{say:'A loop inside a loop is nested.',speech:'This program repeats a group of steps. Inside the group, forward runs twice. That is a loop inside a loop, a nested loop. Watch the robot walk the steps.',view:'model',demo:'run'},
+ learn:[{say:'A loop inside a loop is nested.',speech:'Hana’s program repeats a group of steps. Inside the group, forward runs twice. That is a loop inside a loop, a nested loop. Watch the robot walk the steps.',view:'model',demo:'run'},
         {say:'Read about nested loops.',speech:'Repeat three times: forward, turn right, forward, turn left. The group runs three times, so the robot climbs three stairs.',view:'read'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
         {say:'Your turn: write a nested loop.',speech:'Your turn. Build the group of steps, set how many times it repeats, then press Run.',view:'model'}],
@@ -189,9 +189,9 @@ P.lesson({id:'coding4',title:'Coding with nested loops',strand:'Algebra',codes:[
  init:k=>({li:k==='play'?0:1,body:k==='play'?[]:[{cmd:'F',n:1},{cmd:'R',n:1},{cmd:'F',n:1},{cmd:'L',n:1}],rep:k==='play'?1:3,active:-1}),
  left(p,S){const g=p.g;let y=header(p,S);
   y=para(p,y,'A *loop* repeats steps. A *nested loop* is a loop *inside* another loop. It makes long programs short.')+16;
-  rr(g,X0,y,470,250,16);g.fillStyle='#24203f';g.fill();T(g,'Repeat 3 times {',X0+26,y+52,FT.mono,'#ffd86b');['↑  Forward','↻  Turn right','↑  Forward','↺  Turn left'].forEach((l,i)=>T(g,l,X0+70,y+98+i*36,'700 26px "Atkinson Hyperlegible", monospace',['#9fe6ff','#ffb3cf','#9fe6ff','#c9b8ff'][i]));T(g,'}',X0+26,y+238,FT.mono,'#ffd86b');
+  rr(g,X0,y,470,250,16);g.fillStyle='#24203f';g.fill();T(g,'Repeat 3 times {',X0+26,y+52,FT.mono,'#ffd86b');['↑  Forward','↻  Turn right','↑  Forward','↺  Turn left'].forEach((l,i)=>T(g,l,X0+70,y+98+i*36,'700 26px "Atkinson Hyperlegible", monospace',['#9fe6ff','#ffc98f','#9fe6ff','#c9b8ff'][i]));T(g,'}',X0+26,y+238,FT.mono,'#ffd86b');
   const gx=X0+520,gy=y+10,s=46;for(let i=0;i<5;i++)for(let j=0;j<6;j++){g.fillStyle=(i+j)%2?'#efeafe':'#ffffff';g.fillRect(gx+j*s,gy+i*s,s,s);g.strokeStyle='#d8cff8';g.lineWidth=2;g.strokeRect(gx+j*s,gy+i*s,s,s);}
-  g.strokeStyle='#e2457a';g.lineWidth=5;g.beginPath();g.moveTo(gx+s/2,gy+4.5*s);[[0,3.5],[1,3.5],[1,2.5],[2,2.5],[2,1.5],[3,1.5]].forEach(([c,r])=>g.lineTo(gx+(c+.5)*s,gy+r*s));g.stroke();T(g,'★',gx+3.5*s,gy+1.5*s+12,'700 34px serif','#f2a400','center');
+  g.strokeStyle='#e4572e';g.lineWidth=5;g.beginPath();g.moveTo(gx+s/2,gy+4.5*s);[[0,3.5],[1,3.5],[1,2.5],[2,2.5],[2,1.5],[3,1.5]].forEach(([c,r])=>g.lineTo(gx+(c+.5)*s,gy+r*s));g.stroke();T(g,'★',gx+3.5*s,gy+1.5*s+12,'700 34px serif','#f2a400','center');
   y+=284;y=para(p,y,'The group runs *3 times*, so 4 blocks do the work of 12 steps. Changing the repeat number changes the *outcome*.')+14;
   y=keyWords(p,y,[['nested loop','a loop inside another loop'],['outcome','what happens when the code runs']]);
   predict(p,y,S,'p16','Repeat 2 { ↑ ×3, ↻ }. How many squares does the robot move in all?','*6 squares.* 2 × 3 = 6 forward steps.');},
@@ -218,7 +218,7 @@ P.lesson({id:'coding4',title:'Coding with nested loops',strand:'Algebra',codes:[
     if(s.cmd==='L'){dir=(dir+3)%4;ang+=Math.PI/2;moveTo(robot,{rotY:ang,k:12});}else if(s.cmd==='R'){dir=(dir+1)%4;ang-=Math.PI/2;moveTo(robot,{rotY:ang,k:12});}
     else{const dc=[0,1,0,-1][dir],dr=[-1,0,1,0][dir],nc=rc+dc,nr=rrw+dr,L=LV4[st.li];const off=nc<0||nr<0||nc>=N||nr>=N,rock=L.rocks.some(([c,r])=>c===nc&&r===nr);
       if(off||rock){const here=cw(rc,rrw);here.y=.05;moveTo(robot,{pos:here.clone().add(V(dc*Tl*.3,0,dr*Tl*.3)),k:18,done:()=>moveTo(robot,{pos:here,k:14})});finish(false,off?'Oops! Off the board. Debug your code.':'Bonk! The robot hit a rock. Find the bug.');return;}
-      const d=mk(G('trd',()=>new THREE.CylinderGeometry(.06,.06,.02,10)),lam('#e2457a'),0);const hp=cw(rc,rrw);d.position.set(hp.x,.07,hp.z);trail.add(d);rc=nc;rrw=nr;const p=cw(rc,rrw);p.y=.05;moveTo(robot,{pos:p,k:10});A.pop();}}
+      const d=mk(G('trd',()=>new THREE.CylinderGeometry(.06,.06,.02,10)),lam('#e4572e'),0);const hp=cw(rc,rrw);d.position.set(hp.x,.07,hp.z);trail.add(d);rc=nc;rrw=nr;const p=cw(rc,rrw);p.y=.05;moveTo(robot,{pos:p,k:10});A.pop();}}
   load();
   return {tick(dt,t){if(goal)goal.rotation.y=t*1.5;if(running){timer-=dt;if(timer<=0){timer=.42;step();}}},info:()=>'Level '+(st.li+1)+': get to the star with a nested loop.',
     controls:()=>[{t:'↑ Forward',fn:()=>add('F')},{t:'↺ Left',fn:()=>add('L')},{t:'↻ Right',fn:()=>add('R')},{t:'× repeat step',fn:rep},{t:'Repeat −',fn:()=>{st.rep=Math.max(1,st.rep-1);A.redraw();}},{t:'Repeat +',fn:()=>{st.rep=Math.min(6,st.rep+1);A.redraw();}},
@@ -235,7 +235,7 @@ const DCARDS=[['favourite colour','Q'],['height in cm','N'],['type of pet','Q'],
 P.lesson({id:'datatypes',title:'Kinds of data and stem-and-leaf plots',strand:'Data',codes:['D1.1','D1.2'],
  guide:{goal:'Describe the difference between qualitative and quantitative data, collect data to compare sets, and organize data in frequency tables and stem-and-leaf plots.',words:'qualitative data, quantitative data, primary data, secondary data, frequency table, stem-and-leaf plot, stem, leaf',
   ask:['Is “favourite colour” data counted or described?','Why can we find a mean for heights but not for favourite colours?','In a stem-and-leaf plot, what does 4 | 7 mean?'],home:'Collect quantitative data together: the number of steps from the door to your bed for everyone at home. Make a stem-and-leaf plot.'},
- learn:[{say:'Data can be words or numbers.',speech:'Qualitative data uses words, like favourite colour. Quantitative data uses numbers you can measure or count, like height in centimetres. Watch the cards sort themselves.',view:'model',demo:'sort'},
+ learn:[{say:'Data can be words or numbers.',speech:'Qualitative data uses words, like Finn’s favourite colour. Quantitative data uses numbers you can measure or count, like height in centimetres. Watch the cards sort themselves.',view:'model',demo:'sort'},
         {say:'Read about stem-and-leaf plots.',speech:'A stem-and-leaf plot organizes numbers. The tens digit is the stem, and the ones digit is the leaf. Four, seven means forty-seven.',view:'read'},
         {say:'Watch: building a stem-and-leaf plot.',speech:'Watch each number drop its ones digit onto the right stem. The leaves line up in order, so you can see the shape of the data.',view:'model',demo:'stem'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -291,7 +291,7 @@ const SPORTS=['Soccer','Hockey','Basketball','Swimming'];
 P.lesson({id:'doublebar',title:'Double-bar graphs',strand:'Data',codes:['D1.3','D1.4','D1.6'],
  guide:{goal:'Display two related sets of data in a multiple-bar graph with a title, labels, legend and an appropriate scale; read and analyse the graph; and use graphs in an infographic to tell a story.',words:'multiple-bar graph, double-bar graph, legend, scale, title, axis, infographic, compare',
   ask:['Why does a double-bar graph need a legend?','What changes if each square stands for 2 votes?','What story does this graph tell about the two classes?'],home:'Survey two groups (adults and kids) about their favourite season. Draw a double-bar graph together.'},
- learn:[{say:'Two sets of data side by side.',speech:'Two classes voted for their favourite sport. A double-bar graph puts the two bars for each sport side by side, so we can compare. Watch the bars grow.',view:'model',demo:'grow'},
+ learn:[{say:'Two sets of data side by side.',speech:'Tala’s class and Ravi’s class voted for their favourite sport. A double-bar graph puts the two bars for each sport side by side, so we can compare. Watch the bars grow.',view:'model',demo:'grow'},
         {say:'Read about graph parts.',speech:'Every good graph has a title, labels, a legend that shows which colour is which, and a scale. An infographic uses graphs and facts to tell a story.',view:'read'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
         {say:'Your turn: change the votes.',speech:'Your turn. Tap a bar to add a vote, or pick a bar and use the buttons. Try changing the scale.',view:'model'}],
@@ -346,20 +346,20 @@ P.lesson({id:'doublebar',title:'Double-bar graphs',strand:'Data',codes:['D1.3','
 P.lesson({id:'median',title:'Mean, median and mode',strand:'Data',codes:['D1.5','D2.2'],
  guide:{goal:'Determine the mean and median and identify the mode of data sets of whole numbers, explain what each tells about the data, and predict whether they will be the same for different groups.',words:'mean, median, mode, data set, middle, most often, even out',
   ask:['Why do we put the data in order before finding the median?','Can a data set have no mode? Two modes?','If you surveyed a different class, would the mean be the same? Why or why not?'],home:'Record how many minutes each family member reads tonight. Find the mean, median and mode.'},
- learn:[{say:'Three ways to find the middle.',speech:'These towers show how many books seven friends read. Watch: sort them from least to greatest. The median is the middle tower.',view:'model',demo:'median'},
+ learn:[{say:'Three ways to find the middle.',speech:'These towers show how many books Ravi and six friends read. Watch: sort them from least to greatest. The median is the middle tower.',view:'model',demo:'median'},
         {say:'Read about mean, median and mode.',speech:'The mode is the value that appears most often. The median is the middle value when the data is in order. The mean is the fair share when you even out all the towers.',view:'read'},
         {say:'Watch: evening out for the mean.',speech:'Now even out the towers by moving cubes from tall towers to short towers. When they are all the same height, that height is the mean.',view:'model',demo:'mean'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
         {say:'Your turn: find the measures.',speech:'Your turn. Sort the towers, find the middle, and even them out. Press New data to try another set.',view:'model'}],
  fig:'Seven towers of data. Sort them, or even them out.',rz:.3,
- explore:['Press *Sort* to put the towers in order.','The *median* glows in the middle; the *mode* is shown in pink.','Press *Even out* to find the *mean*.'],
+ explore:['Press *Sort* to put the towers in order.','The *median* glows in the middle; the *mode* is shown in orange.','Press *Even out* to find the *mean*.'],
  tries:[['Find the median: 4, 9, 2, 7, 5','*5.* In order: 2, 4, 5, 7, 9. The middle is 5.'],['Find the mode: 3, 6, 6, 2, 6, 1','*6.* It appears three times.'],['Find the mean: 2, 4, 6','*4.* 2 + 4 + 6 = 12, and 12 ÷ 3 = 4.']],
  howTo:'Read the question. Use Sort and Even out to help, then tap the right tower or choose the answer.',
  init:k=>({v:[5,2,6,3,6,4,9],orig:[5,2,6,3,6,4,9],ask:null,want:null}),
  left(p,S){const g=p.g;let y=header(p,S);
   y=para(p,y,'*Mean*, *median* and *mode* each describe a data set with one number.')+16;
-  const vals=[2,3,4,5,6,6,9];vals.forEach((v,i)=>{for(let k=0;k<v;k++){rr(g,X0+20+i*84,y+260-k*26,50,24,4);g.fillStyle=i===3?'#ffd24a':v===6?'#ff8cb0':'#9cc2f5';g.fill();}T(g,String(v),X0+45+i*84,y+292,FT.bodyB,INK,'center');});
-  T(g,'median = 5',X0+620,y+120,FT.bodyB,'#d98a00');T(g,'mode = 6',X0+620,y+170,FT.bodyB,'#e2457a');T(g,'mean = 35 ÷ 7 = 5',X0+620,y+220,FT.bodyB,'#2f7de1');y+=330;
+  const vals=[2,3,4,5,6,6,9];vals.forEach((v,i)=>{for(let k=0;k<v;k++){rr(g,X0+20+i*84,y+260-k*26,50,24,4);g.fillStyle=i===3?'#ffd24a':v===6?'#ff9f68':'#9cc2f5';g.fill();}T(g,String(v),X0+45+i*84,y+292,FT.bodyB,INK,'center');});
+  T(g,'median = 5',X0+620,y+120,FT.bodyB,'#d98a00');T(g,'mode = 6',X0+620,y+170,FT.bodyB,'#e4572e');T(g,'mean = 35 ÷ 7 = 5',X0+620,y+220,FT.bodyB,'#2f7de1');y+=330;
   [['Mode','the value that appears most often'],['Median','the middle value when the data is in order'],['Mean','the total shared equally: add, then divide']].forEach(([a,b],i)=>{T(g,a,X0,y+i*44,FT.bodyB,acc());T(g,b,X0+150,y+i*44,FT.body);});y+=140;
   predict(p,y,S,'p19','Data: 8, 3, 5, 8, 6. Which is greater, the mode or the median?','*The mode.* In order: 3, 5, 6, 8, 8. The median is 6 and the mode is 8.');},
  readout(p,S,y){const g=p.g,st=S.st,v=st.v,sum=v.reduce((a,b)=>a+b,0),s=v.slice().sort((a,b)=>a-b),med=s[Math.floor(s.length/2)];const m=modes(v);
@@ -367,7 +367,7 @@ P.lesson({id:'median',title:'Mean, median and mode',strand:'Data',codes:['D1.5',
  build(S,grp,mode,game){const st=S.st,u=.18,Z=-1.5,xs=i=>-1.86+i*.62;const tw=new THREE.Group();grp.add(tw);let anim=false;
   function draw(){clearGroup(tw);const s=st.v.slice().sort((a,b)=>a-b),sorted=st.v.every((x,i)=>x===s[i]),med=s[Math.floor(s.length/2)],md=modes(st.v);
     st.v.forEach((h,i)=>{const g=new THREE.Group();g.position.set(xs(i),0,Z);tw.add(g);const isMed=sorted&&i===Math.floor(st.v.length/2),isMode=md.includes(h);
-      for(let k=0;k<h;k++){const c=unitBox(1,1,1,isMed?'#ffd24a':isMode?'#ff8cb0':'#9cc2f5',u);c.position.y=u/2+.03+k*u;g.add(c);}
+      for(let k=0;k<h;k++){const c=unitBox(1,1,1,isMed?'#ffd24a':isMode?'#ff9f68':'#9cc2f5',u);c.position.y=u/2+.03+k*u;g.add(c);}
       const l=label(String(h),{size:.22});l.position.y=h*u+.25;g.add(l);A.drag(g,{tap:()=>tapT(i)});});A.redraw();}
   function tapT(i){if(mode!=='play'||!st.want)return;const r=st.want(i);if(r)game.solved(st.wantOk);else A.bad('Not that one. '+st.wantHint);}
   function sortIt(){if(anim)return;st.v.sort((a,b)=>a-b);A.pop();draw();A.say('In order: '+st.v.join(', '));}
@@ -395,7 +395,7 @@ const MCOL={red:'#e0453a',blue:'#2f7de1',green:'#16a36f',yellow:'#f2c200'};
 P.lesson({id:'probline',title:'The probability line',strand:'Data',codes:['D2.1'],
  guide:{goal:'Use the terms impossible, unlikely, equally likely, likely and certain to describe how likely events are, show the likelihood on a probability line, and use it to make predictions and decisions.',words:'probability, likelihood, impossible, unlikely, equally likely, likely, certain, probability line, outcome',
   ask:['Where would “it will snow in July in Ontario” go on the probability line?','How could you change the bag so that red is certain?','You drew blue 3 times. Does that mean blue is likely?'],home:'Put 8 socks in a bag with different colours. Predict, place each colour on a probability line, then draw 10 times and tally.'},
- learn:[{say:'Likelihood goes from 0 to 1.',speech:'A probability line goes from impossible on the left to certain on the right. Equally likely is in the middle. Watch: in this bag, four of eight marbles are red, so red is equally likely.',view:'model',demo:'place'},
+ learn:[{say:'Likelihood goes from 0 to 1.',speech:'A probability line goes from impossible on the left to certain on the right. Equally likely is in the middle. Watch: in Isla’s bag, four of eight marbles are red, so red is equally likely.',view:'model',demo:'place'},
         {say:'Read the likelihood words.',speech:'Impossible means it can never happen. Certain means it will always happen. Likely means it will probably happen, and unlikely means it probably will not.',view:'read'},
         {say:'Watch: draw marbles to test.',speech:'We can test our prediction by drawing marbles and putting them back. Watch the tally grow.',view:'model',demo:'draw'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},

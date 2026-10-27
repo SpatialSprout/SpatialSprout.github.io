@@ -26,13 +26,13 @@ function numLine(grp,x0,L,z,wholes,sub){const tr=mk(new THREE.BoxGeometry(L*whol
 /* =========================================================
    1. Place value to 100 000
    ========================================================= */
-const PV=[{k:'tt',n:'Ten thousands',s:'10 000s',v:10000,txt:'10 000',col:'#8b5cf6',max:10},{k:'th',n:'Thousands',s:'1000s',v:1000,txt:'1000',col:'#16a36f',max:12},{k:'h',n:'Hundreds',s:'100s',v:100,txt:'100',col:'#2f7de1',max:12},{k:'t',n:'Tens',s:'10s',v:10,txt:'10',col:'#e2457a',max:12},{k:'o',n:'Ones',s:'1s',v:1,txt:'1',col:'#e89a00',max:12}];
+const PV=[{k:'tt',n:'Ten thousands',s:'10 000s',v:10000,txt:'10 000',col:'#8b5cf6',max:10},{k:'th',n:'Thousands',s:'1000s',v:1000,txt:'1000',col:'#16a36f',max:12},{k:'h',n:'Hundreds',s:'100s',v:100,txt:'100',col:'#2f7de1',max:12},{k:'t',n:'Tens',s:'10s',v:10,txt:'10',col:'#e4572e',max:12},{k:'o',n:'Ones',s:'1s',v:1,txt:'1',col:'#e89a00',max:12}];
 const pvVal=c=>c.tt*10000+c.th*1000+c.h*100+c.t*10+c.o;
 const pvExp=n=>{const p=[10000,1000,100,10,1].map(b=>Math.floor(n/b)%10*b).filter(x=>x);if(n>=100000)return '100 000';return p.length?p.map(fmt).join(' + '):'0';};
 P.lesson({id:'pv5',title:'Place value to 100 000',strand:'Number',codes:['B1.1','B1.2'],
  guide:{goal:'Read, represent, compose and decompose whole numbers up to 100 000 with place-value disks, write them in standard, expanded and word form, compare and order them, and describe how big numbers are used in everyday life.',words:'ten thousands, thousands, place value, expanded form, compose, decompose, compare, order',
   ask:['Why is the 6 in 64 017 worth 60 000?','How do 10 thousands become 1 ten thousand?','Which is greater, 48 905 or 49 058? Which place tells you?'],home:'Find big numbers together: the population of your town, the seats in a stadium, the kilometres on a car. Read them aloud and put them in order.'},
- learn:[{say:'A new place: ten thousands.',speech:'Ten thousands is the place to the left of thousands. Watch the model build fifty-two thousand, three hundred six.',view:'model',demo:'build'},
+ learn:[{say:'A new place: ten thousands.',speech:'Ten thousands is the place to the left of thousands. Zane’s town has fifty-two thousand, three hundred six people. Watch the model build it.',view:'model',demo:'build'},
         {say:'Read the chart and the three forms.',speech:'Five ten thousands, two thousands, three hundreds, zero tens and six ones make fifty-two thousand three hundred six. We leave a small space between the thousands and the hundreds.',view:'read'},
         {say:'Watch: 10 thousands make 1 ten thousand.',speech:'Watch the thousands mat. When it has ten disks, we trade them for one ten thousand. Every place is worth ten of the place to its right.',view:'model',demo:'regroup'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the yellow flap to check.',view:'read'},
@@ -97,7 +97,7 @@ const DENS=[2,3,4,5,6,8,10,12];
 P.lesson({id:'equiv5',title:'Equivalent fractions to twelfths',strand:'Number',codes:['B1.3'],
  guide:{goal:'Represent equivalent fractions from halves to twelfths, including improper fractions and mixed numbers, with fraction bars.',words:'equivalent, numerator, denominator, improper fraction, mixed number, whole',
   ask:['Why is 2/4 the same amount as 1/2?','How can 7/4 be written as a mixed number?','Which fractions in twelfths are equal to 2/3?'],home:'Fold a strip of paper in half, then in half again, then again. Name the equal fractions you see on each fold.'},
- learn:[{say:'Same length, different names.',speech:'The top bar shows one half. Watch the bottom bar split into fourths, then sixths. Two fourths and three sixths are the same length as one half. They are equivalent.',view:'model',demo:'equiv'},
+ learn:[{say:'Same length, different names.',speech:'The top bar shows Layla’s one half. Watch the bottom bar split into fourths, then sixths. Two fourths and three sixths are the same length as one half. They are equivalent.',view:'model',demo:'equiv'},
         {say:'Read about equivalent fractions.',speech:'To make an equivalent fraction, multiply the numerator and the denominator by the same number. One half times three over three is three sixths.',view:'read'},
         {say:'Watch: more than one whole.',speech:'Now the top bar shows seven fourths. That is one whole and three fourths more. Seven fourths is an improper fraction. One and three fourths is a mixed number.',view:'model',demo:'mixed'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -108,7 +108,7 @@ P.lesson({id:'equiv5',title:'Equivalent fractions to twelfths',strand:'Number',c
  init:k=>({tn:1,td:2,n:2,d:4,need:null}),
  left(p,S){const g=p.g;let y=header(p,S);
   y=para(p,y,'*Equivalent fractions* name the same amount. These bars are the same length:')+16;
-  const bw=TW-220;[[2,1,'#2f7de1'],[4,2,'#16a36f'],[6,3,'#e2457a'],[12,6,'#e89a00']].forEach(([d,n,c],j)=>{for(let i=0;i<d;i++){rr(g,X0+i*bw/d+1,y+j*58,bw/d-2,46,6);g.fillStyle=i<n?c:'#e9eef7';g.fill();}drawFrac(g,n,d,X0+bw+40,y+j*58+20,30,c);});
+  const bw=TW-220;[[2,1,'#2f7de1'],[4,2,'#16a36f'],[6,3,'#e4572e'],[12,6,'#e89a00']].forEach(([d,n,c],j)=>{for(let i=0;i<d;i++){rr(g,X0+i*bw/d+1,y+j*58,bw/d-2,46,6);g.fillStyle=i<n?c:'#e9eef7';g.fill();}drawFrac(g,n,d,X0+bw+40,y+j*58+20,30,c);});
   y+=4*58+20;g.strokeStyle=RED;g.lineWidth=4;g.setLineDash([10,8]);g.beginPath();g.moveTo(X0+bw/2,y-4*58-30);g.lineTo(X0+bw/2,y-10);g.stroke();g.setLineDash([]);
   T(g,'1/2 = 2/4 = 3/6 = 6/12',X0,y+30,ZS(40),acc());T(g,'× 3 on top and bottom',X0+470,y+28,FT.hand,BLUE);y+=66;
   y=para(p,y,'An *improper fraction* has a numerator greater than its denominator: *7/4*. It equals the *mixed number* 1 3/4 (one whole and 3 fourths).')+12;
@@ -146,7 +146,7 @@ P.lesson({id:'equiv5',title:'Equivalent fractions to twelfths',strand:'Number',c
 P.lesson({id:'order5',title:'Comparing and ordering fractions',strand:'Number',codes:['B1.4'],
  guide:{goal:'Compare and order fractions from halves to twelfths, including improper fractions and mixed numbers, using benchmarks, equivalent fractions and a number line.',words:'compare, order, benchmark, greater than, less than, improper fraction, mixed number',
   ask:['Is 5/8 more or less than 1/2? How do you know?','Which is greater, 7/4 or 1 1/2?','How does a number line help you order fractions?'],home:'Share recipes: which is more, 3/4 cup or 2/3 cup? Draw both on a number line to check.'},
- learn:[{say:'Fractions live on the number line.',speech:'Every fraction has a place on the number line. Watch three fractions move to their places: five twelfths, three fourths, and one and one half. Now it is easy to put them in order.',view:'model',demo:'order'},
+ learn:[{say:'Fractions live on the number line.',speech:'Every fraction has a place on the number line. Watch Mateo’s three fractions move to their places: five twelfths, three fourths, and one and one half. Now it is easy to put them in order.',view:'model',demo:'order'},
         {say:'Read about benchmarks.',speech:'Use benchmarks like zero, one half and one. Five twelfths is a bit less than one half. Three fourths is between one half and one. One and one half is more than one.',view:'read'},
         {say:'Watch: same denominator, same numerator.',speech:'With the same denominator, the bigger numerator is greater. With the same numerator, the smaller denominator is greater, because the parts are bigger.',view:'model',demo:'rules'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -159,14 +159,14 @@ P.lesson({id:'order5',title:'Comparing and ordering fractions',strand:'Number',c
   y=para(p,y,'To compare fractions, use *benchmarks* (0, 1/2, 1), *equivalent fractions*, or a *number line*.')+16;
   const lx=X0+20,lw=TW-40,toX=v=>lx+v/2*lw;g.strokeStyle=INK;g.lineWidth=4;g.beginPath();g.moveTo(lx,y+70);g.lineTo(lx+lw,y+70);g.stroke();
   [0,.5,1,1.5,2].forEach(v=>{g.beginPath();g.moveTo(toX(v),y+56);g.lineTo(toX(v),y+84);g.stroke();T(g,v===.5?'1/2':v===1.5?'1 1/2':String(v),toX(v),y+118,v%1?FT.small:FT.bodyB,v%1?GREY:INK,'center');});
-  [[5/12,'5/12','#2f7de1'],[3/4,'3/4','#e2457a'],[1.5,'3/2','#16a36f']].forEach(([v,t,c])=>{g.beginPath();g.arc(toX(v),y+70,12,0,Math.PI*2);g.fillStyle=c;g.fill();T(g,t,toX(v),y+36,FT.bodyB,c,'center');});y+=150;
+  [[5/12,'5/12','#2f7de1'],[3/4,'3/4','#e4572e'],[1.5,'3/2','#16a36f']].forEach(([v,t,c])=>{g.beginPath();g.arc(toX(v),y+70,12,0,Math.PI*2);g.fillStyle=c;g.fill();T(g,t,toX(v),y+36,FT.bodyB,c,'center');});y+=150;
   [['Same denominator','5/8 > 3/8','more parts of the same size'],['Same numerator','2/3 > 2/5','thirds are bigger than fifths'],['Improper vs mixed','7/4 > 1 1/2','7/4 = 1 3/4, and 3/4 > 1/2']].forEach(([a,b,c],i)=>{rr(g,X0,y+i*60,TW,52,14);g.fillStyle=tint(acc(),.1);g.fill();
     T(g,a,X0+18,y+i*60+35,FT.smallB,acc());T(g,b,X0+300,y+i*60+35,FT.bodyB);T(g,c,X0+TW-18,y+i*60+35,FT.small,GREY,'right');});y+=196;
   y=keyWords(p,y,[['benchmark','a friendly number to compare with, like 1/2'],['order','arrange from least to greatest']]);
   predict(p,y,S,'p3','Which is greater: 5/6 or 7/12?','*5/6.* 5/6 = 10/12, and 10/12 > 7/12.');},
  readout(p,S,y){const g=p.g,st=S.st;const srt=st.items.slice().sort((a,b)=>a.n/a.d-b.n/b.d);T(g,st.placed.length===st.items.length?srt.map(q=>q.t||q.n+'/'+q.d).join('  <  '):'Placed: '+st.placed.length+' of '+st.items.length,X0,y+50,ZS(44),acc());
   T(g,st.mode==='great'?'Tap the greater fraction.':'Tap from least to greatest.',X0,y+92,FT.bodyB);return y+100;},
- build(S,grp,mode,game){const st=S.st,x0=-2.1,L=1.4,Zl=-.55,ROWS=[-2.6,-2.0,-1.4],COLS=['#2f7de1','#e2457a','#16a36f'];
+ build(S,grp,mode,game){const st=S.st,x0=-2.1,L=1.4,Zl=-.55,ROWS=[-2.6,-2.0,-1.4],COLS=['#2f7de1','#e4572e','#16a36f'];
   numLine(grp,x0,L,Zl,3,4);const cards=new THREE.Group(),barsG=new THREE.Group();grp.add(cards,barsG);let busy=false;
   function draw(){clearGroup(cards);clearGroup(barsG);const k=st.items.length;st.items.forEach((q,i)=>{q.col=COLS[i];const c=new THREE.Group();const b=mk(G('ocard',()=>new THREE.BoxGeometry(1.05,.1,.55)),lam('#ffffff'),20);b.position.y=.05;c.add(b);
       const e=mk(G('ocardE',()=>new THREE.BoxGeometry(1.1,.06,.6)),lam(COLS[i]),0);e.position.y=.02;c.add(e);const l=label(q.t||q.n+'/'+q.d,{size:.32,color:COLS[i]});l.position.y=.38;c.add(l);
@@ -197,7 +197,7 @@ P.lesson({id:'order5',title:'Comparing and ordering fractions',strand:'Number',c
 P.lesson({id:'hundredths',title:'Decimal hundredths',strand:'Number',codes:['B1.5'],
  guide:{goal:'Read, represent, compare and order decimal numbers up to hundredths using base-ten models and a number line.',words:'decimal point, tenths, hundredths, flat, rod, compare, order',
   ask:['Why is 0.7 greater than 0.65?','How many hundredths are in 0.3?','How do you read 2.06 aloud?'],home:'Look at prices like $3.49 and race times like 12.68 seconds. Which digit shows tenths? Which shows hundredths?'},
- learn:[{say:'One whole is 100 hundredths.',speech:'A flat is one whole. A rod is one tenth of it. A small cube is one hundredth. Watch the model build one and forty-seven hundredths.',view:'model',demo:'build'},
+ learn:[{say:'One whole is 100 hundredths.',speech:'A flat is one whole. A rod is one tenth of it. A small cube is one hundredth. Watch Keiko build one and forty-seven hundredths.',view:'model',demo:'build'},
         {say:'Read the place-value chart.',speech:'In one point four seven, the one is one whole, the four is four tenths, and the seven is seven hundredths. We read it: one and forty-seven hundredths.',view:'read'},
         {say:'Watch: 0.7 versus 0.65.',speech:'Which is greater, zero point seven or zero point six five? Watch the number line. Seven tenths is seventy hundredths, which is more than sixty-five hundredths.',view:'model',demo:'compare'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -221,7 +221,7 @@ P.lesson({id:'hundredths',title:'Decimal hundredths',strand:'Number',codes:['B1.
  build(S,grp,mode,game){const st=S.st,u=.09;const fl=new THREE.Group(),rods=new THREE.Group(),cubes=new THREE.Group();grp.add(fl,rods,cubes);
   [['wholes',-1.75,'#2f7de1'],['tenths',-.25,'#16a36f'],['hundredths',1.45,'#e89a00']].forEach(([t,x,c])=>{const l=label(t,{size:.18,color:c});l.position.set(x,.3,-3.05);grp.add(l);});
   const x0=-2.1,L=1.4,Zl=-.3;numLine(grp,x0,L,Zl,3,10);
-  const mkr=mk(new THREE.ConeGeometry(.11,.26,18),lam('#e2457a'),0);mkr.rotation.x=Math.PI;grp.add(mkr);const ml=label('',{size:.22,bg:'#ffffff'});grp.add(ml);
+  const mkr=mk(new THREE.ConeGeometry(.11,.26,18),lam('#e4572e'),0);mkr.rotation.x=Math.PI;grp.add(mkr);const ml=label('',{size:.22,bg:'#ffffff'});grp.add(ml);
   const flatGeo=G('flat5',()=>new THREE.BoxGeometry(u*10,u,u*10)),rodGeo=G('rod5',()=>new THREE.BoxGeometry(u,u,u*10)),cubeGeo=G('cub5',()=>new THREE.BoxGeometry(u*.95,u*.95,u*.95));
   const flatMat=[lam('#2f7de1'),lam('#2f7de1'),cellMat('#2f7de1',10,10),lam('#2f7de1'),lam('#2f7de1'),lam('#2f7de1')],rodMat=[lam('#16a36f'),lam('#16a36f'),cellMat('#16a36f',1,10),lam('#16a36f'),lam('#16a36f'),lam('#16a36f')];
   function render(){clearGroup(fl);clearGroup(rods);clearGroup(cubes);
@@ -253,7 +253,7 @@ P.lesson({id:'hundredths',title:'Decimal hundredths',strand:'Number',codes:['B1.
 P.lesson({id:'round5',title:'Rounding to the nearest tenth',strand:'Number',codes:['B1.6'],
  guide:{goal:'Round decimal numbers with hundredths to the nearest tenth, and explain when rounding is useful.',words:'round, nearest tenth, halfway, hundredths, estimate',
   ask:['Why does 4.25 round up to 4.3?','Which two tenths is 7.83 between?','When would a coach round a race time to the nearest tenth?'],home:'Look at gas prices or race times. Round them to the nearest tenth together.'},
- learn:[{say:'Find the two tenths on each side.',speech:'Three point four seven is between three point four and three point five. The ball rolls to the nearer valley. Watch.',view:'model',demo:'roll'},
+ learn:[{say:'Find the two tenths on each side.',speech:'Jordan’s plant is three point four seven centimetres. That is between three point four and three point five. The ball rolls to the nearer valley. Watch.',view:'model',demo:'roll'},
         {say:'Read the rounding rule.',speech:'To round to the nearest tenth, look at the hundredths digit. Zero to four, round down. Five to nine, round up.',view:'read'},
         {say:'Watch: exactly halfway.',speech:'Six point two five is exactly halfway between six point two and six point three. When it is halfway, we round up.',view:'model',demo:'half'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -267,9 +267,9 @@ P.lesson({id:'round5',title:'Rounding to the nearest tenth',strand:'Number',code
   const lx=X0+30,lw=TW-60,toX=v=>lx+(v-340)/10*lw;g.strokeStyle=INK;g.lineWidth=4;g.beginPath();g.moveTo(lx,y+110);g.quadraticCurveTo(lx+lw/2,y-20,lx+lw,y+110);g.stroke();
   for(let k=0;k<=10;k++){const x=toX(340+k);g.beginPath();g.moveTo(x,y+150);g.lineTo(x,y+(k%5?160:170));g.stroke();}
   [[340,'3.4'],[345,'halfway 3.45'],[350,'3.5']].forEach(([v,t],i)=>T(g,t,toX(v),y+200,i===1?FT.small:FT.bodyB,i===1?GREY:INK,'center'));
-  const bx=toX(347);g.beginPath();g.arc(bx,y+50,18,0,Math.PI*2);g.fillStyle='#e2457a';g.fill();T(g,'3.47',bx,y+14,FT.smallB,'#e2457a','center');T(g,'rolls this way →',bx-200,y+82,FT.hand,BLUE);y+=236;
+  const bx=toX(347);g.beginPath();g.arc(bx,y+50,18,0,Math.PI*2);g.fillStyle='#e4572e';g.fill();T(g,'3.47',bx,y+14,FT.smallB,'#e4572e','center');T(g,'rolls this way →',bx-200,y+82,FT.hand,BLUE);y+=236;
   rr(g,X0,y,TW,120,18);g.fillStyle=tint(acc(),.1);g.fill();T(g,'Look at the hundredths digit:',X0+24,y+42,FT.smallB);
-  T(g,'0, 1, 2, 3, 4  →  round down',X0+24,y+82,FT.body,BLUE);T(g,'5, 6, 7, 8, 9  →  round up',X0+430,y+82,FT.body,'#e2457a');y+=150;
+  T(g,'0, 1, 2, 3, 4  →  round down',X0+24,y+82,FT.body,BLUE);T(g,'5, 6, 7, 8, 9  →  round up',X0+430,y+82,FT.body,'#e4572e');y+=150;
   y=keyWords(p,y,[['nearest tenth','the closest number with one decimal place'],['halfway','exactly in the middle, like 3.45: round up']]);
   predict(p,y,S,'p5','A runner finished in 12.96 seconds. Round to the nearest tenth.','*13.0 seconds.* 12.96 is between 12.9 and 13.0, and the hundredths digit is 6.');},
  readout(p,S,y){const g=p.g,st=S.st,lo=Math.floor(st.n/10)*10,hi=lo+10,ans=st.n-lo>=5?hi:lo;
@@ -279,7 +279,7 @@ P.lesson({id:'round5',title:'Rounding to the nearest tenth',strand:'Number',code
   const track=mk(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts),120,.07,10,false),lam('#b9a7f5'),0);grp.add(track);
   for(let i=0;i<=10;i++){const u=i/10;const post=mk(new THREE.CylinderGeometry(.02,.02,.12+yOf(u),6),lam(i%5?'#cbd':'#7c3aed'),0);post.position.set(xOf(u),(.12+yOf(u))/2,Z);grp.add(post);}
   const base=mk(new THREE.BoxGeometry(L+.4,.05,.5),lam('#ede6ff'),20);base.position.set(0,.025,Z);grp.add(base);
-  const ball=mk(new THREE.SphereGeometry(.17,24,16),lam('#e2457a'),0);grp.add(ball);const flag=label('',{size:.3,bg:'#ffffff'});grp.add(flag);
+  const ball=mk(new THREE.SphereGeometry(.17,24,16),lam('#e4572e'),0);grp.add(ball);const flag=label('',{size:.3,bg:'#ffffff'});grp.add(flag);
   const vl=[label('',{size:.3,bg:'#ffffff',border:'#7c3aed'}),label('',{size:.3,bg:'#ffffff',border:'#7c3aed'})],mid=label('',{size:.2,color:GREY});vl.forEach(l=>grp.add(l));grp.add(mid);
   const pads=[-1,1].map(s=>{const pd=mk(new THREE.CylinderGeometry(.3,.3,.06,28),lam('#ffd24a'),30);pd.position.set(s*(L/2+.02),.06,Z+.55);grp.add(pd);return pd;});
   let u=0,rolling=false;const lohi=()=>{const lo=Math.floor(st.n/10)*10;return [lo,lo+10];};
@@ -308,7 +308,7 @@ const PCT=[[1,2],[1,4],[3,4],[1,5],[2,5],[3,5],[4,5],[1,10],[3,10],[7,10],[9,10]
 P.lesson({id:'percent5',title:'Fractions, decimals and percents',strand:'Number',codes:['B1.7'],
  guide:{goal:'Describe relationships and show equivalences among fractions, decimal numbers up to hundredths, and whole-number percents, using a hundred grid.',words:'percent, per cent, hundredths, equivalent, fraction, decimal',
   ask:['Why does 1/4 equal 25%?','How can you write 0.6 as a percent?','What does 100% of the grid mean?'],home:'Find percents in a store or on a phone battery. Shade a hundred grid on paper to show 50%, 25% and 10%.'},
- learn:[{say:'Percent means out of 100.',speech:'Percent means out of one hundred. Watch the grid fill twenty-five squares out of one hundred. That is twenty-five hundredths, zero point two five, or twenty-five percent.',view:'model',demo:'quarter'},
+ learn:[{say:'Percent means out of 100.',speech:'Percent means out of one hundred. Watch Amani’s grid fill twenty-five squares out of one hundred. That is twenty-five hundredths, zero point two five, or twenty-five percent.',view:'model',demo:'quarter'},
         {say:'Read the equivalents.',speech:'One quarter of the grid is twenty-five squares. So one quarter equals zero point two five equals twenty-five percent. One half is fifty percent.',view:'read'},
         {say:'Watch: tenths become percents.',speech:'Watch three tenths. Three full rows of ten are thirty squares, so three tenths is zero point three, which is thirty percent.',view:'model',demo:'tenths'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -330,7 +330,7 @@ P.lesson({id:'percent5',title:'Fractions, decimals and percents',strand:'Number'
   T(g,st.n&&k>1&&st.n<100?'In lowest terms: '+(st.n/k)+'/'+(100/k):st.n===100?'The whole grid: 100%':' ',X0,y+92,FT.bodyB);return y+100;},
  build(S,grp,mode,game){const st=S.st,u=.28,x0=-1.4,z0=-3.0;const tiles=[];const big=label('',{size:.34,bg:'#ffffff'});big.position.set(0,1.55,-3.1);grp.add(big);
   const base=mk(new THREE.BoxGeometry(u*10+.12,.04,u*10+.12),lam('#dfe5ef'),20);base.position.set(0,.02,z0+u*5);grp.add(base);
-  const RC=['#2f7de1','#3b8be6','#16a36f','#22b07c','#e2457a','#ea5a8c','#e89a00','#f0a91c','#8b5cf6','#9a6cf8'];
+  const RC=['#2f7de1','#3b8be6','#16a36f','#22b07c','#e4572e','#e8603c','#e89a00','#f0a91c','#8b5cf6','#9a6cf8'];
   for(let k=0;k<100;k++){const r=Math.floor(k/10),c=k%10;const m=mk(G('pc5',()=>new THREE.BoxGeometry(u*.9,.08,u*.9)),lam('#f4f6fa'),20);m.position.set(x0+(c+.5)*u,.08,z0+(r+.5)*u);grp.add(m);tiles.push(m);A.drag(m,{tap:()=>setN(st.n===k+1?k:k+1)});}
   function draw(anim){tiles.forEach((m,k)=>{const on=k<st.n;m.material=lam(on?RC[Math.floor(k/10)]:'#f4f6fa');const y=on?.14:.08;if(anim)moveTo(m,{pos:V(m.position.x,y,m.position.z),k:12});else m.position.y=y;});
     big.userData.set(st.n+'/100 = '+(st.n/100).toFixed(2)+' = '+st.n+'%');check();A.redraw();}
@@ -356,7 +356,7 @@ P.lesson({id:'percent5',title:'Fractions, decimals and percents',strand:'Number'
 P.lesson({id:'facts12',title:'Facts to 12 × 12 and properties',strand:'Number',codes:['B2.2','B2.1'],
  guide:{goal:'Recall and demonstrate multiplication facts to 12 × 12 and related division facts, and use the commutative, associative and distributive properties to solve problems and check calculations.',words:'factor, product, array, commutative, associative, distributive, inverse operation',
   ask:['How can 10 × 7 help you find 12 × 7?','Why is 4 × 9 the same as 9 × 4?','How does multiplying check 132 ÷ 11 = 12?'],home:'Make arrays with egg cartons (2 × 6) or muffin tins (3 × 4). Find the related division facts.'},
- learn:[{say:'Arrays up to 12 by 12.',speech:'An array has equal rows. Twelve rows of seven is twelve times seven. Watch the array grow.',view:'model',demo:'grow'},
+ learn:[{say:'Arrays up to 12 by 12.',speech:'An array has equal rows. Zane’s band has twelve rows of seven. That is twelve times seven. Watch the array grow.',view:'model',demo:'grow'},
         {say:'Read the properties.',speech:'You can turn an array around: that is the commutative property. You can split it into easier parts: that is the distributive property. And you can group factors any way: that is the associative property.',view:'read'},
         {say:'Watch: split twelve into ten and two.',speech:'Twelve times seven is ten times seven plus two times seven. Seventy plus fourteen is eighty-four.',view:'model',demo:'split'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -380,7 +380,7 @@ P.lesson({id:'facts12',title:'Facts to 12 × 12 and properties',strand:'Number',
   const base=mk(new THREE.BoxGeometry(u*N+.12,.03,u*N+.12),[lam('#eef2f8'),lam('#eef2f8'),cellMat('#f6f8fc',N,N),lam('#eef2f8'),lam('#eef2f8'),lam('#eef2f8')],20);base.position.set(x0+u*N/2,.015,Z0+u*N/2);grp.add(base);
   const arr=new THREE.Group();grp.add(arr);const cg=G('f12cube',()=>new THREE.BoxGeometry(u*.86,u*.86,u*.86));
   const corner=mk(new THREE.SphereGeometry(.13,16,12),lam('#ffd24a'),0);grp.add(corner);
-  const lr=label('',{size:.24,color:'#2f7de1'}),lc=label('',{size:.24,color:'#e2457a'});grp.add(lr,lc);
+  const lr=label('',{size:.24,color:'#2f7de1'}),lc=label('',{size:.24,color:'#e4572e'});grp.add(lr,lc);
   const sp=()=>st.r>10?10:5;
   function rebuild(drop){clearGroup(arr);const s=sp();for(let r=0;r<st.r;r++)for(let c=0;c<st.c;c++){const lo=st.split&&r>=s;const m=mk(cg,lam(lo?'#f08a24':'#2f7de1'),20);
       const p=V(x0+(c+.5)*u,.03+u*.43,Z0+(r+.5)*u+(lo?.14:0));m.position.copy(p);if(drop){m.position.y+=.5+(r*st.c+c)*.003;moveTo(m,{pos:p,k:12});}arr.add(m);}

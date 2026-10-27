@@ -16,12 +16,12 @@ const PI=3.14;
    25. Tessellations
    ========================================================= */
 const TS={tri:{n:'equilateral triangle',a:60,k:6,col:'#f59e0b',ok:true,tr:'rotations (half turns) and translations'},sq:{n:'square',a:90,k:4,col:'#2f7de1',ok:true,tr:'translations'},hex:{n:'regular hexagon',a:120,k:3,col:'#16a36f',ok:true,tr:'translations'},
-  pent:{n:'regular pentagon',a:108,k:3,col:'#e2457a',ok:false,tr:'none: there is a gap'},oct:{n:'octagons and squares',a:135,k:3,col:'#8b5cf6',ok:true,tr:'translations'}};
+  pent:{n:'regular pentagon',a:108,k:3,col:'#e4572e',ok:false,tr:'none: there is a gap'},oct:{n:'octagons and squares',a:135,k:3,col:'#8b5cf6',ok:true,tr:'translations'}};
 const TK=Object.keys(TS);
 P.lesson({id:'tess8',title:'Tessellations',strand:'Spatial Sense',codes:['E1.1'],
  guide:{goal:'Identify geometric properties of tessellating shapes and identify the transformations that occur in tessellations.',words:'tessellation, regular polygon, interior angle, vertex, 360°, translation, rotation, reflection',
   ask:['Why do regular hexagons tessellate but regular pentagons do not?','What must the angles at each vertex add up to?','Which transformations make a tessellation of triangles?'],home:'Look for tessellations in floors, walls and honeycombs. Sketch one and name the transformations you see.'},
- learn:[{say:'Tiles with no gaps.',speech:'A tessellation covers a surface with no gaps and no overlaps. Watch regular hexagons tile the floor. At each vertex, three angles of one hundred twenty degrees make three hundred sixty degrees.',view:'model',demo:'hex'},
+ learn:[{say:'Tiles with no gaps.',speech:'A tessellation covers a surface with no gaps and no overlaps. Watch Ana’s regular hexagons tile the floor. At each vertex, three angles of one hundred twenty degrees make three hundred sixty degrees.',view:'model',demo:'hex'},
         {say:'Read about the angle rule.',speech:'A regular polygon tessellates only if its interior angle divides evenly into three hundred sixty. Triangles: six times sixty. Squares: four times ninety. Hexagons: three times one hundred twenty.',view:'read'},
         {say:'Watch: a pentagon gap.',speech:'Regular pentagons have angles of one hundred eight degrees. Three of them make three hundred twenty-four degrees, leaving a thirty-six degree gap. Four would overlap. Pentagons do not tessellate.',view:'model',demo:'pent'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -45,10 +45,10 @@ P.lesson({id:'tess8',title:'Tessellations',strand:'Spatial Sense',codes:['E1.1']
     else if(sh==='hex'){const r=.33,w=r*Math.sqrt(3);for(let j=-5;j<=5;j++)for(let i=-6;i<=6;i++){const x=i*w+(j%2?w/2:0),z=cz+j*1.5*r;if(inside(x,z))out.push([6,r,x,z,0,['#16a36f','#4ade80','#22c55e'][((i+2*j)%3+3)%3]]);}}
     else if(sh==='tri'){const r=.3,a=r*Math.sqrt(3);for(let j=-4;j<=4;j++)for(let i=-8;i<=8;i++){const x=i*a/2+j*a/2,up=(i%2+2)%2===0;const z=cz-j*1.5*r+(up?0:r/2);if(inside(x,z))out.push([3,r,x,z,up?0:Math.PI,up?'#f59e0b':'#fcd34d']);}}
     else if(sh==='oct'){const R=.34,w=2*R*Math.cos(Math.PI/8),s=2*R*Math.sin(Math.PI/8);for(let i=-4;i<=4;i++)for(let j=-3;j<=3;j++){const x=i*w,z=cz+j*w;if(inside(x,z))out.push([8,R,x,z,Math.PI/8,'#8b5cf6']);const x2=x+w/2,z2=z+w/2;if(inside(x2,z2))out.push([4,s/Math.SQRT2*1.0,x2,z2,0,'#fbbf24']);}}
-    else{const R=.42,ap=R*Math.cos(Math.PI/5);for(let k=0;k<3;k++){const ang=k*108*Math.PI/180;const d=R;out.push([5,R,Math.sin(ang+Math.PI/5*0)*0,0,0,'#e2457a',k]);}}
+    else{const R=.42,ap=R*Math.cos(Math.PI/5);for(let k=0;k<3;k++){const ang=k*108*Math.PI/180;const d=R;out.push([5,R,Math.sin(ang+Math.PI/5*0)*0,0,0,'#e4572e',k]);}}
     return out.sort((a,b)=>Math.hypot(a[2],a[3]-cz)-Math.hypot(b[2],b[3]-cz));}
   function pentagons(){const R=.5;const ap=R*Math.cos(Math.PI/5);const P0=V(0,0,cz);
-    for(let k=0;k<3;k++){/* pentagons share vertex P0; each has interior angle 108 at P0 */const mid=(-90+108*k+54)*Math.PI/180;const cen=V(P0.x+Math.cos(mid)*R,0,P0.z-Math.sin(mid)*R);const m=tile(5,R,k%2?'#fb7185':'#e2457a',cen.x,cen.z,0);
+    for(let k=0;k<3;k++){/* pentagons share vertex P0; each has interior angle 108 at P0 */const mid=(-90+108*k+54)*Math.PI/180;const cen=V(P0.x+Math.cos(mid)*R,0,P0.z-Math.sin(mid)*R);const m=tile(5,R,k%2?'#fb7a4b':'#e4572e',cen.x,cen.z,0);
       /* rotate so a vertex points at P0: CylinderGeometry vertex 0 is at +z (angle 90° in our xz-up convention) */const want=Math.atan2(-(P0.z-cen.z),P0.x-cen.x);m.rotation.y=want+Math.PI/2;g2.add(m);}
     const gap=mk(wedgeGeo(.55,.1,(-90+324)*Math.PI/180,(270)*Math.PI/180+.0001),lam('#ef4444'),0);gap.position.set(P0.x,.02,P0.z);g2.add(gap);const gl=label('36° gap!',{size:.22,bg:'#ffffff',border:'#ef4444'});gl.position.set(P0.x+.35,.5,P0.z+.75);g2.add(gl);}
   function vertexMark(){const t=TS[st.sh];let P0=null;if(st.sh==='hex'){const r=.33;P0=V(0,0,cz-r);}else if(st.sh==='sq')P0=V(.25,0,cz-.25);else if(st.sh==='tri'){const r=.3;P0=V(r*Math.sqrt(3)/2,0,cz-r/2);}else if(st.sh==='oct'){const R=.34,w=2*R*Math.cos(Math.PI/8);const s=2*R*Math.sin(Math.PI/8);P0=V(w/2-s/Math.SQRT2,0,cz-w/2);}
@@ -74,7 +74,7 @@ P.lesson({id:'tess8',title:'Tessellations',strand:'Spatial Sense',codes:['E1.1']
 P.lesson({id:'models8',title:'Building models from views',strand:'Spatial Sense',codes:['E1.2'],
  guide:{goal:'Make objects and models using appropriate scales, given their top, front and side views or their perspective views.',words:'top view, front view, side view, perspective view, model, scale, build',
   ask:['How does a top view with numbers tell you how to build?','Can two different buildings have the same front and side views?','If 1 cube = 2.5 m, how tall is a 3-cube tower?'],home:'Draw the top, front and side views of a stack of books or blocks. Ask someone to build it from your drawings.'},
- learn:[{say:'Read the plan, build the model.',speech:'This top view has numbers. Each number tells how many cubes tall the tower is. Watch the model build from the plan: two, one, three, and so on.',view:'model',demo:'build'},
+ learn:[{say:'Read the plan, build the model.',speech:'Rohan’s top view has numbers. Each number tells how many cubes tall the tower is. Watch the model build from the plan: two, one, three, and so on.',view:'model',demo:'build'},
         {say:'Read about views and scale.',speech:'A front view shows the tallest tower in each column. A side view shows the tallest in each row. A scale, like one cube equals two point five metres, turns the model into real sizes.',view:'read'},
         {say:'Watch: check the views.',speech:'Compare the model with the front and side view cards. The green check means each view matches.',view:'model',demo:'check'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -86,7 +86,7 @@ P.lesson({id:'models8',title:'Building models from views',strand:'Spatial Sense'
  left(p,S){const g=p.g;let y=header(p,S);
   y=para(p,y,'Builders and designers make *models* from *plans*: top, front and side views.')+14;
   const s=40,H=[[2,1,3],[1,0,2],[1,1,1]];for(let r=0;r<3;r++)for(let c=0;c<3;c++){g.fillStyle=H[r][c]?'#bfdbfe':'#f1f5f9';g.fillRect(X0+20+c*s,y+r*s,s-3,s-3);T(g,String(H[r][c]),X0+20+c*s+18,y+r*s+27,FT.bodyB,INK,'center');}T(g,'top view with heights',X0+20,y+148,FT.smallB,GREY);
-  const fv=[0,1,2].map(c=>Math.max(H[0][c],H[1][c],H[2][c])),sv=[2,1,0].map(r=>Math.max(...H[r]));const col=(ox,v,c,t)=>{v.forEach((n,i)=>{for(let k=0;k<n;k++){g.fillStyle=c;g.fillRect(ox+i*s,y+120-(k+1)*s,s-3,s-3);}});T(g,t,ox,y+148,FT.smallB,GREY);};col(X0+230,fv,'#2f7de1','front view');col(X0+420,sv,'#e2457a','side view');y+=180;
+  const fv=[0,1,2].map(c=>Math.max(H[0][c],H[1][c],H[2][c])),sv=[2,1,0].map(r=>Math.max(...H[r]));const col=(ox,v,c,t)=>{v.forEach((n,i)=>{for(let k=0;k<n;k++){g.fillStyle=c;g.fillRect(ox+i*s,y+120-(k+1)*s,s-3,s-3);}});T(g,t,ox,y+148,FT.smallB,GREY);};col(X0+230,fv,'#2f7de1','front view');col(X0+420,sv,'#e4572e','side view');y+=180;
   y=para(p,y,'*Front view:* the tallest tower in each column. *Side view:* the tallest tower in each row, seen from the right.')+10;
   y=para(p,y,'*Scale:* if 1 cube = 2.5 m, a tower 3 cubes tall stands for *7.5 m*.')+10;
   y=keyWords(p,y,[['model','a 3D copy of an object, often at a smaller scale'],['plan','a top view used for building']]);
@@ -97,7 +97,7 @@ P.lesson({id:'models8',title:'Building models from views',strand:'Spatial Sense'
   const fr=label('FRONT',{size:.14,color:RED});fr.position.set(ox,.1,oz+.9);grp.add(fr);
   function cardTex(kind,data){const cv=document.createElement('canvas');cv.width=cv.height=192;const g=cv.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,192,192);g.strokeStyle='#1b2236';g.lineWidth=6;g.strokeRect(3,3,186,186);const s=46,o=27;
     if(kind==='top'){for(let r=0;r<3;r++)for(let q=0;q<3;q++){g.fillStyle=data[r][q]?'#bfdbfe':'#f1f5f9';g.fillRect(o+q*s,o+r*s,s-4,s-4);g.fillStyle=INK;g.font='700 30px sans-serif';g.textAlign='center';g.fillText(String(data[r][q]),o+q*s+21,o+r*s+33);}}
-    else data.forEach((n,i)=>{for(let k=0;k<n;k++){g.fillStyle=kind==='front'?'#2f7de1':'#e2457a';g.fillRect(o+i*s,165-(k+1)*s,s-4,s-4);}});return new THREE.MeshLambertMaterial({map:new THREE.CanvasTexture(cv)});}
+    else data.forEach((n,i)=>{for(let k=0;k<n;k++){g.fillStyle=kind==='front'?'#2f7de1':'#e4572e';g.fillRect(o+i*s,165-(k+1)*s,s-4,s-4);}});return new THREE.MeshLambertMaterial({map:new THREE.CanvasTexture(cv)});}
   function draw(){clearGroup(g2);clearGroup(cards);for(let r=0;r<3;r++)for(let q=0;q<3;q++)for(let k=0;k<st.h[r][q];k++){const m=unitBox(1,1,1,'#60a5fa',c*.94);m.position.set(ox+(q-1)*c,.04+c*.47+k*c*.94,oz+(r-1)*c);g2.add(m);A.drag(m,{tap:()=>tap(r,q)});}
     const T0=targetViews(st),mt=matches(st);const list=(st.tgt.top?[['top',st.tgt.top,mt.top]]:[]).concat([['front',T0.f,mt.f],['side',T0.s,mt.s]]);
     list.forEach(([k,d,ok],i)=>{const side=lam('#ffffff');const m=mk(new THREE.BoxGeometry(.7,.04,.7),[side,side,cardTex(k,d),side,side,side],20);m.position.set(1.55,.05,-2.75+i*.85);cards.add(m);const l=label(k+(ok?' ✓':''),{size:.15,color:ok?'#16a36f':GREY});l.position.set(.95,.1,-2.75+i*.85);cards.add(l);});A.redraw();}
@@ -124,7 +124,7 @@ const SCALES=[50,100,200,400];
 P.lesson({id:'scale8',title:'Scale drawings: lengths and areas',strand:'Spatial Sense',codes:['E1.3'],
  guide:{goal:'Use scale drawings to calculate actual lengths and areas, and reproduce scale drawings at different ratios.',words:'scale, ratio, scale drawing, actual length, area, scale factor, floor plan',
   ask:['On a 1 : 100 plan, what does 1 cm stand for?','If a drawing is twice as long, how many times bigger is its area?','How do you redraw a plan at 1 : 50 instead of 1 : 100?'],home:'Draw your room at 1 : 50 (2 cm for each metre). Measure the drawing and find the real area.'},
- learn:[{say:'Shrink a room onto paper.',speech:'This classroom is eight metres by six metres. At a scale of one to one hundred, one centimetre on the plan is one hundred centimetres, or one metre, in real life. The plan is eight centimetres by six centimetres.',view:'model',demo:'plan'},
+ learn:[{say:'Shrink a room onto paper.',speech:'Elena’s classroom is eight metres by six metres. At a scale of one to one hundred, one centimetre on the plan is one hundred centimetres, or one metre, in real life. Her plan is eight centimetres by six centimetres.',view:'model',demo:'plan'},
         {say:'Read about area and scale.',speech:'To find a real area, first find the real lengths, then multiply. The room is eight metres times six metres: forty-eight square metres. If you double the lengths in a drawing, its area becomes four times as big.',view:'read'},
         {say:'Watch: change the ratio.',speech:'Redraw the plan at one to fifty. Each length doubles: sixteen by twelve centimetres. The area on paper is four times as big, but the real room is the same.',view:'model',demo:'redraw'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -168,7 +168,7 @@ P.lesson({id:'scale8',title:'Scale drawings: lengths and areas',strand:'Spatial 
 P.lesson({id:'transform8',title:'Transformations, including dilations',strand:'Spatial Sense',codes:['E1.4'],
  guide:{goal:'Describe and perform translations, reflections, rotations and dilations on a Cartesian plane, and predict the results of these transformations.',words:'translation, reflection, rotation, dilation, scale factor, image, coordinate rule, sequence',
   ask:['What is the image of (−3, 1) after a dilation by 2 about the origin?','Does the order of two transformations matter?','Which transformations keep a shape the same size?'],home:'Plot a small triangle. Predict its image after a dilation by 2, then a reflection in the y-axis. Check by drawing.'},
- learn:[{say:'Dilate from the origin.',speech:'A dilation about the origin multiplies both coordinates by the scale factor. With a factor of two, the point negative three, one goes to negative six, two. The image is similar to the original, twice as large.',view:'model',demo:'dil'},
+ learn:[{say:'Dilate from the origin.',speech:'A dilation about the origin multiplies both coordinates by the scale factor. Jalen uses a factor of two, so the point negative three, one goes to negative six, two. The image is similar to the original, twice as large.',view:'model',demo:'dil'},
         {say:'Read the rules.',speech:'Translations, reflections and rotations keep the size and shape. Dilations change the size but keep the shape and angles. You can predict each image with its coordinate rule.',view:'read'},
         {say:'Watch: two in a row.',speech:'Reflect in the x-axis, then translate three to the right. Each vertex follows both rules in order. Predict where A goes before each step.',view:'model',demo:'seq'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -179,7 +179,7 @@ P.lesson({id:'transform8',title:'Transformations, including dilations',strand:'S
  init:k=>({sh:[[-3,1],[-1,1],[-3,2]],ask:null}),
  left(p,S){const g=p.g;let y=header(p,S);
   y=para(p,y,'Each transformation has a *coordinate rule*:')+12;
-  [['Translate (a, b)','(x + a, y + b)'],['Reflect in x-axis','(x, −y)'],['Reflect in y-axis','(−x, y)'],['Rotate 90° ↺ about O','(−y, x)'],['Rotate 180° about O','(−x, −y)'],['Dilate by k about O','(kx, ky)']].forEach(([a,b],i)=>{rr(g,X0,y+i*54,TW,46,12);g.fillStyle=tint(i===5?'#e2457a':acc(),.06+i%2*.05+(i===5?.08:0));g.fill();T(g,a,X0+20,y+i*54+32,FT.bodyB,i===5?'#be185d':acc());T(g,b,X0+TW-20,y+i*54+32,FT.bodyB,INK,'right');});y+=340;
+  [['Translate (a, b)','(x + a, y + b)'],['Reflect in x-axis','(x, −y)'],['Reflect in y-axis','(−x, y)'],['Rotate 90° ↺ about O','(−y, x)'],['Rotate 180° about O','(−x, −y)'],['Dilate by k about O','(kx, ky)']].forEach(([a,b],i)=>{rr(g,X0,y+i*54,TW,46,12);g.fillStyle=tint(i===5?'#e4572e':acc(),.06+i%2*.05+(i===5?.08:0));g.fill();T(g,a,X0+20,y+i*54+32,FT.bodyB,i===5?'#c2410c':acc());T(g,b,X0+TW-20,y+i*54+32,FT.bodyB,INK,'right');});y+=340;
   y=para(p,y,'*Same size:* translations, reflections, rotations. *Different size, same shape:* dilations (k > 1 enlarges, 0 < k < 1 reduces).')+10;
   y=keyWords(p,y,[['dilation','an enlargement or reduction from a centre'],['image','the result of a transformation']]);
   predict(p,y,S,'p28','Dilate (4, −2) by ½ about the origin.','*(2, −1).*');},
@@ -212,7 +212,7 @@ const SUP={'0':'⁰','1':'¹','2':'²','3':'³','4':'⁴','5':'⁵','6':'⁶','7
 P.lesson({id:'prefix8',title:'Mega to pico: metric prefixes',strand:'Spatial Sense',codes:['E2.1'],
  guide:{goal:'Represent very large (mega, giga, tera) and very small (micro, nano, pico) metric units using models, base ten relationships and exponential notation.',words:'prefix, mega, giga, tera, micro, nano, pico, power of ten, exponential notation',
   ask:['How many megabytes are in a gigabyte?','What does the prefix “micro” mean?','How many nanometres are in a micrometre?'],home:'Check how much storage your phone or computer has. Convert it to megabytes and to terabytes.'},
- learn:[{say:'Each step is × 1000.',speech:'Every metric prefix on this staircase is one thousand times the one below it. Kilo is ten to the third, mega is ten to the sixth, giga is ten to the ninth, and tera is ten to the twelfth. Watch the staircase light up.',view:'model',demo:'up'},
+ learn:[{say:'Each step is × 1000.',speech:'Every metric prefix on Sana’s staircase is one thousand times the one below it. Kilo is ten to the third, mega is ten to the sixth, giga is ten to the ninth, and tera is ten to the twelfth. Watch the staircase light up.',view:'model',demo:'up'},
         {say:'Read about tiny units.',speech:'Going down, milli is ten to the negative three, micro is ten to the negative six, nano is ten to the negative nine, and pico is ten to the negative twelve. A bacterium is about two micrometres long.',view:'read'},
         {say:'Watch: convert.',speech:'Three point five gigabytes. Step down one stair to megabytes: multiply by one thousand. Three point five gigabytes is three thousand five hundred megabytes.',view:'model',demo:'conv'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -223,13 +223,13 @@ P.lesson({id:'prefix8',title:'Mega to pico: metric prefixes',strand:'Spatial Sen
  init:k=>({sel:6,want:null,ask:null}),
  left(p,S){const g=p.g;let y=header(p,S);
   y=para(p,y,'Metric *prefixes* name powers of ten. Each prefix below is *1000 times* the next smaller one.')+12;
-  PF.slice().reverse().forEach(([s,n,e,ex],i)=>{rr(g,X0,y+i*46,TW,40,10);g.fillStyle=tint(e>0?'#2f7de1':e<0?'#e2457a':'#94a3b8',.08+Math.abs(e)/12*.14);g.fill();T(g,n,X0+16,y+i*46+28,FT.bodyB,INK);T(g,s||'—',X0+190,y+i*46+28,FT.bodyB,acc());T(g,tp(e),X0+260,y+i*46+28,FT.bodyB);T(g,ex,X0+TW-14,y+i*46+28,FT.small,GREY,'right');});y+=440;
+  PF.slice().reverse().forEach(([s,n,e,ex],i)=>{rr(g,X0,y+i*46,TW,40,10);g.fillStyle=tint(e>0?'#2f7de1':e<0?'#e4572e':'#94a3b8',.08+Math.abs(e)/12*.14);g.fill();T(g,n,X0+16,y+i*46+28,FT.bodyB,INK);T(g,s||'—',X0+190,y+i*46+28,FT.bodyB,acc());T(g,tp(e),X0+260,y+i*46+28,FT.bodyB);T(g,ex,X0+TW-14,y+i*46+28,FT.small,GREY,'right');});y+=440;
   y=para(p,y,'*Convert:* 3.5 GB = 3.5 × 1000 MB = *3500 MB*.  250 nm = 250 ÷ 1000 µm = *0.25 µm*.')+10;
   y=keyWords(p,y,[['prefix','a word part that multiplies a unit, like kilo- (× 1000)'],['exponential notation','writing a power with an exponent, like 10⁹']]);
   predict(p,y,S,'p29','How many gigabytes are in 2 TB?','*2000 GB.*');},
  readout(p,S,y){const g=p.g,st=S.st,f=PF[st.sel];T(g,(f[1]==='(base unit)'?'base unit':f[1]+' ('+f[0]+')')+'  =  '+tp(f[2]),X0,y+50,ZS(44),acc());T(g,'example: '+f[3],X0,y+92,FT.bodyB);return y+100;},
  build(S,grp,mode,game){const st=S.st;const g2=new THREE.Group();grp.add(g2);
-  function draw(){clearGroup(g2);PF.forEach((f,i)=>{const x=-2.0+i*.5,h=.12+i*.22;const on=i===st.sel;const m=mk(new THREE.BoxGeometry(.46,h,.7),lam(on?'#f5b301':tint(f[2]>0?'#2f7de1':f[2]<0?'#e2457a':'#94a3b8',.55)),20);m.position.set(x,h/2,-1.9);g2.add(m);A.drag(m,{tap:()=>sel(i)});
+  function draw(){clearGroup(g2);PF.forEach((f,i)=>{const x=-2.0+i*.5,h=.12+i*.22;const on=i===st.sel;const m=mk(new THREE.BoxGeometry(.46,h,.7),lam(on?'#f5b301':tint(f[2]>0?'#2f7de1':f[2]<0?'#e4572e':'#94a3b8',.55)),20);m.position.set(x,h/2,-1.9);g2.add(m);A.drag(m,{tap:()=>sel(i)});
       const l=label(f[1]==='(base unit)'?'base':f[1],{size:.13,color:on?'#b45309':INK});l.position.set(x,h+.16,-1.9);g2.add(l);const e=label(tp(f[2]),{size:.12,color:GREY});e.position.set(x,.1,-1.45);g2.add(e);});
     const s=PF[st.sel];const big=label((s[0]||'base')+'  =  '+tp(s[2]),{size:.28,bg:'#ffffff',border:'#f5b301'});big.position.set(-.8,2.5,-2.6);g2.add(big);A.redraw();}
   function sel(i){st.sel=i;A.pop();draw();A.say(PF[i][1]+': '+tp(PF[i][2]));if(mode==='play'&&!st.setup&&st.want!=null){if(i===st.want)game.solved('Yes! '+PF[i][1]+' = '+tp(PF[i][2])+'.');else A.bad('Look at the power of ten.');}}
@@ -252,7 +252,7 @@ P.lesson({id:'prefix8',title:'Mega to pico: metric prefixes',strand:'Spatial Sen
 P.lesson({id:'angles8',title:'Angles, parallel lines and polygons',strand:'Spatial Sense',codes:['E2.2'],
  guide:{goal:'Solve problems involving angle properties, including the properties of intersecting and parallel lines and of polygons.',words:'vertically opposite, corresponding, alternate, co-interior, parallel, transversal, interior angle sum',
   ask:['Why are vertically opposite angles equal?','Which angles are equal when a transversal crosses parallel lines?','Why is the angle sum of a hexagon 720°?'],home:'Find parallel lines crossed by another line (a ladder, railway, window frame). Measure the angles. Which are equal?'},
- learn:[{say:'Parallel lines, a crossing line.',speech:'Two parallel rails are crossed by a transversal. It makes eight angles. Angles with the same colour are equal: corresponding angles, alternate angles and vertically opposite angles. Watch the transversal tilt: the colours stay matched.',view:'model',demo:'tilt'},
+ learn:[{say:'Parallel lines, a crossing line.',speech:'Marcus sees two parallel rails crossed by a transversal. It makes eight angles. Angles with the same colour are equal: corresponding angles, alternate angles and vertically opposite angles. Watch the transversal tilt: the colours stay matched.',view:'model',demo:'tilt'},
         {say:'Read the angle rules.',speech:'Vertically opposite angles are equal. Corresponding and alternate angles are equal. Co-interior angles, on the same side between the rails, add up to one hundred eighty degrees.',view:'read'},
         {say:'Watch: polygon angle sums.',speech:'Split a polygon into triangles from one vertex. A hexagon makes four triangles, so its angles add to four times one hundred eighty: seven hundred twenty degrees. The rule is n minus two, times one hundred eighty.',view:'model',demo:'poly'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -264,7 +264,7 @@ P.lesson({id:'angles8',title:'Angles, parallel lines and polygons',strand:'Spati
  left(p,S){const g=p.g;let y=header(p,S);
   y=para(p,y,'When a *transversal* crosses two *parallel* lines, it makes pairs of related angles.')+14;
   const ox=X0+40,oy=y+40,w=300,dx=60;g.strokeStyle=INK;g.lineWidth=3;[0,110].forEach(d=>{g.beginPath();g.moveTo(ox,oy+d);g.lineTo(ox+w,oy+d);g.stroke();});g.beginPath();g.moveTo(ox+120-dx,oy+160);g.lineTo(ox+180+dx,oy-50);g.stroke();
-  T(g,'a',ox+175,oy-10,FT.bodyB,'#2f7de1');T(g,'b',ox+118,oy+30,FT.bodyB,'#e2457a');T(g,'a',ox+142,oy+100,FT.bodyB,'#2f7de1');T(g,'b',ox+90,oy+140,FT.bodyB,'#e2457a');
+  T(g,'a',ox+175,oy-10,FT.bodyB,'#2f7de1');T(g,'b',ox+118,oy+30,FT.bodyB,'#e4572e');T(g,'a',ox+142,oy+100,FT.bodyB,'#2f7de1');T(g,'b',ox+90,oy+140,FT.bodyB,'#e4572e');
   [['Vertically opposite','equal'],['Corresponding','equal'],['Alternate','equal'],['Co-interior','add to 180°']].forEach(([a,b],i)=>{T(g,a,X0+400,y+40+i*40,FT.smallB,acc());T(g,b,X0+TW,y+40+i*40,FT.small,INK,'right');});y+=220;
   rr(g,X0,y,TW,110,16);g.fillStyle=tint(acc(),.1);g.fill();T(g,'Polygon angle sum = (n − 2) × 180°',X0+20,y+40,FT.bodyB,acc());T(g,'hexagon: 4 × 180° = 720°; regular: 720° ÷ 6 = 120° each',X0+20,y+82,FT.small);y+=130;
   y=keyWords(p,y,[['transversal','a line that crosses two or more lines'],['co-interior angles','angles between parallel lines on the same side']]);
@@ -274,11 +274,11 @@ P.lesson({id:'angles8',title:'Angles, parallel lines and polygons',strand:'Spati
   function lines(){const tr=st.t*Math.PI/180;const ys=[-.6,.6];ys.forEach(dz=>{const r=mk(new THREE.BoxGeometry(4.2,.06,.06),lam(INK),0);r.position.set(0,.05,cz+dz);g2.add(r);const ar=mk(new THREE.ConeGeometry(.06,.14,10),lam(INK),0);ar.rotation.z=-Math.PI/2;ar.position.set(2.1,.05,cz+dz);g2.add(ar);});
     const L=1.5/Math.sin(tr);const dir=V(Math.cos(tr),0,-Math.sin(tr));g2.add(seg(V(0,.05,cz).addScaledVector(dir,-L),V(0,.05,cz).addScaledVector(dir,L),'#475569',.03));
     ys.forEach((dz,j)=>{const cx=(-dz)/Math.tan(tr)*1,P0=V(cx,.06,cz+dz);/* intersection: z-offset dz means up = -dz */const pts=[[0,tr],[tr,Math.PI],[Math.PI,Math.PI+tr],[Math.PI+tr,2*Math.PI]];
-      pts.forEach(([a0,a1],k)=>{const idx=j*4+k;const isA=k%2===0;const col=isA?'#2f7de1':'#e2457a';const w=mk(wedgeGeo(.32,.04,a0,a1),new THREE.MeshLambertMaterial({color:col,transparent:true,opacity:st.sel===idx?1:.6}),0);w.position.copy(P0);g2.add(w);A.drag(w,{tap:()=>tapA(idx)});
+      pts.forEach(([a0,a1],k)=>{const idx=j*4+k;const isA=k%2===0;const col=isA?'#2f7de1':'#e4572e';const w=mk(wedgeGeo(.32,.04,a0,a1),new THREE.MeshLambertMaterial({color:col,transparent:true,opacity:st.sel===idx?1:.6}),0);w.position.copy(P0);g2.add(w);A.drag(w,{tap:()=>tapA(idx)});
         const mid=(a0+a1)/2;const l=label((isA?st.t:180-st.t)+'°',{size:.13,color:INK});l.position.set(P0.x+Math.cos(mid)*.48,.15,P0.z-Math.sin(mid)*.48);g2.add(l);});});}
   function poly(){const n=st.n,R=1.25;const c=V(0,.05,cz);const pts=[];for(let i=0;i<n;i++){const a=Math.PI/2+i*2*Math.PI/n;pts.push([c.x+Math.cos(a)*R,c.z-Math.sin(a)*R]);}g2.add(slab(pts,'#c7d2fe',.05));
-    for(let i=0;i<n;i++){const a=V(pts[i][0],.1,pts[i][1]),b=V(pts[(i+1)%n][0],.1,pts[(i+1)%n][1]);g2.add(seg(a,b,INK,.02));}for(let i=2;i<n-1;i++)g2.add(seg(V(pts[0][0],.11,pts[0][1]),V(pts[i][0],.11,pts[i][1]),'#e2457a',.015));
-    for(let i=1;i<n-1;i++){const cxp=(pts[0][0]+pts[i][0]+pts[i+1][0])/3,czp=(pts[0][1]+pts[i][1]+pts[i+1][1])/3;const l=label('180°',{size:.12,color:'#be185d'});l.position.set(cxp,.2,czp);g2.add(l);}
+    for(let i=0;i<n;i++){const a=V(pts[i][0],.1,pts[i][1]),b=V(pts[(i+1)%n][0],.1,pts[(i+1)%n][1]);g2.add(seg(a,b,INK,.02));}for(let i=2;i<n-1;i++)g2.add(seg(V(pts[0][0],.11,pts[0][1]),V(pts[i][0],.11,pts[i][1]),'#e4572e',.015));
+    for(let i=1;i<n-1;i++){const cxp=(pts[0][0]+pts[i][0]+pts[i+1][0])/3,czp=(pts[0][1]+pts[i][1]+pts[i+1][1])/3;const l=label('180°',{size:.12,color:'#c2410c'});l.position.set(cxp,.2,czp);g2.add(l);}
     const tot=label((n-2)+' triangles: '+(n-2)*180+'°',{size:.22,bg:'#ffffff',border:acc()});tot.position.set(0,1.0,-3.0);g2.add(tot);}
   function draw(){clearGroup(g2);if(st.mode2==='lines')lines();else poly();A.redraw();}
   function tapA(i){st.sel=i;A.pop();draw();const v=i%2?180-st.t:st.t;A.say(v+'°');if(mode==='play'&&!st.setup&&st.want){if(st.want(i))game.solved(st.wantOk);else A.bad('Not that one. Look at the colours and positions.');}}
@@ -302,7 +302,7 @@ P.lesson({id:'angles8',title:'Angles, parallel lines and polygons',strand:'Spati
 P.lesson({id:'composite8',title:'Composite shapes and objects',strand:'Spatial Sense',codes:['E2.3'],
  guide:{goal:'Solve problems involving the perimeter, circumference, area, volume and surface area of composite two-dimensional shapes and three-dimensional objects, using appropriate formulas.',words:'composite, perimeter, area, volume, surface area, hidden face, half cylinder, triangular prism',
   ask:['How do you find the volume of a house shape?','Why do you leave out hidden faces when finding surface area?','How do you find the perimeter of a rectangle with a semicircle on top?'],home:'Find an object made of simple shapes (a mailbox, a tent, a barn). Measure it and find its volume.'},
- learn:[{say:'Split it into simple parts.',speech:'This house is a rectangular prism with a triangular prism roof. Pull them apart. The box is six by four by three: seventy-two cubic metres. The roof is a triangle of area four, times a length of six: twenty-four. Together: ninety-six cubic metres.',view:'model',demo:'house'},
+ learn:[{say:'Split it into simple parts.',speech:'Ana’s house is a rectangular prism with a triangular prism roof. Pull them apart. The box is six by four by three: seventy-two cubic metres. The roof is a triangle of area four, times a length of six: twenty-four. Together: ninety-six cubic metres.',view:'model',demo:'house'},
         {say:'Read about surface area.',speech:'For surface area, add the areas of the faces you can see. Where two parts touch, those faces are hidden, so you leave them out.',view:'read'},
         {say:'Watch: a mailbox.',speech:'A mailbox is a box with half a cylinder on top. The front face is a rectangle and a semicircle. Its perimeter uses half the circumference: pi times the radius.',view:'model',demo:'mail'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -343,7 +343,7 @@ P.lesson({id:'composite8',title:'Composite shapes and objects',strand:'Spatial S
 P.lesson({id:'pythag8',title:'The Pythagorean theorem',strand:'Spatial Sense',codes:['E2.4'],
  guide:{goal:'Describe the Pythagorean relationship using various geometric models, and apply the theorem to solve problems involving an unknown side length of a right triangle.',words:'right triangle, leg, hypotenuse, Pythagorean theorem, square, square root',
   ask:['Which side of a right triangle is the hypotenuse?','How do the tiles show that a² + b² = c²?','How long is the hypotenuse of a 6–8 right triangle?'],home:'Use a measuring tape to make a 3–4–5 triangle on the floor with string. Check that the corner is a right angle.'},
- learn:[{say:'Squares on every side.',speech:'Build a square on each side of a right triangle with legs three and four. The squares have nine and sixteen tiles. Watch every tile move into the big square on the hypotenuse: twenty-five tiles exactly fill it. So the hypotenuse is five.',view:'model',demo:'pour'},
+ learn:[{say:'Squares on every side.',speech:'Rohan builds a square on each side of a right triangle with legs three and four. The squares have nine and sixteen tiles. Watch every tile move into the big square on the hypotenuse: twenty-five tiles exactly fill it. So the hypotenuse is five.',view:'model',demo:'pour'},
         {say:'Read the theorem.',speech:'In a right triangle, the square of the hypotenuse equals the sum of the squares of the legs: a squared plus b squared equals c squared. To find a leg, subtract: a squared equals c squared minus b squared.',view:'read'},
         {say:'Watch: a ladder problem.',speech:'A five metre ladder leans on a wall, with its foot three metres from the wall. How high does it reach? Five squared minus three squared is sixteen. The square root of sixteen is four metres.',view:'model',demo:'ladder'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -355,7 +355,7 @@ P.lesson({id:'pythag8',title:'The Pythagorean theorem',strand:'Spatial Sense',co
  left(p,S){const g=p.g;let y=header(p,S);
   y=para(p,y,'In a *right triangle*, the side opposite the right angle is the *hypotenuse* c. The other two are the *legs* a and b.')+14;
   rr(g,X0,y,TW,96,16);g.fillStyle=tint(acc(),.12);g.fill();T(g,'a² + b² = c²',X0+TW/2,y+62,ZS(52),acc(),'center');y+=120;
-  const s=18,ox=X0+120,oy=y+150;g.fillStyle='#93c5fd';g.fillRect(ox-3*s,oy-4*s,3*s,4*s);g.fillStyle='#fda4af';g.fillRect(ox,oy,4*s,4*s);
+  const s=18,ox=X0+120,oy=y+150;g.fillStyle='#93c5fd';g.fillRect(ox-3*s,oy-4*s,3*s,4*s);g.fillStyle='#fdba74';g.fillRect(ox,oy,4*s,4*s);
   g.beginPath();g.moveTo(ox,oy);g.lineTo(ox+4*s,oy);g.lineTo(ox,oy-3*s);g.closePath();g.fillStyle='#fde68a';g.fill();T(g,'9',ox-1.5*s,oy-1.5*s,FT.bodyB,INK,'center');T(g,'16',ox+2*s,oy+2.4*s,FT.bodyB,INK,'center');T(g,'9 + 16 = 25 = 5²',ox+150,oy-40,FT.bodyB,acc());y+=240;
   y=para(p,y,'*Find a leg:* c = 13, a = 5 → b² = 169 − 25 = 144 → *b = 12*.')+10;
   y=keyWords(p,y,[['hypotenuse','the longest side, opposite the right angle'],['leg','one of the two sides that form the right angle']]);
@@ -365,9 +365,9 @@ P.lesson({id:'pythag8',title:'The Pythagorean theorem',strand:'Spatial Sense',co
   function geom(){const a=st.a,b=st.b;const u=Math.min(.32,4.2/(2*a+b),3.3/(2*b+a));const x0=-b/2*u,z0=-1.4+a/2*u;const W2=(px,py,h)=>V(x0+px*u,h||0,z0-py*u);return {u,W2};}
   function draw(){clearGroup(g2);tiles=[];const a=st.a,b=st.b,c=Math.sqrt(a*a+b*b);const {u,W2}=geom();
     g2.add(slab([[W2(0,0).x,W2(0,0).z],[W2(b,0).x,W2(b,0).z],[W2(0,a).x,W2(0,a).z]],'#fde68a',.06));
-    const hs=[[b,0],[0,a],[a,a+b],[a+b,b]].map(([x,y])=>{const p=W2(x,y);return [p.x,p.z];});g2.add(slab(hs,'#fda4af',.02,.45));
+    const hs=[[b,0],[0,a],[a,a+b],[a+b,b]].map(([x,y])=>{const p=W2(x,y);return [p.x,p.z];});g2.add(slab(hs,'#fdba74',.02,.45));
     for(let i=0;i<a;i++)for(let j=0;j<a;j++){const t=unitBox(1,1,1,'#3b82f6',u*.9);t.scale.y=.4;const p=W2(-i-.5,j+.5,.05);t.position.copy(p);g2.add(t);tiles.push(t);}
-    for(let i=0;i<b;i++)for(let j=0;j<b;j++){const t=unitBox(1,1,1,'#e2457a',u*.9);t.scale.y=.4;const p=W2(i+.5,-j-.5,.05);t.position.copy(p);g2.add(t);tiles.push(t);}
+    for(let i=0;i<b;i++)for(let j=0;j<b;j++){const t=unitBox(1,1,1,'#e4572e',u*.9);t.scale.y=.4;const p=W2(i+.5,-j-.5,.05);t.position.copy(p);g2.add(t);tiles.push(t);}
     [['a = '+a,W2(-a-.5,a/2,.2)],['b = '+b,W2(b/2,-b-.6,.2)],['c '+(Number.isInteger(c)?'= '+c:'≈ '+c.toFixed(2)),W2(b/2+a/2+.6,a/2+b/2+.6,.3)]].forEach(([t,p])=>{const l=label(t,{size:.2,bg:'#ffffff'});l.position.copy(p);g2.add(l);});check();A.redraw();}
   function pour(){const a=st.a,b=st.b,c=Math.sqrt(a*a+b*b);if(!Number.isInteger(c)){A.bad('c is not a whole number here, but a² + b² still equals c². Try 3–4, 6–8 or 5–12.');return;}const {u,W2}=geom();
     const B=V(b,0,0),Ap=V(0,a,0),e1=Ap.clone().sub(B).divideScalar(c),e2=V(a,b,0).divideScalar(c);const ang=Math.atan2(e1.y,e1.x);
@@ -396,7 +396,7 @@ const PAY=[{k:'cash',n:'Cash (bought at a kiosk)',rate:1.42,fee:0,pct:0,col:'#16
 P.lesson({id:'payment8',title:'Paying in other currencies',strand:'Financial Literacy',codes:['F1.1'],
  guide:{goal:'Describe some advantages and disadvantages of various methods of payment that can be used when dealing with multiple currencies and exchange rates.',words:'exchange rate, foreign transaction fee, ATM fee, cash, credit card, debit card, travel card',
   ask:['Why does cash bought at an airport kiosk cost more?','How much is a 2.5% fee on a $137 purchase?','When might cash still be the best choice?'],home:'Ask a family member how they paid on a trip. Compare the fees for cash, credit and debit.'},
- learn:[{say:'Same price, different costs.',speech:'A souvenir costs one hundred US dollars. How you pay changes the cost in Canadian dollars. Watch the four methods: cash from a kiosk, a credit card with a fee, a debit card at an ATM, and a no-fee travel card.',view:'model',demo:'all'},
+ learn:[{say:'Same price, different costs.',speech:'Elena’s souvenir costs one hundred US dollars. How she pays changes the cost in Canadian dollars. Watch the four methods: cash from a kiosk, a credit card with a fee, a debit card at an ATM, and a no-fee travel card.',view:'model',demo:'all'},
         {say:'Read the pros and cons.',speech:'Cash is accepted everywhere but can be lost, and kiosks give worse rates. Credit cards are safe but often charge a foreign transaction fee. ATMs give good rates but charge a fee each time. Rates here are examples.',view:'read'},
         {say:'Watch: the credit card fee.',speech:'At one point three seven Canadian dollars per US dollar, one hundred US dollars is one hundred thirty-seven Canadian dollars. A two point five percent fee adds three dollars and forty-three cents.',view:'model',demo:'credit'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -437,9 +437,9 @@ function cost(m,usd){const c=usd*m.rate;return r2(c*(1+m.pct/100)+m.fee);}
 P.lesson({id:'plan8',title:'A financial plan with income and tax',strand:'Financial Literacy',codes:['F1.2'],
  guide:{goal:'Create a financial plan to reach a long-term financial goal, accounting for income, expenses and tax implications.',words:'financial plan, gross income, net income, deductions, income tax, expenses, savings, goal',
   ask:['What is the difference between gross pay and net pay?','Why do you plan for taxes and deductions?','How many months will it take to save $2000 at $250 a month?'],home:'Plan for something big you want, like a bike or a trip. List your income, deductions and expenses, and find how long it will take.'},
- learn:[{say:'Money in, money out.',speech:'Jordan works a part-time job: twelve hours a week at sixteen dollars an hour. That is about eight hundred thirty-two dollars a month in gross pay. Deductions such as income tax take about ten percent. Then expenses. What is left goes into the savings jar.',view:'model',demo:'flow'},
+ learn:[{say:'Money in, money out.',speech:'Jalen works a part-time job: twelve hours a week at sixteen dollars an hour. That is about eight hundred thirty-two dollars a month in gross pay. Deductions such as income tax take about ten percent. Then expenses. What is left goes into the savings jar.',view:'model',demo:'flow'},
         {say:'Read about the plan.',speech:'A financial plan lists the goal, the income, the deductions and taxes, and the expenses. The money left over each month is the savings. Divide the goal by the monthly savings to find how many months it takes.',view:'read'},
-        {say:'Watch: adjust the plan.',speech:'Jordan wants two thousand dollars for a trip. Saving about two hundred forty-nine dollars a month takes about nine months. Working two more hours a week gets there sooner.',view:'model',demo:'adjust'},
+        {say:'Watch: adjust the plan.',speech:'Jalen wants two thousand dollars for a trip. Saving about two hundred forty-nine dollars a month takes about nine months. Working two more hours a week gets there sooner.',view:'model',demo:'adjust'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
         {say:'Your turn: make the plan.',speech:'Your turn. Change the hours and the expenses, and see how many months the goal takes.',view:'model'}],
  fig:'Income flows through deductions and expenses into a savings jar.',rz:.35,
@@ -455,7 +455,7 @@ P.lesson({id:'plan8',title:'A financial plan with income and tax',strand:'Financ
  readout(p,S,y){const g=p.g,st=S.st,f=flow(st);T(g,'gross '+money(f.gross)+' − tax '+money(f.tax)+' − expenses '+money(st.exp)+' = '+money(f.save),X0,y+44,FT.bodyB);T(g,f.save>0?'$'+st.goal+' in '+f.months+' months':'No savings: adjust the plan!',X0,y+90,ZS(40),f.save>0?'#16a36f':RED);return y+100;},
  build(S,grp,mode,game){const st=S.st;const g2=new THREE.Group();grp.add(g2);
   function bar(x,v,col,t,mx){const h=Math.max(.02,v/mx*1.2);const b=mk(new THREE.BoxGeometry(.6,h,.5),lam(col),20);b.position.set(x,h/2,-2.0);g2.add(b);const l=label(money(v),{size:.15,bg:'#ffffff'});l.position.set(x,h+.18,-2.0);g2.add(l);const n=label(t,{size:.14,color:GREY});n.position.set(x,.1,-1.55);g2.add(n);}
-  function draw(){clearGroup(g2);const f=flow(st),mx=Math.max(f.gross,1);bar(-2.0,f.gross,'#2f7de1','gross',mx);bar(-1.15,f.tax,'#e2457a','deductions',mx);bar(-.3,st.exp,'#f59e0b','expenses',mx);bar(.55,Math.max(0,f.save),'#16a36f','savings',mx);
+  function draw(){clearGroup(g2);const f=flow(st),mx=Math.max(f.gross,1);bar(-2.0,f.gross,'#2f7de1','gross',mx);bar(-1.15,f.tax,'#e4572e','deductions',mx);bar(-.3,st.exp,'#f59e0b','expenses',mx);bar(.55,Math.max(0,f.save),'#16a36f','savings',mx);
     const jar=mk(new THREE.CylinderGeometry(.45,.4,1.15,28,1,true),new THREE.MeshLambertMaterial({color:'#e0f2fe',transparent:true,opacity:.3,side:THREE.DoubleSide,depthWrite:false}),0);jar.position.set(1.7,.6,-1.9);g2.add(jar);
     const fill=Math.max(0,Math.min(1,f.save/st.goal*8));const m=mk(new THREE.CylinderGeometry(.4,.38,Math.max(.01,1.1*fill),28),lam('#16a36f'),0);m.position.set(1.7,.55*fill+.02,-1.9);g2.add(m);
     const jl=label(f.save>0?f.months+' months':'∞',{size:.24,bg:'#ffffff',border:'#16a36f'});jl.position.set(1.7,1.45,-1.9);g2.add(jl);const gl=label('goal $'+st.goal,{size:.14,color:'#16a36f'});gl.position.set(1.7,.1,-1.35);g2.add(gl);check();A.redraw();}
@@ -483,7 +483,7 @@ const SCN=[{n:'Student',inc:[['allowance',80],['babysitting',120]],exp:[['phone'
 P.lesson({id:'balance8',title:'Balancing a budget',strand:'Financial Literacy',codes:['F1.3'],
  guide:{goal:'Identify different ways to maintain a balanced budget, and use appropriate tools to track all income and spending, for several different scenarios.',words:'balanced budget, income, expenses, surplus, deficit, track, spreadsheet, needs, wants',
   ask:['What does it mean for a budget to be balanced?','Name two ways to fix a deficit.','Why is a spreadsheet a good tool for tracking spending?'],home:'Track every dollar you spend for two weeks in a spreadsheet or notebook. Is your budget balanced?'},
- learn:[{say:'Income against expenses.',speech:'On the left, the income. On the right, the expenses. A student earns two hundred dollars a month but spends two hundred twenty-five. The scale tips: that is a deficit of twenty-five dollars.',view:'model',demo:'tip'},
+ learn:[{say:'Income against expenses.',speech:'On the left, the income. On the right, the expenses. Sana earns two hundred dollars a month but spends two hundred twenty-five. The scale tips: that is a deficit of twenty-five dollars.',view:'model',demo:'tip'},
         {say:'Read about balancing.',speech:'A budget is balanced when income is at least as much as expenses. To fix a deficit, cut wants, find cheaper choices, or earn more. A spreadsheet or app helps track every amount.',view:'read'},
         {say:'Watch: cut a want.',speech:'Cut the games budget from fifty dollars to twenty dollars. Now expenses are one hundred ninety-five dollars: a surplus of five dollars. The scale tips the other way.',view:'model',demo:'cut'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -531,9 +531,9 @@ function bud(st){const sc=SCN[st.sc];const inc=sc.inc.reduce((a,b)=>a+b[1],0)+st
 P.lesson({id:'interest8',title:'Simple and compound interest over time',strand:'Financial Literacy',codes:['F1.4'],
  guide:{goal:'Determine the growth of simple and compound interest at various rates using digital tools, and explain the impact interest has on long-term financial planning.',words:'simple interest, compound interest, principal, rate, spreadsheet formula, rule of 72, long-term',
   ask:['How does a spreadsheet formula like =B2*1.06 build compound interest?','Why does starting to save early matter so much?','About how long does money take to double at 6%?'],home:'Make a spreadsheet: $1000 at 5% for 30 years, simple in one column and compound in another. When does compound pull far ahead?'},
- learn:[{say:'A spreadsheet grows the money.',speech:'Each row is one year. The compound column uses the formula: last year times one plus the rate. Watch the towers rise: one thousand dollars at six percent for forty years. Compound interest grows faster and faster.',view:'model',demo:'grow'},
+ learn:[{say:'A spreadsheet grows the money.',speech:'Each row is one year. The compound column uses the formula: last year times one plus the rate. Watch Marcus’s towers rise: one thousand dollars at six percent for forty years. Compound interest grows faster and faster.',view:'model',demo:'grow'},
         {say:'Read about long-term planning.',speech:'Simple interest adds the same amount every year. Compound interest earns interest on interest, so time matters a lot. The rule of seventy-two: divide seventy-two by the rate to estimate how many years it takes to double.',view:'read'},
-        {say:'Watch: start early.',speech:'Ava invests one thousand dollars at age fifteen. Ben invests the same at age twenty-five. At age fifty-five, Ava has about ten thousand dollars, and Ben has about five thousand seven hundred. Ten extra years almost doubled Ava’s money.',view:'model',demo:'early'},
+        {say:'Watch: start early.',speech:'Elena invests one thousand dollars at age fifteen. Jalen invests the same at age twenty-five. At age fifty-five, Elena has about ten thousand dollars, and Jalen has about five thousand seven hundred. Ten extra years almost doubled Elena’s money.',view:'model',demo:'early'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
         {say:'Your turn: change the rate.',speech:'Your turn. Change the rate and the number of years, and compare simple and compound growth.',view:'model'}],
  fig:'Towers for each decade: simple (blue) and compound (gold).',rz:.35,
@@ -557,12 +557,12 @@ P.lesson({id:'interest8',title:'Simple and compound interest over time',strand:'
   draw();
   return {info:()=>st.rate+'% '+st.yrs,
     controls:()=>{const c=[{t:'rate −',fn:()=>{st.rate=Math.max(1,st.rate-1);draw();}},{t:'rate +',go:true,fn:()=>{st.rate=Math.min(12,st.rate+1);draw();}},{t:'years −10',fn:()=>{st.yrs=Math.max(10,st.yrs-10);draw();}},{t:'years +10',fn:()=>{st.yrs=Math.min(50,st.yrs+10);draw();}}];if(mode==='play'&&st.ask)return choices(st.setup?null:game,st.ask.o,st.ask.ans,st.ask.ok).concat(c);return c;},
-    demo(n){st.ask=null;if(n==='grow'){st.rate=6;st.yrs=10;draw();A.seq([20,30,40].map(y=>[700,()=>{st.yrs=y;draw();}]));}if(n==='early'){st.rate=6;st.yrs=40;draw();A.seq([[900,()=>A.say('Ava (40 years): $10 285.72')],[1300,()=>{st.yrs=30;draw();A.say('Ben (30 years): $5743.49');}]]);}},
+    demo(n){st.ask=null;if(n==='grow'){st.rate=6;st.yrs=10;draw();A.seq([20,30,40].map(y=>[700,()=>{st.yrs=y;draw();}]));}if(n==='early'){st.rate=6;st.yrs=40;draw();A.seq([[900,()=>A.say('Elena (40 years): $10 285.72')],[1300,()=>{st.yrs=30;draw();A.say('Jalen (30 years): $5743.49');}]]);}},
     task(r){st.setup=true;st.rate=6;st.yrs=40;let txt;
       if(r===0){st.yrs=10;st.rate=5;st.ask={ans:'$1628.89',o:shuffle(['$1628.89','$1500.00','$1050.00']),ok:'Yes! 1000 × 1.05¹⁰ ≈ 1628.89.'};txt='*$1000* at *5% compound* interest for *10 years* grows to about…';}
       else if(r===1){st.ask={ans:'12 years',o:shuffle(['12 years','6 years','72 years']),ok:'Yes! 72 ÷ 6 = 12.'};txt='Use the *rule of 72*: about how long to double at *6%*?';}
       else if(r===2){st.ask={ans:'=C2*1.04',o:shuffle(['=C2*1.04','=C2+4','=C2*4']),ok:'Yes! Multiply by 1 + 0.04 each year.'};txt='Which *spreadsheet formula* grows money at *4% compound* interest each year?';}
-      else if(r===3){st.ask={ans:'Starting earlier',o:shuffle(['Starting earlier','Checking more often','Using a bigger bank']),ok:'Yes! More years let compound interest work.'};txt='Ava and Ben invest the same amount at the same rate. What gives Ava more money?';}
+      else if(r===3){st.ask={ans:'Starting earlier',o:shuffle(['Starting earlier','Checking more often','Using a bigger bank']),ok:'Yes! More years let compound interest work.'};txt='Elena and Jalen invest the same amount at the same rate. What gives Elena more money?';}
       else{st.yrs=10;st.rate=10;st.ask={ans:'$2000.00',o:shuffle(['$2000.00','$2593.74','$1100.00']),ok:'Yes! $100 a year for 10 years = $1000 interest.'};txt='*$1000* at *10% simple* interest for *10 years* grows to…';}
       draw();st.setup=false;return txt;}};}
 });
@@ -574,7 +574,7 @@ const DEALS=[{n:'30% off everything',f:(q,p)=>q*p*.7},{n:'Buy 2, get 1 free',f:(
 P.lesson({id:'value8',title:'Sales, loyalty programs and best value',strand:'Financial Literacy',codes:['F1.5'],
  guide:{goal:'Compare various ways for consumers to get more value for their money when spending, including sales and customer loyalty and incentive programs, and determine the best choice for different scenarios.',words:'sale, discount, percent off, buy-one-get-one, loyalty program, points, incentive, best value',
   ask:['When is “buy 2, get 1 free” better than “30% off”?','How much are 1000 loyalty points worth?','Is a deal good value if you didn’t need the item?'],home:'Compare flyers from two stores for the same product. Which deal gives the best value for your family?'},
- learn:[{say:'Same cart, different deals.',speech:'Three T-shirts at twenty dollars each: sixty dollars. Watch each deal. Thirty percent off: forty-two dollars. Buy two, get one free: forty dollars. Fifteen dollars off fifty or more: forty-five dollars. Loyalty points: worth six dollars.',view:'model',demo:'cart'},
+ learn:[{say:'Same cart, different deals.',speech:'Ana wants three T-shirts at twenty dollars each: sixty dollars. Watch each deal. Thirty percent off: forty-two dollars. Buy two, get one free: forty dollars. Fifteen dollars off fifty or more: forty-five dollars. Loyalty points: worth six dollars.',view:'model',demo:'cart'},
         {say:'Read about best value.',speech:'The best deal depends on how many items you buy. A deal is only good value if you need the item. Loyalty points are worth money later, but usually less than an instant discount.',view:'read'},
         {say:'Watch: change the cart.',speech:'With only two T-shirts, buy two get one free gives nothing extra. Thirty percent off is now the best deal.',view:'model',demo:'two'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -596,7 +596,7 @@ P.lesson({id:'value8',title:'Sales, loyalty programs and best value',strand:'Fin
   function draw(){clearGroup(g2);const c=DEALS.map(d=>r2(d.f(st.q,st.p))),mn=Math.min(...c),mx=st.q*st.p;DEALS.forEach((d,i)=>{const x=-1.65+i*1.1,h=Math.max(.05,c[i]/mx*1.9);const best=c[i]===mn;const rc=mk(new THREE.BoxGeometry(.7,h,.08),lam(best?'#fde68a':'#ffffff'),20);rc.position.set(x,h/2+.02,-2.0);g2.add(rc);
       const full=mk(new THREE.BoxGeometry(.72,1.9,.04),new THREE.MeshLambertMaterial({color:'#cbd5e1',transparent:true,opacity:.25,depthWrite:false}),0);full.position.set(x,.97,-2.08);g2.add(full);
       const l=label(money(c[i]),{size:.17,bg:'#ffffff',border:best?'#f5b301':'#cbd5e1'});l.position.set(x,h+.22,-1.95);g2.add(l);const n=label(['30% off','2 + 1 free','$15 off $50','points'][i],{size:.13,color:GREY});n.position.set(x,.1,-1.6);g2.add(n);});
-    for(let i=0;i<st.q;i++){const sh=mk(G('vl8t',()=>new THREE.BoxGeometry(.3,.04,.3)),lam(['#2f7de1','#e2457a','#16a36f','#8b5cf6','#f59e0b','#0fa5a5'][i%6]),0);sh.position.set(-1.9+i*.36,.04+0,-.9);g2.add(sh);}const cart=label(st.q+' items × $'+st.p,{size:.18,color:INK});cart.position.set(1.2,.15,-.9);g2.add(cart);A.redraw();}
+    for(let i=0;i<st.q;i++){const sh=mk(G('vl8t',()=>new THREE.BoxGeometry(.3,.04,.3)),lam(['#2f7de1','#e4572e','#16a36f','#8b5cf6','#f59e0b','#0fa5a5'][i%6]),0);sh.position.set(-1.9+i*.36,.04+0,-.9);g2.add(sh);}const cart=label(st.q+' items × $'+st.p,{size:.18,color:INK});cart.position.set(1.2,.15,-.9);g2.add(cart);A.redraw();}
   draw();
   return {info:()=>st.q+'x'+st.p,
     controls:()=>{const c=[{t:'items −',fn:()=>{st.q=Math.max(1,st.q-1);draw();}},{t:'items +',go:true,fn:()=>{st.q=Math.min(6,st.q+1);draw();}},{t:'price −$5',fn:()=>{st.p=Math.max(5,st.p-5);draw();}},{t:'price +$5',fn:()=>{st.p=Math.min(40,st.p+5);draw();}}];if(mode==='play'&&st.ask)return choices(st.setup?null:game,st.ask.o,st.ask.ans,st.ask.ok).concat(c);return c;},
@@ -618,7 +618,7 @@ const CARDS=[{n:'Rewards card',rate:20.99,fee:120,back:2,col:'#7c3aed'},{n:'Low-
 P.lesson({id:'credit8',title:'Comparing credit cards and contracts',strand:'Financial Literacy',codes:['F1.6'],
  guide:{goal:'Compare interest rates, annual fees, and rewards and other incentives offered by credit card companies and consumer contracts to determine the best value and best choice for different scenarios.',words:'credit card, interest rate, annual fee, rewards, cash back, balance, contract, total cost',
   ask:['Why does a reward card cost more if you carry a balance?','When is a low-rate card the best choice?','How do you find the total cost of a phone contract?'],home:'Look up two real credit cards or phone plans. Compare rates, fees and rewards for a family that spends $500 a month.'},
- learn:[{say:'Cost = fee + interest − rewards.',speech:'Each card has an annual fee, an interest rate on any balance you carry, and rewards like cash back. If you spend five hundred dollars a month and pay in full, there is no interest. The rewards card pays back one hundred twenty dollars but has a one hundred twenty dollar fee.',view:'model',demo:'full'},
+ learn:[{say:'Cost = fee + interest − rewards.',speech:'Each card Rohan compares has an annual fee, an interest rate on any balance you carry, and rewards like cash back. If you spend five hundred dollars a month and pay in full, there is no interest. The rewards card pays back one hundred twenty dollars but has a one hundred twenty dollar fee.',view:'model',demo:'full'},
         {say:'Read about carrying a balance.',speech:'If you carry a balance, interest is charged on it. At twenty percent, a two thousand dollar balance costs about four hundred dollars a year. Then a low-rate card is usually the best choice.',view:'read'},
         {say:'Watch: carry a balance.',speech:'Now carry a two thousand dollar balance all year. The interest towers grow. The low-rate card is now the cheapest by far.',view:'model',demo:'carry'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -639,10 +639,10 @@ P.lesson({id:'credit8',title:'Comparing credit cards and contracts',strand:'Fina
  build(S,grp,mode,game){const st=S.st;const g2=new THREE.Group();grp.add(g2);
   function draw(){clearGroup(g2);const cs=CARDS.map(k=>ccost(k,st));const mx=Math.max(200,...CARDS.map(k=>k.fee+st.bal*k.rate/100));const sc=1.8/mx;const mn=Math.min(...cs);
     CARDS.forEach((k,i)=>{const x=-1.5+i*1.5;const card=mk(new THREE.BoxGeometry(.9,.03,.58),lam(k.col),20);card.position.set(x,.02,-1.2);g2.add(card);const n=label(k.n,{size:.14,color:'#ffffff'});n.position.set(x,.08,-1.2);g2.add(n);
-      const fee=k.fee*sc,int=st.bal*k.rate/100*sc,rew=st.spend*12*k.back/100*sc;let yy=0;[[fee,'#94a3b8'],[int,'#e2457a']].forEach(([h,col])=>{if(h<.005)return;const b=mk(new THREE.BoxGeometry(.5,h,.4),lam(col),20);b.position.set(x,yy+h/2,-2.1);g2.add(b);yy+=h;});
+      const fee=k.fee*sc,int=st.bal*k.rate/100*sc,rew=st.spend*12*k.back/100*sc;let yy=0;[[fee,'#94a3b8'],[int,'#e4572e']].forEach(([h,col])=>{if(h<.005)return;const b=mk(new THREE.BoxGeometry(.5,h,.4),lam(col),20);b.position.set(x,yy+h/2,-2.1);g2.add(b);yy+=h;});
       if(rew>.005){const r=mk(new THREE.BoxGeometry(.5,Math.min(rew,yy||rew),.4),new THREE.MeshLambertMaterial({color:'#16a36f',transparent:true,opacity:.55}),0);r.position.set(x+.52,Math.min(rew,yy||rew)/2,-2.1);g2.add(r);}
       const l=label('net '+money(cs[i]),{size:.17,bg:'#ffffff',border:cs[i]===mn?'#f5b301':'#cbd5e1'});l.position.set(x,yy+.3,-2.1);g2.add(l);});
-    const k=label('grey = fee   pink = interest   green = rewards',{size:.13,color:GREY});k.position.set(0,2.4,-2.6);g2.add(k);A.redraw();}
+    const k=label('grey = fee   orange = interest   green = rewards',{size:.13,color:GREY});k.position.set(0,2.4,-2.6);g2.add(k);A.redraw();}
   draw();
   return {info:()=>st.spend+'/'+st.bal,
     controls:()=>{const c=[{t:'spend −$100',fn:()=>{st.spend=Math.max(100,st.spend-100);draw();}},{t:'spend +$100',fn:()=>{st.spend=Math.min(2000,st.spend+100);draw();}},{t:'balance −$500',fn:()=>{st.bal=Math.max(0,st.bal-500);draw();}},{t:'balance +$500',go:true,fn:()=>{st.bal=Math.min(4000,st.bal+500);draw();}}];if(mode==='play'&&st.ask)return choices(st.setup?null:game,st.ask.o,st.ask.ans,st.ask.ok).concat(c);return c;},

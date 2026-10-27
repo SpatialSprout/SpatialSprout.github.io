@@ -11,12 +11,12 @@ function choices(game,list,ans,ok){return list.map(o=>({t:String(o),big:true,fn:
    17. 3D objects
    ========================================================= */
 const SHAPES=[{id:'cube',name:'Cube',col:'#6ea8f5',f:'6',e:12,v:8,roll:false},{id:'rect',name:'Rectangular prism',col:'#ffcf3f',f:'6',e:12,v:8,roll:false},{id:'tri',name:'Triangular prism',col:'#5cc49a',f:'5',e:9,v:6,roll:false},
-  {id:'pyr',name:'Square pyramid',col:'#ff8cb0',f:'5',e:8,v:5,roll:false},{id:'cyl',name:'Cylinder',col:'#b39dff',f:'2 flat + 1 curved',e:2,v:0,roll:true},{id:'cone',name:'Cone',col:'#ffa66b',f:'1 flat + 1 curved',e:1,v:1,roll:true}];
+  {id:'pyr',name:'Square pyramid',col:'#ff9f68',f:'5',e:8,v:5,roll:false},{id:'cyl',name:'Cylinder',col:'#b39dff',f:'2 flat + 1 curved',e:2,v:0,roll:true},{id:'cone',name:'Cone',col:'#ffa66b',f:'1 flat + 1 curved',e:1,v:1,roll:true}];
 const RIDDLES=[{a:'tri',t:'I have 5 faces, 9 edges and 6 vertices.'},{a:'cyl',t:'I have 0 vertices. I can roll and I can stack.'},{a:'pyr',t:'I have 5 faces. One is a square and 4 are triangles.'},{a:'cube',t:'All 6 of my faces are the same size square. They are congruent.'},{a:'cone',t:'I have 1 vertex and 1 flat face. I roll in a circle.'}];
 P.lesson({id:'shapes',title:'Faces, edges and vertices',strand:'Spatial Sense',codes:['E1.1','E1.2','E1.3'],
  guide:{goal:'Sort, construct and identify cubes, prisms, pyramids, cylinders and cones by their faces, edges and vertices; find 2D faces in 3D objects; and identify congruent faces.',words:'3D object, face, edge, vertex, prism, pyramid, cylinder, cone, congruent',
   ask:['How are a cube and a rectangular prism alike? Different?','Which shapes can roll? Which can stack?','What 2D shapes are the faces of a triangular prism?'],home:'Go on a shape hunt: cereal box, soup can, party hat, dice. Count the faces of each one.'},
- learn:[{say:'3D objects have faces, edges and vertices.',speech:'Three D objects are solid shapes. Watch the model show each shape and count its corners, called vertices.',view:'model',demo:'tour'},
+ learn:[{say:'3D objects have faces, edges and vertices.',speech:'Three D objects are solid shapes. Watch Eli’s model show each shape and count its corners, called vertices.',view:'model',demo:'tour'},
         {say:'Read the shape table.',speech:'A face is a flat or curved surface. An edge is where two faces meet. A vertex is a corner.',view:'read'},
         {say:'Watch: which shapes roll?',speech:'Shapes with a curved surface can roll. Watch the cylinder and the cone.',view:'model',demo:'roll'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -31,8 +31,8 @@ P.lesson({id:'shapes',title:'Faces, edges and vertices',strand:'Spatial Sense',c
   const ox=X0+150,oy=y+40,s=130,k=.5;const Pq=(a,b,c)=>[ox+a*s-c*s*k*.9,oy+(1-b)*s+c*s*k*.55];
   const f=(pts,c)=>{g.beginPath();pts.forEach((q,i)=>{const a=Pq(...q);i?g.lineTo(a[0],a[1]):g.moveTo(a[0],a[1]);});g.closePath();g.fillStyle=c;g.fill();g.lineWidth=3;g.strokeStyle=INK;g.stroke();};
   f([[0,1,1],[1,1,1],[1,1,0],[0,1,0]],'#c9f0dd');f([[0,0,1],[1,0,1],[1,1,1],[0,1,1]],'#5cc49a');f([[1,0,1],[1,0,0],[1,1,0],[1,1,1]],'#8fd9b6');
-  const a=Pq(1,0,1),b=Pq(1,1,1);g.strokeStyle='#e2457a';g.lineWidth=8;g.beginPath();g.moveTo(a[0],a[1]);g.lineTo(b[0],b[1]);g.stroke();const v=Pq(0,1,0);g.beginPath();g.arc(v[0],v[1],11,0,Math.PI*2);g.fillStyle='#f08a24';g.fill();
-  const fc=Pq(.5,.5,1);T(g,'face',fc[0],fc[1]+10,FT.hand,INK,'center');T(g,'← edge',b[0]+14,(a[1]+b[1])/2+12,FT.hand,'#e2457a');T(g,'vertex',v[0]-100,v[1]-14,FT.hand,'#f08a24');
+  const a=Pq(1,0,1),b=Pq(1,1,1);g.strokeStyle='#e4572e';g.lineWidth=8;g.beginPath();g.moveTo(a[0],a[1]);g.lineTo(b[0],b[1]);g.stroke();const v=Pq(0,1,0);g.beginPath();g.arc(v[0],v[1],11,0,Math.PI*2);g.fillStyle='#f08a24';g.fill();
+  const fc=Pq(.5,.5,1);T(g,'face',fc[0],fc[1]+10,FT.hand,INK,'center');T(g,'← edge',b[0]+14,(a[1]+b[1])/2+12,FT.hand,'#e4572e');T(g,'vertex',v[0]-100,v[1]-14,FT.hand,'#f08a24');
   wrap(g,'Faces that match exactly are *congruent*: all 6 faces of a cube are congruent squares. Shapes can be joined: a *cube + a triangular prism* makes a house.',X0+420,y+30,TW-420,34,{font:FT.small,bold:FT.smallB});
   y+=250;const rows=[['Shape','Faces','Edges','Vertices'],...SHAPES.map(s=>[s.name,s.f.replace(' + ',', '),String(s.e),String(s.v)])];
   const cx=[X0+12,X0+320,X0+600,X0+720];rows.forEach((r,i)=>{const yy=y+i*44;if(i===0){g.fillStyle=tint(acc(),.16);g.fillRect(X0,yy-30,TW,42);}else if(i%2===0){g.fillStyle=tint(acc(),.05);g.fillRect(X0,yy-30,TW,44);}r.forEach((c,j)=>T(g,c,cx[j],yy,(i===0||j===0)?FT.smallB:FT.small,INK));});
@@ -62,11 +62,11 @@ P.lesson({id:'shapes',title:'Faces, edges and vertices',strand:'Spatial Sense',c
 /* =========================================================
    18. Length
    ========================================================= */
-const OBJ=[{id:'pencil',name:'pencil',cm:14,col:'#ffcf57'},{id:'crayon',name:'crayon',cm:8,col:'#ff6b6b'},{id:'eraser',name:'eraser',cm:6,col:'#ff9fb5'},{id:'brush',name:'paintbrush',cm:18,col:'#4fb3ff'}];
+const OBJ=[{id:'pencil',name:'pencil',cm:14,col:'#ffcf57'},{id:'crayon',name:'crayon',cm:8,col:'#ff6b6b'},{id:'eraser',name:'eraser',cm:6,col:'#ffb37a'},{id:'brush',name:'paintbrush',cm:18,col:'#4fb3ff'}];
 P.lesson({id:'length',title:'Measuring length',strand:'Spatial Sense',codes:['E2.2','E2.5'],
  guide:{goal:'Explain the relationships between millimetres, centimetres, metres and kilometres, use benchmarks to estimate, and show that different-sized units give different counts for the same length.',words:'length, millimetre (mm), centimetre (cm), metre (m), kilometre (km), benchmark, non-standard unit',
   ask:['Why does the pencil measure 14 cm but 7 paper clips?','What would you measure in kilometres?','What is about 1 cm wide on your hand?'],home:'Find things about 1 cm (a fingernail), 1 m (a big step) and 1 km (a 15-minute walk).'},
- learn:[{say:'Measure from zero.',speech:'To measure length, line up one end with zero on the ruler. Watch the pencil: fourteen centimetres.',view:'model',demo:'measure'},
+ learn:[{say:'Measure from zero.',speech:'To measure length, line up one end with zero on the ruler. Watch Nova’s pencil: fourteen centimetres.',view:'model',demo:'measure'},
         {say:'Read about metric units.',speech:'Ten millimetres make one centimetre. One hundred centimetres make one metre. One thousand metres make one kilometre.',view:'read'},
         {say:'Watch: paper clip units.',speech:'Now measure the same pencil with paper clips. The pencil is seven paper clips long. Bigger units give a smaller count.',view:'model',demo:'clips'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -125,7 +125,7 @@ const POTS=[{id:'vase',name:'vase',cups:5,r:.42,h:1.2},{id:'bowl',name:'bowl',cu
 P.lesson({id:'mass',title:'Mass and capacity',strand:'Spatial Sense',codes:['E2.3','E2.4'],
  guide:{goal:'Compare and measure mass with a pan balance and non-standard units, and measure capacity with non-standard units, explaining how overfilling, underfilling and gaps affect accuracy.',words:'mass, heavier, lighter, balance, capacity, holds more, holds less, overfill',
   ask:['How do you know which object is heavier?','Why should each cup be filled to the top?','Can a tall thin container hold less than a short wide one?'],home:'Use cups of water to find which container in your kitchen holds the most. Fill each cup to the line.'},
- learn:[{say:'Measure mass with a balance.',speech:'Mass is how heavy something is. Put the apple on the balance, then add cubes until it is level. The apple has a mass of six cubes.',view:'model',demo:'mass'},
+ learn:[{say:'Measure mass with a balance.',speech:'Mass is how heavy something is. Max puts the apple on the balance, then adds cubes until it is level. The apple has a mass of six cubes.',view:'model',demo:'mass'},
         {say:'Read about mass and capacity.',speech:'Capacity is how much a container holds. We can count cups of water to measure it.',view:'read'},
         {say:'Watch: filling the vase.',speech:'Pour cups of water into the vase until it is full. It holds five cups. One more and it overflows.',view:'model',demo:'pour'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -200,7 +200,7 @@ P.lesson({id:'mass',title:'Mass and capacity',strand:'Spatial Sense',codes:['E2.
 P.lesson({id:'area',title:'Perimeter and area',strand:'Spatial Sense',codes:['E2.1','E2.7','E2.8','E2.9'],
  guide:{goal:'Measure perimeter, measure area by covering with square units (including cm² and m²), and show that different shapes can have the same area.',words:'perimeter, area, square unit, square centimetre (cm²), square metre (m²), length, width',
   ask:['Can two gardens have the same area but different perimeters?','Why do gaps between tiles make the area wrong?','How can multiplying help you find area?'],home:'Cover a placemat with sticky notes to find its area. Wrap string around it to find its perimeter.'},
- learn:[{say:'Inside is area, around is perimeter.',speech:'Area is how many squares cover a shape. Perimeter is the distance around it. Watch the garden fill up with square tiles.',view:'model',demo:'tile'},
+ learn:[{say:'Inside is area, around is perimeter.',speech:'Area is how many squares cover a shape. Perimeter is the distance around it. Watch Aisha’s garden fill up with square tiles.',view:'model',demo:'tile'},
         {say:'Read about square units.',speech:'We measure area in square units like square centimetres and square metres.',view:'read'},
         {say:'Watch: same area, different shapes.',speech:'Three by four and two by six both have an area of twelve, but their perimeters are different.',view:'model',demo:'same'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -213,20 +213,20 @@ P.lesson({id:'area',title:'Perimeter and area',strand:'Spatial Sense',codes:['E2
  left(p,S){const g=p.g;let y=header(p,S);
   y=para(p,y,'The *perimeter* is the distance all the way around a shape. The *area* is how many squares it takes to cover the shape.')+20;
   const s=52,ox=X0+30,oy=y+20;let n=1;for(let r=0;r<3;r++)for(let c=0;c<4;c++){g.fillStyle=(r+c)%2?'#bfe9cf':'#8fdcb0';g.fillRect(ox+c*s,oy+r*s,s,s);g.strokeStyle='#fff';g.lineWidth=2;g.strokeRect(ox+c*s,oy+r*s,s,s);T(g,String(n++),ox+c*s+s/2,oy+r*s+s/2+9,FT.small,INK,'center');}
-  g.strokeStyle='#e2457a';g.lineWidth=7;g.strokeRect(ox,oy,4*s,3*s);T(g,'4',ox+2*s,oy-12,FT.bodyB,'#e2457a','center');T(g,'3',ox-26,oy+1.5*s+10,FT.bodyB,'#e2457a','center');
-  T(g,'Area = 4 × 3 = 12 square units',X0+300,oy+50,FT.bodyB,'#16a36f');T(g,'Perimeter = 4 + 3 + 4 + 3',X0+300,oy+100,FT.bodyB,'#e2457a');T(g,'= 14 units',X0+300,oy+140,FT.bodyB,'#e2457a');y+=214;
+  g.strokeStyle='#e4572e';g.lineWidth=7;g.strokeRect(ox,oy,4*s,3*s);T(g,'4',ox+2*s,oy-12,FT.bodyB,'#e4572e','center');T(g,'3',ox-26,oy+1.5*s+10,FT.bodyB,'#e4572e','center');
+  T(g,'Area = 4 × 3 = 12 square units',X0+300,oy+50,FT.bodyB,'#16a36f');T(g,'Perimeter = 4 + 3 + 4 + 3',X0+300,oy+100,FT.bodyB,'#e4572e');T(g,'= 14 units',X0+300,oy+140,FT.bodyB,'#e4572e');y+=214;
   y=para(p,y,'Small areas use *square centimetres (cm²)*; big ones like a classroom use *square metres (m²)*. Gaps or overlaps between squares make the area wrong.')+14;
   y=keyWords(p,y,[['perimeter','the distance around a shape'],['area','the number of squares that cover a shape']]);
   predict(p,y,S,'p20','A garden is 5 squares long and 2 squares wide. What is its area?','*10 square units.* 2 rows of 5 squares is 10.');},
- readout(p,S,y){const g=p.g,st=S.st;T(g,'Area = '+st.w+' × '+st.h+' = '+st.w*st.h+' square units',X0,y+36,FT.bodyB,'#16a36f');T(g,'Perimeter = '+st.w+' + '+st.h+' + '+st.w+' + '+st.h+' = '+2*(st.w+st.h)+' units',X0,y+78,FT.bodyB,'#e2457a');return y+88;},
+ readout(p,S,y){const g=p.g,st=S.st;T(g,'Area = '+st.w+' × '+st.h+' = '+st.w*st.h+' square units',X0,y+36,FT.bodyB,'#16a36f');T(g,'Perimeter = '+st.w+' + '+st.h+' + '+st.w+' + '+st.h+' = '+2*(st.w+st.h)+' units',X0,y+78,FT.bodyB,'#e4572e');return y+88;},
  build(S,grp,mode,game){const st=S.st,c=.42,N=8,Z0=-1.35,x0=-c*N/2,z0=Z0-c*N/2;
   const base=mk(new THREE.BoxGeometry(c*N+.1,.04,c*N+.1),[lam('#d9efc9'),lam('#d9efc9'),cellMat('#eef8e6',N,N),lam('#d9efc9'),lam('#d9efc9'),lam('#d9efc9')],20);base.position.set(0,.02,Z0);grp.add(base);
   const plot=new THREE.Group();grp.add(plot);const tg=G('tileA',()=>new THREE.BoxGeometry(c-.04,.07,c-.04));const pg=G('postA',()=>new THREE.CylinderGeometry(.025,.025,.3,8));
-  const lw=label('',{size:.26,color:'#e2457a'}),lh=label('',{size:.26,color:'#e2457a'});grp.add(lw,lh);
+  const lw=label('',{size:.26,color:'#e4572e'}),lh=label('',{size:.26,color:'#e4572e'});grp.add(lw,lh);
   const corner=mk(new THREE.SphereGeometry(.12,16,12),lam('#ffd24a'),0);grp.add(corner);
   function rebuild(drop){clearGroup(plot);for(let r=0;r<st.h;r++)for(let q=0;q<st.w;q++){const m=mk(tg,lam((r+q)%2?'#4cc38a':'#16a36f'),20);const p=V(x0+(q+.5)*c,.075,z0+(r+.5)*c);m.position.copy(p);if(drop)m.position.y+=.6+(r*st.w+q)*.012;plot.add(m);moveTo(m,{pos:p,k:10});
       if((r+q)%3===0){const f=new THREE.Mesh(G('flw',()=>new THREE.SphereGeometry(.05,8,6)),lam(VIBE[(r*3+q)%6]));f.position.set(p.x,.14,p.z);plot.add(f);}}
-    const rail=lam('#e2457a');const pts=[];for(let q=0;q<=st.w;q++)pts.push([q,0],[q,st.h]);for(let r=1;r<st.h;r++)pts.push([0,r],[st.w,r]);
+    const rail=lam('#e4572e');const pts=[];for(let q=0;q<=st.w;q++)pts.push([q,0],[q,st.h]);for(let r=1;r<st.h;r++)pts.push([0,r],[st.w,r]);
     pts.forEach(([q,r])=>{const m=new THREE.Mesh(pg,rail);m.position.set(x0+q*c,.17,z0+r*c);m.castShadow=true;plot.add(m);});
     const seg=(ax,az,bx,bz)=>{[.12,.24].forEach(h=>{const m=new THREE.Mesh(G('railA',()=>new THREE.BoxGeometry(c,.025,.025)),rail);m.position.set((ax+bx)/2,h,(az+bz)/2);if(Math.abs(bz-az)>1e-6)m.rotation.y=Math.PI/2;plot.add(m);});};
     for(let q=0;q<st.w;q++){seg(x0+q*c,z0,x0+(q+1)*c,z0);seg(x0+q*c,z0+st.h*c,x0+(q+1)*c,z0+st.h*c);}for(let r=0;r<st.h;r++){seg(x0,z0+r*c,x0,z0+(r+1)*c);seg(x0+st.w*c,z0+r*c,x0+st.w*c,z0+(r+1)*c);}
@@ -250,23 +250,23 @@ const fmt=(tm,pm)=>{const t=((tm%720)+720)%720;let h=Math.floor(t/60);const m=t%
 P.lesson({id:'time',title:'Telling time',strand:'Spatial Sense',codes:['E2.6'],
  guide:{goal:'Use analog and digital clocks and timers to tell time in hours, minutes and seconds.',words:'analog, digital, hour hand, minute hand, second, minute, hour, a.m., p.m., quarter past, half past',
   ask:['Why does the hour hand move a little when the minute hand moves?','What time is it when both hands point to 12?','How long is one minute? Count 60 seconds!'],home:'Ask your child to read the kitchen clock at breakfast and dinner, and say a.m. or p.m.'},
- learn:[{say:'The minute hand counts by 5s.',speech:'Each number on the clock is five minutes for the minute hand. Watch it count: five, ten, fifteen… all the way to sixty minutes, one hour.',view:'model',demo:'count5'},
+ learn:[{say:'The minute hand counts by 5s.',speech:'Each number on the clock is five minutes for the minute hand. Watch Diego’s clock count: five, ten, fifteen… all the way to sixty minutes, one hour.',view:'model',demo:'count5'},
         {say:'Read about hours, minutes and seconds.',speech:'Sixty seconds make one minute. Sixty minutes make one hour. A.m. is before noon and p.m. is after noon.',view:'read'},
         {say:'Watch: quarter past and half past.',speech:'Quarter past seven is seven fifteen. Half past seven is seven thirty.',view:'model',demo:'quarter'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
-        {say:'Your turn: drag the hands.',speech:'Your turn. Drag the long pink minute hand around the clock, or use the buttons.',view:'model'}],
+        {say:'Your turn: drag the hands.',speech:'Your turn. Drag the long orange minute hand around the clock, or use the buttons.',view:'model'}],
  fig:'A classroom clock and a digital clock showing the same time.',rz:-.25,
- explore:['*Drag the pink minute hand* around the clock.','Use *+5 min* and *+1 hour* to step the time.','Watch the digital clock match.'],
+ explore:['*Drag the orange minute hand* around the clock.','Use *+5 min* and *+1 hour* to step the time.','Watch the digital clock match.'],
  tries:[['The minute hand points to 6. How many minutes after the hour?','*30 minutes.* That is half past.'],['What time is 20 minutes after 2:50?','*3:10.*'],['How many seconds are in 2 minutes?','*120 seconds.* 60 + 60 = 120.']],
  howTo:'Set the clock to the time in the question. Drag the minute hand or use the buttons.',
  init:k=>({tm:9*60,pm:false,want:null}),
  left(p,S){const g=p.g;let y=header(p,S);
   y=para(p,y,'An *analog clock* has hands. The short *hour hand* points to the hour. The long *minute hand* counts the minutes.')+16;
   const cx=X0+150,cy=y+150,R=140;g.beginPath();g.arc(cx,cy,R,0,Math.PI*2);g.fillStyle='#fff';g.fill();g.lineWidth=10;g.strokeStyle=acc();g.stroke();
-  for(let i=1;i<=12;i++){const a=i*Math.PI/6;T(g,String(i),cx+Math.sin(a)*(R-34),cy-Math.cos(a)*(R-34)+11,ZS(30),['#e2457a','#f08a24','#16a36f','#2f7de1','#8b5cf6'][i%5],'center');}
+  for(let i=1;i<=12;i++){const a=i*Math.PI/6;T(g,String(i),cx+Math.sin(a)*(R-34),cy-Math.cos(a)*(R-34)+11,ZS(30),['#e4572e','#f08a24','#16a36f','#2f7de1','#8b5cf6'][i%5],'center');}
   const hand=(a,len,w,c)=>{g.strokeStyle=c;g.lineWidth=w;g.lineCap='round';g.beginPath();g.moveTo(cx,cy);g.lineTo(cx+Math.sin(a)*len,cy-Math.cos(a)*len);g.stroke();};
-  hand((10+10/60)*Math.PI/6,70,11,INK);hand(Math.PI/3,110,7,'#e2457a');g.beginPath();g.arc(cx,cy,9,0,Math.PI*2);g.fillStyle=INK;g.fill();
-  T(g,'hour hand',cx-150,cy+R+40,FT.hand,INK);T(g,'minute hand',cx+40,cy+R+40,FT.hand,'#e2457a');const tx=X0+340;
+  hand((10+10/60)*Math.PI/6,70,11,INK);hand(Math.PI/3,110,7,'#e4572e');g.beginPath();g.arc(cx,cy,9,0,Math.PI*2);g.fillStyle=INK;g.fill();
+  T(g,'hour hand',cx-150,cy+R+40,FT.hand,INK);T(g,'minute hand',cx+40,cy+R+40,FT.hand,'#e4572e');const tx=X0+340;
   wrap(g,'Each number is *5 minutes* for the minute hand. Count by 5s!',tx,y+40,TW-340,38,{font:FT.body,bold:FT.bodyB});rr(g,tx,y+130,210,80,14);g.fillStyle='#1b2236';g.fill();T(g,'10:10',tx+105,y+188,'700 50px "Atkinson Hyperlegible", monospace','#7dffb0','center');
   wrap(g,'*60 seconds = 1 minute.* *60 minutes = 1 hour.* a.m. is before noon, p.m. is after noon.',tx,y+260,TW-340,34,{font:FT.small,bold:FT.smallB});y+=385;
   y=keyWords(p,y,[['quarter past','15 minutes after the hour'],['half past','30 minutes after the hour']]);
@@ -275,14 +275,14 @@ P.lesson({id:'time',title:'Telling time',strand:'Spatial Sense',codes:['E2.6'],
  build(S,grp,mode,game){const st=S.st,C=V(-.35,1.5,-1.65);
   const fc=document.createElement('canvas');fc.width=fc.height=512;const g=fc.getContext('2d');g.fillStyle='#fffdf7';g.fillRect(0,0,512,512);
   for(let i=0;i<60;i++){const a=i*Math.PI/30,r1=i%5?236:224;g.strokeStyle=i%5?'#9aa1b3':INK;g.lineWidth=i%5?2:5;g.beginPath();g.moveTo(256+Math.sin(a)*r1,256-Math.cos(a)*r1);g.lineTo(256+Math.sin(a)*248,256-Math.cos(a)*248);g.stroke();}
-  for(let i=1;i<=12;i++){const a=i*Math.PI/6;g.fillStyle=['#e2457a','#f08a24','#16a36f','#2f7de1','#8b5cf6'][i%5];g.font=ZS(62);g.textAlign='center';g.textBaseline='middle';g.fillText(String(i),256+Math.sin(a)*176,256-Math.cos(a)*176+4);
+  for(let i=1;i<=12;i++){const a=i*Math.PI/6;g.fillStyle=['#e4572e','#f08a24','#16a36f','#2f7de1','#8b5cf6'][i%5];g.font=ZS(62);g.textAlign='center';g.textBaseline='middle';g.fillText(String(i),256+Math.sin(a)*176,256-Math.cos(a)*176+4);
     g.fillStyle='#2f7de1';g.font='700 20px "Atkinson Hyperlegible", sans-serif';g.fillText(String(i*5%60).padStart(2,'0'),256+Math.sin(a)*212,256-Math.cos(a)*212);}
   const rimG=new THREE.CylinderGeometry(1.22,1.22,.24,64);rimG.rotateX(Math.PI/2);const rim=mk(rimG,lam('#16a36f'),30);rim.position.copy(C);grp.add(rim);
   const face=new THREE.Mesh(new THREE.CircleGeometry(1.08,64),new THREE.MeshLambertMaterial({map:new THREE.CanvasTexture(fc)}));face.position.copy(C);face.position.z+=.125;grp.add(face);
   [-.6,.6].forEach(x=>{const f=mk(new THREE.BoxGeometry(.25,.32,.3),lam('#0f7a52'),20);f.position.set(C.x+x,.16,C.z);grp.add(f);});
   const hp=new THREE.Group(),mp=new THREE.Group();hp.position.copy(C);hp.position.z+=.14;mp.position.copy(C);mp.position.z+=.17;grp.add(hp,mp);
-  const hh=mk(new THREE.BoxGeometry(.1,.6,.03),lam(INK),0);hh.position.y=.24;hp.add(hh);const mh=mk(new THREE.BoxGeometry(.09,.92,.04),lam('#e2457a'),0);mh.position.y=.38;mp.add(mh);
-  const knob=mk(new THREE.SphereGeometry(.09,14,10),lam('#e2457a'),0);knob.position.y=.82;mp.add(knob);
+  const hh=mk(new THREE.BoxGeometry(.1,.6,.03),lam(INK),0);hh.position.y=.24;hp.add(hh);const mh=mk(new THREE.BoxGeometry(.09,.92,.04),lam('#e4572e'),0);mh.position.y=.38;mp.add(mh);
+  const knob=mk(new THREE.SphereGeometry(.09,14,10),lam('#e4572e'),0);knob.position.y=.82;mp.add(knob);
   const capG=new THREE.CylinderGeometry(.07,.07,.08,16);capG.rotateX(Math.PI/2);const cap=mk(capG,lam('#ffd24a'),0);cap.position.copy(C);cap.position.z+=.2;grp.add(cap);
   const dig=mk(new THREE.BoxGeometry(1.1,.5,.36),lam('#1b2236'),20);dig.position.set(1.55,.25,-.75);grp.add(dig);const dl=label('',{size:.26,color:'#7dffb0',font:'700 96px "Atkinson Hyperlegible", monospace'});dl.position.set(1.55,.3,-.5);grp.add(dl);
   let ha=-st.tm*.5*Math.PI/180,ma=-st.tm*6*Math.PI/180;const disp=()=>dl.userData.set(fmt(st.tm,st.pm));
@@ -310,7 +310,7 @@ const STORE=[{name:'Eraser',price:65},{name:'Pencil',price:45},{name:'Ruler',pri
 P.lesson({id:'money',title:'Coins, bills and change',strand:'Financial Literacy',codes:['F1.1'],
  guide:{goal:'Estimate and calculate the change required for simple cash transactions involving whole-dollar amounts and amounts less than one dollar.',words:'coin, bill, nickel, dime, quarter, loonie, toonie, price, change, count up',
   ask:['Why is there no 1¢ coin?','How many quarters make a loonie?','Count up from 65¢ to $1. What jumps did you use?'],home:'Play store with real coins. Take turns being the cashier and count up to give change.'},
- learn:[{say:'Count up to find change.',speech:'To find your change, count up from the price to the money you paid. Watch: the eraser costs sixty-five cents and we pay with a loonie.',view:'model',demo:'buy'},
+ learn:[{say:'Count up to find change.',speech:'To find your change, count up from the price to the money you paid. Watch: Mei’s eraser costs sixty-five cents and she pays with a loonie.',view:'model',demo:'buy'},
         {say:'Read about Canadian money.',speech:'Canada has nickels, dimes, quarters, loonies and toonies, and bills. There is no penny, so cash totals round to the nearest five cents.',view:'read'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
         {say:'Your turn: drag money to the tray.',speech:'Your turn. Drag coins and bills into the tray, or tap them. Then press pay.',view:'model'}],
@@ -330,7 +330,7 @@ P.lesson({id:'money',title:'Coins, bills and change',strand:'Financial Literacy'
   y=para(p,y,'To find *change*, count up from the price to the money you paid.')+20;
   const lx=X0+30,lw=TW-60,toX=v=>lx+(v-60)/40*lw;g.strokeStyle=INK;g.lineWidth=3;g.beginPath();g.moveTo(lx,y+70);g.lineTo(lx+lw,y+70);g.stroke();
   [[65,'65¢'],[75,'75¢'],[100,'$1.00']].forEach(([v,l])=>{const x=toX(v);g.strokeStyle=INK;g.beginPath();g.moveTo(x,y+58);g.lineTo(x,y+82);g.stroke();T(g,l,x,y+116,FT.smallB,INK,'center');});
-  [[65,75,'+10¢','#16a36f'],[75,100,'+25¢','#e2457a']].forEach(([a,b,l,c])=>{const x1=toX(a),x2=toX(b);g.strokeStyle=c;g.lineWidth=4;g.beginPath();g.moveTo(x1,y+56);g.quadraticCurveTo((x1+x2)/2,y-8,x2,y+56);g.stroke();T(g,l,(x1+x2)/2,y+14,FT.hand,c,'center');});
+  [[65,75,'+10¢','#16a36f'],[75,100,'+25¢','#e4572e']].forEach(([a,b,l,c])=>{const x1=toX(a),x2=toX(b);g.strokeStyle=c;g.lineWidth=4;g.beginPath();g.moveTo(x1,y+56);g.quadraticCurveTo((x1+x2)/2,y-8,x2,y+56);g.stroke();T(g,l,(x1+x2)/2,y+14,FT.hand,c,'center');});
   y+=154;T(g,'Price 65¢, you pay $1.00: change is 10¢ + 25¢ = 35¢',X0,y,FT.bodyB,acc());y+=44;
   predict(p,y,S,'p22','A pencil costs 45¢. You pay with a loonie. What is your change?','*55¢.* Count up: 45¢ → 50¢ → 75¢ → $1.00. That is 5¢ + 25¢ + 25¢.');},
  readout(p,S,y){const g=p.g,st=S.st,it=STORE[st.item],sum=st.paid.reduce((a,b)=>a+b,0);T(g,it.name+': '+money(it.price),X0,y+42,ZS(44),acc());
@@ -349,9 +349,9 @@ P.lesson({id:'money',title:'Coins, bills and change',strand:'Financial Literacy'
   let item=null,tag=null,change=[];
   function model(name){const g=new THREE.Group();const col=VIBE[STORE.findIndex(s=>s.name===name)%6];
     if(name==='Pencil'||name==='Marker'){const b=mk(new THREE.CylinderGeometry(.08,.08,1.1,6),lam(col),30);b.rotation.z=Math.PI/2;b.position.y=.08;g.add(b);}
-    else if(name==='Juice box'){const b=mk(new THREE.BoxGeometry(.5,.85,.36),lam(col),20);b.position.y=.42;g.add(b);const s=mk(new THREE.CylinderGeometry(.03,.03,.4,8),lam('#ff7a9c'),30);s.position.set(.12,.98,0);s.rotation.z=-.3;g.add(s);}
+    else if(name==='Juice box'){const b=mk(new THREE.BoxGeometry(.5,.85,.36),lam(col),20);b.position.y=.42;g.add(b);const s=mk(new THREE.CylinderGeometry(.03,.03,.4,8),lam('#ff8a5b'),30);s.position.set(.12,.98,0);s.rotation.z=-.3;g.add(s);}
     else if(name==='Ruler'){const b=mk(new THREE.BoxGeometry(1.3,.05,.28),cellMat('#ffe07a',20,1),20);b.position.y=.03;g.add(b);}
-    else if(name==='Eraser'){const b=mk(new THREE.BoxGeometry(.7,.28,.42),lam('#ff9fb5'),20);b.position.y=.14;g.add(b);}
+    else if(name==='Eraser'){const b=mk(new THREE.BoxGeometry(.7,.28,.42),lam('#ffb37a'),20);b.position.y=.14;g.add(b);}
     else{const b=mk(new THREE.BoxGeometry(.8,.12,.6),lam(col),20);b.position.y=.06;g.add(b);const s=mk(starGeo,lam('#ffcf3f'),20);s.rotation.x=-Math.PI/2;s.position.y=.17;g.add(s);}return g;}
   const sum=()=>st.paid.reduce((a,b)=>a+b,0);
   function place(i,drop){const c=COINS[i],m=coin(c),s=stacks[i];const y=.06+m.userData.h/2+s.reduce((a,o)=>a+o.userData.h,0);const p=V(colX(i),y,TZ);m.position.copy(p);if(drop)m.position.y+=1.2;m.rotation.y=Math.random()*.5;

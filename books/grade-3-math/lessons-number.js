@@ -13,7 +13,7 @@ function choices(game,list,ans,ok){return list.map(o=>({t:String(o),big:true,fn:
 function opts3(ans,step){return shuffle([ans,ans+step,Math.max(0,ans-step)===ans?ans+2*step:ans-step]);}
 
 /* base-ten block helpers shared by lessons 1 and 4 */
-const BCOL={h:'#6ea8f5',t:'#f57fa1',o:'#ffcf3f'};
+const BCOL={h:'#6ea8f5',t:'#f79a5c',o:'#ffcf3f'};
 function makeBlock(k,u){return k==='h'?unitBox(10,1,10,BCOL.h,u):k==='t'?unitBox(1,1,10,BCOL.t,u):unitBox(1,1,1,BCOL.o,u);}
 
 /* =========================================================
@@ -22,7 +22,7 @@ function makeBlock(k,u){return k==='h'?unitBox(10,1,10,BCOL.h,u):k==='t'?unitBox
 P.lesson({id:'place',title:'Hundreds, tens and ones',strand:'Number',codes:['B1.1','B1.5','C2.3'],
  guide:{goal:'Read, represent, compose and decompose whole numbers up to 1000 using base ten blocks, and connect standard, expanded and word forms.',words:'digit, place value, hundreds, tens, ones, regroup, expanded form',
   ask:['Why is the 3 in 365 worth 300?','What happens when you have 10 ones? 10 tens?','How do you build 508 when there are no tens?'],home:'Build numbers with LEGO: big plates for hundreds, long bricks for tens, small bricks for ones.'},
- learn:[{say:'Every digit has a place.',speech:'Every number is made of digits. Where a digit sits tells you what it is worth. Watch the model build 247.',view:'model',demo:'build'},
+ learn:[{say:'Every digit has a place.',speech:'Every number is made of digits. Where a digit sits tells you what it is worth. Watch Max build two hundred forty-seven.',view:'model',demo:'build'},
         {say:'Read the page and the chart.',speech:'Two hundreds, four tens and seven ones make two hundred forty-seven. That is 200 plus 40 plus 7.',view:'read'},
         {say:'Watch: 10 ones make 1 ten.',speech:'Watch what happens when we have nine ones and add one more. Ten ones are traded for one ten. This is regrouping.',view:'model',demo:'regroup'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the yellow flap to check.',view:'read'},
@@ -34,13 +34,13 @@ P.lesson({id:'place',title:'Hundreds, tens and ones',strand:'Number',codes:['B1.
  init:k=>k==='play'?{c:{h:0,t:0,o:0},target:0}:{c:{h:2,t:4,o:7}},
  left(p,S){const g=p.g,c=S.st.c;let y=header(p,S);
   y=para(p,y,'Every number is made of *digits*. Where a digit sits tells you what it is worth. This is called *place value*.')+12;
-  const cols=[['Hundreds',c.h,'#d7e6fb','#2f7de1'],['Tens',c.t,'#fbdde6','#e2457a'],['Ones',c.o,'#fff0c4','#d99400']],cw=TW/3;
+  const cols=[['Hundreds',c.h,'#d7e6fb','#2f7de1'],['Tens',c.t,'#fbdde6','#e4572e'],['Ones',c.o,'#fff0c4','#d99400']],cw=TW/3;
   cols.forEach(([n,v,bg,fc],i)=>{const x=X0+i*cw;rr(g,x+4,y,cw-8,180,16);g.fillStyle=bg;g.fill();T(g,n,x+cw/2,y+40,FT.smallB,fc,'center');T(g,String(v),x+cw/2,y+136,ZS(90),v>9?RED:INK,'center');if(v>9)T(g,'trade!',x+cw/2,y+170,FT.small,RED,'center');});
   y+=232;const n=c.h*100+c.t*10+c.o;T(g,n+' = '+expand(n),X0,y,ZS(44));y+=38;T(g,words(Math.min(n,1000)),X0,y,FT.cap,GREY);y+=46;
   y=para(p,y,'*10 ones = 1 ten*  and  *10 tens = 1 hundred*. Trading 10 for 1 of the next place is called *regrouping*.')+14;
   y=keyWords(p,y,[['digit','one of the symbols 0 to 9'],['place value','what a digit is worth because of its place'],['expanded form','a number written as a sum of its places: 200 + 40 + 7']]);
   predict(p,y,S,'p1','You have 9 ones. You add 1 more. What do you have to do?','You have 10 ones, so trade them for *1 ten*. The ones place goes back to 0.');},
- readout(p,S,y){const g=p.g,c=S.st.c,n=c.h*100+c.t*10+c.o;[['Hundreds',-1.5,'#2f7de1'],['Tens',.15,'#e2457a'],['Ones',1.62,'#d99400']].forEach(([t,x,col])=>T(g,t,cxOf(x),cyOf(-.15),FT.smallB,col,'center'));
+ readout(p,S,y){const g=p.g,c=S.st.c,n=c.h*100+c.t*10+c.o;[['Hundreds',-1.5,'#2f7de1'],['Tens',.15,'#e4572e'],['Ones',1.62,'#d99400']].forEach(([t,x,col])=>T(g,t,cxOf(x),cyOf(-.15),FT.smallB,col,'center'));
   T(g,String(n),X0,y+40,ZS(64),acc());T(g,'= '+expand(n),X0+190,y+30,FT.bodyB);T(g,words(Math.min(n,1000)),X0+190,y+64,FT.cap,GREY);return y+84;},
  build(S,grp,mode,game){const st=S.st,U1=.13,MX={h:-1.5,t:.15,o:1.62},MZ=-1.3,MW={h:1.55,t:1.6,o:1.1};
   Object.keys(MX).forEach(k=>{const m=mk(new THREE.BoxGeometry(MW[k],.03,1.8),lam({h:'#d7e6fb',t:'#fbdde6',o:'#fff0c4'}[k]),20);m.position.set(MX[k],.015,MZ);grp.add(m);});
@@ -91,7 +91,7 @@ P.lesson({id:'place',title:'Hundreds, tens and ones',strand:'Number',codes:['B1.
 P.lesson({id:'skip',title:'Skip counting to 1000',strand:'Number',codes:['B1.4','B1.2'],
  guide:{goal:'Count to 1000 by 10s, 50s, 100s and 200s forward and backward, and compare and order numbers on a number line.',words:'skip count, number line, forward, backward, greater than, less than',
   ask:['What pattern do you see when you count by 50s?','How is counting by 200s like counting by 2s?','Which is greater, 485 or 458? How do you know?'],home:'Count by 100s while climbing stairs: 100, 200, 300… Then count back down.'},
- learn:[{say:'Skip counting adds the same jump.',speech:'Skip counting means counting by the same amount each time. Watch the frog count by hundreds all the way to one thousand.',view:'model',demo:'by100'},
+ learn:[{say:'Skip counting adds the same jump.',speech:'Skip counting means counting by the same amount each time. Watch Aisha and the frog count by hundreds all the way to one thousand.',view:'model',demo:'by100'},
         {say:'Read about number lines.',speech:'On a number line, numbers get greater as you move to the right. The jumps can be 10, 50, 100 or 200.',view:'read'},
         {say:'Watch: counting by 50s.',speech:'Now the frog counts by fifties: 50, 100, 150, 200, 250, 300.',view:'model',demo:'by50'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -144,7 +144,7 @@ P.lesson({id:'skip',title:'Skip counting to 1000',strand:'Number',codes:['B1.4',
 P.lesson({id:'round',title:'Rounding and estimating',strand:'Number',codes:['B1.3','B2.3'],
  guide:{goal:'Round whole numbers to the nearest ten or hundred, and use rounding to estimate sums and differences.',words:'round, nearest ten, nearest hundred, halfway, estimate, about',
   ask:['Why does 45 round up to 50?','When is an estimate good enough?','Is 296 + 412 more or less than 700? How do you know quickly?'],home:'At the store, round prices to the nearest dollar and estimate the total before you pay.'},
- learn:[{say:'Rounding finds the nearest ten.',speech:'To round, find the two tens around the number. The ball on the hill always rolls to the nearest valley. Watch forty-seven.',view:'model',demo:'roll'},
+ learn:[{say:'Rounding finds the nearest ten.',speech:'To round, find the two tens around the number. Diego’s ball on the hill always rolls to the nearest valley. Watch forty-seven.',view:'model',demo:'roll'},
         {say:'Read the rounding rule.',speech:'Look at the ones. Zero to four rounds down. Five to nine rounds up.',view:'read'},
         {say:'Watch: rounding to the nearest hundred.',speech:'Now three hundred sixty-five on the hundreds hill. It is past three hundred fifty, so it rolls to four hundred.',view:'model',demo:'hundred'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -158,7 +158,7 @@ P.lesson({id:'round',title:'Rounding and estimating',strand:'Number',codes:['B1.
   y=para(p,y,'To *round* to the nearest ten, find the two tens around the number. *0 to 4* ones round down. *5 to 9* ones round up.')+10;
   const hx=X0+60,hw=420,hy=y+150;g.strokeStyle=acc();g.lineWidth=6;g.beginPath();g.moveTo(hx,hy);g.quadraticCurveTo(hx+hw/2,hy-200,hx+hw,hy);g.stroke();
   T(g,'40',hx,hy+40,FT.bodyB,INK,'center');T(g,'45',hx+hw/2,hy-108,FT.small,GREY,'center');T(g,'50',hx+hw,hy+40,FT.bodyB,INK,'center');
-  const bx=hx+hw*.7,byy=hy-200*2*.7*(1-.7)-14;g.beginPath();g.arc(bx,byy,16,0,Math.PI*2);g.fillStyle='#ff5a7a';g.fill();T(g,'47',bx,byy-26,FT.smallB,'#ff5a7a','center');
+  const bx=hx+hw*.7,byy=hy-200*2*.7*(1-.7)-14;g.beginPath();g.arc(bx,byy,16,0,Math.PI*2);g.fillStyle='#ff6a3d';g.fill();T(g,'47',bx,byy-26,FT.smallB,'#ff6a3d','center');
   T(g,'47 rolls to 50',hx+hw+40,hy-40,FT.hand,BLUE);y+=210;
   rr(g,X0,y,TW,170,18);g.fillStyle=tint(acc(),.1);g.fill();T(g,'Estimating',X0+28,y+44,FT.h3,acc());
   wrap(g,'To estimate *48 + 31*, round each number first: *50 + 30 = 80*. The exact answer, 79, is close to 80. Estimates help you check your work.',X0+28,y+86,TW-56,36,{font:FT.small,bold:FT.smallB});y+=196;
@@ -166,10 +166,10 @@ P.lesson({id:'round',title:'Rounding and estimating',strand:'Number',codes:['B1.
   predict(p,y,S,'p3','Round 365 to the nearest hundred.','*400.* 365 is past the halfway point, 350, so it rolls up to 400.');},
  readout(p,S,y){const g=p.g,st=S.st,L=3.8,lo=Math.floor(st.n/st.mode)*st.mode,zl=cyOf(-.55);g.strokeStyle=INK;g.lineWidth=4;g.beginPath();g.moveTo(cxOf(-L/2),zl);g.lineTo(cxOf(L/2),zl);g.stroke();
   for(let i=0;i<=10;i++){const x=cxOf(-L/2+i*L/10),v=lo+i*st.mode/10;g.lineWidth=i%5?2:4;g.beginPath();g.moveTo(x,zl-(i%5?10:18));g.lineTo(x,zl+(i%5?10:18));g.stroke();T(g,String(v),x,zl+44,i%5?FT.small:FT.smallB,i%5?GREY:INK,'center');}
-  const nx=cxOf(-L/2+(st.n-lo)/st.mode*L);g.beginPath();g.moveTo(nx,zl-22);g.lineTo(nx-12,zl-44);g.lineTo(nx+12,zl-44);g.closePath();g.fillStyle='#ff5a7a';g.fill();
+  const nx=cxOf(-L/2+(st.n-lo)/st.mode*L);g.beginPath();g.moveTo(nx,zl-22);g.lineTo(nx-12,zl-44);g.lineTo(nx+12,zl-44);g.closePath();g.fillStyle='#ff6a3d';g.fill();
   const yy=zl+100;T(g,st.res==null?String(st.n):st.n+' rounds to '+st.res,X0,yy,ZS(52),st.res==null?INK:acc());T(g,'Nearest '+(st.mode===10?'ten':'hundred')+' · halfway is '+(lo+st.mode/2),X0,yy+36,FT.small,GREY);return yy+50;},
  build(S,grp,mode,game){const st=S.st,L=3.8,H=1.05,ZC=-1.05,R=.17;let track=null,curLo=null,curMode=null,rolling=false;
-  const ball=mk(G('rball',()=>new THREE.SphereGeometry(R,24,16)),lam('#ff5a7a'),0);grp.add(ball);
+  const ball=mk(G('rball',()=>new THREE.SphereGeometry(R,24,16)),lam('#ff6a3d'),0);grp.add(ball);
   const flags=[-1,1].map(s=>{const f=new THREE.Group();const pole=mk(new THREE.CylinderGeometry(.02,.02,.7,8),lam(INK),0);pole.position.y=.35;f.add(pole);
     const cl=mk(new THREE.BoxGeometry(.42,.24,.02),lam(s<0?'#4fb3ff':'#ffb347'),20);cl.position.set(.22,.58,0);f.add(cl);const l=label('',{size:.2});l.position.set(.22,.92,0);f.add(l);f.userData.l=l;
     f.position.set(s*L/2+(s<0?.08:-.5),.12,ZC+.42);grp.add(f);A.drag(f,{tap:()=>guess(s<0?0:1)});return f;});
@@ -200,7 +200,7 @@ P.lesson({id:'round',title:'Rounding and estimating',strand:'Number',codes:['B1.
 P.lesson({id:'addsub',title:'Adding and subtracting to 1000',strand:'Number',codes:['B2.4','B2.5','C1.4'],
  guide:{goal:'Add and subtract whole numbers to 1000 with base ten blocks and the standard algorithm, regrouping when needed, and see patterns across place values.',words:'add, subtract, sum, difference, regroup, trade, borrow, column',
   ask:['When do you need to trade 10 ones for a ten?','What does the little 1 above the tens column mean?','How can 7 + 5 = 12 help you add 70 + 50?'],home:'Use coins as blocks: pennies-style counters for ones, dimes for tens, loonies for hundreds. Add two piles and trade.'},
- learn:[{say:'Add one place at a time.',speech:'To add big numbers, add the ones first, then the tens, then the hundreds. Watch two hundred forty-seven plus one hundred thirty-five.',view:'model',demo:'add'},
+ learn:[{say:'Add one place at a time.',speech:'To add big numbers, add the ones first, then the tens, then the hundreds. Mei has two hundred forty-seven books in one cart and one hundred thirty-five in the other. Watch.',view:'model',demo:'add'},
         {say:'Read how the columns work.',speech:'When the ones make ten or more, trade ten ones for one ten. The little one above the tens column shows the trade.',view:'read'},
         {say:'Watch: subtracting with a trade.',speech:'Now three hundred fifty-two take away one hundred twenty-seven. There are not enough ones, so we break a ten into ten ones.',view:'model',demo:'sub'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -266,7 +266,7 @@ P.lesson({id:'addsub',title:'Adding and subtracting to 1000',strand:'Number',cod
 P.lesson({id:'arrays',title:'Multiplying with arrays',strand:'Number',codes:['B2.1','B2.2','B2.6'],
  guide:{goal:'Represent multiplication up to 10 × 10 with equal groups and arrays, connect it to repeated addition and skip counting, and recall facts of 2, 5 and 10.',words:'equal groups, array, row, column, multiply, factor, product',
   ask:['How is 4 + 4 + 4 the same as 3 × 4?','Why does turning an array not change the total?','How can skip counting by 5s help with 5 × 7?'],home:'Find arrays at home: egg cartons, muffin tins, windows. Say the multiplication sentence for each.'},
- learn:[{say:'Equal rows make an array.',speech:'An array shows equal groups in rows. Watch the model skip count three rows of four: four, eight, twelve.',view:'model',demo:'skip'},
+ learn:[{say:'Equal rows make an array.',speech:'An array shows equal groups in rows. Eli plants three rows of four seeds. Watch the model skip count: four, eight, twelve.',view:'model',demo:'skip'},
         {say:'Read about multiplying.',speech:'Three times four means three groups of four. It is the same as four plus four plus four.',view:'read'},
         {say:'Watch: turn the array.',speech:'Watch the array turn. Three rows of four becomes four rows of three. The total stays twelve.',view:'model',demo:'turn'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -293,7 +293,7 @@ P.lesson({id:'arrays',title:'Multiplying with arrays',strand:'Number',codes:['B2
       const p=V((j-(st.c-1)/2)*s,0,(i-(st.r-1)/2)*s);cell.position.copy(p);if(drop)cell.position.y=1+(i*st.c+j)*.01;arr.add(cell);moveTo(cell,{pos:p,k:9});cells[i].push(cell);}}}
   function set(r,c){r=Math.max(1,Math.min(10,r));c=Math.max(1,Math.min(10,c));if(r===st.r&&c===st.c)return;st.r=r;st.c=c;st.turned=false;arr.rotation.y=0;arr.userData.tRotY=null;rebuild(true);A.pop();check();A.redraw();}
   function turn(){st.turned=!st.turned;moveTo(arr,{rotY:st.turned?Math.PI/2:0,k:5});A.say(st.turned?'Turned! Still '+(st.r*st.c)+'.':'Back again: '+st.r+' × '+st.c+'.');A.redraw();}
-  function skip(){const list=[];for(let i=0;i<st.r;i++)list.push([i?700:200,()=>{cells[i].forEach(c=>{c.position.y=.3;moveTo(c,{pos:V(c.position.x,0,c.position.z),k:4});});A.pop();A.say(String((i+1)*st.c));}]);list.push([700,()=>A.say(st.r+' × '+st.c+' = '+st.r*st.c)]);A.seq(list);}
+  function skip(){const list=[];for(let i=0;i<st.r;i++)list.push([i?700:200,()=>{if(!cells[i])return;cells[i].forEach(c=>{c.position.y=.3;moveTo(c,{pos:V(c.position.x,0,c.position.z),k:4});});A.pop();A.say(String((i+1)*st.c));}]);list.push([700,()=>A.say(st.r+' × '+st.c+' = '+st.r*st.c)]);A.seq(list);}
   function check(){if(mode!=='play'||!st.want)return;const w=st.want;const ok=w.rows?(st.r===w.rows&&st.c===w.cols):((st.r===w.a&&st.c===w.b)||(st.r===w.b&&st.c===w.a));if(ok)game.solved(st.r+' × '+st.c+' = '+st.r*st.c+'!');}
   const tap=new THREE.Mesh(new THREE.BoxGeometry(3.6,.4,3.6),new THREE.MeshBasicMaterial({visible:false}));tap.position.set(0,.2,-1.25);grp.add(tap);A.drag(tap,{tap:skip});
   rebuild(false);if(st.turned)arr.rotation.y=Math.PI/2;
@@ -311,7 +311,7 @@ P.lesson({id:'arrays',title:'Multiplying with arrays',strand:'Number',codes:['B2
 P.lesson({id:'share',title:'Fair shares and dividing',strand:'Number',codes:['B1.6','B2.7','B2.6'],
  guide:{goal:'Solve fair-share problems that share up to 20 items among 2 to 10 sharers, including answers with leftovers cut into fractions, and connect sharing to division.',words:'share, equal, divide, ÷, leftover, remainder, fair share, mixed number',
   ask:['How do you know the shares are fair?','What can we do with a leftover cookie?','How is 12 ÷ 3 related to 3 × 4?'],home:'Share snacks fairly between family members. If one is left, cut it into equal pieces.'},
- learn:[{say:'Sharing equally is dividing.',speech:'Dividing means sharing equally. Watch twelve cookies shared among three friends, one at a time.',view:'model',demo:'deal'},
+ learn:[{say:'Sharing equally is dividing.',speech:'Dividing means sharing equally. Watch Nova share twelve cookies among three friends, one at a time.',view:'model',demo:'deal'},
         {say:'Read about division.',speech:'Twelve divided by three equals four. Each friend gets four cookies.',view:'read'},
         {say:'Watch: cutting the leftover.',speech:'Seven cookies for two friends. Each gets three, and one is left over. Cut it in half. Each friend gets three and one half.',view:'model',demo:'cut'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -369,7 +369,7 @@ P.lesson({id:'share',title:'Fair shares and dividing',strand:'Number',codes:['B1
 P.lesson({id:'fractions',title:'Fractions of a whole',strand:'Number',codes:['B1.6','B2.8'],
  guide:{goal:'Represent fractions as equal parts of a whole (halves to tenths), name unit fractions, and connect a fraction to repeated addition of its unit fraction.',words:'fraction, whole, equal parts, numerator, denominator, unit fraction',
   ask:['Why must the pieces be the same size?','Which is bigger, 1/3 or 1/8? Why?','How is 3/4 the same as 1/4 + 1/4 + 1/4?'],home:'Cut a sandwich or a paper strip into equal parts. Name each part and count them: 1/4, 2/4, 3/4, 4/4.'},
- learn:[{say:'A fraction names equal parts.',speech:'A fraction names equal parts of one whole. Watch the cake: one fourth, two fourths, three fourths, four fourths is one whole.',view:'model',demo:'unit'},
+ learn:[{say:'A fraction names equal parts.',speech:'A fraction names equal parts of one whole. Watch Max’s cake: one fourth, two fourths, three fourths, four fourths is one whole.',view:'model',demo:'unit'},
         {say:'Read the parts of a fraction.',speech:'The bottom number is the denominator: how many equal parts. The top number is the numerator: how many parts we mean.',view:'read'},
         {say:'Watch: more pieces, smaller pieces.',speech:'The same cake cut into eighths has smaller pieces than the cake cut into thirds.',view:'model',demo:'compare'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -381,17 +381,17 @@ P.lesson({id:'fractions',title:'Fractions of a whole',strand:'Number',codes:['B1
  init:k=>k==='play'?{den:2,sh:[],want:null}:{den:4,sh:[]},
  left(p,S){const g=p.g;let y=header(p,S);
   y=para(p,y,'A *fraction* names equal parts of one *whole*. The parts must all be the same size.')+20;
-  const cx=X0+130,cy=y+125,R=115;for(let i=0;i<4;i++){g.beginPath();g.moveTo(cx,cy);g.arc(cx,cy,R,-Math.PI/2+i*Math.PI/2,-Math.PI/2+(i+1)*Math.PI/2);g.closePath();g.fillStyle=i<3?'#ff9fb5':'#fff4e0';g.fill();g.lineWidth=3;g.strokeStyle=INK;g.stroke();}
-  const fx=X0+350;T(g,'3',fx,y+105,ZS(84),'#e2457a','center');g.fillStyle=INK;g.fillRect(fx-42,y+124,84,6);T(g,'4',fx,y+212,ZS(84),acc(),'center');
-  T(g,'← numerator: the parts we mean',fx+56,y+90,FT.hand,'#e2457a');T(g,'← denominator: how many',fx+56,y+190,FT.hand,acc());T(g,'    equal parts in the whole',fx+56,y+226,FT.hand,acc());
+  const cx=X0+130,cy=y+125,R=115;for(let i=0;i<4;i++){g.beginPath();g.moveTo(cx,cy);g.arc(cx,cy,R,-Math.PI/2+i*Math.PI/2,-Math.PI/2+(i+1)*Math.PI/2);g.closePath();g.fillStyle=i<3?'#ffb37a':'#fff4e0';g.fill();g.lineWidth=3;g.strokeStyle=INK;g.stroke();}
+  const fx=X0+350;T(g,'3',fx,y+105,ZS(84),'#e4572e','center');g.fillStyle=INK;g.fillRect(fx-42,y+124,84,6);T(g,'4',fx,y+212,ZS(84),acc(),'center');
+  T(g,'← numerator: the parts we mean',fx+56,y+90,FT.hand,'#e4572e');T(g,'← denominator: how many',fx+56,y+190,FT.hand,acc());T(g,'    equal parts in the whole',fx+56,y+226,FT.hand,acc());
   y+=280;y=para(p,y,'*3/4 = 1/4 + 1/4 + 1/4.* More pieces in the same whole means *smaller* pieces.')+6;
-  const bw=TW-140;[[3,'1/3','#ff9fb5'],[8,'1/8','#94b7ff']].forEach(([n,l,c],k)=>{const by=y+k*62;T(g,l,X0,by+38,FT.h3);for(let i=0;i<n;i++){g.fillStyle=i===0?c:'#f6f7f9';g.fillRect(X0+90+i*bw/n,by,bw/n,46);g.strokeStyle=INK;g.lineWidth=2.5;g.strokeRect(X0+90+i*bw/n,by,bw/n,46);}});
+  const bw=TW-140;[[3,'1/3','#ffb37a'],[8,'1/8','#94b7ff']].forEach(([n,l,c],k)=>{const by=y+k*62;T(g,l,X0,by+38,FT.h3);for(let i=0;i<n;i++){g.fillStyle=i===0?c:'#f6f7f9';g.fillRect(X0+90+i*bw/n,by,bw/n,46);g.strokeStyle=INK;g.lineWidth=2.5;g.strokeRect(X0+90+i*bw/n,by,bw/n,46);}});
   y+=140;T(g,'halves · thirds · fourths · fifths · sixths · eighths · tenths',X0,y,FT.cap,GREY);y+=56;
   predict(p,y,S,'p7','Which is more cake: 1/3 or 1/8 of the same cake?','*1/3 is more.* The more pieces you cut the cake into, the smaller each piece is.');},
- readout(p,S,y){const g=p.g,st=S.st,n=st.sh.length,d=st.den;const fx=X0+50;T(g,String(n),fx,y+50,ZS(60),'#e2457a','center');g.fillStyle=INK;g.fillRect(fx-36,y+62,72,5);T(g,String(d),fx,y+120,ZS(60),acc(),'center');
+ readout(p,S,y){const g=p.g,st=S.st,n=st.sh.length,d=st.den;const fx=X0+50;T(g,String(n),fx,y+50,ZS(60),'#e4572e','center');g.fillStyle=INK;g.fillRect(fx-36,y+62,72,5);T(g,String(d),fx,y+120,ZS(60),acc(),'center');
   const sum=n===0?'Tap a piece to lift it out.':n===d?'*'+d+'/'+d+' = one whole cake!*':n+'/'+d+' = '+(n<=4?Array(n).fill('1/'+d).join(' + '):'1/'+d+' + … ('+n+' times)');wrap(g,sum,X0+130,y+70,TW-130,38,{font:FT.body,bold:FT.bodyB});return y+130;},
  build(S,grp,mode,game){const st=S.st;const plate=mk(G('plate2',()=>new THREE.CylinderGeometry(1.75,1.65,.06,48)),lam('#ffffff'),30);plate.position.set(0,.03,-1.2);grp.add(plate);
-  const cake=new THREE.Group();cake.position.set(0,.06,-1.2);grp.add(cake);let sl=[];const tO=lam('#fff4e0'),sO=lam('#efcf9c'),tN=lam('#ff7f9f'),sN=lam('#ffc4d3');
+  const cake=new THREE.Group();cake.position.set(0,.06,-1.2);grp.add(cake);let sl=[];const tO=lam('#fff4e0'),sO=lam('#efcf9c'),tN=lam('#ff8c5a'),sN=lam('#ffd4b0');
   function place(m){const on=st.sh.includes(m.userData.i),d=m.userData.dir;moveTo(m,{pos:on?V(d.x*.45,.35,d.z*.45):V(d.x*.04,0,d.z*.04),k:10});m.material=on?[tN,sN]:[tO,sO];}
   function toggle(m,force){const i=m.userData.i,k=st.sh.indexOf(i);if(force===true&&k>=0){place(m);return;}if(force===false&&k<0){place(m);return;}k>=0?st.sh.splice(k,1):st.sh.push(i);A.pop();place(m);check();A.redraw();}
   function build(drop){sl.forEach(m=>{A.unclick(m);cake.remove(m);disposeObj(m);});sl=[];for(let i=0;i<st.den;i++){const a0=i*Math.PI*2/st.den,a1=(i+1)*Math.PI*2/st.den,mid=(a0+a1)/2;const m=mk(wedgeGeo(1.5,.6,a0,a1),[tO,sO],25);
@@ -411,7 +411,7 @@ P.lesson({id:'fractions',title:'Fractions of a whole',strand:'Number',codes:['B1
 P.lesson({id:'equiv',title:'Equivalent fractions',strand:'Number',codes:['B1.7'],
  guide:{goal:'Use a fraction wall to find equivalent fractions for halves, fourths and eighths; thirds and sixths; and fifths and tenths.',words:'equivalent, equal, fraction wall, half, fourth, eighth, third, sixth, fifth, tenth',
   ask:['How many fourths are the same as one half?','Why are 2/6 and 1/3 the same amount?','Can you find another fraction equal to 1/2?'],home:'Fold a strip of paper in half, then in half again. Open it: two of the fourths cover the same space as one half.'},
- learn:[{say:'Different fractions, same amount.',speech:'Equivalent fractions name the same amount. Watch the fraction wall: one half, two fourths and four eighths are all the same length.',view:'model',demo:'half'},
+ learn:[{say:'Different fractions, same amount.',speech:'Equivalent fractions name the same amount. Watch Aisha’s fraction wall: one half, two fourths and four eighths are all the same length.',view:'model',demo:'half'},
         {say:'Read about equivalent fractions.',speech:'One half equals two fourths equals four eighths. One third equals two sixths. One fifth equals two tenths.',view:'read'},
         {say:'Watch: thirds and sixths.',speech:'One third lines up with two sixths.',view:'model',demo:'third'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -454,7 +454,7 @@ function matches(st){const ROWS=[1,2,4,8,3,6,5,10];const vals=ROWS.filter(d=>(st
 P.lesson({id:'ratio',title:'Ratios: scaling up',strand:'Number',codes:['B2.9'],
  guide:{goal:'Use the ratios 1 to 2, 1 to 5 and 1 to 10 to scale up numbers and solve problems.',words:'ratio, for every, scale up, table, group',
   ask:['For every bike there are 2 wheels. How many wheels for 6 bikes?','How is 1 to 10 like counting by 10s?','How many hands have 35 fingers?'],home:'Count socks: 1 pair to 2 socks. Count the socks in 5 pairs. Try fingers on hands too!'},
- learn:[{say:'For every 1, there are 2.',speech:'A ratio compares two amounts. For every one bike, there are two wheels. Watch the bikes scale up.',view:'model',demo:'bikes'},
+ learn:[{say:'For every 1, there are 2.',speech:'A ratio compares two amounts. In Diego’s bike shop, for every one bike, there are two wheels. Watch the bikes scale up.',view:'model',demo:'bikes'},
         {say:'Read the ratio table.',speech:'One bike has two wheels. Two bikes have four. Three bikes have six. Each time we add one bike, we add two wheels.',view:'read'},
         {say:'Watch: 1 to 10.',speech:'For every ten-frame there are ten counters. One, two, three ten-frames make ten, twenty, thirty.',view:'model',demo:'tens'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -477,9 +477,9 @@ P.lesson({id:'ratio',title:'Ratios: scaling up',strand:'Number',codes:['B2.9'],
  build(S,grp,mode,game){const st=S.st,area=new THREE.Group();grp.add(area);
   function model(kind){const g=new THREE.Group();
     if(kind==='bike'){const wg=G('wheel',()=>new THREE.TorusGeometry(.13,.03,8,20));[-1,1].forEach(s=>{const w=mk(wg,lam(INK),0);w.position.set(s*.17,.15,0);g.add(w);const hub=mk(G('hub',()=>new THREE.CylinderGeometry(.11,.11,.02,16)),lam('#ffd24a'),0);hub.rotation.x=Math.PI/2;hub.position.set(s*.17,.15,0);g.add(hub);});
-      const fr=mk(new THREE.BoxGeometry(.34,.04,.04),lam('#e2457a'),0);fr.position.y=.26;g.add(fr);const seat=mk(new THREE.BoxGeometry(.1,.03,.06),lam(INK),0);seat.position.set(-.08,.34,0);g.add(seat);}
+      const fr=mk(new THREE.BoxGeometry(.34,.04,.04),lam('#e4572e'),0);fr.position.y=.26;g.add(fr);const seat=mk(new THREE.BoxGeometry(.1,.03,.06),lam(INK),0);seat.position.set(-.08,.34,0);g.add(seat);}
     else if(kind==='hand'){const palm=mk(new THREE.BoxGeometry(.3,.06,.26),lam('#f2c9a0'),20);palm.position.y=.04;g.add(palm);for(let i=0;i<5;i++){const f=mk(G('fing',()=>new THREE.CylinderGeometry(.03,.03,.16,8)),lam('#f2c9a0'),0);f.rotation.x=Math.PI/2;f.position.set(-.12+i*.06,.05,-.2+(i===0?.1:0));g.add(f);}}
-    else{const fb=mk(new THREE.BoxGeometry(.6,.04,.25),lam('#ffffff'),20);fb.position.y=.02;g.add(fb);for(let i=0;i<10;i++){const c=mk(G('ctr',()=>new THREE.CylinderGeometry(.04,.04,.03,14)),lam('#e2457a'),0);c.position.set(-.24+(i%5)*.12,.06,(Math.floor(i/5)-.5)*.11);g.add(c);}}
+    else{const fb=mk(new THREE.BoxGeometry(.6,.04,.25),lam('#ffffff'),20);fb.position.y=.02;g.add(fb);for(let i=0;i<10;i++){const c=mk(G('ctr',()=>new THREE.CylinderGeometry(.04,.04,.03,14)),lam('#e4572e'),0);c.position.set(-.24+(i%5)*.12,.06,(Math.floor(i/5)-.5)*.11);g.add(c);}}
     return g;}
   function layout(drop){clearGroup(area);const per=5;for(let i=0;i<st.n;i++){const m=model(st.kind);const row=Math.floor(i/per),col=i%per;const p=V((col-(Math.min(st.n,per)-1)/2)*.8,0,-2.1+row*.75);m.position.copy(p);if(drop&&i===st.n-1)m.position.y=1;area.add(m);moveTo(m,{pos:p,k:9});}
     const K={bike:2,hand:5,frame:10}[st.kind];tot.userData.set(st.n+' → '+st.n*K);}

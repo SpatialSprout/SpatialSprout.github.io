@@ -22,27 +22,27 @@ function seeded(s){return ()=>{s=(s*16807)%2147483647;return (s-1)/2147483646;};
 P.lesson({id:'linpat8',title:'Linear growing and shrinking patterns',strand:'Algebra',codes:['C1.1','C1.2'],
  guide:{goal:'Identify and compare repeating, growing and shrinking patterns, compare linear patterns by their constant rate and initial value, and represent them with tables, graphs, expressions and equations.',words:'linear pattern, constant rate, initial value, term number, growing, shrinking, equation',
   ask:['What is the constant rate of t = 3n + 2?','How can you tell from a table that a pattern is shrinking?','Which grows faster: t = 2n + 10 or t = 4n + 1?'],home:'A taxi charges $3.50 plus $2 per km. Make a table for 1 to 5 km and write an equation.'},
- learn:[{say:'Each step adds the same amount.',speech:'In a linear pattern, each term changes by the same amount: the constant rate. This pattern starts with three cubes and adds two each time. Its equation is t equals two n plus three. Watch the towers grow.',view:'model',demo:'grow'},
+ learn:[{say:'Each step adds the same amount.',speech:'In a linear pattern, each term changes by the same amount: the constant rate. Ana’s pattern starts with three cubes and adds two each time. Its equation is t equals two n plus three. Watch the towers grow.',view:'model',demo:'grow'},
         {say:'Read about rate and initial value.',speech:'The constant rate is the number multiplied by n. The initial value is the constant added on: it is the value at term zero. A negative rate makes a shrinking pattern.',view:'read'},
         {say:'Watch: a shrinking pattern.',speech:'Now the rate is negative two and the initial value is fifteen. Each tower has two fewer cubes: thirteen, eleven, nine, seven, five. Its equation is t equals fifteen minus two n.',view:'model',demo:'shrink'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
-        {say:'Your turn: set the rule.',speech:'Your turn. Change the rate and the initial value, and compare with the pink pattern.',view:'model'}],
+        {say:'Your turn: set the rule.',speech:'Your turn. Change the rate and the initial value, and compare with the orange pattern.',view:'model'}],
  fig:'Towers of cubes for terms 1 to 5 of two linear patterns.',rz:.35,
- explore:['Change the *rate* and the *initial value* of the blue pattern.','The *pink* pattern is for comparing.','Read the equation t = rate × n + initial value.'],
+ explore:['Change the *rate* and the *initial value* of the blue pattern.','The *orange* pattern is for comparing.','Read the equation t = rate × n + initial value.'],
  howTo:'Set the blue pattern to the rule, or choose the answer.',
  init:k=>({m:2,b:3,cmp:null,need:null,ask:null}),
  left(p,S){const g=p.g;let y=header(p,S);
   y=para(p,y,'A *linear pattern* changes by a *constant rate* each term. The *initial value* is the term-0 value.')+14;
   rr(g,X0,y,TW,44,12);g.fillStyle=tint(acc(),.16);g.fill();['n',1,2,3,4,5].forEach((h,i)=>T(g,String(h),X0+40+i*(TW-60)/6,y+30,FT.smallB,acc(),'center'));y+=48;
-  [['3 + 2n',[5,7,9,11,13],'#2f7de1'],['15 − 2n',[13,11,9,7,5],'#e2457a'],['0.5n + 1',[1.5,2,2.5,3,3.5],'#16a36f']].forEach(([e,vals,c],j)=>{T(g,e,X0+40,y+j*42+30,FT.smallB,c,'center');vals.forEach((v,i)=>T(g,fmt(v),X0+40+(i+1)*(TW-60)/6,y+j*42+30,FT.body,INK,'center'));});y+=146;
+  [['3 + 2n',[5,7,9,11,13],'#2f7de1'],['15 − 2n',[13,11,9,7,5],'#e4572e'],['0.5n + 1',[1.5,2,2.5,3,3.5],'#16a36f']].forEach(([e,vals,c],j)=>{T(g,e,X0+40,y+j*42+30,FT.smallB,c,'center');vals.forEach((v,i)=>T(g,fmt(v),X0+40+(i+1)*(TW-60)/6,y+j*42+30,FT.body,INK,'center'));});y+=146;
   y=para(p,y,'*t = 3 + 2n*: rate 2, initial value 3 (growing). *t = 15 − 2n*: rate −2, initial value 15 (shrinking).')+10;
   y=para(p,y,'*Compare:* t = 4n + 1 grows faster than t = 2n + 10 because its rate is greater, even though it starts lower.')+10;
   y=keyWords(p,y,[['constant rate','the amount added each term (the number times n)'],['initial value','the value when n = 0']]);
   predict(p,y,S,'p12','When does t = 4n + 1 pass t = 2n + 10?','*At n = 5:* 21 vs 20.');},
- readout(p,S,y){const g=p.g,st=S.st;T(g,'t = '+linR(st.m,st.b),X0,y+50,ZS(48),'#2563eb');T(g,'rate '+fmt(st.m)+' · initial value '+fmt(st.b)+(st.cmp?'   |   pink: t = '+linR(st.cmp[0],st.cmp[1]):''),X0,y+92,FT.bodyB);return y+100;},
+ readout(p,S,y){const g=p.g,st=S.st;T(g,'t = '+linR(st.m,st.b),X0,y+50,ZS(48),'#2563eb');T(g,'rate '+fmt(st.m)+' · initial value '+fmt(st.b)+(st.cmp?'   |   orange: t = '+linR(st.cmp[0],st.cmp[1]):''),X0,y+92,FT.bodyB);return y+100;},
  build(S,grp,mode,game){const st=S.st,u=.085;const g2=new THREE.Group();grp.add(g2);const cg=G('lp8c',()=>new THREE.BoxGeometry(u*.92,u*.92,u*.92));
   function tower(n,v,x,z,col){for(let i=0;i<Math.max(0,v);i++){const c=mk(cg,lam(col),0);c.position.set(x,u/2+i*u+.02,z);g2.add(c);}const l=label(fmt(v),{size:.15,color:col});l.position.set(x,Math.max(0,v)*u+.18,z);g2.add(l);}
-  function draw(){clearGroup(g2);for(let n=1;n<=5;n++){const x=-1.9+(n-1)*.9;tower(n,st.m*n+st.b,x,-2.0,'#2f7de1');if(st.cmp)tower(n,st.cmp[0]*n+st.cmp[1],x+.3,-2.0,'#e2457a');const l=label('n = '+n,{size:.14,color:GREY});l.position.set(x+.15,.1,-1.55);g2.add(l);}
+  function draw(){clearGroup(g2);for(let n=1;n<=5;n++){const x=-1.9+(n-1)*.9;tower(n,st.m*n+st.b,x,-2.0,'#2f7de1');if(st.cmp)tower(n,st.cmp[0]*n+st.cmp[1],x+.3,-2.0,'#e4572e');const l=label('n = '+n,{size:.14,color:GREY});l.position.set(x+.15,.1,-1.55);g2.add(l);}
     const e=label('t = '+linR(st.m,st.b),{size:.24,bg:'#ffffff',border:'#2f7de1'});e.position.set(1.65,2.35,-2.5);g2.add(e);check();A.redraw();}
   const set=(k,v)=>{const lo=k==='m'?-3:0,hi=k==='m'?3:15;st[k]=Math.max(lo,Math.min(hi,v));for(let n=1;n<=5;n++)if(st.m*n+st.b>22||st.m*n+st.b<0){st[k]-=Math.sign(v-st[k])||0;}A.pop();draw();};
   function check(){if(mode==='play'&&!st.setup&&st.need&&st.m===st.need[0]&&st.b===st.need[1])game.solved('Yes! t = '+linR(st.m,st.b)+'.');}
@@ -54,7 +54,7 @@ P.lesson({id:'linpat8',title:'Linear growing and shrinking patterns',strand:'Alg
     task(r){st.setup=true;st.ask=null;st.need=null;st.cmp=null;st.m=1;st.b=0;let txt;
       if(r===0){st.need=[pick([2,3]),pick([1,2,4])];txt='Set the blue pattern to *t = '+lin(st.need[0],st.need[1])+'*.';}
       else if(r===1){st.m=0;st.b=10;st.need=[-2,pick([12,14])];txt='Make the *shrinking* pattern *t = '+linR(st.need[0],st.need[1])+'*.';}
-      else if(r===2){st.m=2;st.b=10;st.cmp=[4,1];st.ask={ans:'Pink: t = 4n + 1',o:['Blue: t = 2n + 10','Pink: t = 4n + 1'],ok:'Yes! Its constant rate, 4, is greater.'};txt='Which pattern *grows faster*?';}
+      else if(r===2){st.m=2;st.b=10;st.cmp=[4,1];st.ask={ans:'Orange: t = 4n + 1',o:['Blue: t = 2n + 10','Orange: t = 4n + 1'],ok:'Yes! Its constant rate, 4, is greater.'};txt='Which pattern *grows faster*?';}
       else if(r===3){st.m=4;st.b=7;st.ask={ans:'7',o:shuffle(['7','4','11']),ok:'Yes! The initial value is the constant, 7.'};txt='What is the *initial value* of *t = 4n + 7*?';}
       else{st.m=2;st.b=3;st.ask={ans:'c = 2d + 3.5',o:shuffle(['c = 2d + 3.5','c = 3.5d + 2','c = 5.5d']),ok:'Yes! Rate $2 per km, initial value $3.50.'};txt='A taxi costs *$3.50* plus *$2 per km*. Which equation gives the cost c for d km?';}
       draw();st.setup=false;return txt;}};}
@@ -66,7 +66,7 @@ P.lesson({id:'linpat8',title:'Linear growing and shrinking patterns',strand:'Alg
 P.lesson({id:'patrule8',title:'Pattern rules and predictions',strand:'Algebra',codes:['C1.3','C1.4'],
  guide:{goal:'Determine pattern rules and use them to extend patterns, make and justify predictions, and identify missing elements in patterns involving rational numbers, and create patterns that show relationships among rational numbers.',words:'pattern rule, term, extend, predict, missing term, algebraic expression, rational number',
   ask:['How do you find the rule for 5, 8, 11, 14?','How can you predict the 20th term without listing them all?','What pattern do 1/2, 1/4, 1/8 make?'],home:'Fold a sheet of paper in half again and again. Record the fraction of the sheet in one section each time. What is the rule?'},
- learn:[{say:'Find the rule from a graph.',speech:'The terms five, eight, eleven, fourteen go up by three, so the rule has three n. Term one is five, so add two. The rule is t equals three n plus two. Watch the points line up.',view:'model',demo:'rule'},
+ learn:[{say:'Find the rule from a graph.',speech:'Rohan’s terms are five, eight, eleven, fourteen. They go up by three, so the rule has three n. Term one is five, so add two. The rule is t equals three n plus two. Watch the points line up.',view:'model',demo:'rule'},
         {say:'Read about predictions.',speech:'With the rule, you can predict any term. The twentieth term is three times twenty plus two: sixty-two. To find a missing term, use the rule or the constant change.',view:'read'},
         {say:'Watch: a rational pattern.',speech:'Some patterns use fractions or decimals. One half, one quarter, one eighth: each term is half the term before. The next term is one sixteenth.',view:'model',demo:'half'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -106,12 +106,12 @@ function terms(st){return Array.from({length:8},(_,i)=>st.kind==='half'?Math.pow
 /* =========================================================
    14. Adding and subtracting monomials and binomials
    ========================================================= */
-function tileSet(e,x0,z0,grp,dim){const out=[];const xs=Math.abs(e.x),cs=Math.abs(e.c);for(let i=0;i<xs;i++){const m=mk(G('bt8x',()=>new THREE.BoxGeometry(.13,.06,.62)),lam(e.x>0?'#16a36f':'#e2457a'),20);m.position.set(x0+i*.17,.04,z0);grp.add(m);out.push({m,kind:'x',pos:e.x>0});}
-  for(let i=0;i<cs;i++){const m=mk(G('bt8u',()=>new THREE.BoxGeometry(.13,.06,.13)),lam(e.c>0?'#f5b301':'#e2457a'),20);m.position.set(x0+xs*.17+.08+(i%4)*.17,.04,z0-.24+Math.floor(i/4)*.17);grp.add(m);out.push({m,kind:'u',pos:e.c>0});if(dim)m.material=lam('#cbd5e1');}return out;}
+function tileSet(e,x0,z0,grp,dim){const out=[];const xs=Math.abs(e.x),cs=Math.abs(e.c);for(let i=0;i<xs;i++){const m=mk(G('bt8x',()=>new THREE.BoxGeometry(.13,.06,.62)),lam(e.x>0?'#16a36f':'#e4572e'),20);m.position.set(x0+i*.17,.04,z0);grp.add(m);out.push({m,kind:'x',pos:e.x>0});}
+  for(let i=0;i<cs;i++){const m=mk(G('bt8u',()=>new THREE.BoxGeometry(.13,.06,.13)),lam(e.c>0?'#f5b301':'#e4572e'),20);m.position.set(x0+xs*.17+.08+(i%4)*.17,.04,z0-.24+Math.floor(i/4)*.17);grp.add(m);out.push({m,kind:'u',pos:e.c>0});if(dim)m.material=lam('#cbd5e1');}return out;}
 P.lesson({id:'binom8',title:'Adding binomials with algebra tiles',strand:'Algebra',codes:['C2.1'],
  guide:{goal:'Add and subtract monomials with a degree of 1, and add binomials with a degree of 1 that involve integers, using tools.',words:'monomial, binomial, like terms, coefficient, zero pair, algebra tile, simplify',
   ask:['Why can you combine 2x and 3x but not 2x and 3?','What is a zero pair of x-tiles?','How do you find the perimeter of a rectangle with sides x + 2 and 2x?'],home:'Make algebra tiles from paper: long strips for x, small squares for 1. Show (2x + 3) + (x − 5).'},
- learn:[{say:'Combine like terms.',speech:'Two x plus three, plus x minus five. Green bars are x tiles. Yellow squares are plus one. Red is negative. Push the tiles together: three x tiles, three yellows and five reds. Three zero pairs vanish, leaving three x minus two.',view:'model',demo:'add'},
+ learn:[{say:'Combine like terms.',speech:'Elena adds two x plus three, plus x minus five. Green bars are x tiles. Yellow squares are plus one. Red is negative. Push the tiles together: three x tiles, three yellows and five reds. Three zero pairs vanish, leaving three x minus two.',view:'model',demo:'add'},
         {say:'Read about like terms.',speech:'Like terms have the same variable part. You can combine x terms with x terms and numbers with numbers. A positive tile and a negative tile of the same kind make a zero pair.',view:'read'},
         {say:'Watch: negative x tiles.',speech:'Four x minus one, plus negative two x minus three. Two zero pairs of x tiles vanish, and the numbers make negative four. The answer is two x minus four.',view:'model',demo:'neg'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -122,7 +122,7 @@ P.lesson({id:'binom8',title:'Adding binomials with algebra tiles',strand:'Algebr
  init:k=>({e1:{x:2,c:3},e2:{x:1,c:-5},stage:0,ask:null}),
  left(p,S){const g=p.g;let y=header(p,S);
   y=para(p,y,'A *monomial* is one term, like 3x or −5. A *binomial* has two terms, like 2x + 3. To add, *combine like terms*.')+14;
-  const tile=(x,yy,w,h,c)=>{g.fillStyle=c;g.fillRect(x,yy,w,h);};tile(X0,y,22,80,'#16a36f');T(g,'x',X0+40,y+50,FT.bodyB);tile(X0+90,y+30,22,22,'#f5b301');T(g,'+1',X0+126,y+50,FT.bodyB);tile(X0+190,y,22,80,'#e2457a');T(g,'−x',X0+226,y+50,FT.bodyB);tile(X0+290,y+30,22,22,'#e2457a');T(g,'−1',X0+326,y+50,FT.bodyB);
+  const tile=(x,yy,w,h,c)=>{g.fillStyle=c;g.fillRect(x,yy,w,h);};tile(X0,y,22,80,'#16a36f');T(g,'x',X0+40,y+50,FT.bodyB);tile(X0+90,y+30,22,22,'#f5b301');T(g,'+1',X0+126,y+50,FT.bodyB);tile(X0+190,y,22,80,'#e4572e');T(g,'−x',X0+226,y+50,FT.bodyB);tile(X0+290,y+30,22,22,'#e4572e');T(g,'−1',X0+326,y+50,FT.bodyB);
   T(g,'zero pair: x + (−x) = 0',X0+420,y+50,FT.smallB,acc());y+=110;
   [['(2x + 3) + (x − 5)','= 3x − 2'],['(4x − 1) + (−2x − 3)','= 2x − 4'],['5x − 2x','= 3x'],['3x − (−2x)','= 5x']].forEach(([a,b],i)=>{T(g,a,X0,y+i*48+30,FT.bodyB,acc());T(g,b,X0+430,y+i*48+30,FT.bodyB);});y+=208;
   y=para(p,y,'*Perimeter* of a rectangle with sides x + 2 and 2x: (x + 2) + 2x + (x + 2) + 2x = *6x + 4*.')+10;
@@ -134,7 +134,7 @@ P.lesson({id:'binom8',title:'Adding binomials with algebra tiles',strand:'Algebr
     else{const tray=mk(new THREE.BoxGeometry(4.3,.02,1.2),lam('#f8fafc'),20);tray.position.set(0,.01,-2.1);g2.add(tray);const X=st.e1.x+st.e2.x,C=st.e1.c+st.e2.c;
       if(st.stage===1){const posX=Math.max(st.e1.x,0)+Math.max(st.e2.x,0),negX=Math.max(-st.e1.x,0)+Math.max(-st.e2.x,0),posC=Math.max(st.e1.c,0)+Math.max(st.e2.c,0),negC=Math.max(-st.e1.c,0)+Math.max(-st.e2.c,0);
         tileSet({x:posX,c:0},-2.0,-2.3,g2);tileSet({x:-negX,c:0},-2.0,-1.7,g2);tileSet({x:0,c:posC},.4,-2.3,g2);tileSet({x:0,c:-negC},.4,-1.75,g2);
-        const zp=Math.min(posX,negX)+Math.min(posC,negC);const l=label(zp+' zero pair'+(zp===1?'':'s'),{size:.2,color:'#be185d'});l.position.set(0,.5,-1.2);g2.add(l);}
+        const zp=Math.min(posX,negX)+Math.min(posC,negC);const l=label(zp+' zero pair'+(zp===1?'':'s'),{size:.2,color:'#c2410c'});l.position.set(0,.5,-1.2);g2.add(l);}
       else{tileSet({x:X,c:0},-2.0,-2.1,g2);tileSet({x:0,c:C},.4,-2.1,g2);const l=label('= '+lin(X,C,'x'),{size:.3,bg:'#ffffff',border:acc()});l.position.set(0,.6,-1.3);g2.add(l);}}A.redraw();}
   const adj=(e,k,d)=>{st[e][k]=Math.max(-4,Math.min(4,st[e][k]+d));st.stage=0;A.pop();draw();};
   function go(){if(st.stage===0){st.stage=1;A.pop();draw();}else if(st.stage===1){st.stage=2;A.pop();draw();A.say(lin(st.e1.x+st.e2.x,st.e1.c+st.e2.c,'x'));}}
@@ -156,7 +156,7 @@ const EXS=[{e:'3x − 2',f:x=>3*x-2,s:x=>'3'+par(x)+' − 2'},{e:'x ÷ 4 + 5',f:
 P.lesson({id:'eval8',title:'Evaluating algebraic expressions',strand:'Algebra',codes:['C2.2'],
  guide:{goal:'Evaluate algebraic expressions that involve rational numbers.',words:'evaluate, substitute, variable, expression, rational number, formula',
   ask:['What does it mean to substitute −1.5 for x?','Why do brackets help when you substitute a negative number?','How is a formula an expression you evaluate?'],home:'Use the formula C = 2.5h + 4 for a bike rental (h hours). Evaluate it for 0.5, 2 and 3.5 hours.'},
- learn:[{say:'Feed the machine.',speech:'An expression machine follows its rule. Put in x equals negative one point five. The machine computes three times negative one point five, minus two. Out comes negative six point five.',view:'model',demo:'run'},
+ learn:[{say:'Feed the machine.',speech:'Jalen’s expression machine follows its rule. Put in x equals negative one point five. The machine computes three times negative one point five, minus two. Out comes negative six point five.',view:'model',demo:'run'},
         {say:'Read about substituting.',speech:'To evaluate, replace each variable with its value, then follow the order of operations. Put negative numbers and fractions in brackets so the signs stay clear.',view:'read'},
         {say:'Watch: a different rule.',speech:'Change the rule to x divided by four, plus five. Put in negative eight. Negative eight divided by four is negative two, plus five is three.',view:'model',demo:'run2'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -200,7 +200,7 @@ P.lesson({id:'eval8',title:'Evaluating algebraic expressions',strand:'Algebra',c
 P.lesson({id:'equations8',title:'Solving multi-term equations',strand:'Algebra',codes:['C2.3'],
  guide:{goal:'Solve equations that involve multiple terms, integers and decimal numbers in various contexts, and verify solutions.',words:'equation, variable, balance, inverse operation, both sides, verify, solution',
   ask:['Why must you do the same thing to both sides?','How do you get rid of x on the right side of 3x + 5 = x − 7?','How do you verify a solution?'],home:'A phone plan costs $25 a month plus $0.10 per text. Your bill is $32.50. Write and solve an equation for the number of texts.'},
- learn:[{say:'Keep the balance level.',speech:'Three x plus five equals x minus seven. Take one x off both sides: two x plus five equals negative seven. Take five off both sides: two x equals negative twelve. Divide both sides by two: x equals negative six.',view:'model',demo:'solve'},
+ learn:[{say:'Keep the balance level.',speech:'Sana’s equation is three x plus five equals x minus seven. Take one x off both sides: two x plus five equals negative seven. Take five off both sides: two x equals negative twelve. Divide both sides by two: x equals negative six.',view:'model',demo:'solve'},
         {say:'Read about verifying.',speech:'To verify, substitute the solution into the original equation. Three times negative six plus five is negative thirteen, and negative six minus seven is also negative thirteen. Both sides match, so x equals negative six is correct.',view:'read'},
         {say:'Watch: decimals.',speech:'Four x minus two point five equals two x plus four point five. Subtract two x, add two point five, then divide by two. x equals three point five.',view:'model',demo:'dec'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -221,7 +221,7 @@ P.lesson({id:'equations8',title:'Solving multi-term equations',strand:'Algebra',
   const post=mk(new THREE.CylinderGeometry(.05,.07,1.2,12),lam('#64748b'),0);post.position.set(0,.6,-2.3);grp.add(post);const beam=mk(new THREE.BoxGeometry(4.0,.07,.12),lam('#475569'),0);beam.position.set(0,1.22,-2.3);grp.add(beam);
   function pan(x,a,b){const pg=new THREE.Group();pg.position.set(x,0,-2.3);const plate=mk(new THREE.CylinderGeometry(.85,.85,.05,32),lam('#cbd5e1'),20);plate.position.y=.5;pg.add(plate);[-1,1].forEach(s=>{const r=seg(V(s*.6,.52,0),V(0,1.2,0),'#94a3b8',.01);pg.add(r);});
     for(let i=0;i<a;i++){const bx=mk(G('eq8x',()=>new THREE.BoxGeometry(.24,.24,.24)),lam('#16a36f'),0);bx.position.set(-.55+(i%4)*.28,.65+Math.floor(i/4)*.26,-.15);pg.add(bx);const l=label('x',{size:.13,color:'#fff'});l.position.copy(bx.position).add(V(0,0,.14));pg.add(l);}
-    if(b){const w=mk(new THREE.CylinderGeometry(.2,.24,.28,20),lam(b>0?'#f5b301':'#e2457a'),0);w.position.set(.45,.67,.2);pg.add(w);const l=label(fmt(b),{size:.18,bg:'#ffffff'});l.position.set(.45,1.0,.2);pg.add(l);}g2.add(pg);}
+    if(b){const w=mk(new THREE.CylinderGeometry(.2,.24,.28,20),lam(b>0?'#f5b301':'#e4572e'),0);w.position.set(.45,.67,.2);pg.add(w);const l=label(fmt(b),{size:.18,bg:'#ffffff'});l.position.set(.45,1.0,.2);pg.add(l);}g2.add(pg);}
   function draw(){clearGroup(g2);pan(-1.5,st.a,st.b);pan(1.5,st.c,st.d);const e=label(eq(st),{size:.26,bg:'#ffffff',border:acc()});e.position.set(0,1.85,-2.3);g2.add(e);A.redraw();
     if(st.a===1&&st.b===0&&st.c===0){A.say('x = '+fmt(st.d));if(mode==='play'&&!st.setup&&st.solve)game.solved('Yes! x = '+fmt(st.d)+'. Verify it!');}}
   function op(k){if(k==='x'){if(st.c<=0){A.bad('There is no x on the right to remove.');return;}st.a--;st.c--;st.hist.push('− x');}
@@ -247,7 +247,7 @@ function eq(st){const L=lin(st.a,st.b,'x'),R=lin(st.c,st.d,'x');return L+' = '+R
 P.lesson({id:'inequal8',title:'Solving and graphing inequalities',strand:'Algebra',codes:['C2.4'],
  guide:{goal:'Solve inequalities that involve integers, and verify and graph the solutions.',words:'inequality, solution set, open dot, closed dot, greater than, less than or equal to, verify',
   ask:['What is the difference between x > −3 and x ≥ −3 on a graph?','How do you solve x + 4 > 1?','How can you verify that −2 is in the solution?'],home:'A ride needs riders at least 120 cm tall. Write an inequality and graph it. Test some heights.'},
- learn:[{say:'A whole set of answers.',speech:'x plus four is greater than one. Subtract four from both sides: x is greater than negative three. Every number to the right of negative three works. The dot is open because negative three itself does not work.',view:'model',demo:'solve'},
+ learn:[{say:'A whole set of answers.',speech:'Marcus needs x plus four to be greater than one. Subtract four from both sides: x is greater than negative three. Every number to the right of negative three works. The dot is open because negative three itself does not work.',view:'model',demo:'solve'},
         {say:'Read about open and closed dots.',speech:'An open dot means the boundary number is not included: greater than or less than. A closed dot means it is included: greater than or equal to, or less than or equal to.',view:'read'},
         {say:'Watch: verify with test points.',speech:'Test numbers to verify. Tap each point: the green ones make the inequality true and the red ones make it false. All the green points are on the arrow.',view:'model',demo:'test'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -272,7 +272,7 @@ P.lesson({id:'inequal8',title:'Solving and graphing inequalities',strand:'Algebr
   function draw(){clearGroup(g2);clearGroup(pts);const x0=X(st.b),x1=st.dir>0?X(10.6):X(-10.6);const ray=mk(new THREE.BoxGeometry(Math.abs(x1-x0),.07,.1),lam('#16a36f'),0);ray.position.set((x0+x1)/2,.12,z);g2.add(ray);
     const hd=mk(new THREE.ConeGeometry(.08,.2,12),lam('#16a36f'),0);hd.position.set(x1,.12,z);hd.rotation.z=st.dir>0?-Math.PI/2:Math.PI/2;g2.add(hd);
     const dot=mk(new THREE.TorusGeometry(.08,.03,10,20),lam('#16a36f'),0);dot.rotation.x=Math.PI/2;dot.position.set(x0,.14,z);g2.add(dot);if(st.closed){const f=mk(new THREE.CylinderGeometry(.08,.08,.05,18),lam('#16a36f'),0);f.position.set(x0,.14,z);g2.add(f);}
-    for(let v=-10;v<=10;v+=1){const ok=st.tested[v];const s=mk(G('in8p',()=>new THREE.SphereGeometry(.055,10,8)),lam(ok==null?'#e2e8f0':ok?'#16a36f':'#e2457a'),0);s.position.set(X(v),.35,z-.4);pts.add(s);A.drag(s,{tap:()=>test(v)});}
+    for(let v=-10;v<=10;v+=1){const ok=st.tested[v];const s=mk(G('in8p',()=>new THREE.SphereGeometry(.055,10,8)),lam(ok==null?'#e2e8f0':ok?'#16a36f':'#e4572e'),0);s.position.set(X(v),.35,z-.4);pts.add(s);A.drag(s,{tap:()=>test(v)});}
     const e=label(iq(st.ineq),{size:.26,bg:'#ffffff',border:acc()});e.position.set(0,1.1,-2.5);g2.add(e);A.redraw();}
   function holds(v){const q=st.ineq,L=q.a*v+q.c;return q.s==='>'?L>q.r:q.s==='<'?L<q.r:q.s==='≥'?L>=q.r:L<=q.r;}
   function test(v){st.tested[v]=holds(v);A.pop();A.say('x = '+fmt(v)+': '+iq(st.ineq).replace(/x/g,par(v))+(holds(v)?'  ✓':'  ✗'));draw();}
@@ -298,7 +298,7 @@ const TEMPS=[18,22,25,19,27,21,16,24,23,20];
 P.lesson({id:'coding8',title:'Coding to analyse data',strand:'Algebra',codes:['C3.1','C3.2'],
  guide:{goal:'Solve problems by writing and executing code that analyses data to inform decisions, and read and alter existing code, describing how changes affect the outcomes and the efficiency of the code.',words:'loop, condition, variable, count, sum, maximum, efficiency, data set',
   ask:['What does the loop do with each temperature?','How does changing 20 to 23 change the count?','Why is a loop more efficient than ten separate lines?'],home:'Record the time you go to sleep for a week. Write steps a program would use to find your average bedtime.'},
- learn:[{say:'Loop through the data.',speech:'This code loops through ten daily temperatures. For each day, if the temperature is greater than twenty, it adds one to the count. Watch each bar light up as the loop checks it. Six days were warmer than twenty degrees.',view:'model',demo:'run'},
+ learn:[{say:'Loop through the data.',speech:'Ana’s code loops through ten daily temperatures. For each day, if the temperature is greater than twenty, it adds one to the count. Watch each bar light up as the loop checks it. Six days were warmer than twenty degrees.',view:'model',demo:'run'},
         {say:'Read the code.',speech:'A loop repeats the same steps for every item in the data. A condition, like if t is greater than twenty, decides what happens. A variable, like count or total, keeps track of the result.',view:'read'},
         {say:'Watch: alter the code.',speech:'Change the code from counting to finding the total. Then divide by ten to find the mean temperature: twenty-one point five degrees. Small changes to code change the outcome.',view:'model',demo:'mean'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -319,7 +319,7 @@ P.lesson({id:'coding8',title:'Coding to analyse data',strand:'Algebra',codes:['C
  build(S,grp,mode,game){const st=S.st;const g2=new THREE.Group();grp.add(g2);const sc=.055;
   function draw(){clearGroup(g2);TEMPS.forEach((t,i)=>{const x=-2.0+i*.42,h=t*sc;const hit=st.job==='count'?t>st.th:st.job==='max'?false:true;const lit=i<=st.i;const col=!lit?'#cbd5e1':st.job==='count'?(hit?'#f97316':'#93c5fd'):'#f97316';
       const b=mk(new THREE.BoxGeometry(.3,h,.4),lam(i===st.i?'#f5b301':col),20);b.position.set(x,h/2,-2.0);g2.add(b);const l=label(String(t),{size:.14,color:INK});l.position.set(x,h+.15,-2.0);g2.add(l);});
-    if(st.job==='count'){const th=mk(new THREE.BoxGeometry(4.3,.02,.5),new THREE.MeshLambertMaterial({color:'#e2457a',transparent:true,opacity:.35}),0);th.position.set(-.1,st.th*sc,-2.0);g2.add(th);const tl=label('t > '+st.th,{size:.16,color:'#be185d'});tl.position.set(2.0,st.th*sc+.15,-1.65);g2.add(tl);}
+    if(st.job==='count'){const th=mk(new THREE.BoxGeometry(4.3,.02,.5),new THREE.MeshLambertMaterial({color:'#e4572e',transparent:true,opacity:.35}),0);th.position.set(-.1,st.th*sc,-2.0);g2.add(th);const tl=label('t > '+st.th,{size:.16,color:'#c2410c'});tl.position.set(2.0,st.th*sc+.15,-1.65);g2.add(tl);}
     const o=label(st.out==null?'run the code':'output: '+fmt(st.out),{size:.24,bg:'#1e293b',color:'#86efac'});o.position.set(0,1.95,-2.4);g2.add(o);A.redraw();}
   function result(){return st.job==='count'?TEMPS.filter(t=>t>st.th).length:st.job==='mean'?r4(TEMPS.reduce((a,b)=>a+b,0)/10):Math.max(...TEMPS);}
   function run(){st.out=null;st.i=-1;draw();const s=TEMPS.map((_,i)=>[260,()=>{st.i=i;draw();}]);s.push([300,()=>{st.out=result();st.i=99;draw();A.pop();A.say('output: '+fmt(st.out));
@@ -343,7 +343,7 @@ P.lesson({id:'coding8',title:'Coding to analyse data',strand:'Algebra',codes:['C
 P.lesson({id:'twovar8',title:'Two-variable data and collecting it',strand:'Data',codes:['D1.1','D1.2'],
  guide:{goal:'Identify situations involving one-variable and two-variable data and explain when each is needed, and collect continuous data on two variables and organize it in a table of values.',words:'one-variable data, two-variable data, continuous data, independent variable, dependent variable, table of values, trial',
   ask:['Why does “ramp height and distance rolled” need two variables?','Is “time to run 100 m” continuous or discrete?','Which variable do you change on purpose?'],home:'Measure the height and arm span of 5 family members. Record them in a table of values. Is there a relationship?'},
- learn:[{say:'Change one, measure the other.',speech:'Does a higher ramp make the car roll farther? Set the ramp height, release the car, and measure the distance. Each trial gives two numbers: height and distance. That is two-variable data.',view:'model',demo:'roll'},
+ learn:[{say:'Change one, measure the other.',speech:'Does a higher ramp make Rohan’s car roll farther? Set the ramp height, release the car, and measure the distance. Each trial gives two numbers: height and distance. That is two-variable data.',view:'model',demo:'roll'},
         {say:'Read about one and two variables.',speech:'One-variable data describes one thing, like everyone’s height. Two-variable data pairs two measurements, to look for a relationship. Continuous data, like distance or time, can be any value in a range.',view:'read'},
         {say:'Watch: build a table.',speech:'Try several heights. Each result goes into the table of values. The ramp height is the independent variable, and the distance is the dependent variable.',view:'model',demo:'table'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -354,7 +354,7 @@ P.lesson({id:'twovar8',title:'Two-variable data and collecting it',strand:'Data'
  init:k=>({h:10,rows:[],need:false,ask:null}),
  left(p,S){const g=p.g;let y=header(p,S);
   y=para(p,y,'*One-variable data* describes one attribute. *Two-variable data* pairs two attributes to look for a relationship.')+14;
-  [['One variable','heights of students in a class','#2f7de1'],['Two variables','ramp height and distance rolled','#e2457a'],['Two variables','hours of study and test score','#e2457a']].forEach(([a,b,c],i)=>{rr(g,X0,y+i*58,TW,50,12);g.fillStyle=tint(c,.12);g.fill();T(g,a,X0+18,y+i*58+34,FT.bodyB,c);T(g,b,X0+240,y+i*58+34,FT.body);});y+=190;
+  [['One variable','heights of students in a class','#2f7de1'],['Two variables','ramp height and distance rolled','#e4572e'],['Two variables','hours of study and test score','#e4572e']].forEach(([a,b,c],i)=>{rr(g,X0,y+i*58,TW,50,12);g.fillStyle=tint(c,.12);g.fill();T(g,a,X0+18,y+i*58+34,FT.bodyB,c);T(g,b,X0+240,y+i*58+34,FT.body);});y+=190;
   y=para(p,y,'*Continuous data* can take any value in a range (length, mass, time). *Discrete data* is counted (number of pets).')+10;
   y=para(p,y,'The *independent variable* is the one you change (ramp height). The *dependent variable* is what you measure (distance).')+10;
   y=keyWords(p,y,[['two-variable data','pairs of measurements for each trial'],['table of values','a table that lists the pairs']]);
@@ -365,7 +365,7 @@ P.lesson({id:'twovar8',title:'Two-variable data and collecting it',strand:'Data'
   for(let i=0;i<=4;i++){const l=label(String(i*50),{size:.12,color:GREY});l.position.set(-1.15+i*.85,.08,-1.25);grp.add(l);}
   function draw(){clearGroup(g2);const H=st.h*.035;const len=1.0;const ramp=mk(new THREE.BoxGeometry(Math.hypot(len,H),.05,.5),lam('#94a3b8'),20);ramp.position.set(-1.65,H/2+.02,-1.9);ramp.rotation.z=-Math.atan2(H,len);g2.add(ramp);
     const sup=mk(new THREE.BoxGeometry(.08,H,.4),lam('#64748b'),0);sup.position.set(-2.15,H/2,-1.9);g2.add(sup);const hl=label(st.h+' cm',{size:.16,bg:'#ffffff'});hl.position.set(-2.15,H+.25,-1.9);g2.add(hl);
-    car=new THREE.Group();const b=mk(new THREE.BoxGeometry(.28,.1,.18),lam('#e2457a'),0);b.position.y=.1;car.add(b);[-1,1].forEach(a=>[-1,1].forEach(c=>{const w=mk(new THREE.CylinderGeometry(.04,.04,.03,12),lam(INK),0);w.rotation.x=Math.PI/2;w.position.set(a*.09,.045,c*.1);car.add(w);}));car.position.set(-2.1,H+.03,-1.9);car.rotation.z=-Math.atan2(H,len);g2.add(car);
+    car=new THREE.Group();const b=mk(new THREE.BoxGeometry(.28,.1,.18),lam('#e4572e'),0);b.position.y=.1;car.add(b);[-1,1].forEach(a=>[-1,1].forEach(c=>{const w=mk(new THREE.CylinderGeometry(.04,.04,.03,12),lam(INK),0);w.rotation.x=Math.PI/2;w.position.set(a*.09,.045,c*.1);car.add(w);}));car.position.set(-2.1,H+.03,-1.9);car.rotation.z=-Math.atan2(H,len);g2.add(car);
     st.rows.forEach((r,i)=>{const m=mk(G('tv8m',()=>new THREE.SphereGeometry(.04,8,6)),lam('#2f7de1'),0);m.position.set(-1.15+r[1]/200*3.4,.05,-1.5);g2.add(m);});A.redraw();}
   function release(){const H=st.h*.035;const d=Math.max(5,st.h*6.2+(Math.random()-.5)*8);const xEnd=-1.15+Math.min(200,d)/200*3.4;
     tween(.5,k=>{car.position.set(-2.1+(-1.15+.0+2.1)*k,H+.03-H*k,-1.9);}).then(()=>{car.rotation.z=0;return tween(1.0,k=>{car.position.set(-1.15+(xEnd+1.15)*easeOutF(k),.03,-1.9);});}).then(()=>{st.rows.push([st.h,Math.round(d*10)/10]);A.pop();A.say(st.h+' cm → '+(Math.round(d*10)/10)+' cm');draw();
@@ -392,7 +392,7 @@ const DS={sp:{n:'Hours studied vs test score',x:'hours studied',y:'score',d:'str
 P.lesson({id:'scatter8',title:'Scatter plots and relationships',strand:'Data',codes:['D1.3','D1.4','D1.5'],
  guide:{goal:'Select the best type of graph, including scatter plots, display data with proper sources, titles, labels and scales, create infographics, and describe relationships as strong, weak, none, positive or negative, with and without outliers.',words:'scatter plot, correlation, positive, negative, strong, weak, outlier, line of best fit, infographic',
   ask:['How can you tell a strong relationship from a weak one?','What does an outlier do to a line of best fit?','When is a scatter plot better than a bar graph?'],home:'Make an infographic about your own data: a title, a scatter plot or table, a source, and a short story about what it shows.'},
- learn:[{say:'Points tell a story.',speech:'Each ball is one student: hours studied across, test score up. The points rise from left to right in a tight band: a strong positive relationship. Watch the line of best fit appear.',view:'model',demo:'sp'},
+ learn:[{say:'Points tell a story.',speech:'Each ball is one student in Elena’s survey: hours studied across, test score up. The points rise from left to right in a tight band: a strong positive relationship. Watch the line of best fit appear.',view:'model',demo:'sp'},
         {say:'Read about describing relationships.',speech:'Positive means both values rise together. Negative means one rises as the other falls. Strong means the points are close to a line; weak means they are spread out. None means there is no pattern.',view:'read'},
         {say:'Watch: an outlier.',speech:'Now add an outlier: one point far from the others. It pulls the line of best fit and can make a relationship look weaker. Always check outliers.',view:'model',demo:'out'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -412,7 +412,7 @@ P.lesson({id:'scatter8',title:'Scatter plots and relationships',strand:'Data',co
  readout(p,S,y){const g=p.g,st=S.st;T(g,DS[st.ds].n,X0,y+40,FT.bodyB,INK);T(g,'Relationship: '+DS[st.ds].d+(st.out?' (with an outlier)':''),X0,y+84,ZS(34),acc());return y+96;},
  build(S,grp,mode,game){const st=S.st;const g2=new THREE.Group();grp.add(g2);const ox=-1.9,oy=.05,z=-2.1,sx=.38,sy=.23;
   const back=mk(new THREE.BoxGeometry(4.0,2.5,.04),[lam('#f8fafc'),lam('#f8fafc'),lam('#f8fafc'),lam('#f8fafc'),cellMat('#ffffff',10,10),lam('#f8fafc')],20);back.position.set(ox+1.9,1.3,z-.1);grp.add(back);
-  function draw(){clearGroup(g2);const d=dataset(st.ds).slice();if(st.out)d.push(st.ds==='sp'?[8.5,1.2]:[2,9.3]);d.forEach(([a,b],i)=>{const isO=st.out&&i===d.length-1;const s=mk(G('sc8b',()=>new THREE.SphereGeometry(.07,14,10)),lam(isO?'#e2457a':'#2f7de1'),0);s.position.set(ox+a*sx,oy+b*sy,z);g2.add(s);});
+  function draw(){clearGroup(g2);const d=dataset(st.ds).slice();if(st.out)d.push(st.ds==='sp'?[8.5,1.2]:[2,9.3]);d.forEach(([a,b],i)=>{const isO=st.out&&i===d.length-1;const s=mk(G('sc8b',()=>new THREE.SphereGeometry(.07,14,10)),lam(isO?'#e4572e':'#2f7de1'),0);s.position.set(ox+a*sx,oy+b*sy,z);g2.add(s);});
     const xl=label(DS[st.ds].x+' →',{size:.15,color:GREY});xl.position.set(0,.1,z+.25);g2.add(xl);const yl=label(DS[st.ds].y+' ↑',{size:.15,color:GREY});yl.position.set(ox-.05,2.75,z);g2.add(yl);const tl=label(DS[st.ds].n,{size:.17,bg:'#ffffff'});tl.position.set(0,2.85,z);g2.add(tl);
     if(st.line){const n=d.length,mx=d.reduce((a,p)=>a+p[0],0)/n,my=d.reduce((a,p)=>a+p[1],0)/n;const m=d.reduce((a,p)=>a+(p[0]-mx)*(p[1]-my),0)/d.reduce((a,p)=>a+(p[0]-mx)**2,0);const yA=Math.max(0,Math.min(10,my+m*(0-mx))),yB=Math.max(0,Math.min(10,my+m*(10-mx)));
       g2.add(seg(V(ox,oy+yA*sy,z+.05),V(ox+10*sx,oy+yB*sy,z+.05),'#f5b301',.02));}A.redraw();}
@@ -433,7 +433,7 @@ P.lesson({id:'scatter8',title:'Scatter plots and relationships',strand:'Data',co
 P.lesson({id:'mislead8',title:'Misleading graphs and fair conclusions',strand:'Data',codes:['D1.6'],
  guide:{goal:'Analyse data presented in various ways, including scatter plots and misleading graphs, by asking and answering questions, challenging preconceived notions, and drawing conclusions, then make convincing arguments and informed decisions.',words:'misleading, scale, pictograph, volume, correlation, causation, conclusion, argument',
   ask:['Why does doubling every side of a picture make it look 8 times bigger?','Do ice-cream sales cause sunburns?','What questions should you ask about any graph?'],home:'Find a graph in an ad. Ask: What is the scale? Who made it? What is not shown? Write a fair conclusion.'},
- learn:[{say:'Bigger than it looks.',speech:'Sales doubled, from one thousand to two thousand. The fair picture doubles only the height. The misleading picture doubles the height, width and depth, so the box holds eight times as much. It looks like sales grew eight times!',view:'model',demo:'cube'},
+ learn:[{say:'Bigger than it looks.',speech:'In Jalen’s ad, sales doubled, from one thousand to two thousand. The fair picture doubles only the height. The misleading picture doubles the height, width and depth, so the box holds eight times as much. It looks like sales grew eight times!',view:'model',demo:'cube'},
         {say:'Read about correlation and causation.',speech:'Two things can rise together without one causing the other. Ice-cream sales and sunburns both rise in summer, because of hot, sunny weather. Correlation is not causation.',view:'read'},
         {say:'Watch: the summer effect.',speech:'Watch the months go by. As the temperature rises, both ice-cream sales and sunburns rise. The hidden variable is the weather.',view:'model',demo:'summer'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -445,18 +445,18 @@ P.lesson({id:'mislead8',title:'Misleading graphs and fair conclusions',strand:'D
  left(p,S){const g=p.g;let y=header(p,S);
   y=para(p,y,'Graphs can mislead by the *way* they are drawn. Always ask questions before drawing a conclusion.')+14;
   g.fillStyle='#93c5fd';g.fillRect(X0+20,y+120,60,40);g.fillRect(X0+110,y+80,60,80);T(g,'fair: ×2 height',X0+20,y+190,FT.smallB,'#2563eb');
-  g.fillStyle='#fda4af';g.fillRect(X0+330,y+120,40,40);g.fillRect(X0+400,y+80,80,80);T(g,'misleading: ×2 sides = ×4 area',X0+330,y+190,FT.smallB,'#be185d');y+=214;
+  g.fillStyle='#fdba74';g.fillRect(X0+330,y+120,40,40);g.fillRect(X0+400,y+80,80,80);T(g,'misleading: ×2 sides = ×4 area',X0+330,y+190,FT.smallB,'#c2410c');y+=214;
   [['What is the scale? Does it start at 0?'],['Are pictures scaled fairly?'],['Who made the graph, and why?'],['Is a relationship really cause and effect?']].forEach(([q],i)=>{T(g,'?',X0+12,y+i*40+26,ZS(30),acc());T(g,q,X0+50,y+i*40+26,FT.body);});y+=196;
   y=para(p,y,'*Correlation is not causation:* ice-cream sales and sunburns rise together because of a third factor, *sunny weather*.')+10;
   y=keyWords(p,y,[['causation','one thing directly makes another happen'],['hidden variable','a third factor that affects both']]);
   predict(p,y,S,'p21','A cube icon doubles every edge. How many times bigger is its volume?','*8 times.* 2 × 2 × 2.');},
- readout(p,S,y){const g=p.g,st=S.st;if(st.view==='cube'){T(g,'Real growth: × '+st.k,X0,y+44,FT.bodyB,INK);T(g,st.fair?'Fair picture: looks × '+st.k:'Misleading picture: looks × '+st.k**3,X0,y+90,ZS(38),st.fair?'#16a36f':'#e2457a');}else{T(g,'Ice-cream sales and sunburns rise together.',X0,y+44,FT.bodyB);T(g,'Cause: hot, sunny weather',X0,y+90,ZS(36),acc());}return y+100;},
+ readout(p,S,y){const g=p.g,st=S.st;if(st.view==='cube'){T(g,'Real growth: × '+st.k,X0,y+44,FT.bodyB,INK);T(g,st.fair?'Fair picture: looks × '+st.k:'Misleading picture: looks × '+st.k**3,X0,y+90,ZS(38),st.fair?'#16a36f':'#e4572e');}else{T(g,'Ice-cream sales and sunburns rise together.',X0,y+44,FT.bodyB);T(g,'Cause: hot, sunny weather',X0,y+90,ZS(36),acc());}return y+100;},
  build(S,grp,mode,game){const st=S.st;const g2=new THREE.Group();grp.add(g2);
   function draw(){clearGroup(g2);if(st.view==='cube'){const s0=.5;const a=mk(new THREE.BoxGeometry(s0,s0,s0),lam('#3b82f6'),0);a.position.set(-1.4,s0/2,-2.0);g2.add(a);const la=label('1000',{size:.2,bg:'#ffffff'});la.position.set(-1.4,s0+.25,-2.0);g2.add(la);
-      const f=st.fair?[1,st.k,1]:[st.k,st.k,st.k];const b=mk(new THREE.BoxGeometry(s0*f[0],s0*f[1],s0*f[2]),lam(st.fair?'#16a36f':'#e2457a'),0);b.position.set(.6,s0*f[1]/2,-2.0);g2.add(b);const lb=label(1000*st.k+'',{size:.2,bg:'#ffffff'});lb.position.set(.6,s0*f[1]+.25,-2.0);g2.add(lb);
-      const t=label(st.fair?'FAIR':'MISLEADING',{size:.24,color:st.fair?'#16a36f':'#e2457a'});t.position.set(0,2.2,-2.4);g2.add(t);}
+      const f=st.fair?[1,st.k,1]:[st.k,st.k,st.k];const b=mk(new THREE.BoxGeometry(s0*f[0],s0*f[1],s0*f[2]),lam(st.fair?'#16a36f':'#e4572e'),0);b.position.set(.6,s0*f[1]/2,-2.0);g2.add(b);const lb=label(1000*st.k+'',{size:.2,bg:'#ffffff'});lb.position.set(.6,s0*f[1]+.25,-2.0);g2.add(lb);
+      const t=label(st.fair?'FAIR':'MISLEADING',{size:.24,color:st.fair?'#16a36f':'#e4572e'});t.position.set(0,2.2,-2.4);g2.add(t);}
     else{const temps=[2,5,11,17,22,26,28,27,21,14,7,3];for(let i=0;i<12;i++){const x=-2.0+i*.36,on=i<=st.m;const t=temps[i];const ic=mk(new THREE.BoxGeometry(.13,Math.max(.02,t*.05),.3),lam(on?'#f59e0b':'#e5e7eb'),20);ic.position.set(x-.07,t*.025,-2.2);g2.add(ic);
-        const sb=mk(new THREE.BoxGeometry(.13,Math.max(.02,t*.04),.3),lam(on?'#e2457a':'#e5e7eb'),20);sb.position.set(x+.07,t*.02,-2.2);g2.add(sb);const l=label('JFMAMJJASOND'[i],{size:.12,color:GREY});l.position.set(x,.08,-1.85);g2.add(l);}
+        const sb=mk(new THREE.BoxGeometry(.13,Math.max(.02,t*.04),.3),lam(on?'#e4572e':'#e5e7eb'),20);sb.position.set(x+.07,t*.02,-2.2);g2.add(sb);const l=label('JFMAMJJASOND'[i],{size:.12,color:GREY});l.position.set(x,.08,-1.85);g2.add(l);}
       const sun=mk(new THREE.SphereGeometry(.12+temps[Math.min(11,st.m)]*.008,18,14),new THREE.MeshBasicMaterial({color:'#facc15'}),0);sun.position.set(1.9,2.1,-2.6);g2.add(sun);const k=label('ice cream   sunburns',{size:.15,color:INK});k.position.set(0,1.9,-2.4);g2.add(k);}A.redraw();}
   draw();
   return {info:()=>st.view+(st.fair?' fair':' misleading'),
@@ -478,7 +478,7 @@ P.lesson({id:'mislead8',title:'Misleading graphs and fair conclusions',strand:'D
 P.lesson({id:'venn8',title:'Venn diagrams and probability',strand:'Data',codes:['D2.1'],
  guide:{goal:'Solve probability problems using appropriate tools and strategies, including Venn and tree diagrams.',words:'Venn diagram, overlap, both, neither, event, probability, outcome',
   ask:['What does the overlap of a Venn diagram show?','How do you find how many students play neither sport?','How can a Venn diagram help find a probability?'],home:'Ask 10 people if they have a cat and if they have a dog. Sort them in a Venn diagram. What is P(both)?'},
- learn:[{say:'Sort into circles.',speech:'In a class of twenty, twelve play soccer and eight play hockey. Three play both: they go in the overlap. Watch each student drop into the right region.',view:'model',demo:'fill'},
+ learn:[{say:'Sort into circles.',speech:'In Sana’s class of twenty, twelve play soccer and eight play hockey. Three play both: they go in the overlap. Watch each student drop into the right region.',view:'model',demo:'fill'},
         {say:'Read about regions.',speech:'Soccer only is twelve minus three: nine. Hockey only is eight minus three: five. Nine plus three plus five is seventeen, so three students play neither, outside both circles.',view:'read'},
         {say:'Watch: a probability.',speech:'Pick a student at random. The probability that they play both sports is three out of twenty. The probability that they play neither is also three out of twenty.',view:'model',demo:'prob'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -489,7 +489,7 @@ P.lesson({id:'venn8',title:'Venn diagrams and probability',strand:'Data',codes:[
  init:k=>({tot:20,a:12,b:8,both:3,sorted:true,sel:null,ask:null}),
  left(p,S){const g=p.g;let y=header(p,S);
   y=para(p,y,'A *Venn diagram* sorts outcomes into groups. The *overlap* shows outcomes in *both* groups.')+14;
-  const cx=X0+TW/2,cy=y+130;g.globalAlpha=.35;g.beginPath();g.arc(cx-70,cy,110,0,Math.PI*2);g.fillStyle='#2f7de1';g.fill();g.beginPath();g.arc(cx+70,cy,110,0,Math.PI*2);g.fillStyle='#e2457a';g.fill();g.globalAlpha=1;g.strokeStyle=INK;g.strokeRect(X0+20,y,TW-40,260);
+  const cx=X0+TW/2,cy=y+130;g.globalAlpha=.35;g.beginPath();g.arc(cx-70,cy,110,0,Math.PI*2);g.fillStyle='#2f7de1';g.fill();g.beginPath();g.arc(cx+70,cy,110,0,Math.PI*2);g.fillStyle='#e4572e';g.fill();g.globalAlpha=1;g.strokeStyle=INK;g.strokeRect(X0+20,y,TW-40,260);
   T(g,'soccer only 9',cx-130,cy+8,FT.smallB,INK,'center');T(g,'both 3',cx,cy+8,FT.smallB,INK,'center');T(g,'hockey only 5',cx+130,cy+8,FT.smallB,INK,'center');T(g,'neither 3',X0+90,y+240,FT.smallB,INK,'center');T(g,'20 students',X0+TW-110,y+36,FT.smallB,GREY);y+=280;
   y=para(p,y,'*Neither* = total − (soccer + hockey − both) = 20 − (12 + 8 − 3) = *3*.')+10;
   y=para(p,y,'P(both) = 3/20.  P(soccer or hockey) = 17/20.')+10;
@@ -498,10 +498,10 @@ P.lesson({id:'venn8',title:'Venn diagrams and probability',strand:'Data',codes:[
  readout(p,S,y){const g=p.g,st=S.st,n=st.tot-(st.a+st.b-st.both);const LB=st.lab||['soccer','hockey'];T(g,LB[0]+' only '+(st.a-st.both)+' · both '+st.both+' · '+LB[1]+' only '+(st.b-st.both)+' · neither '+n,X0,y+44,FT.bodyB);T(g,st.sel?'P('+st.sel[0]+') = '+st.sel[1]+'/'+st.tot+(fr(st.sel[1],st.tot)!==st.sel[1]+'/'+st.tot?' = '+fr(st.sel[1],st.tot):''):'Tap a region for its probability.',X0,y+90,ZS(36),acc());return y+100;},
  build(S,grp,mode,game){const st=S.st;const g2=new THREE.Group();grp.add(g2);const z=-1.9;
   const mat=new THREE.MeshLambertMaterial({color:'#ffffff'});const base=mk(new THREE.BoxGeometry(4.4,.03,2.6),lam('#f1f5f9'),20);base.position.set(0,.015,z);grp.add(base);
-  [[-.55,'#2f7de1','soccer'],[.55,'#e2457a','hockey']].forEach(([x,c,t])=>{const ring=mk(new THREE.TorusGeometry(.95,.035,10,60),lam(c),0);ring.rotation.x=Math.PI/2;ring.position.set(x,.06,z);grp.add(ring);const disk=mk(new THREE.CylinderGeometry(.95,.95,.01,60),new THREE.MeshLambertMaterial({color:c,transparent:true,opacity:.15,depthWrite:false}),0);disk.position.set(x,.04,z);grp.add(disk);});
+  [[-.55,'#2f7de1','soccer'],[.55,'#e4572e','hockey']].forEach(([x,c,t])=>{const ring=mk(new THREE.TorusGeometry(.95,.035,10,60),lam(c),0);ring.rotation.x=Math.PI/2;ring.position.set(x,.06,z);grp.add(ring);const disk=mk(new THREE.CylinderGeometry(.95,.95,.01,60),new THREE.MeshLambertMaterial({color:c,transparent:true,opacity:.15,depthWrite:false}),0);disk.position.set(x,.04,z);grp.add(disk);});
   const regs=[['soccer only',-1.05,0],['both',0,0],['hockey only',1.05,0],['neither',-1.85,1.0]];regs.forEach(([n,x,dz])=>{const hit=mk(new THREE.CylinderGeometry(.35,.35,.02,20),new THREE.MeshBasicMaterial({transparent:true,opacity:0,depthWrite:false}),0);hit.position.set(x,.08,z+dz*.95);grp.add(hit);A.drag(hit,{tap:()=>sel(n)});});
   function counts(){return {'soccer only':st.a-st.both,'both':st.both,'hockey only':st.b-st.both,'neither':st.tot-(st.a+st.b-st.both)};}
-  function draw(){clearGroup(g2);const c=counts();const LB=st.lab||['soccer','hockey'];[[-1.25,'#2f7de1',LB[0]],[1.25,'#e2457a',LB[1]]].forEach(([x,cl,t])=>{const l=label(t,{size:.17,color:cl});l.position.set(x,.1,z-1.05);g2.add(l);});if(st.sorted){regs.forEach(([n,x,dz])=>{for(let i=0;i<c[n];i++){const col=n==='both'?'#8b5cf6':n==='neither'?'#94a3b8':n==='soccer only'?'#2f7de1':'#e2457a';const t=mk(G('vn8t',()=>new THREE.CylinderGeometry(.06,.06,.06,12)),lam(col),0);
+  function draw(){clearGroup(g2);const c=counts();const LB=st.lab||['soccer','hockey'];[[-1.25,'#2f7de1',LB[0]],[1.25,'#e4572e',LB[1]]].forEach(([x,cl,t])=>{const l=label(t,{size:.17,color:cl});l.position.set(x,.1,z-1.05);g2.add(l);});if(st.sorted){regs.forEach(([n,x,dz])=>{for(let i=0;i<c[n];i++){const col=n==='both'?'#8b5cf6':n==='neither'?'#94a3b8':n==='soccer only'?'#2f7de1':'#e4572e';const t=mk(G('vn8t',()=>new THREE.CylinderGeometry(.06,.06,.06,12)),lam(col),0);
         const cols=n==='both'?2:n==='neither'?6:3;t.position.set(x+((i%cols)-(cols-1)/2)*.15+(n==='neither'?.6:0),.07,z+dz*1.05+(Math.floor(i/cols)-1)*.15);g2.add(t);A.drag(t,{tap:()=>sel(n)});}const l=label(String(c[n]),{size:.2,bg:'#ffffff'});l.position.set(x+(n==='neither'?.6:0),.5,z+dz*1.05-.35);g2.add(l);});}A.redraw();}
   function sel(n){st.sel=[n,counts()[n]];A.pop();A.say('P('+n+') = '+st.sel[1]+'/'+st.tot);A.redraw();if(mode==='play'&&!st.setup&&st.want&&st.want===n)game.solved('Yes! P('+n+') = '+fr(st.sel[1],st.tot)+'.');}
   draw();
@@ -525,7 +525,7 @@ P.lesson({id:'venn8',title:'Venn diagrams and probability',strand:'Data',codes:[
 P.lesson({id:'tree8',title:'Tree diagrams and multiple events',strand:'Data',codes:['D2.1','D2.2'],
  guide:{goal:'Determine and compare the theoretical and experimental probabilities of multiple independent events and of multiple dependent events, using tree diagrams.',words:'tree diagram, independent events, dependent events, theoretical probability, experimental probability, trial, outcome',
   ask:['How many outcomes are there when you flip a coin and spin a 4-colour spinner?','Why do you multiply probabilities along a branch?','Why does drawing without replacement change the second branch?'],home:'Flip a coin and roll a die 36 times. Count how often you get heads and a 6. Compare with 1/12.'},
- learn:[{say:'Branches multiply.',speech:'Flip a coin, then spin a spinner with four equal colours. The tree has two branches, then four on each: eight outcomes. The chance of heads and red is one half times one quarter: one eighth.',view:'model',demo:'ind'},
+ learn:[{say:'Branches multiply.',speech:'Marcus flips a coin, then spins a spinner with four equal colours. The tree has two branches, then four on each: eight outcomes. The chance of heads and red is one half times one quarter: one eighth.',view:'model',demo:'ind'},
         {say:'Read about dependent events.',speech:'If the first event changes the second, the events are dependent. Draw two tickets from five without putting the first back: the second branch has only four tickets left. Multiply along the branches using the new chances.',view:'read'},
         {say:'Watch: run the experiment.',speech:'Now run two hundred trials. The experimental probability of heads and red gets close to the theoretical one eighth, which is zero point one two five.',view:'model',demo:'run'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -563,6 +563,6 @@ P.lesson({id:'tree8',title:'Tree diagrams and multiple events',strand:'Data',cod
       else{st.kind='ind';st.ask={ans:'It gets closer to 1/8',o:shuffle(['It gets closer to 1/8','It moves away from 1/8','It is always exactly 1/8']),ok:'Yes! More trials, closer to theory.'};txt='As you run *more trials*, what happens to the experimental P(heads, red)?';}
       draw();st.setup=false;return txt;}};}
 });
-function leaves(kind){if(kind==='ind'){const C=[['R','#e2457a'],['B','#2f7de1'],['G','#16a36f'],['Y','#f5b301']];return ['H','T'].flatMap(c=>C.map(([s,col])=>({n:c+', '+s,p:'1/8',v:.125,col})));}
-  return [{n:'R, R',p:'3/10',v:.3,col:'#e2457a'},{n:'R, B',p:'3/10',v:.3,col:'#8b5cf6'},{n:'B, R',p:'3/10',v:.3,col:'#8b5cf6'},{n:'B, B',p:'1/10',v:.1,col:'#2f7de1'}];}
+function leaves(kind){if(kind==='ind'){const C=[['R','#e4572e'],['B','#2f7de1'],['G','#16a36f'],['Y','#f5b301']];return ['H','T'].flatMap(c=>C.map(([s,col])=>({n:c+', '+s,p:'1/8',v:.125,col})));}
+  return [{n:'R, R',p:'3/10',v:.3,col:'#e4572e'},{n:'R, B',p:'3/10',v:.3,col:'#8b5cf6'},{n:'B, R',p:'3/10',v:.3,col:'#8b5cf6'},{n:'B, B',p:'1/10',v:.1,col:'#2f7de1'}];}
 })();

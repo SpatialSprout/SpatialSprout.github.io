@@ -6,7 +6,7 @@ const {THREE,V,W,D,PY,PX,X0,TW,INK,RED,BLUE,GREY,VIBE,FT,ZS,G,M,lam,mk,unitBox,c
 const acc=()=>P.ACC;
 const rnd=(a,b)=>a+Math.floor(Math.random()*(b-a+1)),pick=a=>a[Math.floor(Math.random()*a.length)],shuffle=a=>a.slice().sort(()=>Math.random()-.5);
 function choices(game,list,ans,ok,lab){return list.map(o=>({t:lab?lab(o):String(o),big:true,fn:()=>{if(o===ans){if(game)game.solved(ok);else A.good(ok);}else A.bad('Not quite. Try again!');}}));}
-const COL=['#ff4f8b','#ff8a3d','#ffc04d','#5fd38a','#2f7de1','#8b5cf6'];const HAND=()=>FT.hand||FT.body;
+const COL=['#ff6b35','#ff8a3d','#ffc04d','#5fd38a','#2f7de1','#8b5cf6'];const HAND=()=>FT.hand||FT.body;
 function slab(pts,col,h,op){const s=new THREE.Shape();pts.forEach(([x,z],i)=>i?s.lineTo(x,-z):s.moveTo(x,-z));s.closePath();const geo=new THREE.ExtrudeGeometry(s,{depth:h||.08,bevelEnabled:false});geo.rotateX(-Math.PI/2);
   return mk(geo,op?new THREE.MeshLambertMaterial({color:col,transparent:true,opacity:op,side:THREE.DoubleSide}):lam(col),20);}
 function seg(a,b,col,r){const len=a.distanceTo(b);const m=new THREE.Mesh(new THREE.CylinderGeometry(r,r,Math.max(.001,len),8),lam(col));m.position.copy(a).add(b).multiplyScalar(.5);m.quaternion.setFromUnitVectors(V(0,1,0),b.clone().sub(a).normalize());return m;}
@@ -16,11 +16,11 @@ const regPts=(n,r,rot)=>Array.from({length:n},(_,i)=>{const a=(rot||0)+Math.PI/2
    21. Sorting 2D shapes
    ========================================================= */
 const SH2=[{n:'triangle',pts:()=>regPts(3,.42),sides:3,right:0,sym:3,col:'#ff8a3d'},{n:'square',pts:()=>[[-.3,-.3],[.3,-.3],[.3,.3],[-.3,.3]],sides:4,right:4,sym:4,col:'#2f7de1'},{n:'rectangle',pts:()=>[[-.42,-.24],[.42,-.24],[.42,.24],[-.42,.24]],sides:4,right:4,sym:2,col:'#5fd38a'},
-  {n:'pentagon',pts:()=>regPts(5,.38),sides:5,right:0,sym:5,col:'#ff4f8b'},{n:'hexagon',pts:()=>regPts(6,.38),sides:6,right:0,sym:6,col:'#8b5cf6'},{n:'trapezoid',pts:()=>[[-.42,.22],[.42,.22],[.22,-.22],[-.22,-.22]],sides:4,right:0,sym:1,col:'#ffc04d'}];
+  {n:'pentagon',pts:()=>regPts(5,.38),sides:5,right:0,sym:5,col:'#ff6b35'},{n:'hexagon',pts:()=>regPts(6,.38),sides:6,right:0,sym:6,col:'#8b5cf6'},{n:'trapezoid',pts:()=>[[-.42,.22],[.42,.22],[.22,-.22],[-.22,-.22]],sides:4,right:0,sym:1,col:'#ffc04d'}];
 P.lesson({id:'shapes2',title:'Sides, corners and symmetry',strand:'Spatial Sense',codes:['E1.1'],
  guide:{goal:'Sort and identify two-dimensional shapes by comparing number of sides, side lengths, angles and number of lines of symmetry.',words:'side, vertex, corner, right angle, line of symmetry, triangle, pentagon, hexagon, trapezoid',
   ask:['How many sides does a hexagon have?','Which shapes have right angles?','How many lines of symmetry does a square have?'],home:'Find shapes on signs and windows. Count their sides and corners. Fold paper shapes to find lines of symmetry.'},
- learn:[{say:'Count the sides!',speech:'Tap each shape and count its sides. A triangle has three sides. A square has four sides that are all the same length, and four square corners called right angles. A hexagon has six sides!',view:'model',demo:'tour'},
+ learn:[{say:'Count the sides!',speech:'Tap each shape and count its sides with Omar. A triangle has three sides. A square has four sides that are all the same length, and four square corners called right angles. A hexagon has six sides!',view:'model',demo:'tour'},
         {say:'Read about symmetry.',speech:'A line of symmetry folds a shape into two matching halves. A rectangle has two lines of symmetry. A square has four! A trapezoid like this one has just one.',view:'read'},
         {say:'Watch: lines of symmetry.',speech:'Watch the fold lines appear on the square: one, two, three, four lines of symmetry.',view:'model',demo:'sym'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -65,7 +65,7 @@ const CFG={square:[[[0,0],[2,0],[0,2]],[[2,0],[2,2],[0,2]]],tri:[[[2,0],[4,0],[2
 P.lesson({id:'compose2',title:'Building shapes from shapes',strand:'Spatial Sense',codes:['E1.2'],
  guide:{goal:'Compose and decompose two-dimensional shapes, and show that the area of a shape stays the same when its parts are rearranged.',words:'compose, decompose, rearrange, area, square units, triangle, tangram',
   ask:['How many triangles make this square?','Does the area change when you move the pieces?','How many small triangles make a hexagon?'],home:'Cut a paper square into two triangles. Make a big triangle, then a different shape. Is it the same amount of paper?'},
- learn:[{say:'Two triangles, one square.',speech:'Two triangles fit together to make a square. The square covers four square units. Now slide one triangle over: it makes a big triangle! It still covers four square units.',view:'model',demo:'move'},
+ learn:[{say:'Two triangles, one square.',speech:'Luna fits two triangles together to make a square. The square covers four square units. Now slide one triangle over: it makes a big triangle! It still covers four square units.',view:'model',demo:'move'},
         {say:'Read about area.',speech:'Area is how much space a shape covers. When you rearrange the same pieces, the shape changes, but the area stays the same.',view:'read'},
         {say:'Watch: a hexagon.',speech:'Six small triangles fit together to make a hexagon. Decompose it, and you see the six pieces again.',view:'model',demo:'hex'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -78,7 +78,7 @@ P.lesson({id:'compose2',title:'Building shapes from shapes',strand:'Spatial Sens
   y=para(p,y,'*Compose:* put shapes together. *Decompose:* break a shape apart.')+16;
   const s=50,ox=X0+20;const tri=(pts,c)=>{g.beginPath();pts.forEach(([x,z],i)=>{const X=ox+x*s,Y=y+170-z*s;i?g.lineTo(X,Y):g.moveTo(X,Y);});g.closePath();g.fillStyle=c;g.fill();g.strokeStyle=INK;g.lineWidth=2;g.stroke();};
   for(let i=0;i<=14;i++){g.strokeStyle='#e5e7eb';g.beginPath();g.moveTo(ox+i*s,y);g.lineTo(ox+i*s,y+170);g.stroke();}
-  CFG.square.forEach((t,i)=>tri(t,i?'#ff4f8b':'#2f7de1'));CFG.tri.forEach((t,i)=>tri(t.map(([x,z])=>[x+4,z]),i?'#ff4f8b':'#2f7de1'));T(g,'4 square units',ox+50,y+200,FT.smallB,INK,'center');T(g,'still 4 square units!',ox+300,y+200,FT.smallB,INK,'center');y+=230;
+  CFG.square.forEach((t,i)=>tri(t,i?'#ff6b35':'#2f7de1'));CFG.tri.forEach((t,i)=>tri(t.map(([x,z])=>[x+4,z]),i?'#ff6b35':'#2f7de1'));T(g,'4 square units',ox+50,y+200,FT.smallB,INK,'center');T(g,'still 4 square units!',ox+300,y+200,FT.smallB,INK,'center');y+=230;
   const hx=X0+620,hy=y-130;for(let k=0;k<6;k++){g.beginPath();g.moveTo(hx,hy);g.lineTo(hx+Math.cos(k*Math.PI/3)*70,hy+Math.sin(k*Math.PI/3)*70);g.lineTo(hx+Math.cos((k+1)*Math.PI/3)*70,hy+Math.sin((k+1)*Math.PI/3)*70);g.closePath();g.fillStyle=COL[k];g.fill();g.strokeStyle='#fff';g.stroke();}
   y=para(p,y,'Moving the pieces changes the *shape*, but not the *area*.')+10;
   y=keyWords(p,y,[['area','how much space a shape covers'],['compose','put shapes together to make a new shape']]);
@@ -88,7 +88,7 @@ P.lesson({id:'compose2',title:'Building shapes from shapes',strand:'Spatial Sens
   const grid=mk(new THREE.BoxGeometry(8*u,.02,4.5*u),[lam('#f8fafc'),lam('#f8fafc'),cellMat('#ffffff',8,4.5),lam('#f8fafc'),lam('#f8fafc'),lam('#f8fafc')],20);grid.position.set(ox+2*u-.5,.01,oz-2.25*u+.25);grp.add(grid);
   let tris=[];
   function draw(){clearGroup(g2);tris=[];if(st.hex){const cx=0,cz=-1.9,R=.9;for(let k=0;k<6;k++){const a0=k*Math.PI/3,a1=(k+1)*Math.PI/3;const off=st.apart?.18:0;const mx=Math.cos((a0+a1)/2)*off,mz=-Math.sin((a0+a1)/2)*off;const t=slab([[cx+mx,cz+mz],[cx+mx+Math.cos(a0)*R,cz+mz-Math.sin(a0)*R],[cx+mx+Math.cos(a1)*R,cz+mz-Math.sin(a1)*R]],COL[k],.1);g2.add(t);}A.redraw();return;}
-    CFG[st.cfg].forEach((tr,i)=>{const t=slab(tr.map(([x,z])=>[ox+x*u-1,oz-z*u]),i?'#ff4f8b':'#2f7de1',.1);g2.add(t);tris.push(t);});const l=label('4 square units',{size:.22,bg:'#ffffff'});l.position.set(1.2,.6,-2.6);g2.add(l);A.redraw();}
+    CFG[st.cfg].forEach((tr,i)=>{const t=slab(tr.map(([x,z])=>[ox+x*u-1,oz-z*u]),i?'#ff6b35':'#2f7de1',.1);g2.add(t);tris.push(t);});const l=label('4 square units',{size:.22,bg:'#ffffff'});l.position.set(1.2,.6,-2.6);g2.add(l);A.redraw();}
   function setCfg(c){if(st.hex){st.hex=false;}const from=st.cfg;st.cfg=c;A.pop();draw();if(tris[1]&&from!==c){const t=tris[1];const f=CFG[from][1][0],to=CFG[c][1][0];t.position.set((f[0]-to[0])*u,0,-(f[1]-to[1])*u);tween(.6,k=>{t.position.set((f[0]-to[0])*u*(1-k),0,-(f[1]-to[1])*u*(1-k));});}A.say((c==='square'?'square':c==='tri'?'triangle':'parallelogram')+': still 4 square units');
     if(mode==='play'&&!st.setup&&st.need===c)game.solved('Yes! The area is still 4 square units.');}
   draw();
@@ -111,40 +111,40 @@ const CG=[{n:'A',pts:[[0,0],[1.2,0],[1.2,.6],[0,.6]]},{n:'B',pts:[[0,0],[.6,0],[
 P.lesson({id:'congruent2',title:'Same size, same shape',strand:'Spatial Sense',codes:['E1.3'],
  guide:{goal:'Identify congruent lengths and angles in two-dimensional shapes by mentally and physically matching them, and determine if shapes are congruent.',words:'congruent, match, same size, same shape, side length, angle, turn, flip, slide',
   ask:['How can you check if two shapes are congruent?','Is a turned rectangle still congruent?','Do congruent shapes have matching angles?'],home:'Find two things that look the same, like two crackers. Place one on top of the other. Are they congruent?'},
- learn:[{say:'Slide, turn, and match!',speech:'Are these two rectangles the same size and shape? Slide the pink one onto the blue one and turn it. It fits exactly! They are congruent.',view:'model',demo:'match'},
+ learn:[{say:'Slide, turn, and match!',speech:'Are these two rectangles the same size and shape? Theo slides the orange one onto the blue one and turns it. It fits exactly! They are congruent.',view:'model',demo:'match'},
         {say:'Read about congruent shapes.',speech:'Congruent shapes have the same size and the same shape. All their matching sides are the same length, and their matching angles are the same. Turning or flipping a shape does not change it.',view:'read'},
         {say:'Watch: not congruent.',speech:'Now try this taller triangle. Slide it on top. It does not fit: one side is longer. These triangles are not congruent.',view:'model',demo:'nomatch'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
         {say:'Your turn: find the match!',speech:'Your turn! Pick a shape and press Try it to see if it fits.',view:'model'}],
- fig:'A pink shape sliding and turning onto a blue shape.',rz:.35,
- explore:['*Tap a pink shape* to choose it.','Press *Try it*: it slides and turns to check.','A perfect fit means *congruent*.'],
+ fig:'An orange shape sliding and turning onto a blue shape.',rz:.35,
+ explore:['*Tap an orange shape* to choose it.','Press *Try it*: it slides and turns to check.','A perfect fit means *congruent*.'],
  howTo:'Find the shape that is congruent to the blue one.',
  init:k=>({tgt:0,sel:1,fit:0,want:null,ask:null}),
  left(p,S){const g=p.g;let y=header(p,S);
   y=para(p,y,'*Congruent* shapes are the *same size* and *same shape*, even if one is turned or flipped.')+16;
-  g.fillStyle='#2f7de1';g.fillRect(X0+20,y+40,180,90);g.save();g.translate(X0+330,y+85);g.rotate(Math.PI/2);g.fillStyle='#ff4f8b';g.fillRect(-90,-45,180,90);g.restore();T(g,'congruent (turned)',X0+200,y+190,FT.bodyB,'#16a36f','center');
-  g.fillStyle='#2f7de1';g.beginPath();g.moveTo(X0+480,y+150);g.lineTo(X0+600,y+150);g.lineTo(X0+540,y+50);g.closePath();g.fill();g.fillStyle='#ff4f8b';g.beginPath();g.moveTo(X0+640,y+150);g.lineTo(X0+760,y+150);g.lineTo(X0+700,y+10);g.closePath();g.fill();T(g,'not congruent',X0+620,y+190,FT.bodyB,RED,'center');y+=220;
+  g.fillStyle='#2f7de1';g.fillRect(X0+20,y+40,180,90);g.save();g.translate(X0+330,y+85);g.rotate(Math.PI/2);g.fillStyle='#ff6b35';g.fillRect(-90,-45,180,90);g.restore();T(g,'congruent (turned)',X0+200,y+190,FT.bodyB,'#16a36f','center');
+  g.fillStyle='#2f7de1';g.beginPath();g.moveTo(X0+480,y+150);g.lineTo(X0+600,y+150);g.lineTo(X0+540,y+50);g.closePath();g.fill();g.fillStyle='#ff6b35';g.beginPath();g.moveTo(X0+640,y+150);g.lineTo(X0+760,y+150);g.lineTo(X0+700,y+10);g.closePath();g.fill();T(g,'not congruent',X0+620,y+190,FT.bodyB,RED,'center');y+=220;
   y=para(p,y,'Check: do the *sides* match in length? Do the *angles* (corners) match?')+10;
   y=keyWords(p,y,[['congruent','exactly the same size and shape'],['angle','the corner where two sides meet']]);
   predict(p,y,S,'p23','Two squares have sides of 3 cm. Are they congruent?','*Yes!* Same size, same shape.');},
- readout(p,S,y){const g=p.g,st=S.st;const ok=cong(st.tgt,st.sel);T(g,'Blue '+CG[st.tgt].n+' and pink '+CG[st.sel].n,X0,y+40,FT.bodyB);T(g,st.fit?(ok?'Congruent: a perfect fit!':'Not congruent'):'Press Try it!',X0,y+86,ZS(40),st.fit?(ok?'#16a36f':RED):acc());return y+96;},
+ readout(p,S,y){const g=p.g,st=S.st;const ok=cong(st.tgt,st.sel);T(g,'Blue '+CG[st.tgt].n+' and orange '+CG[st.sel].n,X0,y+40,FT.bodyB);T(g,st.fit?(ok?'Congruent: a perfect fit!':'Not congruent'):'Press Try it!',X0,y+86,ZS(40),st.fit?(ok?'#16a36f':RED):acc());return y+96;},
  build(S,grp,mode,game){const st=S.st;const g2=new THREE.Group();grp.add(g2);let mover=null;
   const opts=()=>[0,1,2,3,4,5].filter(i=>i!==st.tgt);
   function draw(){clearGroup(g2);const t=CG[st.tgt];g2.add(slab(t.pts.map(([x,z])=>[-1.4+x,-2.0-z]),'#2f7de1',.06));const tl=label('blue '+t.n,{size:.15,color:'#2563eb'});tl.position.set(-.9,.1,-1.75);g2.add(tl);
-    opts().forEach((i,k)=>{const c=CG[i];const x=.3+(k%3)*.65,z=-2.4+Math.floor(k/3)*1.15;const sc=.5;const m=slab(c.pts.map(([a,b])=>[x+a*sc,z+.3-b*sc]),i===st.sel?'#ff4f8b':'#fbcfe8',.07);g2.add(m);A.drag(m,{tap:()=>{st.sel=i;st.fit=0;A.pop();draw();A.say('pink '+c.n);}});const l=label(c.n,{size:.15,color:'#be185d'});l.position.set(x+.3,.12,z+.45);g2.add(l);});
-    if(st.fit){const c=CG[st.sel];mover=new THREE.Group();mover.add(slab(c.pts.map(([x,z])=>[x,-z]),'#ff4f8b',.04,.75));mover.position.set(-1.4,.08,-2.0);if(st.rot)mover.rotation.y=st.rot;g2.add(mover);}A.redraw();}
+    opts().forEach((i,k)=>{const c=CG[i];const x=.3+(k%3)*.65,z=-2.4+Math.floor(k/3)*1.15;const sc=.5;const m=slab(c.pts.map(([a,b])=>[x+a*sc,z+.3-b*sc]),i===st.sel?'#ff6b35':'#d6ecff',.07);g2.add(m);A.drag(m,{tap:()=>{st.sel=i;st.fit=0;A.pop();draw();A.say('orange '+c.n);}});const l=label(c.n,{size:.15,color:'#c2410c'});l.position.set(x+.3,.12,z+.45);g2.add(l);});
+    if(st.fit){const c=CG[st.sel];mover=new THREE.Group();mover.add(slab(c.pts.map(([x,z])=>[x,-z]),'#ff6b35',.04,.75));mover.position.set(-1.4,.08,-2.0);if(st.rot)mover.rotation.y=st.rot;g2.add(mover);}A.redraw();}
   function tryIt(){const a=CG[st.tgt],b=CG[st.sel];st.fit=1;st.rot=0;const turn=!same(a.pts,b.pts)&&same(a.pts,rot90(b.pts));draw();const m=mover;m.position.set(.6,.6,-1.2);m.rotation.y=0;const fx=turn?-1.4+Math.max(...b.pts.map(q=>q[1])):-1.4;
     tween(.9,k=>{m.position.set(.6+(fx-.6)*k,.6-.52*k,-1.2+(-2.0+1.2)*k);if(turn)m.rotation.y=Math.PI/2*k;}).then(()=>{const ok=cong(st.tgt,st.sel);A.pop();A.say(ok?'A perfect fit: congruent!':'It does not fit: not congruent.');
-      A.redraw();if(mode==='play'&&!st.setup&&st.want){if(ok)game.solved('Yes! Pink '+b.n+' is congruent to blue '+a.n+'.');else A.bad('Not a match. Try another shape!');}});}
+      A.redraw();if(mode==='play'&&!st.setup&&st.want){if(ok)game.solved('Yes! Orange '+b.n+' is congruent to blue '+a.n+'.');else A.bad('Not a match. Try another shape!');}});}
   draw();
   return {info:()=>st.tgt+'/'+st.sel,
     controls:()=>{const c=[{t:'Try it',go:true,fn:tryIt},{t:'New blue shape',fn:()=>{st.tgt=pick([0,3]);st.sel=opts()[0];st.fit=0;draw();}}];if(mode==='play'&&st.ask)return choices(st.setup?null:game,st.ask.o,st.ask.ans,st.ask.ok).concat(c);return c;},
     demo(n){st.ask=null;st.want=null;st.fit=0;if(n==='match'){st.tgt=0;st.sel=1;draw();A.seq([[700,tryIt]]);}if(n==='nomatch'){st.tgt=3;st.sel=4;draw();A.seq([[700,tryIt]]);}},
     task(r){st.setup=true;st.ask=null;st.want=null;st.fit=0;let txt;
-      if(r===0){st.tgt=0;st.sel=2;st.want=true;txt='Find the pink shape that is *congruent* to blue A. Tap it, then *Try it*.';}
+      if(r===0){st.tgt=0;st.sel=2;st.want=true;txt='Find the orange shape that is *congruent* to blue A. Tap it, then *Try it*.';}
       else if(r===1){st.tgt=1;st.sel=2;st.want=true;txt='Find the shape *congruent* to blue B. (It may be turned!)';}
-      else if(r===2){st.tgt=0;st.sel=1;st.ask={ans:'Yes',o:['Yes','No'],ok:'Yes! A turned shape is still congruent.'};txt='Pink B is blue A *turned*. Are they congruent? Try it!';}
-      else if(r===3){st.tgt=3;st.sel=4;st.ask={ans:'No',o:['Yes','No'],ok:'Right! One side is longer.'};txt='Are blue D and pink E congruent? Try it!';}
+      else if(r===2){st.tgt=0;st.sel=1;st.ask={ans:'Yes',o:['Yes','No'],ok:'Yes! A turned shape is still congruent.'};txt='Orange B is blue A *turned*. Are they congruent? Try it!';}
+      else if(r===3){st.tgt=3;st.sel=4;st.ask={ans:'No',o:['Yes','No'],ok:'Right! One side is longer.'};txt='Are blue D and orange E congruent? Try it!';}
       else{st.tgt=0;st.sel=1;st.ask={ans:'They are the same',o:shuffle(['They are the same','They are different','You cannot tell']),ok:'Yes! Congruent shapes have matching angles.'};txt='Two shapes are congruent. What about their *angles*?';}
       draw();st.setup=false;return txt;}};}
 });
@@ -159,7 +159,7 @@ const LM=[{n:'slide',x:0,z:0,col:'#ef4444'},{n:'swings',x:4,z:0,col:'#2f7de1'},{
 P.lesson({id:'map2',title:'Maps of familiar places',strand:'Spatial Sense',codes:['E1.4','E1.5'],
  guide:{goal:'Create and interpret simple maps of familiar places, and describe the relative positions of objects and the movements needed to get from one object to another.',words:'map, grid, left, right, forward, back, near, far, between, path, steps',
   ask:['What is beside the slide on the map?','How do you get from the swings to the tree?','Which place is farthest from the school door?'],home:'Draw a map of your bedroom. Give someone directions from the door to your bed.'},
- learn:[{say:'A map from above.',speech:'This is a map of the playground, seen from above, like a bird. Each square is one big step. The kid walks from the slide to the swings: four steps right!',view:'model',demo:'walk'},
+ learn:[{say:'A map from above.',speech:'This is Ayo’s map of the playground, seen from above, like a bird. Each square is one big step. Ayo walks from the slide to the swings: four steps right!',view:'model',demo:'walk'},
         {say:'Read about directions.',speech:'Directions tell how to move: forward, back, left and right, and how many steps. Position words tell where things are: the sandbox is between the slide and the school door.',view:'read'},
         {say:'Watch: a longer path.',speech:'From the swings to the tree: three steps forward, then one step right. There can be more than one path!',view:'model',demo:'path'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -202,11 +202,11 @@ P.lesson({id:'map2',title:'Maps of familiar places',strand:'Spatial Sense',codes
 /* =========================================================
    25. Measuring with non-standard units
    ========================================================= */
-const UN=[{n:'paper clips',len:.3,col:'#94a3b8'},{n:'cubes',len:.2,col:'#ff8a3d'},{n:'erasers',len:.6,col:'#ff4f8b'}];
+const UN=[{n:'paper clips',len:.3,col:'#94a3b8'},{n:'cubes',len:.2,col:'#ff8a3d'},{n:'erasers',len:.6,col:'#ff6b35'}];
 P.lesson({id:'units2',title:'Measuring with units',strand:'Spatial Sense',codes:['E2.1'],
  guide:{goal:'Choose and use non-standard units to measure lengths, and describe the inverse relationship between the size of a unit and the number of units needed.',words:'unit, measure, length, paper clip, end to end, no gaps, more, fewer',
   ask:['How do you measure with paper clips?','Why do you need more cubes than erasers?','Why must units have no gaps or overlaps?'],home:'Measure a table with spoons, then with forks. Which unit did you need more of? Why?'},
- learn:[{say:'Line up the units.',speech:'Let’s measure the crayon box with paper clips. Put them end to end, with no gaps and no overlaps. Six paper clips long!',view:'model',demo:'clips'},
+ learn:[{say:'Line up the units.',speech:'Jayden measures the crayon box with paper clips. Put them end to end, with no gaps and no overlaps. Six paper clips long!',view:'model',demo:'clips'},
         {say:'Read about unit size.',speech:'Smaller units need more of them. Bigger units need fewer of them. The box is nine cubes long, but only three erasers long!',view:'read'},
         {say:'Watch: three units.',speech:'Watch the same box measured with cubes, then with erasers. Small units: many. Big units: few.',view:'model',demo:'all'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -218,7 +218,7 @@ P.lesson({id:'units2',title:'Measuring with units',strand:'Spatial Sense',codes:
  left(p,S){const g=p.g;let y=header(p,S);
   y=para(p,y,'Measure with units placed *end to end*, with *no gaps* and *no overlaps*.')+16;
   g.fillStyle='#2f7de1';g.fillRect(X0+20,y,540,60);T(g,'crayon box',X0+290,y+40,FT.bodyB,'#fff','center');
-  [['#94a3b8',90,6,'6 paper clips'],['#ff8a3d',60,9,'9 cubes'],['#ff4f8b',180,3,'3 erasers']].forEach(([c,w,n,t],j)=>{for(let i=0;i<n;i++){rr(g,X0+20+i*w,y+80+j*60,w-4,40,8);g.fillStyle=c;g.fill();}T(g,t,X0+600,y+108+j*60,FT.bodyB,INK);});y+=270;
+  [['#94a3b8',90,6,'6 paper clips'],['#ff8a3d',60,9,'9 cubes'],['#ff6b35',180,3,'3 erasers']].forEach(([c,w,n,t],j)=>{for(let i=0;i<n;i++){rr(g,X0+20+i*w,y+80+j*60,w-4,40,8);g.fillStyle=c;g.fill();}T(g,t,X0+600,y+108+j*60,FT.bodyB,INK);});y+=270;
   y=para(p,y,'*Smaller unit → more units. Bigger unit → fewer units.*')+10;
   y=keyWords(p,y,[['unit','the thing you measure with'],['end to end','touching, with no gaps']]);
   predict(p,y,S,'p25','A desk is 8 pencils long. Would it be more or fewer crayons long?','*More crayons*: crayons are shorter.');},
@@ -248,7 +248,7 @@ P.lesson({id:'units2',title:'Measuring with units',strand:'Spatial Sense',codes:
 P.lesson({id:'cm2',title:'Centimetres and metres',strand:'Spatial Sense',codes:['E2.2','E2.3'],
  guide:{goal:'Explain the relationship between centimetres and metres, use benchmarks to estimate lengths, and measure and draw lengths with a ruler, including when starting at a point other than zero.',words:'centimetre (cm), metre (m), ruler, benchmark, estimate, start at zero',
   ask:['How many centimetres are in a metre?','What is about 1 cm long? About 1 m?','How do you measure if the object does not start at 0?'],home:'Find something about 1 cm wide (a fingertip) and something about 1 m long (a big step). Measure your shoe in cm.'},
- learn:[{say:'Measure with a ruler.',speech:'Line up the end of the crayon with the zero on the ruler. Read where it ends: nine centimetres. The crayon is nine centimetres long.',view:'model',demo:'zero'},
+ learn:[{say:'Measure with a ruler.',speech:'Priya lines up the end of the crayon with the zero on the ruler. Read where it ends: nine centimetres. The crayon is nine centimetres long.',view:'model',demo:'zero'},
         {say:'Read about cm and m.',speech:'One hundred centimetres make one metre. Your fingertip is about one centimetre wide. A big step or a door’s width is about one metre. Use centimetres for small things and metres for big things.',view:'read'},
         {say:'Watch: not starting at zero.',speech:'Now the crayon starts at three and ends at twelve. Count the spaces from three to twelve: nine centimetres. Same crayon, same length!',view:'model',demo:'start'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -288,7 +288,7 @@ P.lesson({id:'cm2',title:'Centimetres and metres',strand:'Spatial Sense',codes:[
 P.lesson({id:'time2',title:'Seconds, minutes and hours',strand:'Spatial Sense',codes:['E2.4'],
  guide:{goal:'Use units of time, including seconds, minutes, hours and non-standard units, to describe the duration of events.',words:'second, minute, hour, duration, start, end, clock, how long',
   ask:['What takes about one second?','How many minutes are in one hour?','How long is it from 3:00 to 3:30?'],home:'Time how long it takes to brush your teeth, eat dinner and read a story. Seconds, minutes or hours?'},
- learn:[{say:'Watch the clock move.',speech:'The movie starts at three o’clock. The minute hand goes all the way around, and the hour hand moves to four. One hour has passed! One hour is sixty minutes.',view:'model',demo:'hour'},
+ learn:[{say:'Watch the clock move.',speech:'Omar’s movie starts at three o’clock. The minute hand goes all the way around, and the hour hand moves to four. One hour has passed! One hour is sixty minutes.',view:'model',demo:'hour'},
         {say:'Read about units of time.',speech:'A clap takes about one second. Brushing your teeth takes about two minutes. A movie takes about two hours. Sixty seconds make a minute, and sixty minutes make an hour.',view:'read'},
         {say:'Watch: half an hour.',speech:'From three o’clock to three thirty, the minute hand goes halfway around. That is thirty minutes: half an hour.',view:'model',demo:'half'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -299,7 +299,7 @@ P.lesson({id:'time2',title:'Seconds, minutes and hours',strand:'Spatial Sense',c
  init:k=>({start:180,now:180,ask:null}),
  left(p,S){const g=p.g;let y=header(p,S);
   y=para(p,y,'*Duration* is how long something takes.')+16;
-  [['about 1 second','a clap, a blink','#ff4f8b'],['about 1 minute','washing hands','#ff8a3d'],['a few minutes','brushing teeth','#ffc04d'],['about 1 hour','a soccer practice','#5fd38a'],['a few hours','a movie, a long drive','#2f7de1']].forEach(([a,b,c],i)=>{rr(g,X0,y+i*56,TW,48,12);g.fillStyle=tint(c,.2);g.fill();T(g,a,X0+18,y+i*56+32,FT.bodyB,INK);T(g,b,X0+300,y+i*56+32,FT.body);});y+=290;
+  [['about 1 second','a clap, a blink','#ff6b35'],['about 1 minute','washing hands','#ff8a3d'],['a few minutes','brushing teeth','#ffc04d'],['about 1 hour','a soccer practice','#5fd38a'],['a few hours','a movie, a long drive','#2f7de1']].forEach(([a,b,c],i)=>{rr(g,X0,y+i*56,TW,48,12);g.fillStyle=tint(c,.2);g.fill();T(g,a,X0+18,y+i*56+32,FT.bodyB,INK);T(g,b,X0+300,y+i*56+32,FT.body);});y+=290;
   rr(g,X0,y,TW,70,16);g.fillStyle=tint(acc(),.12);g.fill();T(g,'60 seconds = 1 minute      60 minutes = 1 hour',X0+TW/2,y+44,FT.bodyB,acc(),'center');y+=92;
   y=keyWords(p,y,[['duration','how long something lasts'],['minute','60 seconds']]);
   predict(p,y,S,'p27','Recess is from 10:15 to 10:30. How long is it?','*15 minutes.*');},
@@ -332,7 +332,7 @@ const fmtM=c=>c<200&&c%100?c+'¢':'$'+(c/100).toFixed(c%100?2:0);
 P.lesson({id:'money2',title:'Many ways to make money amounts',strand:'Financial Literacy',codes:['F1.1'],
  guide:{goal:'Identify different ways of representing the same amount of money up to 200¢ using coins, and up to $200 using $1 and $2 coins and $5, $10, $20, $50 and $100 bills.',words:'coin, bill, cents, dollars, value, total, same amount, different ways',
   ask:['How many quarters make one dollar?','Show 75¢ in two different ways.','What bills could make $35?'],home:'Play store with real or paper money. Pay for a $25 toy in two different ways.'},
- learn:[{say:'Count it up!',speech:'Let’s make seventy-five cents. Three quarters: twenty-five, fifty, seventy-five. Or use other coins: two quarters, two dimes and one nickel. That is also seventy-five cents. Same amount, different ways!',view:'model',demo:'cents'},
+ learn:[{say:'Count it up!',speech:'Luna wants to make seventy-five cents. Three quarters: twenty-five, fifty, seventy-five. Or use other coins: two quarters, two dimes and one nickel. That is also seventy-five cents. Same amount, different ways!',view:'model',demo:'cents'},
         {say:'Read about dollars.',speech:'One hundred cents is one dollar. Four quarters make one dollar, and a loonie is one dollar too. For bigger amounts, use bills: a twenty, a ten and a five make thirty-five dollars.',view:'read'},
         {say:'Watch: build $35.',speech:'Thirty-five dollars: a twenty-dollar bill, a ten-dollar bill and a five-dollar bill. Or seven five-dollar bills!',view:'model',demo:'dollars'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},

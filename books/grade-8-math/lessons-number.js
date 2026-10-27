@@ -33,7 +33,7 @@ function numLine(grp,a,b,x0,x1,z,step,lab){const X=v=>x0+(v-a)/(b-a)*(x1-x0);con
 P.lesson({id:'sci8',title:'Scientific notation',strand:'Number',codes:['B1.1'],
  guide:{goal:'Represent and compare very large and very small numbers, including through the use of scientific notation, and describe ways they are used in everyday life.',words:'scientific notation, coefficient, power of ten, exponent, negative exponent, standard form',
   ask:['Why is 6.7 × 10⁷ easier to read than 67 000 000?','What does a negative exponent mean?','How do you compare 3 × 10⁻⁴ and 5 × 10⁻⁵?'],home:'Find three very big or very small numbers in science (the distance to the Moon, the size of a cell). Write each in scientific notation.'},
- learn:[{say:'Slide the decimal point.',speech:'Scientific notation writes a number as a coefficient from one up to ten, times a power of ten. Watch four point five become forty-five million: each times ten slides the digits one place to the left. Four point five times ten to the seventh.',view:'model',demo:'big'},
+ learn:[{say:'Slide the decimal point.',speech:'Scientific notation writes a number as a coefficient from one up to ten, times a power of ten. Watch Rohan turn four point five into forty-five million: each times ten slides the digits one place to the left. Four point five times ten to the seventh.',view:'model',demo:'big'},
         {say:'Read about large and small numbers.',speech:'For very large numbers, the exponent is positive. For very small numbers, the exponent is negative: ten to the negative three means divide by ten three times, so it is one thousandth.',view:'read'},
         {say:'Watch: a tiny number.',speech:'Now divide by ten again and again. Four point one becomes zero point zero zero zero four one. That is four point one times ten to the negative four.',view:'model',demo:'small'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -44,7 +44,7 @@ P.lesson({id:'sci8',title:'Scientific notation',strand:'Number',codes:['B1.1'],
  init:k=>({ds:'45',e:7,target:null,ask:null}),
  left(p,S){const g=p.g;let y=header(p,S);
   y=para(p,y,'In *scientific notation*, a number is written as *a × 10ⁿ*, where *1 ≤ a < 10* and n is an integer.')+14;
-  [['Distance to the Sun','150 000 000 000 m','1.5 × 10¹¹ m','#e89a00'],['People in Canada','41 000 000','4.1 × 10⁷','#e2457a'],['Width of a hair','0.00008 m','8 × 10⁻⁵ m','#2f7de1'],['A virus','0.0000001 m','1 × 10⁻⁷ m','#16a36f']].forEach(([a,b,c,col],i)=>{
+  [['Distance to the Sun','150 000 000 000 m','1.5 × 10¹¹ m','#e89a00'],['People in Canada','41 000 000','4.1 × 10⁷','#e4572e'],['Width of a hair','0.00008 m','8 × 10⁻⁵ m','#2f7de1'],['A virus','0.0000001 m','1 × 10⁻⁷ m','#16a36f']].forEach(([a,b,c,col],i)=>{
     rr(g,X0,y+i*70,TW,62,14);g.fillStyle=tint(col,.13);g.fill();T(g,a,X0+18,y+i*70+26,FT.smallB,col);T(g,b,X0+18,y+i*70+52,FT.small,GREY);T(g,c,X0+TW-18,y+i*70+42,ZS(30),INK,'right');});y+=294;
   y=para(p,y,'*Positive exponent:* a large number. *Negative exponent:* a small number between 0 and 1. 10⁻³ = 1 ÷ 10³ = 0.001.')+10;
   y=para(p,y,'*To compare*, look at the exponents first: 3 × 10⁻⁴ (0.0003) is *greater* than 5 × 10⁻⁵ (0.00005).')+10;
@@ -82,7 +82,7 @@ const RN={sq2:{t:'√2',v:Math.SQRT2,irr:true},pi:{t:'π',v:Math.PI,irr:true},f7
 P.lesson({id:'real8',title:'Rational and irrational numbers',strand:'Number',codes:['B1.2'],
  guide:{goal:'Describe, compare and order numbers in the real number system (rational and irrational numbers), separately and in combination, in various contexts.',words:'rational number, irrational number, real number, repeating decimal, terminating decimal, square root, π',
   ask:['Why is 0.333… rational but √2 is not?','Between which two whole numbers is √10?','How do you order π, √8 and 2.9?'],home:'Measure around a round lid and across it. Divide. Why does the answer never come out as an exact fraction?'},
- learn:[{say:'Place every real number.',speech:'Every real number has a place on the number line. Rational numbers, in blue, can be written as a fraction: two point five, seven thirds, zero point three repeating. Irrational numbers, in gold, cannot: their decimals never end and never repeat, like the square root of two and pi.',view:'model',demo:'place'},
+ learn:[{say:'Place every real number.',speech:'Every real number has a place on Elena’s number line. Rational numbers, in blue, can be written as a fraction: two point five, seven thirds, zero point three repeating. Irrational numbers, in gold, cannot: their decimals never end and never repeat, like the square root of two and pi.',view:'model',demo:'place'},
         {say:'Read about the real number system.',speech:'Rational numbers include integers, fractions, terminating decimals and repeating decimals. Irrational numbers include pi and the square roots of numbers that are not perfect squares. Together they make the real numbers.',view:'read'},
         {say:'Watch: compare and order.',speech:'To compare, write each number as a decimal. The square root of eight is about two point eight three, which is less than two point nine. Pi is about three point one four, the greatest.',view:'model',demo:'order'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -129,7 +129,7 @@ P.lesson({id:'real8',title:'Rational and irrational numbers',strand:'Number',cod
 P.lesson({id:'sqrt8',title:'Square roots and perfect squares',strand:'Number',codes:['B1.3','B2.2'],
  guide:{goal:'Estimate and calculate square roots in various contexts, and understand and recall commonly used square numbers and their square roots.',words:'square number, perfect square, square root, √, estimate, side length, area',
   ask:['Why is the square root of an area the side length of a square?','How can you estimate √50 without a calculator?','Which perfect squares do you know by heart?'],home:'Find a square tile or a square floor. Measure its area and find the side length using a square root.'},
- learn:[{say:'Area to side length.',speech:'A square with an area of forty-nine tiles has sides of seven tiles, because seven times seven is forty-nine. The square root of forty-nine is seven. Watch the squares grow: one, four, nine, sixteen, twenty-five.',view:'model',demo:'grow'},
+ learn:[{say:'Area to side length.',speech:'Jalen’s square patio has an area of forty-nine tiles, so its sides are seven tiles, because seven times seven is forty-nine. The square root of forty-nine is seven. Watch the squares grow: one, four, nine, sixteen, twenty-five.',view:'model',demo:'grow'},
         {say:'Read about estimating.',speech:'For an area that is not a perfect square, like fifty, the side is between seven and eight, because forty-nine is less than fifty and sixty-four is more. Fifty is very close to forty-nine, so the square root of fifty is about seven point one.',view:'read'},
         {say:'Watch: estimate √50.',speech:'The green square of forty-nine tiles fits inside. The outline of the square with area fifty is just a bit bigger. The large outline is sixty-four. So the square root of fifty is about seven point one.',view:'model',demo:'est'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -142,8 +142,8 @@ P.lesson({id:'sqrt8',title:'Square roots and perfect squares',strand:'Number',co
   y=para(p,y,'If a square has area *A*, its side length is *√A*. Perfect squares to know by heart:')+12;
   for(let i=1;i<=15;i++){const c=(i-1)%5,r=Math.floor((i-1)/5);const x=X0+c*(TW/5),yy=y+r*60;rr(g,x+4,yy,TW/5-8,52,10);g.fillStyle=tint(acc(),.08+r*.04);g.fill();T(g,i+'² = '+i*i,x+TW/10,yy+34,FT.bodyB,INK,'center');}y+=196;
   y=para(p,y,'*Estimate √50:* 49 < 50 < 64, so 7 < √50 < 8. Since 50 is very close to 49, *√50 ≈ 7.1*.')+12;
-  const s=12,ox=X0+40,oy=y+120;for(let i=0;i<7;i++)for(let j=0;j<7;j++){g.fillStyle='#16a36f';g.fillRect(ox+i*s,oy-(j+1)*s,s-2,s-2);}g.strokeStyle='#e2457a';g.lineWidth=3;g.strokeRect(ox,oy-8*s,8*s,8*s);g.strokeStyle='#f5b301';g.strokeRect(ox,oy-7.07*s,7.07*s,7.07*s);
-  T(g,'49 (side 7)',ox+130,oy-60,FT.smallB,'#16a36f');T(g,'50 (side ≈ 7.1)',ox+130,oy-28,FT.smallB,'#b45309');T(g,'64 (side 8)',ox+130,oy+4,FT.smallB,'#e2457a');y+=150;
+  const s=12,ox=X0+40,oy=y+120;for(let i=0;i<7;i++)for(let j=0;j<7;j++){g.fillStyle='#16a36f';g.fillRect(ox+i*s,oy-(j+1)*s,s-2,s-2);}g.strokeStyle='#e4572e';g.lineWidth=3;g.strokeRect(ox,oy-8*s,8*s,8*s);g.strokeStyle='#f5b301';g.strokeRect(ox,oy-7.07*s,7.07*s,7.07*s);
+  T(g,'49 (side 7)',ox+130,oy-60,FT.smallB,'#16a36f');T(g,'50 (side ≈ 7.1)',ox+130,oy-28,FT.smallB,'#b45309');T(g,'64 (side 8)',ox+130,oy+4,FT.smallB,'#e4572e');y+=150;
   y=keyWords(p,y,[['perfect square','a whole number times itself, like 81 = 9 × 9'],['square root','the number that, multiplied by itself, gives the number']]);
   predict(p,y,S,'p3','Estimate √90 to one decimal place.','*About 9.5.* 81 < 90 < 100 and 90 is about halfway.');},
  readout(p,S,y){const g=p.g,st=S.st,r=Math.sqrt(st.n),perf=Number.isInteger(r);T(g,'√'+st.n+(perf?' = ':' ≈ ')+(perf?r:r.toFixed(2)),X0,y+50,ZS(48),acc());T(g,perf?st.n+' is a perfect square: '+r+' × '+r:'between √'+Math.floor(r)**2+' = '+Math.floor(r)+' and √'+Math.ceil(r)**2+' = '+Math.ceil(r),X0,y+92,FT.bodyB);return y+100;},
@@ -152,7 +152,7 @@ P.lesson({id:'sqrt8',title:'Square roots and perfect squares',strand:'Number',co
   function outline(sd,col){const pts=[[0,0],[sd,0],[sd,sd],[0,sd],[0,0]].map(([a,b])=>V(ox+a*u,.12,oz-b*u));for(let i=0;i<4;i++){const s=new THREE.Mesh(new THREE.CylinderGeometry(.018,.018,pts[i].distanceTo(pts[i+1]),8),lam(col));s.position.copy(pts[i]).add(pts[i+1]).multiplyScalar(.5);s.quaternion.setFromUnitVectors(V(0,1,0),pts[i+1].clone().sub(pts[i]).normalize());g2.add(s);}}
   function draw(){clearGroup(g2);const r=Math.sqrt(st.n),f=Math.floor(r),perf=Number.isInteger(r);for(let i=0;i<f;i++)for(let j=0;j<f;j++){const t=unitBox(1,1,1,perf?'#16a36f':'#86efac',u*.94);t.position.set(ox+(i+.5)*u,.05+u*.2,oz-(j+.5)*u);t.scale.y=.4;g2.add(t);}
     let extra=st.n-f*f;for(let k=0;k<extra;k++){const t=unitBox(1,1,1,'#f5b301',u*.94);const i=k<f?f:k-f,j=k<f?k:f;if(i>9||j>9)continue;t.position.set(ox+(i+.5)*u,.05+u*.2,oz-(j+.5)*u);t.scale.y=.4;g2.add(t);}
-    if(!perf){outline(r,'#f5b301');outline(Math.min(10,f+1),'#e2457a');}
+    if(!perf){outline(r,'#f5b301');outline(Math.min(10,f+1),'#e4572e');}
     const l=label('√'+st.n+(perf?' = '+r:' ≈ '+r.toFixed(2)),{size:.3,bg:'#ffffff'});l.position.set(1.65,.9,-1.9);g2.add(l);const a=label('area '+st.n,{size:.2,color:GREY});a.position.set(1.65,.45,-1.9);g2.add(a);check();A.redraw();}
   function setN(n){st.n=Math.max(1,Math.min(100,n));A.pop();draw();}
   function check(){if(mode==='play'&&!st.setup&&st.target!=null&&st.n===st.target)game.solved('Yes! √'+st.n+' = '+Math.sqrt(st.n)+'.');}
@@ -175,7 +175,7 @@ P.lesson({id:'sqrt8',title:'Square roots and perfect squares',strand:'Number',co
 P.lesson({id:'pct8',title:'Percents above 100% and below 1%',strand:'Number',codes:['B1.4'],
  guide:{goal:'Use fractions, decimal numbers and percents, including percents of more than 100% or less than 1%, interchangeably and flexibly to solve problems.',words:'percent, more than 100%, less than 1%, decimal, fraction, equivalent',
   ask:['What does 150% of a number mean?','How can a percent be less than 1%?','How do you write 0.5% as a decimal?'],home:'Look for big growth numbers in the news (“prices up 120% since…”) or tiny ones (“0.5% interest”). Rewrite each as a decimal.'},
- learn:[{say:'More than one whole.',speech:'One hundred percent is one whole grid. One hundred fifty percent is one whole grid and half of another. As a decimal, it is one point five. As a fraction, three halves. Watch the grids fill.',view:'model',demo:'over'},
+ learn:[{say:'More than one whole.',speech:'One hundred percent is one whole grid. Sana’s one hundred fifty percent is one whole grid and half of another. As a decimal, it is one point five. As a fraction, three halves. Watch the grids fill.',view:'model',demo:'over'},
         {say:'Read about tiny percents.',speech:'A percent less than one percent is a part of one square. Half a percent is half of one small square: zero point zero zero five as a decimal.',view:'read'},
         {say:'Watch: zoom into one square.',speech:'Now zoom into one square. It splits into ten slices. Each slice is one tenth of a percent. Five slices are zero point five percent.',view:'model',demo:'under'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -195,7 +195,7 @@ P.lesson({id:'pct8',title:'Percents above 100% and below 1%',strand:'Number',cod
  readout(p,S,y){const g=p.g,st=S.st,d=r4(st.p/100);T(g,fmt(st.p)+'% = '+fmt(d)+' = '+fr(Math.round(st.p*10),1000),X0,y+50,ZS(44),acc());T(g,fmt(st.p)+'% of '+st.of+' = '+fmt(d)+' × '+st.of+' = '+fmt(d*st.of),X0,y+92,FT.bodyB);return y+102;},
  build(S,grp,mode,game){const st=S.st,c=.068;const g2=new THREE.Group();grp.add(g2);const geo=G('pc8cell',()=>new THREE.BoxGeometry(c*.9,.04,c*.9));
   function draw(){clearGroup(g2);const full=Math.floor(st.p+1e-9),part=r4(st.p-full);for(let gI=0;gI<3;gI++){const gx=-2.05+gI*.78;const pl=mk(new THREE.BoxGeometry(10*c+.06,.02,10*c+.06),lam('#cbd5e1'),20);pl.position.set(gx+5*c,.01,-2.0);g2.add(pl);
-      for(let k=0;k<100;k++){const idx=gI*100+k,on=idx<full,pp=idx===full&&part>0;const m=mk(geo,lam(on?['#2f7de1','#8b5cf6','#e2457a'][gI]:pp?'#f5b301':'#ffffff'),0);m.position.set(gx+(k%10+.5)*c,.04,-2.0-(4.5-Math.floor(k/10))*c);g2.add(m);}
+      for(let k=0;k<100;k++){const idx=gI*100+k,on=idx<full,pp=idx===full&&part>0;const m=mk(geo,lam(on?['#2f7de1','#8b5cf6','#e4572e'][gI]:pp?'#f5b301':'#ffffff'),0);m.position.set(gx+(k%10+.5)*c,.04,-2.0-(4.5-Math.floor(k/10))*c);g2.add(m);}
       const l=label((gI+1)*100+'%',{size:.14,color:GREY});l.position.set(gx+5*c,.1,-1.55);g2.add(l);}
     if(st.p<2){const zx=1.55,zz=-2.0;const fr0=mk(new THREE.BoxGeometry(.72,.03,.72),lam('#ffffff'),20);fr0.position.set(zx,.05,zz);g2.add(fr0);const tenths=Math.round((st.p<1?st.p:part)*10);
       for(let i=0;i<10;i++){const s=mk(new THREE.BoxGeometry(.066,.08,.68),lam(i<tenths?'#f5b301':'#fef3c7'),0);s.position.set(zx-.33+(i+.5)*.068,.1,zz);g2.add(s);}
@@ -224,7 +224,7 @@ const PV=[['thousands',3],['hundreds',2],['tens',1],['ones',0],['tenths',-1],['h
 P.lesson({id:'pow10_8',title:'Mental math with powers of ten',strand:'Number',codes:['B2.3'],
  guide:{goal:'Use mental math strategies to multiply and divide whole numbers and decimal numbers up to thousandths by powers of ten, and explain the strategies used.',words:'power of ten, place value, shift, 0.1, 0.01, 0.001, mental math',
   ask:['Why do the digits shift left when you multiply by 100?','Why is × 0.1 the same as ÷ 10?','What is 0.045 × 1000? How do you know?'],home:'Convert prices: what do 1000 items at $0.35 cost? What is one item if 100 cost $42?'},
- learn:[{say:'Digits shift, the point stays.',speech:'Multiplying by ten makes every digit ten times as big, so each digit shifts one place to the left. Multiplying by one hundred shifts two places. Watch three point four five six times one hundred become three hundred forty-five point six.',view:'model',demo:'mul'},
+ learn:[{say:'Digits shift, the point stays.',speech:'Multiplying by ten makes every digit ten times as big, so each digit shifts one place to the left. Multiplying by one hundred shifts two places. Watch Marcus turn three point four five six times one hundred into three hundred forty-five point six.',view:'model',demo:'mul'},
         {say:'Read the strategies.',speech:'Dividing by ten, one hundred or one thousand shifts the digits one, two or three places to the right. Multiplying by zero point one is the same as dividing by ten, and multiplying by zero point zero one is the same as dividing by one hundred.',view:'read'},
         {say:'Watch: divide by 1000.',speech:'Seventy-two divided by one thousand: the digits shift three places to the right. The answer is zero point zero seven two.',view:'model',demo:'div'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -236,13 +236,13 @@ P.lesson({id:'pow10_8',title:'Mental math with powers of ten',strand:'Number',co
  left(p,S){const g=p.g;let y=header(p,S);
   y=para(p,y,'When you multiply or divide by a *power of ten*, the *digits shift*; the decimal point stays still.')+14;
   [['× 10','1 place left','4.27 → 42.7'],['× 100','2 places left','4.27 → 427'],['× 1000','3 places left','0.045 → 45'],['÷ 10  (× 0.1)','1 place right','63 → 6.3'],['÷ 100  (× 0.01)','2 places right','5.2 → 0.052'],['÷ 1000  (× 0.001)','3 places right','72 → 0.072']].forEach(([a,b,c],i)=>{
-    rr(g,X0,y+i*56,TW,48,12);g.fillStyle=tint(i<3?'#2f7de1':'#e2457a',.08+i%3*.03);g.fill();T(g,a,X0+18,y+i*56+33,FT.bodyB,i<3?'#2563eb':'#be185d');T(g,b,X0+300,y+i*56+33,FT.body);T(g,c,X0+TW-18,y+i*56+33,FT.bodyB,INK,'right');});y+=350;
+    rr(g,X0,y+i*56,TW,48,12);g.fillStyle=tint(i<3?'#2f7de1':'#e4572e',.08+i%3*.03);g.fill();T(g,a,X0+18,y+i*56+33,FT.bodyB,i<3?'#2563eb':'#c2410c');T(g,b,X0+300,y+i*56+33,FT.body);T(g,c,X0+TW-18,y+i*56+33,FT.bodyB,INK,'right');});y+=350;
   y=para(p,y,'*Explain it:* 3.456 × 100: each digit becomes 100 times as big, so the 3 ones become 3 hundreds: *345.6*.')+10;
   y=keyWords(p,y,[['power of ten','10, 100, 1000 … or 0.1, 0.01, 0.001'],['place value','the value of a digit’s position']]);
   predict(p,y,S,'p5','What is 6.08 ÷ 100?','*0.0608.* Two places right.');},
  readout(p,S,y){const g=p.g,st=S.st;T(g,val(st),X0,y+52,ZS(52),acc());return y+70;},
  build(S,grp,mode,game){const st=S.st,w=.56,x0=-1.95,z=-1.95;const X=p=>x0+(3-p)*w+w/2;const row=new THREE.Group();grp.add(row);
-  PV.forEach(([n,p],i)=>{const pad=mk(new THREE.BoxGeometry(w-.04,.03,.9),lam(tint(p>=0?'#2f7de1':'#e2457a',.18+.04*(i%2))),20);pad.position.set(X(p),.015,z);grp.add(pad);const l=label(n,{size:.11,color:p>=0?'#2563eb':'#be185d'});l.position.set(X(p),.1,z+.6);grp.add(l);});
+  PV.forEach(([n,p],i)=>{const pad=mk(new THREE.BoxGeometry(w-.04,.03,.9),lam(tint(p>=0?'#2f7de1':'#e4572e',.18+.04*(i%2))),20);pad.position.set(X(p),.015,z);grp.add(pad);const l=label(n,{size:.11,color:p>=0?'#2563eb':'#c2410c'});l.position.set(X(p),.1,z+.6);grp.add(l);});
   const bead=mk(new THREE.SphereGeometry(.07,16,12),lam('#f5b301'),0);bead.position.set(X(0)+w/2,.1,z+.3);grp.add(bead);
   const big=label('',{size:.3,bg:'#ffffff'});big.position.set(0,1.05,-2.7);grp.add(big);
   function draw(){clearGroup(row);const L=st.N.length;const hi=Math.max(st.s+L-1,0),lo=Math.min(st.s,0);for(let p=hi;p>=lo;p--){const i=L-1-(p-st.s);const real=i>=0&&i<L;const c=digitCube(real?st.N[i]:'0',real?'#ffffff':'#e5e7eb',.36,real?'#1b2236':'#94a3b8');c.position.set(X(p),.2,z);row.add(c);}
@@ -271,7 +271,7 @@ function frog(){const g=new THREE.Group();const b=mk(new THREE.SphereGeometry(.1
 P.lesson({id:'intadd8',title:'Adding and subtracting integers',strand:'Number',codes:['B2.4'],
  guide:{goal:'Add and subtract integers, using appropriate strategies, in various contexts.',words:'integer, positive, negative, opposite, number line, zero',
   ask:['Why does adding a negative move left on the number line?','Why is subtracting −6 the same as adding 6?','How can temperatures help you think about integers?'],home:'Track the temperature at 7 a.m. and 3 p.m. for a week. Write each change as an integer equation.'},
- learn:[{say:'Hop along the line.',speech:'Start at negative four. Adding nine means nine hops to the right. The frog lands on five. Negative four plus nine equals five.',view:'model',demo:'add'},
+ learn:[{say:'Hop along the line.',speech:'Ana’s frog starts at negative four. Adding nine means nine hops to the right. The frog lands on five. Negative four plus nine equals five.',view:'model',demo:'add'},
         {say:'Read the rules.',speech:'Adding a positive moves right. Adding a negative moves left. Subtracting is adding the opposite: subtracting a negative six is the same as adding six.',view:'read'},
         {say:'Watch: subtract a negative.',speech:'Negative two minus negative six. Change it to negative two plus six. The frog hops six to the right and lands on four.',view:'model',demo:'subneg'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -316,7 +316,7 @@ P.lesson({id:'intadd8',title:'Adding and subtracting integers',strand:'Number',c
 P.lesson({id:'intmul8',title:'Multiplying and dividing integers',strand:'Number',codes:['B2.7'],
  guide:{goal:'Multiply and divide integers, using appropriate strategies, in various contexts.',words:'integer, product, quotient, sign rule, repeated addition, opposite',
   ask:['Why is 3 × (−4) negative?','Why is (−3) × (−4) positive?','How are the sign rules for division like those for multiplication?'],home:'A diver goes down 4 m every minute. Where is she after 5 minutes? Write it as an integer multiplication.'},
- learn:[{say:'Jumps of the same size.',speech:'Three times negative four means three jumps of negative four. The arrows go left: negative four, negative eight, negative twelve. Three times negative four is negative twelve.',view:'model',demo:'pn'},
+ learn:[{say:'Jumps of the same size.',speech:'Rohan’s submarine makes three dives of negative four. The arrows go left: negative four, negative eight, negative twelve. Three times negative four is negative twelve.',view:'model',demo:'pn'},
         {say:'Read the sign rules.',speech:'If the signs are the same, the product or quotient is positive. If the signs are different, it is negative. A negative number of groups means the opposite direction.',view:'read'},
         {say:'Watch: negative times negative.',speech:'Negative two times negative five: the opposite of two jumps of negative five. Instead of going left, the jumps flip and go right. The answer is positive ten.',view:'model',demo:'nn'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -337,7 +337,7 @@ P.lesson({id:'intmul8',title:'Multiplying and dividing integers',strand:'Number'
  build(S,grp,mode,game){const st=S.st;const X=numLine(grp,-12,12,-2.15,2.15,-1.5,1,v=>v%4===0);const arr=new THREE.Group();grp.add(arr);
   const big=label('',{size:.28,bg:'#ffffff'});big.position.set(0,1.25,-2.6);grp.add(big);
   function drawArr(n){clearGroup(arr);const dir=st.a<0?-1:1,b=st.b*dir;for(let i=0;i<n;i++){const from=i*b,to=(i+1)*b;const x0=X(from),x1=X(to),h=.25+.05*i;const pts=[];for(let k=0;k<=16;k++){const t=k/16;pts.push(V(x0+(x1-x0)*t,.1+Math.sin(Math.PI*t)*h,-1.5-.0));}
-      const cur=new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts),24,.025,6),lam(st.a<0?'#e2457a':'#2f7de1'));arr.add(cur);const head=mk(new THREE.ConeGeometry(.06,.14,10),lam(st.a<0?'#e2457a':'#2f7de1'),0);head.position.set(x1,.12,-1.5);head.rotation.z=b>0?-Math.PI/2:Math.PI/2;arr.add(head);
+      const cur=new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts),24,.025,6),lam(st.a<0?'#e4572e':'#2f7de1'));arr.add(cur);const head=mk(new THREE.ConeGeometry(.06,.14,10),lam(st.a<0?'#e4572e':'#2f7de1'),0);head.position.set(x1,.12,-1.5);head.rotation.z=b>0?-Math.PI/2:Math.PI/2;arr.add(head);
       const l=label(sgn(to),{size:.13,color:INK});l.position.set(x1,.45+.05*i,-1.5);arr.add(l);}big.userData.set(par(st.a)+' × '+par(st.b)+(n===Math.abs(st.a)?' = '+sgn(st.a*st.b):''));A.redraw();}
   function jump(){const n=Math.abs(st.a);if(Math.abs(st.a*st.b)>12){A.bad('That goes off the line: keep a × b between −12 and 12.');return;}st.shown=0;drawArr(0);const s=[];for(let i=1;i<=n;i++)s.push([480,()=>{st.shown=i;drawArr(i);A.pop();}]);s.push([300,()=>{if(mode==='play'&&!st.setup&&st.need&&st.a===st.need[0]&&st.b===st.need[1])game.solved('Yes! '+par(st.a)+' × '+par(st.b)+' = '+sgn(st.a*st.b)+'.');}]);A.seq(s);}
   const set=(k,v)=>{st[k]=Math.max(-6,Math.min(6,v));if(st[k]===0)st[k]=v>0?1:-1;st.shown=0;drawArr(0);};
@@ -360,7 +360,7 @@ P.lesson({id:'intmul8',title:'Multiplying and dividing integers',strand:'Number'
 P.lesson({id:'fracadd8',title:'Adding and subtracting fractions',strand:'Number',codes:['B2.5'],
  guide:{goal:'Add and subtract fractions, including mixed numbers, using appropriate strategies, in various contexts.',words:'common denominator, equivalent fraction, mixed number, improper fraction, lowest terms',
   ask:['Why do you need a common denominator to add fractions?','How do you subtract 1 3/4 from 2 1/3?','How can you check that your answer is reasonable?'],home:'Find a recipe that uses fractions. If you make one and a half batches, how much of each ingredient do you need?'},
- learn:[{say:'Make the pieces the same size.',speech:'Two thirds plus three quarters. The pieces are different sizes, so split both bars into twelfths. Two thirds is eight twelfths, three quarters is nine twelfths. Together they are seventeen twelfths, or one and five twelfths.',view:'model',demo:'add'},
+ learn:[{say:'Make the pieces the same size.',speech:'Elena adds two thirds plus three quarters. The pieces are different sizes, so split both bars into twelfths. Two thirds is eight twelfths, three quarters is nine twelfths. Together they are seventeen twelfths, or one and five twelfths.',view:'model',demo:'add'},
         {say:'Read about mixed numbers.',speech:'To add or subtract mixed numbers, you can change them to improper fractions with a common denominator. Two and one third minus one and three quarters is twenty-eight twelfths minus twenty-one twelfths: seven twelfths.',view:'read'},
         {say:'Watch: subtract.',speech:'Three quarters minus one sixth. Split both into twelfths: nine twelfths minus two twelfths is seven twelfths.',view:'model',demo:'sub'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -372,7 +372,7 @@ P.lesson({id:'fracadd8',title:'Adding and subtracting fractions',strand:'Number'
  left(p,S){const g=p.g;let y=header(p,S);
   y=para(p,y,'To add or subtract fractions, first rename them with a *common denominator*.')+14;
   const bar=(yy,n,d,col,lab)=>{const w=TW-180;for(let i=0;i<d;i++){g.fillStyle=i<n?col:'#f1f5f9';g.fillRect(X0+i*w/d,yy,w/d-3,40);}T(g,lab,X0+w+20,yy+30,FT.bodyB,INK);};
-  bar(y,8,12,'#2f7de1','2/3 = 8/12');bar(y+52,9,12,'#e2457a','3/4 = 9/12');y+=106;
+  bar(y,8,12,'#2f7de1','2/3 = 8/12');bar(y+52,9,12,'#e4572e','3/4 = 9/12');y+=106;
   T(g,'8/12 + 9/12 = 17/12 = 1 5/12',X0,y+30,ZS(34),acc());y+=66;
   rr(g,X0,y,TW,150,16);g.fillStyle=tint(acc(),.1);g.fill();T(g,'Mixed numbers',X0+20,y+34,FT.bodyB,acc());T(g,'2 1/3 − 1 3/4',X0+20,y+76,FT.body);T(g,'= 28/12 − 21/12 = 7/12',X0+20,y+116,FT.bodyB);y+=172;
   y=para(p,y,'*Check:* 2/3 + 3/4 is more than 1 because both are more than one half.')+10;
@@ -384,9 +384,9 @@ P.lesson({id:'fracadd8',title:'Adding and subtracting fractions',strand:'Number'
   function bar(n,d,parts,col,z,x0){const g=new THREE.Group();const w=Lw/parts;const per=parts/d;for(let i=0;i<parts;i++){const on=i<n*per;const m=mk(new THREE.BoxGeometry(w-.02,on?.16:.06,.4),lam(on?col:'#e2e8f0'),20);m.position.set(x0+(i+.5)*w,on?.08:.03,z);g.add(m);}
     for(let i=0;i<d;i++){const f=mk(new THREE.BoxGeometry(.02,.22,.44),lam(INK),0);f.position.set(x0+i*Lw/d,.11,z);g.add(f);}const f2=mk(new THREE.BoxGeometry(.02,.22,.44),lam(INK),0);f2.position.set(x0+Lw,.11,z);g.add(f2);return g;}
   function draw(){clearGroup(g2);const [n1,d1]=st.a,[n2,d2]=st.b;const L=d1*d2/gcd(d1,d2);const p1=st.lcd?L:d1,p2=st.lcd?L:d2;
-    g2.add(bar(n1,d1,p1,'#2f7de1',-2.65,-2.1));g2.add(bar(n2,d2,p2,'#e2457a',-2.05,-2.1));
-    const l1=label(st.lcd?(n1*L/d1)+'/'+L:n1+'/'+d1,{size:.22,bg:'#ffffff',border:'#2f7de1'});l1.position.set(.2,.35,-2.65);g2.add(l1);const l2=label(st.lcd?(n2*L/d2)+'/'+L:n2+'/'+d2,{size:.22,bg:'#ffffff',border:'#e2457a'});l2.position.set(.2,.35,-2.05);g2.add(l2);
-    if(st.op){const r=st.op==='+'?n1*L/d1+n2*L/d2:n1*L/d1-n2*L/d2;const w=Lw/L;for(let i=0;i<Math.max(r,0);i++){const blue=st.op==='+'?i<n1*L/d1:true;const m=mk(new THREE.BoxGeometry(w-.02,.16,.4),lam(blue?'#2f7de1':'#e2457a'),20);m.position.set(-2.1+(i+.5)*w,.08,-1.4);g2.add(m);}
+    g2.add(bar(n1,d1,p1,'#2f7de1',-2.65,-2.1));g2.add(bar(n2,d2,p2,'#e4572e',-2.05,-2.1));
+    const l1=label(st.lcd?(n1*L/d1)+'/'+L:n1+'/'+d1,{size:.22,bg:'#ffffff',border:'#2f7de1'});l1.position.set(.2,.35,-2.65);g2.add(l1);const l2=label(st.lcd?(n2*L/d2)+'/'+L:n2+'/'+d2,{size:.22,bg:'#ffffff',border:'#e4572e'});l2.position.set(.2,.35,-2.05);g2.add(l2);
+    if(st.op){const r=st.op==='+'?n1*L/d1+n2*L/d2:n1*L/d1-n2*L/d2;const w=Lw/L;for(let i=0;i<Math.max(r,0);i++){const blue=st.op==='+'?i<n1*L/d1:true;const m=mk(new THREE.BoxGeometry(w-.02,.16,.4),lam(blue?'#2f7de1':'#e4572e'),20);m.position.set(-2.1+(i+.5)*w,.08,-1.4);g2.add(m);}
       [0,1,2].forEach(k=>{if(k*Lw<=Math.max(r,0)*w+1e-6){const f=mk(new THREE.BoxGeometry(.03,.28,.46),lam(INK),0);f.position.set(-2.1+k*Lw,.13,-1.4);g2.add(f);}});
       const lr=label('= '+r+'/'+L+' = '+mixed(r,L),{size:.24,bg:'#ffffff',border:acc()});lr.position.set(1.4,.45,-1.4);g2.add(lr);}A.redraw();}
   const FR=[[1,2],[2,3],[3,4],[1,6],[5,6],[2,5],[3,8],[1,4]];const cyc=k=>{const i=FR.findIndex(f=>f[0]===st[k][0]&&f[1]===st[k][1]);st[k]=FR[(i+1)%FR.length];st.lcd=false;st.op=null;A.pop();draw();};
@@ -410,7 +410,7 @@ P.lesson({id:'fracadd8',title:'Adding and subtracting fractions',strand:'Number'
 P.lesson({id:'fracmul8',title:'Multiplying and dividing fractions',strand:'Number',codes:['B2.6'],
  guide:{goal:'Multiply and divide fractions by fractions, as well as by whole numbers and mixed numbers, in various contexts.',words:'product, area model, reciprocal, quotient, mixed number, of',
   ask:['Why is 2/3 × 3/4 smaller than both fractions?','How many 1/8s fit into 3/4?','How do you multiply by a mixed number?'],home:'You have 2 1/4 pizzas. Each person eats 3/4 of a pizza. How many people can you feed? Draw it.'},
- learn:[{say:'Overlap the fractions.',speech:'Two thirds times three quarters. Shade two thirds of the square in blue, going across. Then shade three quarters in yellow, going down. The overlap, in green, is six twelfths of the square: one half.',view:'model',demo:'mul'},
+ learn:[{say:'Overlap the fractions.',speech:'Jalen multiplies two thirds times three quarters. Shade two thirds of the square in blue, going across. Then shade three quarters in yellow, going down. The overlap, in green, is six twelfths of the square: one half.',view:'model',demo:'mul'},
         {say:'Read about dividing.',speech:'Dividing asks how many groups fit. Three quarters divided by one eighth: six eighths fit, so the answer is six. You can also multiply by the reciprocal: three quarters times eight is six.',view:'read'},
         {say:'Watch: a mixed number.',speech:'One and a half times two thirds. Change one and a half to three halves. Three halves times two thirds is six sixths, which is one.',view:'model',demo:'mix'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -453,7 +453,7 @@ P.lesson({id:'fracmul8',title:'Multiplying and dividing fractions',strand:'Numbe
 P.lesson({id:'proportion8',title:'Comparing proportional situations',strand:'Number',codes:['B2.8'],
  guide:{goal:'Compare proportional situations and determine unknown values in proportional situations, and apply proportional reasoning to solve problems in various contexts.',words:'ratio, rate, proportion, unit rate, equivalent ratio, scale',
   ask:['How can you tell which juice is stronger?','How do you find x in 3/5 = x/20?','Which is the better buy: 6 for $4.20 or 10 for $6.50?'],home:'Compare two sizes of the same product at the store. Find the unit price of each. Which is the better buy?'},
- learn:[{say:'Which jug is stronger?',speech:'Jug A has two scoops of juice to three scoops of water. Jug B has three scoops to five. Compare the fractions of juice: two fifths is forty percent, three eighths is about thirty-seven point five percent. Jug A is stronger.',view:'model',demo:'compare'},
+ learn:[{say:'Which jug is stronger?',speech:'Sana’s jug A has two scoops of juice to three scoops of water. Jug B has three scoops to five. Compare the fractions of juice: two fifths is forty percent, three eighths is about thirty-seven point five percent. Jug A is stronger.',view:'model',demo:'compare'},
         {say:'Read about proportions.',speech:'A proportion says two ratios are equal. To find an unknown, scale both parts by the same factor. Three fifths equals x over twenty: five times four is twenty, so x is three times four, which is twelve.',view:'read'},
         {say:'Watch: make them equal.',speech:'To make jug B taste the same as jug A, its ratio must also be two to three. Four scoops of juice need six scoops of water.',view:'model',demo:'equal'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -506,7 +506,7 @@ const tkStr=tk=>tk.map(t=>t.o?'(':t.c?')':t.op?t.op:(t.v<0?'('+sgn(t.v)+')':fmt(
 P.lesson({id:'orderops8',title:'Multi-step problems and order of operations',strand:'Number',codes:['B2.1'],
  guide:{goal:'Use the properties and order of operations, and the relationships between operations, to solve problems involving rational numbers, ratios, rates and percents, including those requiring multiple steps or multiple operations.',words:'order of operations, brackets, exponent, rational number, multi-step, discount, tax',
   ask:['Why must multiplication come before addition in −2 + 3 × (−4)?','How can you find a price after a discount and tax in one step?','What happens if you work from left to right instead?'],home:'At a store, pick an item on sale. Find its final price with the discount and 13% HST, step by step.'},
- learn:[{say:'Brackets, exponents, then × ÷, then + −.',speech:'Negative two plus three times negative four. Multiplication comes before addition. Watch the blocks combine: three times negative four is negative twelve. Then negative two plus negative twelve is negative fourteen.',view:'model',demo:'ex1'},
+ learn:[{say:'Brackets, exponents, then × ÷, then + −.',speech:'Marcus solves negative two plus three times negative four. Multiplication comes before addition. Watch the blocks combine: three times negative four is negative twelve. Then negative two plus negative twelve is negative fourteen.',view:'model',demo:'ex1'},
         {say:'Read about multi-step problems.',speech:'Many real problems take several steps. A jacket costs eighty dollars with twenty-five percent off, then thirteen percent tax. Multiply by zero point seven five, then by one point one three. The final price is sixty-seven dollars and eighty cents.',view:'read'},
         {say:'Watch: brackets and squares.',speech:'Eighteen divided by negative three, plus two squared. First the square: four. Then the division: negative six. Then add: negative two.',view:'model',demo:'ex2'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -517,7 +517,7 @@ P.lesson({id:'orderops8',title:'Multi-step problems and order of operations',str
  init:k=>({src:'−2 + 3 × −4',tk:null,ask:null}),
  left(p,S){const g=p.g;let y=header(p,S);
   y=para(p,y,'Use the *order of operations* with integers, fractions and decimals too:')+12;
-  [['B','Brackets','#e2457a'],['E','Exponents','#f59e0b'],['D M','Divide and multiply, left to right','#2f7de1'],['A S','Add and subtract, left to right','#16a36f']].forEach(([a,b,c],i)=>{rr(g,X0,y+i*54,TW,46,12);g.fillStyle=tint(c,.15);g.fill();T(g,a,X0+20,y+i*54+33,ZS(30),c);T(g,b,X0+120,y+i*54+33,FT.body);});y+=230;
+  [['B','Brackets','#e4572e'],['E','Exponents','#f59e0b'],['D M','Divide and multiply, left to right','#2f7de1'],['A S','Add and subtract, left to right','#16a36f']].forEach(([a,b,c],i)=>{rr(g,X0,y+i*54,TW,46,12);g.fillStyle=tint(c,.15);g.fill();T(g,a,X0+20,y+i*54+33,ZS(30),c);T(g,b,X0+120,y+i*54+33,FT.body);});y+=230;
   [['−2 + 3 × (−4)','= −2 + (−12) = −14'],['0.5 × (6 − 10) + 3','= 0.5 × (−4) + 3 = 1']].forEach(([a,b],i)=>{T(g,a,X0,y+i*76+28,FT.bodyB,acc());T(g,b,X0+40,y+i*76+62,FT.body);});y+=160;
   rr(g,X0,y,TW,96,16);g.fillStyle=tint(acc(),.1);g.fill();T(g,'$80 jacket, 25% off, then 13% tax',X0+20,y+36,FT.bodyB,acc());T(g,'80 × 0.75 × 1.13 = $67.80',X0+20,y+74,FT.body);y+=116;
   y=keyWords(p,y,[['order of operations','the agreed order for doing operations'],['multi-step problem','a problem that needs more than one operation']]);
@@ -529,7 +529,7 @@ P.lesson({id:'orderops8',title:'Multi-step problems and order of operations',str
       for(let i=s;i<=e&&hiOp<0;i++)if(tk[i].sq)hiOp=i;if(hiOp<0)for(let i=s;i<=e;i++)if(tk[i].op==='×'||tk[i].op==='÷'){hiOp=i;break;}if(hiOp<0)for(let i=s;i<=e;i++)if(tk[i].op){hiOp=i;break;}if(hiOp<0&&close>=0)hiOp=close;}
     const ws=tk.map(t=>t.o||t.c?.16:t.op?.34:.16+.13*tkStr([t]).length);const tot=ws.reduce((a,b)=>a+b+.06,0);let x=-tot/2;
     tk.forEach((t,i)=>{const w=ws[i];const cx=x+w/2;x+=w+.06;let m;if(t.op){m=mk(G('oo8disc',()=>new THREE.CylinderGeometry(.16,.16,.1,24)),lam(i===hiOp?'#f5b301':'#e2e8f0'),0);m.position.set(cx,.06,-1.9);}
-      else if(t.o||t.c){m=mk(new THREE.BoxGeometry(.06,.5,.36),lam(i===hiOp?'#f5b301':'#e2457a'),0);m.position.set(cx,.25,-1.9);}else{m=mk(new THREE.BoxGeometry(w,.3,.42),lam(t.v<0?'#fecaca':'#bfdbfe'),20);m.position.set(cx,.15,-1.9);if(t.sq&&i===hiOp)m.material=lam('#fde68a');}
+      else if(t.o||t.c){m=mk(new THREE.BoxGeometry(.06,.5,.36),lam(i===hiOp?'#f5b301':'#e4572e'),0);m.position.set(cx,.25,-1.9);}else{m=mk(new THREE.BoxGeometry(w,.3,.42),lam(t.v<0?'#fecaca':'#bfdbfe'),20);m.position.set(cx,.15,-1.9);if(t.sq&&i===hiOp)m.material=lam('#fde68a');}
       g2.add(m);if(!(t.o||t.c)){const l=label(t.op?t.op:(t.v<0?sgn(t.v):fmt(t.v))+(t.sq?'²':''),{size:.2,color:INK});l.position.set(cx,t.op?.25:.45,-1.9);g2.add(l);}
       if(i===pop){m.scale.set(.3,.3,.3);tween(.35,k=>m.scale.set(.3+.7*k,.3+.7*k,.3+.7*k));}});
     const done=tk.length===1;const big=label(done?'= '+sgn(tk[0].v):'next: '+(hiOp>=0?(tk[hiOp].op||(tk[hiOp].sq?'square':'brackets')):''),{size:.24,bg:'#ffffff',border:done?'#16a36f':'#f5b301'});big.position.set(0,1.0,-2.4);g2.add(big);A.redraw();}

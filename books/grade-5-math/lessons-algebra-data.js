@@ -15,7 +15,7 @@ function opts(ans,spread,min){const s=new Set([ans]);let k=0;while(s.size<3&&k<6
 P.lesson({id:'patterns5',title:'Growing and shrinking patterns',strand:'Algebra',codes:['C1.1','C1.2','C1.3','C1.4'],
  guide:{goal:'Identify, describe, create and extend repeating, growing and shrinking patterns, show them in tables of values and graphs, find missing terms with a pattern rule, and make patterns with decimal tenths and hundredths.',words:'pattern rule, term, term number, table of values, growing, shrinking, repeating, graph',
   ask:['What is the pattern rule? How can you test it?','How can you predict term 10 without building it?','How is 0.05, 0.10, 0.15 like 5, 10, 15?'],home:'Track a savings jar: start with $20 and add $5 each week. Make a table and a graph for 8 weeks.'},
- learn:[{say:'Patterns grow or shrink by a rule.',speech:'This pattern starts at fifteen and goes down by two each time. It is a shrinking pattern. Watch the towers fall: fifteen, thirteen, eleven, nine. The tops still make a straight line.',view:'model',demo:'shrink'},
+ learn:[{say:'Patterns grow or shrink by a rule.',speech:'Mateo’s pattern starts at fifteen and goes down by two each time. It is a shrinking pattern. Watch the towers fall: fifteen, thirteen, eleven, nine. The tops still make a straight line.',view:'model',demo:'shrink'},
         {say:'Read about pattern rules.',speech:'A pattern rule tells the start and the change. The table of values pairs each term number with its value. The graph shows the same pattern as points.',view:'read'},
         {say:'Watch: a hundredths pattern.',speech:'Now each cube is worth one hundredth. The towers show zero point zero three, zero point zero five, zero point zero seven. Decimal patterns follow the same rules as whole numbers.',view:'model',demo:'decimal'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -33,7 +33,7 @@ P.lesson({id:'patterns5',title:'Growing and shrinking patterns',strand:'Algebra'
   y=keyWords(p,y,[['pattern rule','the start and the change for each term'],['shrinking pattern','a pattern that decreases each time']]);
   predict(p,y,S,'p15','Rule: start at 50, subtract 6. What is term 5?','*26.* 50, 44, 38, 32, 26.');},
  readout(p,S,y){const g=p.g,st=S.st,f=v=>st.sc===1?String(v):(v*st.sc).toFixed(st.sc===.1?1:2);T(g,'Term',X0,y+36,FT.smallB);T(g,'Value',X0,y+80,FT.smallB);
-  for(let n=1;n<=6;n++){const v=st.a+st.b*(n-1);const hide=n-1===st.miss;T(g,String(n),X0+150+(n-1)*110,y+36,ZS(32),INK,'center');T(g,hide?(st.user?f(st.user):'?'):f(v),X0+150+(n-1)*110,y+80,ZS(30),hide?'#e2457a':'#8b5cf6','center');}
+  for(let n=1;n<=6;n++){const v=st.a+st.b*(n-1);const hide=n-1===st.miss;T(g,String(n),X0+150+(n-1)*110,y+36,ZS(32),INK,'center');T(g,hide?(st.user?f(st.user):'?'):f(v),X0+150+(n-1)*110,y+80,ZS(30),hide?'#e4572e':'#8b5cf6','center');}
   T(g,'Rule: start at '+f(st.a)+', '+(st.b>=0?'add '+f(st.b):'subtract '+f(-st.b)),X0,y+122,FT.bodyB,acc());return y+130;},
  build(S,grp,mode,game){const st=S.st,u=.1,Z=-1.6,xs=n=>-1.9+n*.76;const towers=new THREE.Group();grp.add(towers);
   const base=mk(new THREE.BoxGeometry(4.5,.03,1.1),[lam('#efe9ff'),lam('#efe9ff'),cellMat('#f7f3ff',18,4),lam('#efe9ff'),lam('#efe9ff'),lam('#efe9ff')],20);base.position.set(0,.015,Z);grp.add(base);
@@ -42,7 +42,7 @@ P.lesson({id:'patterns5',title:'Growing and shrinking patterns',strand:'Algebra'
   function draw(){clearGroup(towers);clearGroup(line);const tops=[];
     for(let n=0;n<6;n++){const isM=n===st.miss;const h=isM?st.user:val(n);const g=new THREE.Group();g.position.set(xs(n),0,Z);towers.add(g);
       for(let k=0;k<h;k++){const c=unitBox(1,1,1,isM?'#ffd24a':VIBE[n%6],u);c.scale.set(1.6,1,1.6);c.position.y=u/2+.03+k*u;g.add(c);}
-      if(isM){const ring=mk(new THREE.BoxGeometry(u*1.6+.14,.02,u*1.6+.14),lam('#e2457a'),0);ring.position.y=.04;g.add(ring);A.drag(g,{tap:()=>setU(st.user+1)});const q=label(st.user?f(st.user):'?',{size:.24,bg:'#ffffff',border:'#e2457a'});q.position.y=h*u+.4;g.add(q);}
+      if(isM){const ring=mk(new THREE.BoxGeometry(u*1.6+.14,.02,u*1.6+.14),lam('#e4572e'),0);ring.position.y=.04;g.add(ring);A.drag(g,{tap:()=>setU(st.user+1)});const q=label(st.user?f(st.user):'?',{size:.24,bg:'#ffffff',border:'#e4572e'});q.position.y=h*u+.4;g.add(q);}
       else{const l=label(f(h),{size:.2,color:INK});l.position.y=h*u+.25;g.add(l);tops.push(V(xs(n),h*u+.06,Z+.3));}
       const tn=label('term '+(n+1),{size:.15,color:GREY});tn.position.set(0,.2,.6);g.add(tn);}
     for(let i=0;i<tops.length-1;i++){const a=tops[i],b=tops[i+1];const len=a.distanceTo(b);const seg=new THREE.Mesh(new THREE.CylinderGeometry(.02,.02,len,6),lam('#8b5cf6'));seg.position.copy(a).add(b).multiplyScalar(.5);
@@ -68,7 +68,7 @@ P.lesson({id:'patterns5',title:'Growing and shrinking patterns',strand:'Algebra'
 P.lesson({id:'expr5',title:'Algebraic expressions',strand:'Algebra',codes:['C2.1','C2.2'],
  guide:{goal:'Translate among words, algebraic expressions and models that describe the same relationship, and evaluate expressions by substituting whole numbers for the variable.',words:'variable, expression, coefficient, constant, evaluate, substitute',
   ask:['How would you write “4 more than 3 times a number”?','What does 2n mean?','What is 5n − 3 when n = 6? How do you know?'],home:'A movie costs $8 per person plus $5 for popcorn. Write an expression for p people, then find the cost for your family.'},
- learn:[{say:'An expression is a recipe with a variable.',speech:'The expression three n plus two means three bags of n, plus two more. Watch: when n is four, each bag holds four cubes. Three fours are twelve, plus two is fourteen.',view:'model',demo:'eval'},
+ learn:[{say:'An expression is a recipe with a variable.',speech:'The expression three n plus two means three of Keiko’s bags of n, plus two more. Watch: when n is four, each bag holds four cubes. Three fours are twelve, plus two is fourteen.',view:'model',demo:'eval'},
         {say:'Read: words, expressions and models.',speech:'Three times a number, plus two, can be written three n plus two. The three is the coefficient. The two is the constant. To evaluate, put a number in for n.',view:'read'},
         {say:'Watch: change the value of n.',speech:'Now watch n change from one to six. The bags fill up, and the value of the expression grows by three each time.',view:'model',demo:'vary'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -120,7 +120,7 @@ function val(st){return st.op==='+'?st.k*st.n+st.c:st.k*st.n-st.c;}
 P.lesson({id:'equations5',title:'Solving equations to 100',strand:'Algebra',codes:['C2.3'],
  guide:{goal:'Solve equations that involve whole numbers up to 100 using a balance model and inverse operations, and verify the solutions.',words:'equation, variable, solve, verify, balance, inverse operation',
   ask:['How can subtraction help solve n + 37 = 82?','What does 4n = 92 mean on a balance?','How do you check that n = 23 is correct?'],home:'Make equations from shopping: “I spent $37 and have $45 left. How much did I start with?”'},
- learn:[{say:'Keep the balance level.',speech:'n plus thirty-seven equals eighty-two. The balance is level only when both sides are equal. Watch n change until the scale is level.',view:'model',demo:'solve'},
+ learn:[{say:'Keep the balance level.',speech:'On Jordan’s balance, n plus thirty-seven equals eighty-two. The balance is level only when both sides are equal. Watch n change until the scale is level.',view:'model',demo:'solve'},
         {say:'Read about inverse operations.',speech:'Use the inverse operation to undo. n plus thirty-seven equals eighty-two, so n equals eighty-two minus thirty-seven, which is forty-five. Then verify: forty-five plus thirty-seven is eighty-two.',view:'read'},
         {say:'Watch: four equal bags.',speech:'Four n equals ninety-two means four bags with the same amount. Ninety-two divided by four is twenty-three, so each bag holds twenty-three.',view:'model',demo:'bags'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -171,7 +171,7 @@ P.lesson({id:'equations5',title:'Solving equations to 100',strand:'Algebra',code
 P.lesson({id:'inequal5',title:'Solving and graphing inequalities',strand:'Algebra',codes:['C2.4'],
  guide:{goal:'Solve inequalities that involve one operation and whole numbers up to 50, verify the solutions, and graph them on a number line.',words:'inequality, less than, greater than, solution set, boundary, graph, verify',
   ask:['How is 3x < 24 different from 3x = 24?','Is the boundary number a solution? How do you check?','Why does the graph of x − 9 > 20 point to the right?'],home:'“A ride needs riders taller than 120 cm.” List some heights that work and some that do not. Draw the number line.'},
- learn:[{say:'Find the boundary, then the side.',speech:'x plus seven is less than twenty. If x plus seven were equal to twenty, x would be thirteen. That is the boundary. Less than means the solutions are smaller: zero up to twelve. Watch the graph light up.',view:'model',demo:'solve'},
+ learn:[{say:'Find the boundary, then the side.',speech:'Amani needs x plus seven to be less than twenty. If x plus seven were equal to twenty, x would be thirteen. That is the boundary. Less than means the solutions are smaller: zero up to twelve. Watch the graph light up.',view:'model',demo:'solve'},
         {say:'Read how to graph solutions.',speech:'First solve the matching equation to find the boundary. Test it: is the boundary a solution? Then shade every whole number on the correct side.',view:'read'},
         {say:'Watch: a multiplication inequality.',speech:'Three x is greater than twenty-four. Three times eight is twenty-four, so eight is the boundary. Eight is not a solution, because twenty-four is not greater than twenty-four. The solutions start at nine.',view:'model',demo:'mult'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -230,7 +230,7 @@ const CONDS=[{k:'gt',t:k=>'n > '+k,f:(n,k)=>n>k},{k:'lt',t:k=>'n < '+k,f:(n,k)=>
 P.lesson({id:'coding5',title:'Coding with conditional statements',strand:'Algebra',codes:['C3.1','C3.2'],
  guide:{goal:'Write, run, read and alter code that uses conditional statements (if… else…) to sort and make decisions, and describe how changes to the code change the outcome.',words:'code, conditional statement, if, else, condition, true, false, debug, outcome',
   ask:['What does the machine do when the condition is false?','How would the outcome change if you changed n > 20 to n > 30?','How could you sort even and odd numbers?'],home:'Write a conditional for your morning: “If it is raining, take an umbrella; else, take a hat.” Make up three more.'},
- learn:[{say:'If… else… makes a decision.',speech:'This sorting machine runs a conditional statement. If n is greater than twenty, the ball goes to the red bin. Else, it goes to the blue bin. Watch the machine check each ball.',view:'model',demo:'run'},
+ learn:[{say:'If… else… makes a decision.',speech:'Zane’s sorting machine runs a conditional statement. If n is greater than twenty, the ball goes to the red bin. Else, it goes to the blue bin. Watch the machine check each ball.',view:'model',demo:'run'},
         {say:'Read about conditional statements.',speech:'A condition is a question that is either true or false. When it is true, the code does the first action. When it is false, it does the else action.',view:'read'},
         {say:'Watch: change the code.',speech:'Now change the condition to n is even. The same balls sort a different way. Changing the code changes the outcome.',view:'model',demo:'alter'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -242,7 +242,7 @@ P.lesson({id:'coding5',title:'Coding with conditional statements',strand:'Algebr
  left(p,S){const g=p.g;let y=header(p,S);
   y=para(p,y,'A *conditional statement* tells the computer to check a *condition*. If it is *true*, do one thing; *else*, do another.')+16;
   rr(g,X0,y,460,228,16);g.fillStyle='#24203f';g.fill();const MF='700 27px "Atkinson Hyperlegible", monospace';
-  T(g,'for each ball n:',X0+24,y+46,MF,'#ffd86b');T(g,'if  n > 20 :',X0+54,y+92,MF,'#9fe6ff');T(g,'send to RED',X0+100,y+130,MF,'#ffb3cf');T(g,'else :',X0+54,y+168,MF,'#9fe6ff');T(g,'send to BLUE',X0+100,y+208,MF,'#9fc2ff');
+  T(g,'for each ball n:',X0+24,y+46,MF,'#ffd86b');T(g,'if  n > 20 :',X0+54,y+92,MF,'#9fe6ff');T(g,'send to RED',X0+100,y+130,MF,'#ffc98f');T(g,'else :',X0+54,y+168,MF,'#9fe6ff');T(g,'send to BLUE',X0+100,y+208,MF,'#9fc2ff');
   [[7,'blue'],[24,'red'],[15,'blue'],[31,'red'],[20,'blue']].forEach(([n,c],i)=>{const yy=y+20+i*40;g.beginPath();g.arc(X0+530,yy+12,16,0,Math.PI*2);g.fillStyle=c==='red'?'#e0453a':'#2f7de1';g.fill();T(g,String(n),X0+530,yy+20,FT.cap,'#fff','center');
     T(g,n+' > 20 is '+(c==='red'?'true':'false'),X0+560,yy+20,FT.small,INK);});y+=262;
   y=para(p,y,'*20 > 20* is *false*, so 20 goes to blue. To *debug* code, test the tricky numbers right at the edge.')+12;
@@ -288,7 +288,7 @@ const FAV=[['Soccer','#e0453a'],['Hockey','#2f7de1'],['Swim','#16a36f'],['Dance'
 P.lesson({id:'sampling5',title:'Samples and relative frequency',strand:'Data',codes:['D1.1','D1.2'],
  guide:{goal:'Explain why a sample should represent the whole population, compare sampling techniques, and organize data in relative-frequency tables using fractions, decimals and percents.',words:'population, sample, random sample, representative, biased, frequency, relative frequency',
   ask:['Why might asking only your friends give a biased sample?','What makes a random sample fair?','If 6 of 20 chose hockey, what is the relative frequency as a percent?'],home:'Ask 10 people at random what their favourite fruit is. Write the relative frequency of each answer as a fraction and a percent.'},
- learn:[{say:'A sample stands for the population.',speech:'This school has one hundred students. We cannot ask everyone, so we ask a sample of twenty. Watch a random sample light up. Every student had the same chance to be picked.',view:'model',demo:'random'},
+ learn:[{say:'A sample stands for the population.',speech:'Layla’s school has one hundred students. She cannot ask everyone, so she asks a sample of twenty. Watch a random sample light up. Every student had the same chance to be picked.',view:'model',demo:'random'},
         {say:'Read about relative frequency.',speech:'Relative frequency is the frequency divided by the total. If six out of twenty chose hockey, the relative frequency is six twentieths, which is zero point three, or thirty percent.',view:'read'},
         {say:'Watch: a biased sample.',speech:'Now we only ask the students in the front corner. They mostly chose soccer, so this sample is biased. It does not represent the whole school.',view:'model',demo:'corner'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -343,7 +343,7 @@ const GRADES=['Gr 3','Gr 4','Gr 5','Gr 6'],TRIP=[['Walk','#16a36f'],['Bus','#f2a
 P.lesson({id:'stacked5',title:'Stacked-bar graphs and misleading graphs',strand:'Data',codes:['D1.3','D1.4','D1.6'],
  guide:{goal:'Choose and create graphs (including stacked-bar graphs) with titles, labels, sources and appropriate scales, use them in an infographic, and analyse data, including misleading graphs, to draw conclusions.',words:'stacked-bar graph, legend, scale, source, infographic, misleading graph, broken axis',
   ask:['What does the whole height of a stacked bar show?','Why might a graph whose axis starts at 40 be misleading?','What story does this graph tell about how students get to school?'],home:'Look for graphs in a flyer or news site. Check the axis: does it start at 0? Is the source shown?'},
- learn:[{say:'Parts stacked into one bar.',speech:'This stacked-bar graph shows how students in four grades get to school. Each bar is split into walk, bus and car. Watch the parts stack up. The whole bar shows the total for each grade.',view:'model',demo:'grow'},
+ learn:[{say:'Parts stacked into one bar.',speech:'Mateo’s stacked-bar graph shows how students in four grades get to school. Each bar is split into walk, bus and car. Watch the parts stack up. The whole bar shows the total for each grade.',view:'model',demo:'grow'},
         {say:'Read about good graphs.',speech:'A good graph has a title, labels, a legend, a source, and a scale that starts at zero. An infographic puts graphs, numbers and short facts together to tell a story.',view:'read'},
         {say:'Watch: a misleading graph.',speech:'Now the same totals are drawn with an axis that starts at forty. Grade six looks three times bigger than grade three, but the real difference is small. Always check the scale!',view:'model',demo:'mislead'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -386,7 +386,7 @@ P.lesson({id:'stacked5',title:'Stacked-bar graphs and misleading graphs',strand:
         A.seq([[600,()=>{st.d=full.map(r=>[r[0],0,0]);draw();A.say('Walk');}],[1000,()=>{st.d=full.map(r=>[r[0],r[1],0]);draw();A.say('+ Bus');}],[1000,()=>{st.d=full.map(r=>r.slice());draw();A.say('+ Car = the whole bar');}]]);}
       if(n==='mislead'){st.d=[[14,15,13],[15,16,14],[16,15,15],[17,18,14]];st.mis=false;st.sel=null;draw();A.seq([[1400,()=>{st.mis=true;draw();A.say('Axis from 40: the bars look very different!');}],[2200,()=>{st.mis=false;draw();A.say('Fair axis: they are close.');}]]);}},
     task(r){st.setup=true;st.ask=null;st.want=null;st.mis=false;st.sel=null;st.d=GRADES.map(()=>TRIP.map(()=>rnd(8,22)));let txt;
-      if(r===0){const k=rnd(0,2);const col=st.d.map(d=>d[k]);const mx=Math.max(...col);const i=col.indexOf(mx);st.d.forEach((d,j)=>{if(j!==i&&d[k]===mx)d[k]--;});st.want=(a,b)=>b===k?a===i:false;st.wantOk='Yes! '+GRADES[i]+' has the most who '+TRIP[k][0].toLowerCase()+'.';txt='Tap the part that shows the grade with the *most students who '+TRIP[k][0].toLowerCase()+'*.';}
+      if(r===0){const k=rnd(0,2);const col=st.d.map(d=>d[k]);const mx=Math.max(...col);const i=col.indexOf(mx);st.d.forEach((d,j)=>{if(j!==i&&d[k]===mx)d[k]--;});st.want=(a,b)=>b===k?a===i:false;const HOW=['walk','take the bus','come by car'][k];st.wantOk='Yes! '+GRADES[i]+' has the most students who '+HOW+'.';txt='Tap the part that shows the grade with the *most students who '+HOW+'*.';}
       else if(r===1){const i=rnd(0,3),tot=st.d[i].reduce((a,b)=>a+b,0);st.ask={ans:tot,o:opts(tot,[-5,5,10,-10],1),ok:'Yes! '+st.d[i].join(' + ')+' = '+tot+'.'};txt='How many students *in all* are in *'+GRADES[i]+'*?';}
       else if(r===2){const i=rnd(0,3),k=rnd(0,2);st.want=(a,b)=>a===i&&b===k;st.wantOk='Yes! That part shows '+GRADES[i]+', '+TRIP[k][0]+'.';txt='Tap the part for *'+GRADES[i]+'* students who *'+['walk','take the bus','come by car'][k]+'*.';}
       else if(r===3){st.d=[[14,15,13],[15,16,14],[16,15,15],[17,18,14]];st.mis=true;st.ask={ans:'No',o:['Yes','No'],ok:'Right! 49 is only a little more than 42. The axis starts at 40, so the picture exaggerates.'};txt='Axis from 40: does *Gr 6* really have about *3 times* as many students as *Gr 3*?';}
@@ -400,19 +400,19 @@ P.lesson({id:'stacked5',title:'Stacked-bar graphs and misleading graphs',strand:
 P.lesson({id:'mean5',title:'Mean, median and mode',strand:'Data',codes:['D1.5'],
  guide:{goal:'Determine the mean and the median and identify the mode(s) of data sets with whole numbers and decimals, including sets with an even number of values, and explain what each measure tells about the data.',words:'mean, median, mode, data set, even number of values, outlier',
   ask:['How do you find the median when there are 6 values?','Why can the mean be a decimal even when the data are whole numbers?','Which measure best describes a set with one very big value?'],home:'Time how many seconds each family member can stand on one foot. Find the mean, median and mode.'},
- learn:[{say:'Median with an even number of values.',speech:'These six towers show how many goals six players scored. Sort them. There are two middle towers, five and seven. The median is halfway between them: six.',view:'model',demo:'median'},
+ learn:[{say:'Median with an even number of values.',speech:'These six towers show how many goals Keiko and five teammates scored. Sort them. There are two middle towers, five and seven. The median is halfway between them: six.',view:'model',demo:'median'},
         {say:'Read the three measures.',speech:'The mean is the total shared equally. The median is the middle of the sorted data, or halfway between the two middle values. The mode is the value that happens most often.',view:'read'},
         {say:'Watch: a decimal mean.',speech:'Now even out these towers. The total is thirty-three cubes for six towers, so each tower gets five and a half. The mean is five point five.',view:'model',demo:'mean'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
         {say:'Your turn: find the measures.',speech:'Your turn. Sort the towers and even them out. Change the data to explore.',view:'model'}],
  fig:'Towers of data. Sort them, or even them out.',rz:.3,
- explore:['Press *Sort* to put the towers in order.','The *median* glows yellow; the *mode* is pink.','Press *Even out* to see the *mean*.'],
+ explore:['Press *Sort* to put the towers in order.','The *median* glows yellow; the *mode* is orange.','Press *Even out* to see the *mean*.'],
  howTo:'Read the question. Use Sort and Even out to help, then choose the answer.',
  init:k=>({v:[7,3,9,5,2,7],orig:[7,3,9,5,2,7],sc:1,ask:null}),
  left(p,S){const g=p.g;let y=header(p,S);
   y=para(p,y,'*Mean*, *median* and *mode* each describe a data set with one number.')+14;
-  const vals=[2,3,5,7,7,9];vals.forEach((v,i)=>{for(let k=0;k<v;k++){rr(g,X0+20+i*84,y+240-k*25,50,23,4);g.fillStyle=i===2||i===3?'#ffd24a':v===7?'#ff8cb0':'#9cc2f5';g.fill();}T(g,String(v),X0+45+i*84,y+272,FT.bodyB,INK,'center');});
-  T(g,'median = (5 + 7) ÷ 2 = 6',X0+540,y+100,FT.bodyB,'#d98a00');T(g,'mode = 7',X0+540,y+150,FT.bodyB,'#e2457a');T(g,'mean = 33 ÷ 6 = 5.5',X0+540,y+200,FT.bodyB,'#2f7de1');y+=310;
+  const vals=[2,3,5,7,7,9];vals.forEach((v,i)=>{for(let k=0;k<v;k++){rr(g,X0+20+i*84,y+240-k*25,50,23,4);g.fillStyle=i===2||i===3?'#ffd24a':v===7?'#ff9f68':'#9cc2f5';g.fill();}T(g,String(v),X0+45+i*84,y+272,FT.bodyB,INK,'center');});
+  T(g,'median = (5 + 7) ÷ 2 = 6',X0+540,y+100,FT.bodyB,'#d98a00');T(g,'mode = 7',X0+540,y+150,FT.bodyB,'#e4572e');T(g,'mean = 33 ÷ 6 = 5.5',X0+540,y+200,FT.bodyB,'#2f7de1');y+=310;
   [['Mean','add the values, divide by how many'],['Median','middle value, or halfway between the two middles'],['Mode','the most common value (there can be none, or more than one)']].forEach(([a,b],i)=>{T(g,a,X0,y+i*44,FT.bodyB,acc());T(g,b,X0+140,y+i*44,FT.small);});y+=140;
   y=para(p,y,'Decimals work the same way: the mean of *1.2 m, 1.5 m and 1.8 m* is 4.5 ÷ 3 = *1.5 m*.')+10;
   predict(p,y,S,'p22','Data: 4, 8, 10, 2. What is the median?','*6.* Sorted: 2, 4, 8, 10. Halfway between 4 and 8 is 6.');},
@@ -422,7 +422,7 @@ P.lesson({id:'mean5',title:'Mean, median and mode',strand:'Data',codes:['D1.5'],
   const xs=i=>-1.9+i*(3.8/Math.max(1,st.v.length-1));
   function draw(fr){clearGroup(tw);const s=st.v.slice().sort((a,b)=>a-b),sorted=st.v.every((x,i)=>x===s[i]),n=st.v.length,md=modes5(st.v);
     st.v.forEach((h,i)=>{const g=new THREE.Group();g.position.set(xs(i),0,Z);tw.add(g);const isMed=sorted&&(n%2?i===(n-1)/2:i===n/2-1||i===n/2),isMode=md.includes(h);
-      const hh=fr?fr[i]:h;const full=Math.floor(hh+1e-9);for(let k=0;k<full;k++){const c=unitBox(1,1,1,isMed?'#ffd24a':isMode?'#ff8cb0':'#9cc2f5',u);c.scale.set(1.4,1,1.4);c.position.y=u/2+.03+k*u;g.add(c);}
+      const hh=fr?fr[i]:h;const full=Math.floor(hh+1e-9);for(let k=0;k<full;k++){const c=unitBox(1,1,1,isMed?'#ffd24a':isMode?'#ff9f68':'#9cc2f5',u);c.scale.set(1.4,1,1.4);c.position.y=u/2+.03+k*u;g.add(c);}
       const part=hh-full;if(part>1e-6){const c=mk(new THREE.BoxGeometry(u*1.4,u*part,u*1.4),lam('#bcd6f8'),20);c.position.y=.03+full*u+u*part/2;g.add(c);}
       const l=label(f(fr?Math.round(hh*100)/100:h),{size:.22});l.position.y=hh*u+.25;g.add(l);});A.redraw();}
   function sortIt(){if(anim)return;st.v.sort((a,b)=>a-b);A.pop();draw();A.say('In order: '+st.v.map(f).join(', '));}
@@ -452,7 +452,7 @@ const SCOL=[['red','#e0453a'],['blue','#2f7de1'],['green','#16a36f'],['yellow','
 P.lesson({id:'prob5',title:'Theoretical and experimental probability',strand:'Data',codes:['D2.1','D2.2'],
  guide:{goal:'Use fractions to express the probability of events, show them on a probability line, make predictions, and compare theoretical probability with experimental results.',words:'probability, outcome, theoretical probability, experimental probability, trial, probability line',
   ask:['Why is the probability of red 3/8 on this spinner?','After 20 spins, red came up 9 times. Is that close to what you expected?','What happens to the experimental results when you do many more trials?'],home:'Flip a coin 20 times and record heads. Compare your result with the theoretical probability of 1/2.'},
- learn:[{say:'Probability as a fraction.',speech:'This spinner has eight equal parts. Three are red. The probability of red is three out of eight, or three eighths. Watch it land on the probability line.',view:'model',demo:'place'},
+ learn:[{say:'Probability as a fraction.',speech:'Jordan’s spinner has eight equal parts. Three are red. The probability of red is three out of eight, or three eighths. Watch it land on the probability line.',view:'model',demo:'place'},
         {say:'Read: theoretical and experimental.',speech:'Theoretical probability is what should happen: favourable outcomes over all outcomes. Experimental probability is what did happen in trials: results over number of trials.',view:'read'},
         {say:'Watch: spin twenty times.',speech:'Let us test it. Watch twenty spins. The tally bars grow. The experimental results are close to the theoretical probability, but not exactly the same.',view:'model',demo:'spin'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},

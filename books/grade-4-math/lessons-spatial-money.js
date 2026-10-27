@@ -12,14 +12,14 @@ function opts(ans,spread,min){const s=new Set([ans]);let k=0;while(s.size<3&&k<5
    21. Properties of rectangles
    ========================================================= */
 const SHP={rectangle:{v:[[-1.1,-.65],[1.1,-.65],[1.1,.65],[-1.1,.65]],sym:[0,90],col:'#2f7de1'},square:{v:[[-.8,-.8],[.8,-.8],[.8,.8],[-.8,.8]],sym:[0,45,90,135],col:'#16a36f'},
-  parallelogram:{v:[[-1.2,-.6],[.8,-.6],[1.2,.6],[-.8,.6]],sym:[],col:'#e2457a'},rhombus:{v:[[0,-.85],[1.1,0],[0,.85],[-1.1,0]],sym:[0,90],col:'#f08a24'},trapezoid:{v:[[-1.15,-.6],[1.15,-.6],[.6,.6],[-.6,.6]],sym:[90],col:'#8b5cf6'}};
+  parallelogram:{v:[[-1.2,-.6],[.8,-.6],[1.2,.6],[-.8,.6]],sym:[],col:'#e4572e'},rhombus:{v:[[0,-.85],[1.1,0],[0,.85],[-1.1,0]],sym:[0,90],col:'#f08a24'},trapezoid:{v:[[-1.15,-.6],[1.15,-.6],[.6,.6],[-.6,.6]],sym:[90],col:'#8b5cf6'}};
 const SN=Object.keys(SHP);
 function props(k){const v=SHP[k].v,n=v.length;let right=0;const par=[];for(let i=0;i<n;i++){const a=v[(i+n-1)%n],b=v[i],c=v[(i+1)%n];const d1=[a[0]-b[0],a[1]-b[1]],d2=[c[0]-b[0],c[1]-b[1]];if(Math.abs(d1[0]*d2[0]+d1[1]*d2[1])<1e-6)right++;}
   for(let i=0;i<2;i++){const e1=[v[i+1][0]-v[i][0],v[i+1][1]-v[i][1]],e2=[v[(i+3)%4][0]-v[(i+2)%4][0],v[(i+3)%4][1]-v[(i+2)%4][1]];if(Math.abs(e1[0]*e2[1]-e1[1]*e2[0])<1e-6)par.push(i);}return {right,par,sym:SHP[k].sym.length};}
 P.lesson({id:'rectangles',title:'Properties of rectangles',strand:'Spatial Sense',codes:['E1.1'],
  guide:{goal:'Identify the geometric properties of rectangles: four right angles, two pairs of parallel sides, perpendicular sides, and lines of symmetry, and compare rectangles with other quadrilaterals.',words:'rectangle, square, right angle, parallel, perpendicular, line of symmetry, quadrilateral',
   ask:['Is a square a rectangle? Why?','How can you check if two sides are parallel?','Why does a parallelogram have no lines of symmetry?'],home:'Hunt for rectangles at home: doors, books, screens. Check the corners with the corner of a sheet of paper.'},
- learn:[{say:'Rectangles have four right angles.',speech:'A rectangle has four right angles. Its opposite sides are parallel, and the sides that meet at a corner are perpendicular. Watch the marks appear.',view:'model',demo:'props'},
+ learn:[{say:'Rectangles have four right angles.',speech:'A rectangle has four right angles. On Kofi’s plan, opposite sides are parallel, and the sides that meet at a corner are perpendicular. Watch the marks appear.',view:'model',demo:'props'},
         {say:'Read the properties.',speech:'Parallel sides never meet. Perpendicular sides meet at a right angle. A line of symmetry folds a shape into two matching halves.',view:'read'},
         {say:'Watch: lines of symmetry.',speech:'A rectangle has two lines of symmetry. A square has four. Watch the mirror lines appear.',view:'model',demo:'sym'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -31,10 +31,10 @@ P.lesson({id:'rectangles',title:'Properties of rectangles',strand:'Spatial Sense
  init:k=>({k:'rectangle',ra:true,par:false,sym:false,ask:null,want:null}),
  left(p,S){const g=p.g;let y=header(p,S);
   y=para(p,y,'A *rectangle* is a quadrilateral with *4 right angles*. Its opposite sides are *parallel* and the sides at each corner are *perpendicular*.')+16;
-  const rx=X0+30,ry=y+20,rw=330,rh=200;g.lineWidth=6;[['#2f7de1',rx,ry,rx+rw,ry],['#e2457a',rx+rw,ry,rx+rw,ry+rh],['#2f7de1',rx+rw,ry+rh,rx,ry+rh],['#e2457a',rx,ry+rh,rx,ry]].forEach(([c,a,b,d,e])=>{g.strokeStyle=c;g.beginPath();g.moveTo(a,b);g.lineTo(d,e);g.stroke();});
+  const rx=X0+30,ry=y+20,rw=330,rh=200;g.lineWidth=6;[['#2f7de1',rx,ry,rx+rw,ry],['#e4572e',rx+rw,ry,rx+rw,ry+rh],['#2f7de1',rx+rw,ry+rh,rx,ry+rh],['#e4572e',rx,ry+rh,rx,ry]].forEach(([c,a,b,d,e])=>{g.strokeStyle=c;g.beginPath();g.moveTo(a,b);g.lineTo(d,e);g.stroke();});
   [[rx,ry,1,1],[rx+rw,ry,-1,1],[rx+rw,ry+rh,-1,-1],[rx,ry+rh,1,-1]].forEach(([x,yy,sx,sy])=>{g.strokeStyle=INK;g.lineWidth=2;g.strokeRect(Math.min(x,x+sx*22),Math.min(yy,yy+sy*22),22,22);});
   g.setLineDash([10,8]);g.strokeStyle='#16a36f';g.lineWidth=3;g.beginPath();g.moveTo(rx+rw/2,ry-20);g.lineTo(rx+rw/2,ry+rh+20);g.moveTo(rx-20,ry+rh/2);g.lineTo(rx+rw+20,ry+rh/2);g.stroke();g.setLineDash([]);
-  [['4 right angles',INK],['blue sides are parallel','#2f7de1'],['pink sides are parallel','#e2457a'],['2 lines of symmetry','#16a36f']].forEach(([t,c],i)=>T(g,t,X0+420,y+50+i*48,FT.bodyB,c));y+=262;
+  [['4 right angles',INK],['blue sides are parallel','#2f7de1'],['orange sides are parallel','#e4572e'],['2 lines of symmetry','#16a36f']].forEach(([t,c],i)=>T(g,t,X0+420,y+50+i*48,FT.bodyB,c));y+=262;
   y=para(p,y,'A *square* is a special rectangle with 4 equal sides; it has *4* lines of symmetry. A *parallelogram* has parallel sides but no right angles.')+12;
   y=keyWords(p,y,[['parallel','lines that stay the same distance apart and never meet'],['perpendicular','lines that meet at a right angle']]);
   predict(p,y,S,'p21','How many lines of symmetry does a rectangle that is not a square have?','*2.* One across the middle and one down the middle. The diagonals are not lines of symmetry.');},
@@ -45,7 +45,7 @@ P.lesson({id:'rectangles',title:'Properties of rectangles',strand:'Spatial Sense
   function seg(a,b,col,r){const len=a.distanceTo(b);const m=new THREE.Mesh(new THREE.CylinderGeometry(r,r,len,8),lam(col));m.position.copy(a).add(b).multiplyScalar(.5);m.quaternion.setFromUnitVectors(V(0,1,0),b.clone().sub(a).normalize());return m;}
   function drawBig(){clearGroup(big);const k=st.k,v=SHP[k].v,pr=props(k);const sl=slab(k,1);big.add(sl);
     const P3=v.map(([x,z])=>V(x,.13,z));
-    if(st.par){const pc=['#2f7de1','#e2457a'];pr.par.forEach((i,j)=>{big.add(seg(P3[i],P3[i+1],pc[j],.035));big.add(seg(P3[(i+2)%4],P3[(i+3)%4],pc[j],.035));});}
+    if(st.par){const pc=['#2f7de1','#e4572e'];pr.par.forEach((i,j)=>{big.add(seg(P3[i],P3[i+1],pc[j],.035));big.add(seg(P3[(i+2)%4],P3[(i+3)%4],pc[j],.035));});}
     if(st.ra){for(let i=0;i<4;i++){const a=v[(i+3)%4],b=v[i],c=v[(i+1)%4];const d1=V(a[0]-b[0],0,a[1]-b[1]).normalize(),d2=V(c[0]-b[0],0,c[1]-b[1]).normalize();
       if(Math.abs(d1.dot(d2))<1e-6){const p0=P3[i].clone(),q1=p0.clone().addScaledVector(d1,.22),q2=p0.clone().addScaledVector(d2,.22),q3=q1.clone().addScaledVector(d2,.22);[seg(q1,q3,INK,.015),seg(q2,q3,INK,.015)].forEach(m=>big.add(m));}}}
     if(st.sym)SHP[k].sym.forEach(deg=>{const a=deg*Math.PI/180;const pl=new THREE.Mesh(new THREE.PlaneGeometry(3.0,.7),new THREE.MeshLambertMaterial({color:'#16a36f',transparent:true,opacity:.28,side:THREE.DoubleSide,depthWrite:false}));
@@ -76,7 +76,7 @@ P.lesson({id:'rectangles',title:'Properties of rectangles',strand:'Spatial Sense
 P.lesson({id:'grid',title:'Coordinates and transformations',strand:'Spatial Sense',codes:['E1.2','E1.3'],
  guide:{goal:'Plot and read coordinates in the first quadrant of a Cartesian plane, describe translations that move a point, and perform and predict reflections on a grid.',words:'coordinates, ordered pair, x-axis, y-axis, origin, translation, reflection, line of reflection',
   ask:['Why does (2, 5) land in a different spot than (5, 2)?','How would you describe the move from (1, 1) to (4, 3)?','Where is the reflection of (2, 4) in the line x = 3?'],home:'Play “coordinate battleship” on graph paper. Call out ordered pairs like (3, 4).'},
- learn:[{say:'Across first, then up.',speech:'A point on a grid is named by an ordered pair. The first number tells how far across, and the second tells how far up. Watch the rocket fly to three, two.',view:'model',demo:'plot'},
+ learn:[{say:'Across first, then up.',speech:'A point on a grid is named by an ordered pair. The first number tells how far across, and the second tells how far up. Watch Hana’s rocket fly to three, two.',view:'model',demo:'plot'},
         {say:'Read about translations and reflections.',speech:'A translation slides a point without turning it: for example, three right and two up. A reflection flips it over a line, like a mirror.',view:'read'},
         {say:'Watch: a reflection.',speech:'The red line is a mirror at x equals three. The rocket at one, four reflects to five, four: the same distance on the other side.',view:'model',demo:'reflect'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -91,9 +91,9 @@ P.lesson({id:'grid',title:'Coordinates and transformations',strand:'Spatial Sens
   const s=48,ox=X0+40,oy=y+300;g.strokeStyle='#d8dde8';g.lineWidth=2;for(let i=0;i<=6;i++){g.beginPath();g.moveTo(ox+i*s,oy);g.lineTo(ox+i*s,oy-6*s);g.stroke();g.beginPath();g.moveTo(ox,oy-i*s);g.lineTo(ox+6*s,oy-i*s);g.stroke();
     T(g,String(i),ox+i*s,oy+28,FT.small,GREY,'center');T(g,String(i),ox-18,oy-i*s+8,FT.small,GREY,'center');}
   g.strokeStyle=INK;g.lineWidth=4;g.beginPath();g.moveTo(ox,oy-6*s-10);g.lineTo(ox,oy);g.lineTo(ox+6*s+10,oy);g.stroke();
-  const pt=(x,yy,c)=>{g.beginPath();g.arc(ox+x*s,oy-yy*s,10,0,Math.PI*2);g.fillStyle=c;g.fill();};pt(1,2,'#2f7de1');pt(4,4,'#e2457a');
-  g.strokeStyle='#e2457a';g.lineWidth=3;g.setLineDash([8,6]);g.beginPath();g.moveTo(ox+s,oy-2*s);g.lineTo(ox+4*s,oy-2*s);g.lineTo(ox+4*s,oy-4*s);g.stroke();g.setLineDash([]);
-  T(g,'(1, 2)',ox+s-10,oy-2*s+40,FT.smallB,'#2f7de1');T(g,'(4, 4)',ox+4*s+14,oy-4*s-12,FT.smallB,'#e2457a');
+  const pt=(x,yy,c)=>{g.beginPath();g.arc(ox+x*s,oy-yy*s,10,0,Math.PI*2);g.fillStyle=c;g.fill();};pt(1,2,'#2f7de1');pt(4,4,'#e4572e');
+  g.strokeStyle='#e4572e';g.lineWidth=3;g.setLineDash([8,6]);g.beginPath();g.moveTo(ox+s,oy-2*s);g.lineTo(ox+4*s,oy-2*s);g.lineTo(ox+4*s,oy-4*s);g.stroke();g.setLineDash([]);
+  T(g,'(1, 2)',ox+s-10,oy-2*s+40,FT.smallB,'#2f7de1');T(g,'(4, 4)',ox+4*s+14,oy-4*s-12,FT.smallB,'#e4572e');
   wrap(g,'*Translation:* (1, 2) → 3 right, 2 up → (4, 4). The point slides; it does not turn.',X0+400,y+60,TW-400,34,{font:FT.small,bold:FT.smallB});
   wrap(g,'*Reflection:* a point flips over a line. It ends up the same distance away on the other side.',X0+400,y+190,TW-400,34,{font:FT.small,bold:FT.smallB});y+=350;
   y=keyWords(p,y,[['ordered pair','(x, y): across first, then up'],['translation','a slide: left/right and up/down']]);
@@ -112,7 +112,7 @@ P.lesson({id:'grid',title:'Coordinates and transformations',strand:'Spatial Sens
   function place(anim){const p=V(X(st.x),0,Z(st.y));if(anim)moveTo(rocket,{pos:p,k:8});else rocket.position.copy(p);tag.userData.set('('+st.x+', '+st.y+')');tag.position.set(p.x,.95,p.z);
     mirror.visible=st.mirror;ghost.visible=st.mirror;ghost.position.set(X(6-st.x),0,Z(st.y));check();A.redraw();}
   A.drag(rocket,{h:.25,drop:pos=>{st.x=Math.max(0,Math.min(6,Math.round((pos.x-ox)/s)));st.y=Math.max(0,Math.min(6,Math.round((oz-pos.z)/s)));A.pop();place(true);}});
-  function move(dx,dy){const nx=st.x+dx,ny=st.y+dy;if(nx<0||ny<0||nx>6||ny>6){A.bad('That is off the grid.');return;}const d=mk(G('gtr',()=>new THREE.SphereGeometry(.04,8,6)),lam('#e2457a'),0);d.position.set(X(st.x),.06,Z(st.y));trail.add(d);st.x=nx;st.y=ny;A.pop();place(true);}
+  function move(dx,dy){const nx=st.x+dx,ny=st.y+dy;if(nx<0||ny<0||nx>6||ny>6){A.bad('That is off the grid.');return;}const d=mk(G('gtr',()=>new THREE.SphereGeometry(.04,8,6)),lam('#e4572e'),0);d.position.set(X(st.x),.06,Z(st.y));trail.add(d);st.x=nx;st.y=ny;A.pop();place(true);}
   function check(){if(mode==='play'&&st.target&&st.x===st.target[0]&&st.y===st.target[1])game.solved('Yes! ('+st.x+', '+st.y+').');}
   place(false);
   return {info:()=>'('+st.x+', '+st.y+')',
@@ -137,7 +137,7 @@ const ACOL={acute:'#16a36f',right:'#2f7de1',obtuse:'#f08a24',straight:'#8b5cf6'}
 P.lesson({id:'angles',title:'Right, acute, obtuse and straight angles',strand:'Spatial Sense',codes:['E2.4'],
  guide:{goal:'Identify angles and classify them as right, straight, acute or obtuse by comparing them with a right angle (a square corner).',words:'angle, vertex, arm, right angle, acute, obtuse, straight angle, benchmark',
   ask:['How can the corner of a sheet of paper help you check an angle?','What kind of angle do the hands of a clock make at 3:00? At 6:00?','Can a triangle have two obtuse angles?'],home:'Make angles with your arms or two pencils. Call out “acute!”, “right!”, “obtuse!”, “straight!” and check with a paper corner.'},
- learn:[{say:'Compare with a square corner.',speech:'An angle is made by two arms that meet at a vertex. Compare it with a right angle, a square corner. Watch the arm open from acute, to right, to obtuse, to straight.',view:'model',demo:'sweep'},
+ learn:[{say:'Compare with a square corner.',speech:'An angle is made by two arms that meet at a vertex. Finn compares it with a right angle, a square corner. Watch the arm open from acute, to right, to obtuse, to straight.',view:'model',demo:'sweep'},
         {say:'Read the four kinds of angles.',speech:'Acute is smaller than a right angle. Right is exactly a square corner. Obtuse is bigger than a right angle but smaller than a straight angle. A straight angle is a straight line.',view:'read'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
         {say:'Your turn: open the arm.',speech:'Your turn. Drag the yellow tip of the arm, or use the buttons. Watch the angle name change.',view:'model'}],
@@ -159,7 +159,7 @@ P.lesson({id:'angles',title:'Right, acute, obtuse and straight angles',strand:'S
  build(S,grp,mode,game){const st=S.st,Vx=V(-.4,.12,-1.0),L=1.75;
   const pad=mk(new THREE.CylinderGeometry(2.0,2.0,.03,48,1,false,0,Math.PI),lam('#f3f6fb'),0);pad.rotation.y=Math.PI/2;pad.position.set(Vx.x,.015,Vx.z);grp.add(pad);
   const arm=(col)=>{const m=mk(new THREE.BoxGeometry(L,.08,.1),lam(col),20);m.geometry.translate(L/2,0,0);return m;};const a1=arm('#1b2236');a1.position.copy(Vx);grp.add(a1);
-  const a2=arm('#1b2236');a2.position.copy(Vx);grp.add(a2);const vtx=mk(new THREE.SphereGeometry(.1,16,12),lam('#e2457a'),0);vtx.position.copy(Vx);grp.add(vtx);
+  const a2=arm('#1b2236');a2.position.copy(Vx);grp.add(a2);const vtx=mk(new THREE.SphereGeometry(.1,16,12),lam('#e4572e'),0);vtx.position.copy(Vx);grp.add(vtx);
   const tip=mk(new THREE.SphereGeometry(.15,18,14),lam('#ffd24a'),0);grp.add(tip);let arc=null;const nm=label('',{size:.32,bg:'#ffffff'});nm.position.set(Vx.x,1.4,Vx.z-1.2);grp.add(nm);
   const corner=new THREE.Group();grp.add(corner);
   function draw(){const r=st.a*Math.PI/180;a2.rotation.y=r;tip.position.set(Vx.x+Math.cos(r)*L,.15,Vx.z-Math.sin(r)*L);if(arc){grp.remove(arc);disposeObj(arc);}
@@ -181,11 +181,11 @@ P.lesson({id:'angles',title:'Right, acute, obtuse and straight angles',strand:'S
 /* =========================================================
    24. Mass, capacity and metric prefixes
    ========================================================= */
-const MITEMS=[{n:'flour',g:1000,col:'#f3e3c3',s:[.34,.42,.24]},{n:'book',g:500,col:'#2f7de1',s:[.42,.1,.32]},{n:'butter',g:250,col:'#ffe27a',s:[.3,.1,.14]},{n:'apple',g:150,col:'#e0453a',r:.12},{n:'eraser',g:50,col:'#ff9fb5',s:[.16,.06,.1]}];
+const MITEMS=[{n:'flour',g:1000,col:'#f3e3c3',s:[.34,.42,.24]},{n:'book',g:500,col:'#2f7de1',s:[.42,.1,.32]},{n:'butter',g:250,col:'#ffe27a',s:[.3,.1,.14]},{n:'apple',g:150,col:'#e0453a',r:.12},{n:'eraser',g:50,col:'#ffb37a',s:[.16,.06,.1]}];
 P.lesson({id:'metric',title:'Grams, kilograms, millilitres and litres',strand:'Spatial Sense',codes:['E2.1','E2.2'],
  guide:{goal:'Explain the relationships between grams and kilograms and between millilitres and litres, use benchmarks to estimate mass and capacity, and use metric prefixes to choose appropriate units and tools.',words:'gram (g), kilogram (kg), millilitre (mL), litre (L), kilo-, centi-, milli-, benchmark, scale, capacity',
   ask:['Why is 1 kg the same as 1000 g?','What has a mass of about 1 g? About 1 kg?','Which tool and unit would you use to measure the water in a bathtub?'],home:'Read the labels in the kitchen: find something measured in g, kg, mL and L. Sort them from least to greatest.'},
- learn:[{say:'1 kilogram is 1000 grams.',speech:'Kilo means one thousand. A kilogram is one thousand grams. Watch the scale: a book is five hundred grams, and two butters are two hundred fifty grams each. Together they make one kilogram.',view:'model',demo:'kg'},
+ learn:[{say:'1 kilogram is 1000 grams.',speech:'Kilo means one thousand. A kilogram is one thousand grams. Watch Tala’s scale: a book is five hundred grams, and two butters are two hundred fifty grams each. Together they make one kilogram.',view:'model',demo:'kg'},
         {say:'Read the metric prefixes.',speech:'Kilo means a thousand. Centi means one hundredth. Milli means one thousandth. So one litre is one thousand millilitres.',view:'read'},
         {say:'Watch: filling a litre.',speech:'Pour four cups of two hundred fifty millilitres into the jug. Four times two hundred fifty is one thousand millilitres, one litre.',view:'model',demo:'litre'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -197,7 +197,7 @@ P.lesson({id:'metric',title:'Grams, kilograms, millilitres and litres',strand:'S
  init:k=>({mode:'mass',on:[],ml:0,ask:null,target:null}),
  left(p,S){const g=p.g;let y=header(p,S);
   y=para(p,y,'Metric units use *prefixes* that tell size. *Kilo* means 1000, *centi* means 1/100, *milli* means 1/1000.')+16;
-  [['kilo-','× 1000','1 kg = 1000 g','#16a36f'],['centi-','÷ 100','1 m = 100 cm','#2f7de1'],['milli-','÷ 1000','1 L = 1000 mL','#e2457a']].forEach(([a,b,c,col],i)=>{const x=X0+i*(TW/3);rr(g,x+4,y,TW/3-8,140,16);g.fillStyle=tint(col,.13);g.fill();
+  [['kilo-','× 1000','1 kg = 1000 g','#16a36f'],['centi-','÷ 100','1 m = 100 cm','#2f7de1'],['milli-','÷ 1000','1 L = 1000 mL','#e4572e']].forEach(([a,b,c,col],i)=>{const x=X0+i*(TW/3);rr(g,x+4,y,TW/3-8,140,16);g.fillStyle=tint(col,.13);g.fill();
     T(g,a,x+TW/6,y+46,ZS(40),col,'center');T(g,b,x+TW/6,y+86,FT.bodyB,INK,'center');T(g,c,x+TW/6,y+122,FT.small,GREY,'center');});y+=172;
   [['1 g','a paper clip'],['1 kg','a bag of flour'],['1 mL','a few drops'],['1 L','a big water bottle']].forEach(([a,b],i)=>{T(g,'about '+a,X0+(i%2)*TW/2,y+Math.floor(i/2)*44,FT.bodyB,acc());T(g,b,X0+(i%2)*TW/2+180,y+Math.floor(i/2)*44,FT.body);});y+=100;
   y=para(p,y,'Use *g* for light things and *kg* for heavy things. Use *mL* for small amounts of liquid and *L* for large amounts.')+12;
@@ -253,12 +253,12 @@ const dur=m=>{const h=Math.floor(m/60),mm=m%60;return (h?h+' h ':'')+(mm||!h?mm+
 P.lesson({id:'elapsed',title:'Elapsed time',strand:'Spatial Sense',codes:['E2.3'],
  guide:{goal:'Solve problems involving elapsed time by applying the relationships between seconds, minutes, hours, days, weeks, months and years.',words:'elapsed time, start time, end time, duration, hour, minute, second, a.m., p.m.',
   ask:['How did you count on from 9:40 to 11:15?','Why is it easier to jump to the next hour first?','How many minutes are in 2 and a half hours?'],home:'Before a show or a drive, ask: “It starts at 4:35 and takes 1 h 20 min. When will it end?”'},
- learn:[{say:'Count on from the start time.',speech:'A movie starts at two fifteen and lasts one hour thirty minutes. Count on: one hour takes us to three fifteen, then thirty more minutes to three forty-five. Watch the clock.',view:'model',demo:'movie'},
+ learn:[{say:'Count on from the start time.',speech:'Ravi’s movie starts at two fifteen and lasts one hour thirty minutes. Count on: one hour takes us to three fifteen, then thirty more minutes to three forty-five. Watch the clock.',view:'model',demo:'movie'},
         {say:'Read about jumps on a timeline.',speech:'On a timeline, jump to the next hour first, then add the rest. Sixty seconds make a minute, sixty minutes make an hour, and twenty-four hours make a day.',view:'read'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
-        {say:'Your turn: move the hands.',speech:'Your turn. Drag the pink minute hand or use the buttons. The timeline shows how much time has passed.',view:'model'}],
+        {say:'Your turn: move the hands.',speech:'Your turn. Drag the orange minute hand or use the buttons. The timeline shows how much time has passed.',view:'model'}],
  fig:'A clock and a timeline from the start time to the end time.',rz:-.2,
- explore:['*Drag the pink minute hand* around the clock.','Use *+5 min* and *+1 hour* to count on.','The *timeline* shows the elapsed time.'],
+ explore:['*Drag the orange minute hand* around the clock.','Use *+5 min* and *+1 hour* to count on.','The *timeline* shows the elapsed time.'],
  tries:[['Swimming starts at 4:20 and ends at 5:05. How long is it?','*45 minutes.* 4:20 to 5:00 is 40 min, plus 5 min.'],['A trip takes 2 h 15 min and starts at 9:30. When does it end?','*11:45.*'],['How many minutes are in 3 hours?','*180 minutes.* 3 × 60 = 180.']],
  howTo:'Set the clock to the time the question asks for, or choose how much time has passed.',
  init:k=>({start:8*60+40,tm:9*60+25,want:null,ask:null}),
@@ -266,7 +266,7 @@ P.lesson({id:'elapsed',title:'Elapsed time',strand:'Spatial Sense',codes:['E2.3'
   y=para(p,y,'*Elapsed time* is how much time passes between a *start time* and an *end time*. Count on in easy jumps.')+18;
   const lx=X0+20,lw=TW-40;g.strokeStyle=INK;g.lineWidth=4;g.beginPath();g.moveTo(lx,y+90);g.lineTo(lx+lw,y+90);g.stroke();const toX=m=>lx+(m-135)/105*lw;
   [[135,'2:15'],[180,'3:00'],[225,'3:45']].forEach(([m,t])=>{g.beginPath();g.moveTo(toX(m),y+76);g.lineTo(toX(m),y+104);g.stroke();T(g,t,toX(m),y+140,FT.bodyB,INK,'center');});
-  [[135,180,'+45 min','#2f7de1'],[180,225,'+45 min','#e2457a']].forEach(([a,b,t,c])=>{g.strokeStyle=c;g.lineWidth=4;g.beginPath();g.moveTo(toX(a),y+84);g.quadraticCurveTo((toX(a)+toX(b))/2,y+20,toX(b),y+84);g.stroke();T(g,t,(toX(a)+toX(b))/2,y+36,FT.hand,c,'center');});
+  [[135,180,'+45 min','#2f7de1'],[180,225,'+45 min','#e4572e']].forEach(([a,b,t,c])=>{g.strokeStyle=c;g.lineWidth=4;g.beginPath();g.moveTo(toX(a),y+84);g.quadraticCurveTo((toX(a)+toX(b))/2,y+20,toX(b),y+84);g.stroke();T(g,t,(toX(a)+toX(b))/2,y+36,FT.hand,c,'center');});
   T(g,'2:15 → 3:45 is 1 h 30 min',X0,y+196,ZS(40),acc());y+=252;
   [['60 seconds','1 minute'],['60 minutes','1 hour'],['24 hours','1 day'],['7 days','1 week'],['12 months','1 year']].forEach(([a,b],i)=>{T(g,a+' = '+b,X0+(i%2)*TW/2,y+Math.floor(i/2)*42,FT.bodyB);});y+=134;
   y=keyWords(p,y,[['elapsed time','the time that passes from start to end'],['duration','how long something lasts']]);
@@ -275,13 +275,13 @@ P.lesson({id:'elapsed',title:'Elapsed time',strand:'Spatial Sense',codes:['E2.3'
  build(S,grp,mode,game){const st=S.st,C=V(-.95,1.45,-1.9);
   const fc=document.createElement('canvas');fc.width=fc.height=512;const g=fc.getContext('2d');g.fillStyle='#fffdf7';g.fillRect(0,0,512,512);
   for(let i=0;i<60;i++){const a=i*Math.PI/30,r1=i%5?236:224;g.strokeStyle=i%5?'#9aa1b3':INK;g.lineWidth=i%5?2:5;g.beginPath();g.moveTo(256+Math.sin(a)*r1,256-Math.cos(a)*r1);g.lineTo(256+Math.sin(a)*248,256-Math.cos(a)*248);g.stroke();}
-  for(let i=1;i<=12;i++){const a=i*Math.PI/6;g.fillStyle=['#e2457a','#f08a24','#16a36f','#2f7de1','#8b5cf6'][i%5];g.font='700 62px "Zilla Slab", Georgia, serif';g.textAlign='center';g.textBaseline='middle';g.fillText(String(i),256+Math.sin(a)*176,256-Math.cos(a)*176+4);}
+  for(let i=1;i<=12;i++){const a=i*Math.PI/6;g.fillStyle=['#e4572e','#f08a24','#16a36f','#2f7de1','#8b5cf6'][i%5];g.font='700 62px "Zilla Slab", Georgia, serif';g.textAlign='center';g.textBaseline='middle';g.fillText(String(i),256+Math.sin(a)*176,256-Math.cos(a)*176+4);}
   const rimG=new THREE.CylinderGeometry(1.15,1.15,.22,64);rimG.rotateX(Math.PI/2);const rim=mk(rimG,lam('#16a36f'),30);rim.position.copy(C);grp.add(rim);
   const face=new THREE.Mesh(new THREE.CircleGeometry(1.02,64),new THREE.MeshLambertMaterial({map:new THREE.CanvasTexture(fc)}));face.position.copy(C);face.position.z+=.115;grp.add(face);
   [-.55,.55].forEach(x=>{const f=mk(new THREE.BoxGeometry(.25,.32,.3),lam('#0f7a52'),20);f.position.set(C.x+x,.16,C.z);grp.add(f);});
   const hp=new THREE.Group(),mp=new THREE.Group();hp.position.copy(C);hp.position.z+=.13;mp.position.copy(C);mp.position.z+=.16;grp.add(hp,mp);
-  const hh=mk(new THREE.BoxGeometry(.1,.56,.03),lam(INK),0);hh.position.y=.22;hp.add(hh);const mh=mk(new THREE.BoxGeometry(.09,.88,.04),lam('#e2457a'),0);mh.position.y=.36;mp.add(mh);
-  const knob=mk(new THREE.SphereGeometry(.09,14,10),lam('#e2457a'),0);knob.position.y=.78;mp.add(knob);
+  const hh=mk(new THREE.BoxGeometry(.1,.56,.03),lam(INK),0);hh.position.y=.22;hp.add(hh);const mh=mk(new THREE.BoxGeometry(.09,.88,.04),lam('#e4572e'),0);mh.position.y=.36;mp.add(mh);
+  const knob=mk(new THREE.SphereGeometry(.09,14,10),lam('#e4572e'),0);knob.position.y=.78;mp.add(knob);
   const dl=label('',{size:.26,bg:'#1b2236',color:'#7dffb0',font:'700 96px "Atkinson Hyperlegible", monospace',border:'#1b2236'});dl.position.set(1.35,.5,-1.3);grp.add(dl);
   const tl=new THREE.Group();grp.add(tl);
   function timeline(){clearGroup(tl);const el=Math.max(0,st.tm-st.start);const L=3.8,x0=-1.9,zz=-.35;const span=Math.max(60,Math.ceil((el+15)/60)*60);const toX=m=>x0+m/span*L;
@@ -315,7 +315,7 @@ P.lesson({id:'elapsed',title:'Elapsed time',strand:'Spatial Sense',codes:['E2.3'
 P.lesson({id:'area4',title:'Area of rectangles',strand:'Spatial Sense',codes:['E2.5','E2.6'],
  guide:{goal:'Use the rows and columns of an array to show that the area of a rectangle is length × width, and use the formula to find an unknown side when the area and one side are known.',words:'area, square unit, cm², m², length, width, formula, array',
   ask:['Why does multiplying length by width give the area?','A rectangle has area 36 m² and width 4 m. How long is it?','Can two different rectangles have the same area?'],home:'Measure a rug or a table in metres or centimetres, then find its area with length × width.'},
- learn:[{say:'Rows times columns gives area.',speech:'This garden is covered by square tiles. Each row has six tiles, and there are four rows. Four times six is twenty-four square metres. Watch it fill.',view:'model',demo:'tile'},
+ learn:[{say:'Rows times columns gives area.',speech:'Isla’s garden is covered by square tiles. Each row has six tiles, and there are four rows. Four times six is twenty-four square metres. Watch it fill.',view:'model',demo:'tile'},
         {say:'Read the area formula.',speech:'The area of a rectangle is length times width. If you know the area and one side, divide to find the other side.',view:'read'},
         {say:'Watch: find the missing side.',speech:'The area is thirty-six square metres and the width is four metres. Thirty-six divided by four is nine, so the length is nine metres.',view:'model',demo:'missing'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -359,12 +359,12 @@ P.lesson({id:'area4',title:'Area of rectangles',strand:'Spatial Sense',codes:['E
 /* =========================================================
    27. Shopping: payment methods and change
    ========================================================= */
-const GOODS=[{n:'Ball',p:7,col:'#e2457a',sh:'ball'},{n:'Kite',p:9,col:'#2f7de1',sh:'kite'},{n:'Book',p:12,col:'#16a36f',sh:'book'},{n:'Puzzle',p:15,col:'#8b5cf6',sh:'box'},{n:'Paint',p:6,col:'#f08a24',sh:'can'},{n:'Cap',p:8,col:'#0fa5a5',sh:'cap'}];
+const GOODS=[{n:'Ball',p:7,col:'#e4572e',sh:'ball'},{n:'Kite',p:9,col:'#2f7de1',sh:'kite'},{n:'Book',p:12,col:'#16a36f',sh:'book'},{n:'Puzzle',p:15,col:'#8b5cf6',sh:'box'},{n:'Paint',p:6,col:'#f08a24',sh:'can'},{n:'Cap',p:8,col:'#0fa5a5',sh:'cap'}];
 const PAY=[['Cash','bills and coins handed over'],['Debit card','money comes straight out of your bank account'],['Credit card','you borrow money and pay it back later'],['Gift card','a card already loaded with money'],['E-transfer','money sent from one bank account to another online']];
 P.lesson({id:'shopping',title:'Paying and making change',strand:'Financial Literacy',codes:['F1.1','F1.2'],
  guide:{goal:'Identify methods of payment for goods and services, and estimate and calculate the cost of several items priced in whole dollars and the change from a cash payment, using mental math.',words:'cost, total, change, cash, debit, credit, gift card, e-transfer, estimate',
   ask:['How is paying with debit different from paying with credit?','How can you add $7 + $9 + $12 in your head?','You pay $50 for $34 of items. How did you find the change?'],home:'Next time you shop, let your child estimate the total and the change before you pay, and name the payment method you use.'},
- learn:[{say:'Add the prices to find the total.',speech:'Put a ball for seven dollars and a kite for nine dollars in the cart. Seven plus nine is sixteen dollars. Watch the total.',view:'model',demo:'cart'},
+ learn:[{say:'Add the prices to find the total.',speech:'Kofi puts a ball for seven dollars and a kite for nine dollars in the cart. Seven plus nine is sixteen dollars. Watch the total.',view:'model',demo:'cart'},
         {say:'Read about ways to pay.',speech:'You can pay with cash, a debit card, a credit card, a gift card, or an e-transfer. With cash, the store gives change when you pay more than the total.',view:'read'},
         {say:'Watch: paying cash and getting change.',speech:'The total is sixteen dollars. We pay with a twenty-dollar bill. Count up from sixteen to twenty: the change is four dollars.',view:'model',demo:'pay'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -417,11 +417,11 @@ P.lesson({id:'shopping',title:'Paying and making change',strand:'Financial Liter
 /* =========================================================
    28. Spending, saving, investing, donating and good buys
    ========================================================= */
-const JARS=[{k:'spend',n:'Spend',col:'#e2457a'},{k:'save',n:'Save',col:'#2f7de1'},{k:'invest',n:'Invest',col:'#16a36f'},{k:'donate',n:'Donate',col:'#f08a24'}];
+const JARS=[{k:'spend',n:'Spend',col:'#e4572e'},{k:'save',n:'Save',col:'#2f7de1'},{k:'invest',n:'Invest',col:'#16a36f'},{k:'donate',n:'Donate',col:'#f08a24'}];
 P.lesson({id:'budget',title:'Earn, spend, save and share',strand:'Financial Literacy',codes:['F1.3','F1.4','F1.5'],
  guide:{goal:'Explain earning, spending, saving, investing and donating, describe how spending and saving are related and how choices differ between people, and decide whether a price is reasonable.',words:'earn, spend, save, invest, donate, budget, goal, reasonable price, better buy',
   ask:['Why might two people split their money differently?','If you spend more now, what happens to your savings goal?','How can you tell which package is the better buy?'],home:'Set up three jars at home: spend, save and share. Choose a savings goal and track it each week.'},
- learn:[{say:'Money in, money out.',speech:'You earn ten dollars. You can spend some, save some for a goal, invest some so it can grow, and donate some to help others. Watch the coins go into the jars.',view:'model',demo:'split'},
+ learn:[{say:'Money in, money out.',speech:'Hana earns ten dollars. She can spend some, save some for a goal, invest some so it can grow, and donate some to help others. Watch the coins go into the jars.',view:'model',demo:'split'},
         {say:'Read about smart money choices.',speech:'When you spend more, you save less. A savings goal helps you decide. Before buying, compare prices to see if something is a good buy.',view:'read'},
         {say:'Watch: which is the better buy?',speech:'Six granola bars cost three dollars. Twelve bars cost five dollars. Twelve bars for five dollars is the better buy, because two packs of six would cost six dollars.',view:'model',demo:'compare'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -434,7 +434,7 @@ P.lesson({id:'budget',title:'Earn, spend, save and share',strand:'Financial Lite
  left(p,S){const g=p.g;let y=header(p,S);
   y=para(p,y,'When you *earn* money, you choose what to do with it. Spending more now means saving less for later.')+16;
   [['Earn','get money for work or chores'],['Spend','buy things you need or want now'],['Save','keep money for a goal later'],['Invest','put money where it can grow'],['Donate','give money to help others']].forEach(([a,b],i)=>{
-    rr(g,X0,y+i*52,180,44,22);g.fillStyle=['#8b5cf6','#e2457a','#2f7de1','#16a36f','#f08a24'][i];g.fill();T(g,a,X0+90,y+31+i*52,FT.bodyB,'#fff','center');T(g,b,X0+200,y+31+i*52,FT.body);});y+=276;
+    rr(g,X0,y+i*52,180,44,22);g.fillStyle=['#8b5cf6','#e4572e','#2f7de1','#16a36f','#f08a24'][i];g.fill();T(g,a,X0+90,y+31+i*52,FT.bodyB,'#fff','center');T(g,b,X0+200,y+31+i*52,FT.body);});y+=276;
   rr(g,X0,y,TW,120,16);g.fillStyle=tint(acc(),.1);g.fill();T(g,'Good buy?',X0+24,y+40,FT.smallB,acc());T(g,'6 bars for $3   vs   12 bars for $5',X0+24,y+82,ZS(36));y+=150;
   y=para(p,y,'12 bars at the first price would cost *$6*, so *12 for $5* is the better buy, if you will use them all.')+10;
   y=keyWords(p,y,[['budget','a plan for how to use your money'],['reasonable price','a fair price compared with other choices']]);

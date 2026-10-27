@@ -16,12 +16,12 @@ const sgn=v=>v<0?'−'+(-v):String(v);const PI=3.14;
    24. Prisms, pyramids and cylinders
    ========================================================= */
 const SOL={cube:{n:'cube (square prism)',f:6,e:12,v:6+2,pl:9,rot:4,col:'#2f7de1'},rect:{n:'rectangular prism',f:6,e:12,v:8,pl:3,rot:2,col:'#16a36f'},tri:{n:'triangular prism',f:5,e:9,v:6,pl:4,rot:3,col:'#f59e0b'},
-  hex:{n:'hexagonal prism',f:8,e:18,v:12,pl:7,rot:6,col:'#8b5cf6'},sqpyr:{n:'square pyramid',f:5,e:8,v:5,pl:4,rot:4,col:'#e2457a'},cyl:{n:'cylinder',f:3,e:2,v:0,pl:'infinitely many',rot:'infinite',col:'#0fa5a5'}};
+  hex:{n:'hexagonal prism',f:8,e:18,v:12,pl:7,rot:6,col:'#8b5cf6'},sqpyr:{n:'square pyramid',f:5,e:8,v:5,pl:4,rot:4,col:'#e4572e'},cyl:{n:'cylinder',f:3,e:2,v:0,pl:'infinitely many',rot:'infinite',col:'#0fa5a5'}};
 SOL.cube.v=8;const SK=Object.keys(SOL);
 P.lesson({id:'solids7',title:'Prisms, pyramids and cylinders',strand:'Spatial Sense',codes:['E1.1'],
  guide:{goal:'Describe and classify cylinders, pyramids and prisms by their geometric properties, including faces, edges, vertices, plane symmetry and rotational symmetry.',words:'prism, pyramid, cylinder, base, face, edge, vertex, plane of symmetry, rotational symmetry',
   ask:['How is a prism different from a pyramid?','How many planes of symmetry does a cube have?','Why does a cylinder have infinitely many planes of symmetry?'],home:'Find a box, a can and a pyramid-shaped package. Count faces, edges and vertices.'},
- learn:[{say:'Prisms, pyramids, cylinders.',speech:'A prism has two matching bases joined by rectangles. A pyramid has one base and triangles that meet at a point. A cylinder has two circular bases and a curved surface. Watch each solid turn.',view:'model',demo:'tour'},
+ learn:[{say:'Prisms, pyramids, cylinders.',speech:'A prism has two matching bases joined by rectangles. A pyramid has one base and triangles that meet at a point. A cylinder has two circular bases and a curved surface. Watch each of Zuri’s solids turn.',view:'model',demo:'tour'},
         {say:'Read about symmetry in 3D.',speech:'A plane of symmetry cuts a solid into two mirror halves. Rotational symmetry means the solid fits onto itself as it turns around an axis. A square pyramid fits four times in one turn.',view:'read'},
         {say:'Watch: planes of symmetry.',speech:'Watch the glass planes slice through the rectangular prism. Each plane makes two mirror halves. A rectangular prism has three.',view:'model',demo:'planes'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -68,7 +68,7 @@ P.lesson({id:'solids7',title:'Prisms, pyramids and cylinders',strand:'Spatial Se
 P.lesson({id:'views7',title:'Views and perspective with scale',strand:'Spatial Sense',codes:['E1.2'],
  guide:{goal:'Draw top, front and side views, as well as perspective views, of objects and spaces using appropriate scales.',words:'perspective view, isometric, top view, front view, side view, scale, scale drawing',
   ask:['What does a perspective view show that a front view does not?','If 1 cube = 2 m, how tall is a 3-cube tower?','Why do architects use scale drawings?'],home:'Draw your bedroom from the top using a scale like 1 square = 50 cm. Then draw a front view.'},
- learn:[{say:'Turn the building.',speech:'This building turns to show each view. First the front. Then the side. Then from the top. A perspective view shows three sides at once, like a photo.',view:'model',demo:'turn'},
+ learn:[{say:'Turn the building.',speech:'Tariq’s building turns to show each view. First the front. Then the side. Then from the top. A perspective view shows three sides at once, like a photo.',view:'model',demo:'turn'},
         {say:'Read about scale.',speech:'A scale tells what each unit in a drawing stands for. If one cube equals two metres, a tower three cubes tall is six metres tall.',view:'read'},
         {say:'Watch: match a view.',speech:'Which card is the front view? Look at the tallest stack in each column, from left to right.',view:'model',demo:'match'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -80,7 +80,7 @@ P.lesson({id:'views7',title:'Views and perspective with scale',strand:'Spatial S
  left(p,S){const g=p.g;let y=header(p,S);
   y=para(p,y,'*Orthographic views* (top, front, side) show one face at a time. A *perspective view* shows depth, like a photo. A *scale* links the drawing to real size.')+14;
   const s=34;const view=(ox,oy,cols,t,c)=>{cols.forEach((n,k)=>{for(let i=0;i<n;i++){g.fillStyle=c;g.fillRect(ox+k*s,oy-(i+1)*s,s-3,s-3);}});T(g,t,ox+s*1.5,oy+26,FT.smallB,INK,'center');};
-  view(X0+20,y+130,[3,2,3],'front','#2f7de1');view(X0+190,y+130,[2,3,3],'side','#e2457a');
+  view(X0+20,y+130,[3,2,3],'front','#2f7de1');view(X0+190,y+130,[2,3,3],'side','#e4572e');
   const H=[[1,0,2],[2,1,3],[3,1,1]];for(let r=0;r<3;r++)for(let c=0;c<3;c++){g.fillStyle=H[r][c]?'#16a36f':'#eef2f8';g.fillRect(X0+360+c*s,y+28+r*s,s-3,s-3);if(H[r][c])T(g,String(H[r][c]),X0+360+c*s+15,y+52+r*s,FT.cap,'#fff','center');}T(g,'top',X0+360+s*1.5,y+156,FT.smallB,INK,'center');
   rr(g,X0+520,y+10,TW-520,140,14);g.fillStyle=tint(acc(),.1);g.fill();T(g,'Scale',X0+540,y+44,FT.bodyB,acc());T(g,'1 cube = 2 m',X0+540,y+84,FT.body);T(g,'3 cubes = 6 m',X0+540,y+120,FT.body);y+=200;
   y=para(p,y,'Architects and designers use *scale drawings* so a whole building fits on one page and every length can be measured.')+10;
@@ -93,7 +93,7 @@ P.lesson({id:'views7',title:'Views and perspective with scale',strand:'Spatial S
     const fr=label('FRONT',{size:.14,color:RED});fr.position.set(0,.1,.8);bld.add(fr);drawCards();A.redraw();}
   function fv(h){return [0,1,2].map(q=>Math.max(h[0][q],h[1][q],h[2][q]));}function sv(h){return [2,1,0].map(r=>Math.max(...h[r]));}
   function cardTex(kind,data){const cv=document.createElement('canvas');cv.width=cv.height=192;const g=cv.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,192,192);g.strokeStyle='#1b2236';g.lineWidth=6;g.strokeRect(3,3,186,186);const s=46,ox=27;
-    if(kind==='top'){for(let r=0;r<3;r++)for(let q=0;q<3;q++){g.fillStyle=data[r][q]?'#16a36f':'#eef2f8';g.fillRect(ox+q*s,ox+r*s,s-4,s-4);}}else data.forEach((n,i)=>{for(let k=0;k<n;k++){g.fillStyle=kind==='front'?'#2f7de1':'#e2457a';g.fillRect(ox+i*s,165-(k+1)*s,s-4,s-4);}});
+    if(kind==='top'){for(let r=0;r<3;r++)for(let q=0;q<3;q++){g.fillStyle=data[r][q]?'#16a36f':'#eef2f8';g.fillRect(ox+q*s,ox+r*s,s-4,s-4);}}else data.forEach((n,i)=>{for(let k=0;k<n;k++){g.fillStyle=kind==='front'?'#2f7de1':'#e4572e';g.fillRect(ox+i*s,165-(k+1)*s,s-4,s-4);}});
     return new THREE.MeshLambertMaterial({map:new THREE.CanvasTexture(cv)});}
   function drawCards(){clearGroup(cardsG);if(!st.cards)return;st.cards.list.forEach((d,i)=>{const side=lam('#ffffff');const m=mk(new THREE.BoxGeometry(.66,.04,.66),[side,side,cardTex(st.cards.kind,d),side,side,side],20);m.position.set(1.65,.05,-2.75+i*.8);cardsG.add(m);
       A.drag(m,{tap:()=>{if(i===st.cards.ans){A.good('Yes! The '+st.cards.kind+' view.');if(mode==='play'&&!st.setup)game.solved('Yes! That is the '+st.cards.kind+' view.');}else A.bad('Turn the building and look again.');}});});}
@@ -117,7 +117,7 @@ P.lesson({id:'views7',title:'Views and perspective with scale',strand:'Spatial S
 P.lesson({id:'dilation7',title:'Dilations and similar shapes',strand:'Spatial Sense',codes:['E1.3'],
  guide:{goal:'Perform dilations on a grid and describe the similarity between the image and the original shape.',words:'dilation, scale factor, enlargement, reduction, similar, corresponding sides, centre of dilation',
   ask:['What does a scale factor of 2 do to each side?','How can you tell a dilation from a stretch?','Are similar shapes the same size?'],home:'Take a photo and zoom in by 200%. What happens to the shape? What stays the same?'},
- learn:[{say:'Grow from a centre point.',speech:'A dilation enlarges or reduces a shape from a centre point. With a scale factor of two, every distance from the centre doubles. Watch the triangle grow into a similar triangle.',view:'model',demo:'grow'},
+ learn:[{say:'Grow from a centre point.',speech:'A dilation enlarges or reduces a shape from a centre point. Maya uses a scale factor of two, so every distance from the centre doubles. Watch the triangle grow into a similar triangle.',view:'model',demo:'grow'},
         {say:'Read about similar shapes.',speech:'The image of a dilation is similar to the original: the angles stay the same, and every side is multiplied by the scale factor. A scale factor less than one makes a reduction.',view:'read'},
         {say:'Watch: a reduction.',speech:'Now the scale factor is one half. Every side becomes half as long. The shape is still similar.',view:'model',demo:'shrink'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -129,18 +129,18 @@ P.lesson({id:'dilation7',title:'Dilations and similar shapes',strand:'Spatial Se
  left(p,S){const g=p.g;let y=header(p,S);
   y=para(p,y,'A *dilation* multiplies every distance from the *centre of dilation* by the *scale factor*. The image is *similar* to the original.')+14;
   const s=26,ox=X0+30,oy=y+260;g.strokeStyle='#e5e7eb';for(let i=0;i<=9;i++){g.beginPath();g.moveTo(ox+i*s,oy);g.lineTo(ox+i*s,oy-9*s);g.stroke();g.beginPath();g.moveTo(ox,oy-i*s);g.lineTo(ox+9*s,oy-i*s);g.stroke();}
-  const tri=(k,col)=>{g.beginPath();[[1,1],[3,1],[1,3]].forEach(([x,yy],i)=>{const X=ox+x*k*s,Y=oy-yy*k*s;i?g.lineTo(X,Y):g.moveTo(X,Y);});g.closePath();g.fillStyle=tint(col,.4);g.fill();g.strokeStyle=col;g.lineWidth=3;g.stroke();};tri(3,'#e2457a');tri(1,'#2f7de1');
+  const tri=(k,col)=>{g.beginPath();[[1,1],[3,1],[1,3]].forEach(([x,yy],i)=>{const X=ox+x*k*s,Y=oy-yy*k*s;i?g.lineTo(X,Y):g.moveTo(X,Y);});g.closePath();g.fillStyle=tint(col,.4);g.fill();g.strokeStyle=col;g.lineWidth=3;g.stroke();};tri(3,'#e4572e');tri(1,'#2f7de1');
   g.setLineDash([5,5]);g.strokeStyle='#94a3b8';g.lineWidth=2;[[3,1],[1,3]].forEach(([x,yy])=>{g.beginPath();g.moveTo(ox,oy);g.lineTo(ox+x*3*s,oy-yy*3*s);g.stroke();});g.setLineDash([]);
-  T(g,'scale factor 3',X0+320,y+60,FT.bodyB,'#e2457a');T(g,'side 2 → 6',X0+320,y+100,FT.body);T(g,'side 2 → 6',X0+320,y+136,FT.body);T(g,'angles stay the same',X0+320,y+172,FT.body);y+=290;
+  T(g,'scale factor 3',X0+320,y+60,FT.bodyB,'#e4572e');T(g,'side 2 → 6',X0+320,y+100,FT.body);T(g,'side 2 → 6',X0+320,y+136,FT.body);T(g,'angles stay the same',X0+320,y+172,FT.body);y+=290;
   y=keyWords(p,y,[['scale factor','what each length is multiplied by'],['similar','same shape and angles, possibly a different size']]);
   predict(p,y,S,'p26','A 4 cm by 6 cm rectangle is dilated by 1.5. What are the new sides?','*6 cm by 9 cm.*');},
  readout(p,S,y){const g=p.g,st=S.st;T(g,'scale factor '+st.k,X0,y+46,ZS(42),acc());T(g,'vertex (1, 1) → ('+st.sh[0][0]*st.k+', '+st.sh[0][1]*st.k+')  ·  sides × '+st.k,X0,y+86,FT.bodyB);return y+96;},
  build(S,grp,mode,game){const st=S.st,s=.34,x0=-2.0,zb=-.4,N=10;const X=x=>x0+x*s,Z=y=>zb-y*s;
   const base=mk(new THREE.BoxGeometry(N*s+.1,.03,8*s+.1),[lam('#f8fafc'),lam('#f8fafc'),cellMat('#ffffff',N,8),lam('#f8fafc'),lam('#f8fafc'),lam('#f8fafc')],20);base.position.set(X(N/2),.015,Z(4));grp.add(base);
   const o=mk(new THREE.SphereGeometry(.08,12,10),lam(INK),0);o.position.set(X(0),.06,Z(0));grp.add(o);const g2=new THREE.Group();grp.add(g2);
-  function draw(){clearGroup(g2);const P2=pts=>pts.map(([x,y])=>[X(x),Z(y)]);g2.add(slab(P2(st.sh),'#2f7de1',.1,.85));const im=st.sh.map(([x,y])=>[x*st.k,y*st.k]);g2.add(slab(P2(im),'#e2457a',.05,.45));
+  function draw(){clearGroup(g2);const P2=pts=>pts.map(([x,y])=>[X(x),Z(y)]);g2.add(slab(P2(st.sh),'#2f7de1',.1,.85));const im=st.sh.map(([x,y])=>[x*st.k,y*st.k]);g2.add(slab(P2(im),'#e4572e',.05,.45));
     if(st.ghost)g2.add(slab(P2(st.ghost),'#16a36f',.02,.35));im.forEach(([x,y])=>g2.add(seg(V(X(0),.12,Z(0)),V(X(x),.12,Z(y)),'#94a3b8',.008)));
-    const l=label('× '+st.k,{size:.3,bg:'#ffffff',border:'#e2457a'});l.position.set(X(im[1][0]),.5,Z(im[1][1]));g2.add(l);check();A.redraw();}
+    const l=label('× '+st.k,{size:.3,bg:'#ffffff',border:'#e4572e'});l.position.set(X(im[1][0]),.5,Z(im[1][1]));g2.add(l);check();A.redraw();}
   function setK(k){st.k=k;A.pop();draw();}
   function check(){if(mode==='play'&&!st.setup&&st.ghost&&st.sh.every(([x,y],i)=>Math.abs(x*st.k-st.ghost[i][0])<1e-9&&Math.abs(y*st.k-st.ghost[i][1])<1e-9))game.solved('Scale factor '+st.k+': the image matches!');}
   draw();
@@ -162,7 +162,7 @@ P.lesson({id:'dilation7',title:'Dilations and similar shapes',strand:'Spatial Se
 P.lesson({id:'transform7',title:'Transformations on the Cartesian plane',strand:'Spatial Sense',codes:['E1.4'],
  guide:{goal:'Describe and perform translations, reflections and rotations on the Cartesian plane, and predict the coordinates of the results.',words:'translation, reflection, rotation, image, coordinate rule, x-axis, y-axis, origin',
   ask:['What happens to the coordinates when you reflect in the y-axis?','How can you predict the image of (3, −2) after a 90° clockwise rotation?','What rule describes “4 left and 2 up”?'],home:'Plot a small shape on graph paper. Predict its image after a reflection, then check by folding.'},
- learn:[{say:'Rules move every point.',speech:'A translation of four left and two up adds negative four to x and two to y. Watch every vertex of the shape follow the same rule.',view:'model',demo:'trans'},
+ learn:[{say:'Rules move every point.',speech:'Liam moves his shape four left and two up. That translation adds negative four to x and two to y. Watch every vertex of the shape follow the same rule.',view:'model',demo:'trans'},
         {say:'Read the coordinate rules.',speech:'Reflect in the x-axis: change the sign of y. Reflect in the y-axis: change the sign of x. Rotate one hundred eighty degrees: change both signs. Rotate ninety degrees clockwise: x, y becomes y, negative x.',view:'read'},
         {say:'Watch: predict, then rotate.',speech:'Predict where the point three, one goes after a ninety degree clockwise rotation about the origin: one, negative three. Watch it turn.',view:'model',demo:'rot'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -205,7 +205,7 @@ P.lesson({id:'transform7',title:'Transformations on the Cartesian plane',strand:
 P.lesson({id:'volcap7',title:'Volume, capacity and unit conversions',strand:'Spatial Sense',codes:['E2.1','E2.2'],
  guide:{goal:'Describe the differences and similarities between volume and capacity, use 1 mL = 1 cm³ to solve problems, and convert metric units of perimeter, area and volume.',words:'volume, capacity, cubic centimetre, millilitre, litre, square metre, convert',
   ask:['How are volume and capacity different?','How many millilitres fit in a 10 cm × 10 cm × 10 cm box?','Why is 1 m² equal to 10 000 cm², not 100 cm²?'],home:'Fill a measuring cup with water and pour it into a box. Measure the box in centimetres. Do the cm³ match the mL?'},
- learn:[{say:'Fill the box.',speech:'This box is ten by ten by ten centimetres. Its volume is one thousand cubic centimetres. Watch water fill it: one thousand millilitres, which is one litre. One cubic centimetre holds one millilitre.',view:'model',demo:'fill'},
+ learn:[{say:'Fill the box.',speech:'Ines has a box ten by ten by ten centimetres. Its volume is one thousand cubic centimetres. Watch water fill it: one thousand millilitres, which is one litre. One cubic centimetre holds one millilitre.',view:'model',demo:'fill'},
         {say:'Read the difference.',speech:'Volume is the space an object takes up. Capacity is how much a container can hold. For containers, one cubic centimetre of space holds one millilitre.',view:'read'},
         {say:'Watch: area units.',speech:'One square metre is one hundred centimetres by one hundred centimetres. That is ten thousand square centimetres, not one hundred. Area conversions use the conversion twice.',view:'model',demo:'area'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -250,7 +250,7 @@ P.lesson({id:'volcap7',title:'Volume, capacity and unit conversions',strand:'Spa
 P.lesson({id:'circum7',title:'Circumference and constructing circles',strand:'Spatial Sense',codes:['E2.3','E2.4'],
  guide:{goal:'Use the relationships between radius, diameter and circumference to explain the formula C = π × d, solve problems, and construct circles given the radius, diameter or circumference.',words:'radius, diameter, circumference, pi (π), compass, construct',
   ask:['How many diameters fit around a circle?','If the radius is 5 cm, what is the diameter? The circumference?','How do you construct a circle with a circumference of 31.4 cm?'],home:'Wrap a string around a can, then measure it and the can’s width. Divide. You should get about 3.14.'},
- learn:[{say:'Unroll the circle.',speech:'Roll this wheel one full turn along the ground. The distance it travels is its circumference. It is a bit more than three diameters long: about three point one four times the diameter. That number is pi.',view:'model',demo:'roll'},
+ learn:[{say:'Unroll the circle.',speech:'Kenji rolls this wheel one full turn along the ground. The distance it travels is its circumference. It is a bit more than three diameters long: about three point one four times the diameter. That number is pi.',view:'model',demo:'roll'},
         {say:'Read the formulas.',speech:'The diameter is two times the radius. The circumference is pi times the diameter, or two times pi times the radius. Pi is about three point one four.',view:'read'},
         {say:'Watch: construct a circle.',speech:'To construct a circle with a radius of three centimetres, set the compass to three centimetres, hold the point still, and turn. Watch the circle appear.',view:'model',demo:'draw'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -261,17 +261,17 @@ P.lesson({id:'circum7',title:'Circumference and constructing circles',strand:'Sp
  init:k=>({r:5,ask:null,want:null}),
  left(p,S){const g=p.g;let y=header(p,S);
   y=para(p,y,'The *circumference* is the distance around a circle. Every circle’s circumference is about *3.14 times* its diameter: that number is *π (pi)*.')+16;
-  const cx=X0+110,cy=y+100,R=80;g.beginPath();g.arc(cx,cy,R,0,Math.PI*2);g.strokeStyle='#2f7de1';g.lineWidth=5;g.stroke();g.strokeStyle='#e2457a';g.lineWidth=4;g.beginPath();g.moveTo(cx-R,cy);g.lineTo(cx+R,cy);g.stroke();g.strokeStyle='#16a36f';g.beginPath();g.moveTo(cx,cy);g.lineTo(cx,cy-R);g.stroke();
-  T(g,'d',cx+20,cy+30,FT.bodyB,'#e2457a');T(g,'r',cx+10,cy-40,FT.bodyB,'#16a36f');
+  const cx=X0+110,cy=y+100,R=80;g.beginPath();g.arc(cx,cy,R,0,Math.PI*2);g.strokeStyle='#2f7de1';g.lineWidth=5;g.stroke();g.strokeStyle='#e4572e';g.lineWidth=4;g.beginPath();g.moveTo(cx-R,cy);g.lineTo(cx+R,cy);g.stroke();g.strokeStyle='#16a36f';g.beginPath();g.moveTo(cx,cy);g.lineTo(cx,cy-R);g.stroke();
+  T(g,'d',cx+20,cy+30,FT.bodyB,'#e4572e');T(g,'r',cx+10,cy-40,FT.bodyB,'#16a36f');
   [['d = 2 × r',''],['C = π × d','≈ 3.14 × d'],['C = 2 × π × r','']].forEach(([a,b],i)=>{T(g,a,X0+260,y+50+i*56,ZS(36),acc());T(g,b,X0+560,y+50+i*56,FT.body,GREY);});y+=210;
   y=para(p,y,'*Constructing a circle:* given C = 31.4 cm, find d = 31.4 ÷ 3.14 = 10 cm, so r = 5 cm. Open the compass to 5 cm.')+10;
   y=keyWords(p,y,[['circumference','the distance around a circle'],['π (pi)','about 3.14: circumference ÷ diameter for every circle']]);
   predict(p,y,S,'p29','A bike wheel has a diameter of 60 cm. How far does it roll in one turn?','*About 188.4 cm.* 3.14 × 60.');},
  readout(p,S,y){const g=p.g,st=S.st,d=2*st.r,c=Math.round(PI*d*100)/100;T(g,'r = '+st.r+' cm   d = '+d+' cm',X0,y+42,FT.bodyB,acc());T(g,'C = 3.14 × '+d+' ≈ '+c+' cm',X0,y+84,ZS(40),acc());return y+96;},
  build(S,grp,mode,game){const st=S.st,sc=.06;const g2=new THREE.Group();grp.add(g2);let wheel=null,trail=null;
-  function draw(){clearGroup(g2);const R=st.r*sc;wheel=new THREE.Group();const tor=mk(new THREE.TorusGeometry(R,.04,10,48),lam('#2f7de1'),0);wheel.add(tor);const sp=mk(new THREE.BoxGeometry(2*R,.03,.03),lam('#e2457a'),0);wheel.add(sp);const dot=mk(new THREE.SphereGeometry(.06,10,8),lam('#f59e0b'),0);dot.position.y=-R;wheel.add(dot);
+  function draw(){clearGroup(g2);const R=st.r*sc;wheel=new THREE.Group();const tor=mk(new THREE.TorusGeometry(R,.04,10,48),lam('#2f7de1'),0);wheel.add(tor);const sp=mk(new THREE.BoxGeometry(2*R,.03,.03),lam('#e4572e'),0);wheel.add(sp);const dot=mk(new THREE.SphereGeometry(.06,10,8),lam('#f59e0b'),0);dot.position.y=-R;wheel.add(dot);
     wheel.position.set(-2.0,R+.05,-2.4);g2.add(wheel);const gr=mk(new THREE.BoxGeometry(4.4,.02,.2),lam('#cbd5e1'),0);gr.position.set(0,.01,-2.4);g2.add(gr);
-    for(let i=0;i<3;i++){const b=mk(new THREE.BoxGeometry(2*R-.02,.04,.12),lam(['#fda4af','#f9a8d4','#fbcfe8'][i]),0);b.position.set(-2.0+R*(2*i+1),.03,-2.05);g2.add(b);}const dl=label('3 diameters',{size:.15,color:'#e2457a'});dl.position.set(-2.0+3*R,.2,-1.85);g2.add(dl);
+    for(let i=0;i<3;i++){const b=mk(new THREE.BoxGeometry(2*R-.02,.04,.12),lam(['#fdba74','#a5d8ff','#d6ecff'][i]),0);b.position.set(-2.0+R*(2*i+1),.03,-2.05);g2.add(b);}const dl=label('3 diameters',{size:.15,color:'#e4572e'});dl.position.set(-2.0+3*R,.2,-1.85);g2.add(dl);
     trail=new THREE.Group();g2.add(trail);
     const cmp=new THREE.Group();cmp.position.set(1.2,0,-.9);g2.add(cmp);const paper=mk(new THREE.CylinderGeometry(1.0,1.0,.02,40),lam('#ffffff'),20);paper.position.y=.01;cmp.add(paper);cmp.userData.R=Math.min(.9,R*1.1);st.cmp=cmp;A.redraw();}
   function roll(){const R=st.r*sc,C=2*Math.PI*R;clearGroup(trail);tween(2.2,k=>{wheel.position.x=-2.0+C*k;wheel.rotation.z=-2*Math.PI*k;}).then(()=>{const l=mk(new THREE.BoxGeometry(C,.05,.12),lam('#2f7de1'),0);l.position.set(-2.0+C/2,.04,-2.75);trail.add(l);const t=label('C ≈ '+Math.round(PI*2*st.r*100)/100+' cm',{size:.22,bg:'#ffffff'});t.position.set(-2.0+C/2,.4,-2.75);trail.add(t);A.pop();A.say('About 3.14 diameters');});}
@@ -298,7 +298,7 @@ P.lesson({id:'circum7',title:'Circumference and constructing circles',strand:'Sp
 P.lesson({id:'circarea7',title:'Area of a circle',strand:'Spatial Sense',codes:['E2.5'],
  guide:{goal:'Show the relationships between the radius, diameter and area of a circle, and use them to explain the formula A = π × r × r and to solve problems.',words:'area, radius, sector, pi (π), r², parallelogram',
   ask:['Why does cutting a circle into many sectors make a shape like a parallelogram?','Why is the area π × r × r and not π × d?','What happens to the area if the radius doubles?'],home:'Cut a paper plate into 8 or 16 wedges and arrange them in a row, alternating up and down. What shape do you see?'},
- learn:[{say:'Cut and rearrange.',speech:'Cut the circle into sixteen sectors. Arrange them in a row, alternating up and down. The shape is almost a parallelogram. Its base is half the circumference, pi times r, and its height is r.',view:'model',demo:'cut'},
+ learn:[{say:'Cut and rearrange.',speech:'Zuri cuts the circle into sixteen sectors and arranges them in a row, alternating up and down. The shape is almost a parallelogram. Its base is half the circumference, pi times r, and its height is r.',view:'model',demo:'cut'},
         {say:'Read the formula.',speech:'The area of the parallelogram is base times height: pi times r, times r. So the area of a circle is pi times r times r, or pi r squared.',view:'read'},
         {say:'Watch: double the radius.',speech:'Double the radius from three to six. The area is not doubled: it is four times as big, because r is multiplied twice.',view:'model',demo:'double'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -341,7 +341,7 @@ P.lesson({id:'circarea7',title:'Area of a circle',strand:'Spatial Sense',codes:[
 P.lesson({id:'cylinder7',title:'Cylinders: surface area and volume',strand:'Spatial Sense',codes:['E2.6','E2.7'],
  guide:{goal:'Represent cylinders as nets and find their surface area, and show that the volume of a prism or cylinder is the area of its base times its height.',words:'cylinder, net, surface area, circumference, base area, volume, height',
   ask:['Why is the rectangle in a cylinder’s net as long as the circumference?','How does stacking layers explain V = base area × height?','How can you find the height if you know the volume and the base area?'],home:'Peel the label off a can. Measure it: its length is the can’s circumference. Find the can’s surface area.'},
- learn:[{say:'Unroll the can.',speech:'A cylinder’s net is two circles and a rectangle. Watch the side unroll: its length is the circumference, two pi r, and its width is the height of the can.',view:'model',demo:'net'},
+ learn:[{say:'Unroll the can.',speech:'A cylinder’s net is two circles and a rectangle. Watch Tariq’s can label unroll: its length is the circumference, two pi r, and its width is the height of the can.',view:'model',demo:'net'},
         {say:'Read the formulas.',speech:'Surface area equals two circles plus the rectangle: two times pi r squared, plus two pi r times h. Volume equals the area of the base times the height, for any prism or cylinder.',view:'read'},
         {say:'Watch: stacking layers.',speech:'Stack layers that are each one centimetre thick. Each layer is the base area. Ten layers make a volume of ten times the base area.',view:'model',demo:'stack'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -387,7 +387,7 @@ const CUR=[{c:'USD',n:'US dollar',r:.73,col:'#16a34a',sym:'US$'},{c:'EUR',n:'eur
 P.lesson({id:'exchange7',title:'Exchange rates and foreign currency',strand:'Financial Literacy',codes:['F1.1'],
  guide:{goal:'Identify and compare exchange rates, and convert foreign currencies to Canadian dollars and Canadian dollars to foreign currencies.',words:'exchange rate, currency, convert, Canadian dollar (CAD), foreign currency',
   ask:['If 1 CAD = 0.73 USD, how many US dollars do you get for $100 CAD?','How do you convert 50 USD back to Canadian dollars?','Why do exchange rates change?'],home:'Look up today’s exchange rate for a country you would like to visit. How much would a $20 meal cost there?'},
- learn:[{say:'Exchange rates convert money.',speech:'An exchange rate tells how much of another currency you get for one Canadian dollar. If one Canadian dollar is worth zero point seven three US dollars, then one hundred Canadian dollars is worth seventy-three US dollars. Watch the coins change.',view:'model',demo:'convert'},
+ learn:[{say:'Exchange rates convert money.',speech:'An exchange rate tells how much of another currency you get for one Canadian dollar. If one Canadian dollar is worth zero point seven three US dollars, then Maya’s one hundred Canadian dollars is worth seventy-three US dollars. Watch the coins change.',view:'model',demo:'convert'},
         {say:'Read both directions.',speech:'To go from Canadian dollars to the foreign currency, multiply by the rate. To go back to Canadian dollars, divide by the rate. Rates are illustrative here and change every day.',view:'read'},
         {say:'Watch: back to Canadian.',speech:'You have fifty euros left after a trip. At zero point six seven euros per Canadian dollar, fifty divided by zero point six seven is about seventy-four Canadian dollars and sixty-three cents.',view:'model',demo:'back'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -406,8 +406,8 @@ P.lesson({id:'exchange7',title:'Exchange rates and foreign currency',strand:'Fin
  readout(p,S,y){const g=p.g,st=S.st,c=CUR[st.ci];T(g,'$'+st.cad.toFixed(2)+' CAD = '+(st.cad*c.r).toFixed(2)+' '+c.c,X0,y+50,ZS(40),acc());T(g,'rate: 1 CAD = '+c.r+' '+c.c,X0,y+90,FT.bodyB);return y+98;},
  build(S,grp,mode,game){const st=S.st;const g2=new THREE.Group();grp.add(g2);
   function coins(n,col,x,z){const g=new THREE.Group();const k=Math.min(60,Math.round(n));for(let i=0;i<k;i++){const c=mk(G('ex7c'+col,()=>new THREE.CylinderGeometry(.12,.12,.035,18)),lam(col),0);c.position.set(x+((Math.floor(i/15))%4)*.28,.02+(i%15)*.037,z);g.add(c);}return g;}
-  function draw(){clearGroup(g2);const c=CUR[st.ci];const left=coins(st.cad/5,'#e11d48',-1.9,-2.2);g2.add(left);const right=coins(st.cad*c.r/(c.r>5?60:5),c.col,.7,-2.2);g2.add(right);
-    const l1=label('$'+st.cad.toFixed(2)+' CAD',{size:.24,bg:'#ffffff',border:'#e11d48'});l1.position.set(-1.5,1.0,-2.2);g2.add(l1);const l2=label((st.cad*c.r).toFixed(2)+' '+c.c,{size:.24,bg:'#ffffff',border:c.col});l2.position.set(1.1,1.0,-2.2);g2.add(l2);
+  function draw(){clearGroup(g2);const c=CUR[st.ci];const left=coins(st.cad/5,'#dc2626',-1.9,-2.2);g2.add(left);const right=coins(st.cad*c.r/(c.r>5?60:5),c.col,.7,-2.2);g2.add(right);
+    const l1=label('$'+st.cad.toFixed(2)+' CAD',{size:.24,bg:'#ffffff',border:'#dc2626'});l1.position.set(-1.5,1.0,-2.2);g2.add(l1);const l2=label((st.cad*c.r).toFixed(2)+' '+c.c,{size:.24,bg:'#ffffff',border:c.col});l2.position.set(1.1,1.0,-2.2);g2.add(l2);
     const ar=label(st.dir>0?'× '+c.r+'  →':'←  ÷ '+c.r,{size:.26,color:BLUE});ar.position.set(-.2,.5,-2.2);g2.add(ar);A.redraw();}
   draw();
   return {info:()=>CUR[st.ci].c,
@@ -472,7 +472,7 @@ function tl(st){let s=0;return Array.from({length:12},(_,i)=>{s+=st.save;if(st.h
 P.lesson({id:'interest7',title:'Interest rates, accounts and loans',strand:'Financial Literacy',codes:['F1.5','F1.6'],
  guide:{goal:'Explain how interest rates affect savings, investments and the cost of borrowing over time, and compare interest rates and fees for accounts and loans to find the best option.',words:'simple interest, compound interest, interest rate, fee, principal, loan, account',
   ask:['Why does compound interest grow faster than simple interest?','How can a monthly fee cancel out interest?','Why does borrowing at a high rate cost so much over time?'],home:'Compare two real bank accounts online: their interest rates and monthly fees. Which is better for $500?'},
- learn:[{say:'Interest on interest.',speech:'Put one thousand dollars in an account at five percent. With simple interest you earn fifty dollars every year. With compound interest, you also earn interest on your interest, so the bars grow faster each year. Watch ten years.',view:'model',demo:'grow'},
+ learn:[{say:'Interest on interest.',speech:'Ines puts one thousand dollars in an account at five percent. With simple interest she earns fifty dollars every year. With compound interest, she also earns interest on her interest, so the bars grow faster each year. Watch ten years.',view:'model',demo:'grow'},
         {say:'Read about rates and fees.',speech:'Savings and investments earn interest. Loans and credit cards charge interest. Accounts can also charge fees. To compare options, look at the interest rate and the fees together.',view:'read'},
         {say:'Watch: borrowing costs.',speech:'Now borrow one thousand dollars at twenty percent and pay nothing back for three years. The debt grows to over one thousand seven hundred dollars. High interest makes borrowing expensive.',view:'model',demo:'loan'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},

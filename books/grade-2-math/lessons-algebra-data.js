@@ -6,18 +6,18 @@ const {THREE,V,W,D,PY,PX,X0,TW,INK,RED,BLUE,GREY,VIBE,FT,ZS,G,M,lam,mk,unitBox,c
 const acc=()=>P.ACC;
 const rnd=(a,b)=>a+Math.floor(Math.random()*(b-a+1)),pick=a=>a[Math.floor(Math.random()*a.length)],shuffle=a=>a.slice().sort(()=>Math.random()-.5);
 function choices(game,list,ans,ok,lab){return list.map(o=>({t:lab?lab(o):String(o),big:true,fn:()=>{if(o===ans){if(game)game.solved(ok);else A.good(ok);}else A.bad('Not quite. Try again!');}}));}
-const COL=['#ff4f8b','#ff8a3d','#ffc04d','#5fd38a','#2f7de1','#8b5cf6'];const HAND=()=>FT.hand||FT.body;
+const COL=['#ff6b35','#ff8a3d','#ffc04d','#5fd38a','#2f7de1','#8b5cf6'];const HAND=()=>FT.hand||FT.body;
 function seg(a,b,col,r){const len=a.distanceTo(b);const m=new THREE.Mesh(new THREE.CylinderGeometry(r,r,Math.max(.001,len),8),lam(col));m.position.copy(a).add(b).multiplyScalar(.5);m.quaternion.setFromUnitVectors(V(0,1,0),b.clone().sub(a).normalize());return m;}
 function poly(n,r,col,h){return mk(G('g2poly'+n+r+(h||.08),()=>new THREE.CylinderGeometry(r,r,h||.08,n)),lam(col),20);}
 
 /* =========================================================
    12. Geometric patterns
    ========================================================= */
-const GP={turn:{n:'turning triangle',core:4,make:i=>({s:3,rot:i%4*Math.PI/2,c:'#ff8a3d'})},col:{n:'shape and colour',core:3,make:i=>({s:[4,3,6][i%3],rot:0,c:['#2f7de1','#ff4f8b','#5fd38a'][i%3]})},grow:{n:'growing stairs',core:0,make:i=>({s:4,rot:0,c:'#8b5cf6',h:i+1})}};
+const GP={turn:{n:'turning triangle',core:4,make:i=>({s:3,rot:i%4*Math.PI/2,c:'#ff8a3d'})},col:{n:'shape and colour',core:3,make:i=>({s:[4,3,6][i%3],rot:0,c:['#2f7de1','#ff6b35','#5fd38a'][i%3]})},grow:{n:'growing stairs',core:0,make:i=>({s:4,rot:0,c:'#8b5cf6',h:i+1})}};
 P.lesson({id:'geopat2',title:'Patterns in designs',strand:'Algebra',codes:['C1.1','C1.2'],
  guide:{goal:'Identify and describe patterns involving geometric designs, including real-life patterns, and create and translate patterns using shapes and numbers.',words:'pattern, design, repeat, turn, rotate, core, translate',
   ask:['How does the triangle change each time?','How can you show this pattern with numbers?','Where do you see patterns in buildings or quilts?'],home:'Look for patterns on quilts, tiles or fences. Draw one and describe how it repeats.'},
- learn:[{say:'Watch the triangle turn.',speech:'This triangle turns a quarter turn each time. Point up, point right, point down, point left, then up again! The core has four tiles.',view:'model',demo:'turn'},
+ learn:[{say:'Watch the triangle turn.',speech:'Ayo’s triangle turns a quarter turn each time. Point up, point right, point down, point left, then up again! The core has four tiles.',view:'model',demo:'turn'},
         {say:'Read about translating.',speech:'We can show a pattern in a new way. A square, triangle, hexagon pattern can be written with numbers of sides: four, three, six, four, three, six.',view:'read'},
         {say:'Watch: a growing pattern.',speech:'This design grows! One block, then two, then three, then four. Each step adds one block. It looks like stairs.',view:'model',demo:'grow'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -30,7 +30,7 @@ P.lesson({id:'geopat2',title:'Patterns in designs',strand:'Algebra',codes:['C1.1
   y=para(p,y,'*Design patterns* repeat or grow using shapes, colours and turns.')+16;
   for(let i=0;i<8;i++){g.save();g.translate(X0+50+i*95,y+50);g.rotate(i%4*Math.PI/2);g.beginPath();g.moveTo(0,-34);g.lineTo(30,26);g.lineTo(-30,26);g.closePath();g.fillStyle='#ff8a3d';g.fill();g.restore();}T(g,'turns a quarter turn each time',X0,y+120,FT.bodyB,acc());y+=150;
   const sh=(x,n,c)=>{g.beginPath();for(let k=0;k<n;k++){const a=-Math.PI/2+k*2*Math.PI/n;g.lineTo(x+Math.cos(a)*30,y+40+Math.sin(a)*30);}g.closePath();g.fillStyle=c;g.fill();};
-  for(let i=0;i<6;i++){sh(X0+50+i*95,[4,3,6][i%3],['#2f7de1','#ff4f8b','#5fd38a'][i%3]);T(g,String([4,3,6][i%3]),X0+50+i*95,y+100,FT.bodyB,INK,'center');}T(g,'as numbers of sides',X0+620,y+46,FT.small,GREY);y+=140;
+  for(let i=0;i<6;i++){sh(X0+50+i*95,[4,3,6][i%3],['#2f7de1','#ff6b35','#5fd38a'][i%3]);T(g,String([4,3,6][i%3]),X0+50+i*95,y+100,FT.bodyB,INK,'center');}T(g,'as numbers of sides',X0+620,y+46,FT.small,GREY);y+=140;
   y=keyWords(p,y,[['design','a picture made with shapes'],['translate','show the same pattern a new way']]);
   predict(p,y,S,'p12','Up, right, down, left, up, right, ___?','*Down!* The core is 4 turns.');},
  readout(p,S,y){const g=p.g,st=S.st,K=GP[st.kind];const seq=Array.from({length:st.n},(_,i)=>K.make(i));T(g,K.n,X0,y+40,FT.bodyB,acc());T(g,st.kind==='grow'?seq.map(o=>o.h).join(', '):st.kind==='col'?seq.map(o=>o.s).join(', '):seq.map(o=>['up','right','down','left'][Math.round(o.rot/(Math.PI/2))%4]).join(', '),X0,y+84,FT.bodyB);return y+94;},
@@ -38,15 +38,15 @@ P.lesson({id:'geopat2',title:'Patterns in designs',strand:'Algebra',codes:['C1.1
   function tile(o,x,z){const g=new THREE.Group();const base=mk(G('g2gpb',()=>new THREE.BoxGeometry(.4,.04,.4)),lam('#ffffff'),20);g.add(base);if(o.h){for(let k=0;k<o.h;k++){const c=mk(G('g2gpc',()=>new THREE.BoxGeometry(.2,.16,.2)),lam(o.c),20);c.position.set(0,.1+k*.16,0);g.add(c);}}else{const p=poly(o.s,.16,o.c);p.position.y=.07;p.rotation.y=(o.s===4?Math.PI/4:0)-o.rot+(o.s===3?Math.PI:0);g.add(p);}g.position.set(x,.02,z);return g;}
   function draw(){clearGroup(g2);clearGroup(tray);const K=GP[st.kind];for(let i=0;i<st.n;i++){const t=tile(K.make(i),-2.0+i*.46,-2.2);g2.add(t);if(st.nums){const o=K.make(i);const l=label(String(o.h||o.s),{size:.18,color:INK});l.position.set(-2.0+i*.46,o.h?o.h*.16+.3:.35,-2.2);g2.add(l);}}
     if(st.n<10){const q=label('?',{size:.34,color:acc()});q.position.set(-2.0+st.n*.46,.35,-2.2);g2.add(q);}
-    if(st.want){const right=K.make(st.n);const opts=st.kind==='turn'?[0,1,2,3].map(k=>({s:3,rot:k*Math.PI/2,c:'#ff8a3d'})):st.kind==='col'?[0,1,2].map(k=>K.make(k)):[st.n,st.n+1,st.n+2].map(h=>({s:4,c:'#8b5cf6',h}));
-      opts.forEach((o,i)=>{const t=tile(o,-1.2+i*.8,-1.0);tray.add(t);const ok=JSON.stringify(o)===JSON.stringify(right);t.traverse(m=>{if(m.isMesh)A.drag(m,{tap:()=>pickT(ok)});});});}A.redraw();}
+    if(st.want){const right=K.make(st.n);const opts=st.kind==='turn'?[0,1,2,3].map(k=>({s:3,rot:k*Math.PI/2,c:'#ff8a3d'})):st.kind==='col'?[0,1,2].map(k=>K.make(k)):[st.n,st.n+1,st.n+2].map(h=>({s:4,rot:0,c:'#8b5cf6',h}));
+      if(!st.perm||st.perm.length!==opts.length)st.perm=shuffle(opts.map((_,i)=>i));const po=st.perm.map(i=>opts[i]);po.forEach((o,i)=>{const t=tile(o,-1.2+i*.8,-1.0);tray.add(t);const ok=JSON.stringify(o)===JSON.stringify(right);t.traverse(m=>{if(m.isMesh)A.drag(m,{tap:()=>pickT(ok)});});});}A.redraw();}
   function pickT(ok){A.pop();if(mode==='play'&&!st.setup&&st.want){if(ok){st.n++;st.want=false;draw();game.solved('Yes! That comes next!');}else A.bad('Look at how each tile changes.');}}
   function next(){st.n=st.n>=10?3:st.n+1;A.pop();draw();}
   draw();
   return {info:()=>st.kind+st.n,
     controls:()=>{const c=Object.keys(GP).map(k=>({t:GP[k].n,on:st.kind===k,fn:()=>{st.kind=k;st.n=5;draw();}})).concat([{t:'Next',go:true,fn:next},{t:st.nums?'Hide numbers':'Show numbers',fn:()=>{st.nums=!st.nums;draw();}}]);if(mode==='play'&&st.ask)return choices(st.setup?null:game,st.ask.o,st.ask.ans,st.ask.ok).concat(c.slice(-1));if(mode==='play'&&st.want)return c.slice(-1);return c;},
     demo(n){st.ask=null;st.want=false;st.nums=false;if(n==='turn'){st.kind='turn';st.n=1;draw();A.seq([2,3,4,5,6].map(k=>[550,()=>{st.n=k;draw();}]));}if(n==='grow'){st.kind='grow';st.n=1;draw();A.seq([2,3,4].map(k=>[650,()=>{st.n=k;draw();}]));}},
-    task(r){st.setup=true;st.ask=null;st.want=false;st.nums=false;let txt;
+    task(r){st.setup=true;st.ask=null;st.want=false;st.nums=false;st.perm=null;let txt;
       if(r<3){st.kind=['turn','col','grow'][r];st.n=r===2?4:6;st.want=true;txt='What comes *next*? Tap it!';}
       else if(r===3){st.kind='col';st.n=6;st.nums=false;st.ask={ans:'4, 3, 6, 4, 3, 6',o:shuffle(['4, 3, 6, 4, 3, 6','3, 4, 6, 3, 4, 6','4, 4, 3, 3, 6, 6']),ok:'Yes! Square 4, triangle 3, hexagon 6.'};txt='Show this pattern with *numbers of sides*.';}
       else{st.kind='turn';st.n=6;st.ask={ans:'4',o:shuffle(['4','2','6']),ok:'Yes! Up, right, down, left.'};txt='How many tiles are in the *core*?';}
@@ -59,7 +59,7 @@ P.lesson({id:'geopat2',title:'Patterns in designs',strand:'Algebra',codes:['C1.1
 P.lesson({id:'chart2',title:'Number patterns to 100',strand:'Algebra',codes:['C1.3','C1.4'],
  guide:{goal:'Determine pattern rules and use them to extend patterns, make predictions and find missing elements, and create patterns that show relationships among numbers up to 100.',words:'hundred chart, rule, add, subtract, column, row, missing, predict',
   ask:['What happens when you add 10 on a hundred chart?','What is the rule for 5, 10, 15, 20?','What number is missing: 34, 44, ___, 64?'],home:'Colour every 5th number on a hundred chart. What shape does the pattern make?'},
- learn:[{say:'Patterns light up!',speech:'Start at five and add five again and again. Five, ten, fifteen, twenty… The numbers make two columns on the hundred chart! The rule is add five.',view:'model',demo:'by5'},
+ learn:[{say:'Patterns light up!',speech:'Jayden starts at five and adds five again and again. Five, ten, fifteen, twenty… The numbers make two columns on the hundred chart! The rule is add five.',view:'model',demo:'by5'},
         {say:'Read about rules.',speech:'Adding ten moves straight down one row. Adding one moves one step right. Patterns help us predict: start at four and add ten. The numbers are four, fourteen, twenty-four, thirty-four…',view:'read'},
         {say:'Watch: add 10.',speech:'Start at three and add ten. Three, thirteen, twenty-three, thirty-three… straight down the column!',view:'model',demo:'by10'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -101,7 +101,7 @@ P.lesson({id:'chart2',title:'Number patterns to 100',strand:'Algebra',codes:['C1
 P.lesson({id:'symbol2',title:'Mystery numbers',strand:'Algebra',codes:['C2.1'],
  guide:{goal:'Identify when symbols are being used as variables, and describe how they are being used.',words:'symbol, variable, mystery number, box, equation, unknown',
   ask:['What does the box stand for in □ + 4 = 9?','Can a star stand for a number?','How do you find the mystery number?'],home:'Hide some buttons in your hand. Show the rest and say: “I have 10 in all. How many are hiding?”'},
- learn:[{say:'What is in the box?',speech:'Box plus four equals nine. The box is a mystery number. Four counters are outside, and nine in all. Open the box: there are five! The box stands for five.',view:'model',demo:'open'},
+ learn:[{say:'What is in the box?',speech:'Box plus four equals nine. Priya’s box is a mystery number. Four counters are outside, and nine in all. Open the box: there are five! The box stands for five.',view:'model',demo:'open'},
         {say:'Read about symbols.',speech:'A symbol like a box, a star or a letter can stand for a number we do not know yet. It is called a variable. In star plus star equals eight, both stars are the same number: four.',view:'read'},
         {say:'Watch: a star.',speech:'Twelve minus star equals seven. How many were taken away? Count up from seven to twelve: five! The star is five.',view:'model',demo:'star'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -141,7 +141,7 @@ P.lesson({id:'symbol2',title:'Mystery numbers',strand:'Algebra',codes:['C2.1'],
 P.lesson({id:'equal2',title:'Making both sides equal',strand:'Algebra',codes:['C2.2','C2.3'],
  guide:{goal:'Determine what needs to be added to or subtracted from addition and subtraction expressions to make them equivalent, and use equivalent relationships for numbers up to 100.',words:'equal, balance, both sides, equivalent, make equal, =',
   ask:['What do you add to make 7 + 5 equal 10 + □?','How does a balance show equal?','Is 30 + 20 equal to 40 + 10?'],home:'Use coins to show two ways to make 50¢. Are they equal?'},
- learn:[{say:'Balance both sides.',speech:'Seven plus five on the left. Ten plus box on the right. Seven plus five is twelve. Ten plus two is twelve. The box is two, and the balance is level!',view:'model',demo:'fix'},
+ learn:[{say:'Balance both sides.',speech:'Omar puts seven plus five on the left. Ten plus box on the right. Seven plus five is twelve. Ten plus two is twelve. The box is two, and the balance is level!',view:'model',demo:'fix'},
         {say:'Read about equivalent.',speech:'Expressions are equivalent when they have the same value. Thirty plus twenty and forty plus ten are both fifty, so they are equivalent.',view:'read'},
         {say:'Watch: take some away.',speech:'Fifteen on the left and nineteen on the right. To make them equal, take four away from the right side. Now both are fifteen!',view:'model',demo:'sub'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -158,7 +158,7 @@ P.lesson({id:'equal2',title:'Making both sides equal',strand:'Algebra',codes:['C
  readout(p,S,y){const g=p.g,st=S.st;const a=st.L[0]+st.L[1],b=st.R[0]+st.R[1];T(g,st.L.join(' + ')+(a===b?' = ':' ≠ ')+st.R[0]+(st.R[1]>=0?' + '+st.R[1]:' − '+(-st.R[1])),X0,y+54,ZS(46),a===b?'#16a36f':RED);T(g,a+(a===b?' = ':a>b?' > ':' < ')+b,X0,y+96,FT.bodyB);return y+104;},
  build(S,grp,mode,game){const st=S.st;const g2=new THREE.Group();grp.add(g2);const post=mk(new THREE.CylinderGeometry(.06,.08,1.2,12),lam('#64748b'),0);post.position.set(0,.6,-2.2);grp.add(post);let tilt=0,cur=0,arm=null;
   function draw(){clearGroup(g2);const a=st.L[0]+st.L[1],b=st.R[0]+st.R[1];tilt=Math.max(-.22,Math.min(.22,(b-a)*.03));arm=new THREE.Group();arm.position.set(0,1.22,-2.2);arm.rotation.z=-cur;g2.add(arm);arm.add(mk(new THREE.BoxGeometry(3.8,.07,.12),lam('#475569'),0));
-    [[-1.5,st.L,'#2f7de1'],[1.5,st.R,'#ff4f8b']].forEach(([x,v,c])=>{const pan=new THREE.Group();pan.position.set(x,-.7,0);arm.add(pan);pan.add(mk(new THREE.CylinderGeometry(.7,.7,.04,28),lam('#cbd5e1'),20));
+    [[-1.5,st.L,'#2f7de1'],[1.5,st.R,'#ff6b35']].forEach(([x,v,c])=>{const pan=new THREE.Group();pan.position.set(x,-.7,0);arm.add(pan);pan.add(mk(new THREE.CylinderGeometry(.7,.7,.04,28),lam('#cbd5e1'),20));
       v.forEach((n,j)=>{if(!n)return;const h=Math.min(.7,.08+Math.abs(n)*.012);const blk=mk(new THREE.BoxGeometry(.5,h,.4),lam(n<0?'#f87171':j?tint(c,.4):c),20);blk.position.set(j?.27:-.27,.02+h/2,0);pan.add(blk);const l=label((n<0?'−':'')+Math.abs(n),{size:.2,bg:'#ffffff'});l.position.set(j?.27:-.27,h+.2,0);pan.add(l);});
       [[-.6],[.6]].forEach(([dx])=>pan.add(seg(V(dx,0,0),V(0,.7,0),'#94a3b8',.01)));});
     const eq=label(st.L.join(' + ')+(a===b?' = ':' ≠ ')+st.R[0]+(st.R[1]>=0?' + '+st.R[1]:' − '+(-st.R[1])),{size:.3,bg:'#ffffff',border:a===b?'#16a36f':RED});eq.position.set(0,2.2,-2.6);g2.add(eq);
@@ -183,47 +183,47 @@ P.lesson({id:'equal2',title:'Making both sides equal',strand:'Algebra',codes:['C
 P.lesson({id:'coding2',title:'Two robots at once',strand:'Algebra',codes:['C3.1','C3.2'],
  guide:{goal:'Solve problems by writing and executing code involving sequential and concurrent events, and read and alter existing code, describing how changes affect the outcomes.',words:'code, sequence, step, concurrent, at the same time, bug, run',
   ask:['What does “at the same time” mean in code?','Why do the steps need to be in order?','How can you stop the robots from bumping?'],home:'Clap and stomp at the same time with a partner. Then take turns. Which is concurrent?'},
- learn:[{say:'Two robots, one Run button.',speech:'The blue robot and the pink robot each have code. When we press Run, they move at the same time! That is called concurrent. Each robot does its own steps in order.',view:'model',demo:'run'},
+ learn:[{say:'Two robots, one Run button.',speech:'Luna’s blue robot and orange robot each have code. When we press Run, they move at the same time! That is called concurrent. Each robot does its own steps in order.',view:'model',demo:'run'},
         {say:'Read about sequence and concurrent.',speech:'Sequential means one step after another. Concurrent means two things happen at the same time. Both robots move together, one step at a time.',view:'read'},
-        {say:'Watch: fix a bump.',speech:'Uh oh! The robots bump into each other in the middle. Change the pink robot’s code so it goes around. Now both reach their stars!',view:'model',demo:'fix'},
+        {say:'Watch: fix a bump.',speech:'Uh oh! The robots bump into each other in the middle. Change the orange robot’s code so it goes around. Now both reach their stars!',view:'model',demo:'fix'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
-        {say:'Your turn: code the pink robot!',speech:'Your turn! Write code for the pink robot, then press Run.',view:'model'}],
+        {say:'Your turn: code the orange robot!',speech:'Your turn! Write code for the orange robot, then press Run.',view:'model'}],
  fig:'Two robots on a grid moving at the same time.',rz:.35,
- explore:['Add arrows to the *pink* robot’s code.','Press *Run*: both robots move together.','*Undo* removes a step.'],
- howTo:'Write the pink robot’s code so both reach their stars without bumping.',
+ explore:['Add arrows to the *orange* robot’s code.','Press *Run*: both robots move together.','*Undo* removes a step.'],
+ howTo:'Write the orange robot’s code so both reach their stars without bumping.',
  init:k=>({A:['→','→','→','↑'],B:['←','←','←','↑'],need:false,ask:null}),
  left(p,S){const g=p.g;let y=header(p,S);
   y=para(p,y,'*Sequential:* one step after another. *Concurrent:* two things at the *same time*.')+16;
-  const s=60;for(let r=0;r<4;r++)for(let c=0;c<5;c++){g.fillStyle=(r+c)%2?'#e0e7ff':'#eef2ff';g.fillRect(X0+c*s,y+r*s,s,s);}g.fillStyle='#2f7de1';g.beginPath();g.arc(X0+.5*s,y+3.5*s,18,0,Math.PI*2);g.fill();g.fillStyle='#ff4f8b';g.beginPath();g.arc(X0+4.5*s,y+3.5*s,18,0,Math.PI*2);g.fill();
-  rr(g,X0+340,y,220,200,14);g.fillStyle='#1e293b';g.fill();T(g,'blue: → → ↑',X0+356,y+50,ZS(30),'#93c5fd');T(g,'pink: ← ← ↑',X0+356,y+110,ZS(30),'#f9a8d4');T(g,'Run: together!',X0+356,y+170,FT.bodyB,'#86efac');y+=270;
+  const s=60;for(let r=0;r<4;r++)for(let c=0;c<5;c++){g.fillStyle=(r+c)%2?'#e0e7ff':'#eef2ff';g.fillRect(X0+c*s,y+r*s,s,s);}g.fillStyle='#2f7de1';g.beginPath();g.arc(X0+.5*s,y+3.5*s,18,0,Math.PI*2);g.fill();g.fillStyle='#ff6b35';g.beginPath();g.arc(X0+4.5*s,y+3.5*s,18,0,Math.PI*2);g.fill();
+  rr(g,X0+340,y,220,200,14);g.fillStyle='#1e293b';g.fill();T(g,'blue: → → ↑',X0+356,y+50,ZS(30),'#93c5fd');T(g,'orange: ← ← ↑',X0+356,y+110,ZS(30),'#a5d8ff');T(g,'Run: together!',X0+356,y+170,FT.bodyB,'#86efac');y+=270;
   y=para(p,y,'If two robots try to go to the same square at the same time, they *bump*. Change the code to fix it!')+10;
   y=keyWords(p,y,[['concurrent','at the same time'],['sequence','steps in order']]);
-  predict(p,y,S,'p16','Blue goes right, right. Pink goes left, left. They start 4 squares apart. Do they bump?','*Yes!* They meet in the middle.');},
- readout(p,S,y){const g=p.g,st=S.st;rr(g,X0,y+6,TW,104,14);g.fillStyle='#1e293b';g.fill();T(g,'blue: '+st.A.join(' '),X0+18,y+44,ZS(32),'#93c5fd');T(g,'pink: '+(st.B.join(' ')||'(empty)'),X0+18,y+88,ZS(32),'#f9a8d4');return y+120;},
+  predict(p,y,S,'p16','Blue goes right, right. Orange goes left, left. They start 4 squares apart. Do they bump?','*Yes!* They meet in the middle.');},
+ readout(p,S,y){const g=p.g,st=S.st;rr(g,X0,y+6,TW,104,14);g.fillStyle='#1e293b';g.fill();T(g,'blue: '+st.A.join(' '),X0+18,y+44,ZS(32),'#93c5fd');T(g,'orange: '+(st.B.join(' ')||'(empty)'),X0+18,y+88,ZS(32),'#a5d8ff');return y+120;},
  build(S,grp,mode,game){const st=S.st,c=.5,N=6,R=4,ox=-1.25,oz=-.9;const X=i=>ox+i*c,Z=j=>oz-j*c;
   for(let i=0;i<N;i++)for(let j=0;j<R;j++){const t=mk(G('g2gt',()=>new THREE.BoxGeometry(c*.96,.05,c*.96)),lam((i+j)%2?'#e0e7ff':'#eef2ff'),20);t.position.set(X(i),.025,Z(j));grp.add(t);}
   const g2=new THREE.Group();grp.add(g2);const SA=[0,0],SB=[5,0],GA=[3,1],GB=[2,1];
   function robot(col){const g=new THREE.Group();const b=mk(new THREE.BoxGeometry(.26,.24,.26),lam(col),0);b.position.y=.16;g.add(b);const h=mk(new THREE.BoxGeometry(.2,.14,.2),lam(tint(col,.4)),0);h.position.y=.35;g.add(h);[-1,1].forEach(s=>{const e=mk(G('g2re',()=>new THREE.SphereGeometry(.025,8,6)),lam(INK),0);e.position.set(s*.05,.37,.1);g.add(e);});return g;}
-  const ra=robot('#2f7de1'),rb=robot('#ff4f8b');grp.add(ra,rb);let running=false;
-  function stars(){clearGroup(g2);[[GA,'#2f7de1'],[GB,'#ff4f8b']].forEach(([p0,c2])=>{const s=mk(new THREE.ExtrudeGeometry(starShape(),{depth:.05,bevelEnabled:false}),lam(c2),0);s.rotation.x=-Math.PI/2;s.position.set(X(p0[0]),.06,Z(p0[1]));g2.add(s);});A.redraw();}
+  const ra=robot('#2f7de1'),rb=robot('#ff6b35');grp.add(ra,rb);let running=false;
+  function stars(){clearGroup(g2);[[GA,'#2f7de1'],[GB,'#ff6b35']].forEach(([p0,c2])=>{const s=mk(new THREE.ExtrudeGeometry(starShape(),{depth:.05,bevelEnabled:false}),lam(c2),0);s.rotation.x=-Math.PI/2;s.position.set(X(p0[0]),.06,Z(p0[1]));g2.add(s);});A.redraw();}
   function starShape(){const s=new THREE.Shape();for(let i=0;i<10;i++){const r=i%2?.07:.16,a=Math.PI/2+i*Math.PI/5;i?s.lineTo(Math.cos(a)*r,Math.sin(a)*r):s.moveTo(Math.cos(a)*r,Math.sin(a)*r);}return s;}
   function reset(){ra.position.set(X(SA[0]),.05,Z(SA[1]));rb.position.set(X(SB[0]),.05,Z(SB[1]));}
   const MV={'→':[1,0],'←':[-1,0],'↑':[0,1],'↓':[0,-1]};
   function run(){if(running)return;running=true;reset();let pa=SA.slice(),pb=SB.slice();const n=Math.max(st.A.length,st.B.length);let pr=Promise.resolve(),fail=null;
     for(let k=0;k<n;k++){pr=pr.then(()=>{if(fail)return;const na=st.A[k]?[pa[0]+MV[st.A[k]][0],pa[1]+MV[st.A[k]][1]]:pa,nb=st.B[k]?[pb[0]+MV[st.B[k]][0],pb[1]+MV[st.B[k]][1]]:pb;
-        if(nb[0]<0||nb[0]>=N||nb[1]<0||nb[1]>=R){fail='The pink robot fell off the grid!';return;}if(na[0]===nb[0]&&na[1]===nb[1]){fail='Bump! Both robots tried to go to the same square.';}
+        if(nb[0]<0||nb[0]>=N||nb[1]<0||nb[1]>=R){fail='The orange robot fell off the grid!';return;}if(na[0]===nb[0]&&na[1]===nb[1]){fail='Bump! Both robots tried to go to the same square.';}
         pa=na;pb=nb;A.pop();return Promise.all([hop(ra,V(X(na[0]),.05,Z(na[1])),.2,.35),hop(rb,V(X(nb[0]),.05,Z(nb[1])),.2,.35)]);});}
-    pr.then(()=>{running=false;if(fail){A.bad(fail);return;}const ok=pa[0]===GA[0]&&pa[1]===GA[1]&&pb[0]===GB[0]&&pb[1]===GB[1];if(ok){A.say('Both robots reached their stars!');if(mode==='play'&&!st.setup&&st.need)game.solved('Your code works! Both robots made it.');}else A.bad('Not at the stars yet. Check the pink code.');});}
+    pr.then(()=>{running=false;if(fail){A.bad(fail);return;}const ok=pa[0]===GA[0]&&pa[1]===GA[1]&&pb[0]===GB[0]&&pb[1]===GB[1];if(ok){A.say('Both robots reached their stars!');if(mode==='play'&&!st.setup&&st.need)game.solved('Your code works! Both robots made it.');}else A.bad('Not at the stars yet. Check the orange code.');});}
   reset();stars();
   return {info:()=>st.B.join(''),
-    controls:()=>{const c=['↑','↓','←','→'].map(a=>({t:'pink '+a,fn:()=>{if(st.B.length>=8)return;st.B.push(a);A.pop();reset();A.redraw();}})).concat([{t:'Undo',fn:()=>{st.B.pop();A.redraw();}},{t:'Clear',fn:()=>{st.B=[];reset();A.redraw();}},{t:'Run',go:true,fn:run}]);if(mode==='play'&&st.ask)return choices(st.setup?null:game,st.ask.o,st.ask.ans,st.ask.ok);return c;},
+    controls:()=>{const c=['↑','↓','←','→'].map(a=>({t:'orange '+a,fn:()=>{if(st.B.length>=8)return;st.B.push(a);A.pop();reset();A.redraw();}})).concat([{t:'Undo',fn:()=>{st.B.pop();A.redraw();}},{t:'Clear',fn:()=>{st.B=[];reset();A.redraw();}},{t:'Run',go:true,fn:run}]);if(mode==='play'&&st.ask)return choices(st.setup?null:game,st.ask.o,st.ask.ans,st.ask.ok);return c;},
     demo(n){st.ask=null;st.need=false;st.A=['→','→','→','↑'];if(n==='run'){st.B=['↑','←','←','←'];reset();A.seq([[700,run]]);}if(n==='fix'){st.B=['←','←','←','↑'];reset();A.seq([[400,run],[2400,()=>{st.B=['↑','←','←','←'];reset();A.redraw();}],[600,run]]);}},
     task(r){st.setup=true;st.ask=null;st.need=true;st.A=['→','→','→','↑'];let txt;
-      if(r===0){st.B=[];txt='Write code for the *pink* robot to reach the *pink star*. The blue code is done. Then *Run*!';}
-      else if(r===1){st.B=['←','←','←','↑'];txt='This pink code makes the robots *bump*. Fix it so both reach their stars!';}
-      else if(r===2){st.B=['↑','←','←'];txt='The pink code is *one step short*. Fix it, then Run.';}
+      if(r===0){st.B=[];txt='Write code for the *orange* robot to reach the *orange star*. The blue code is done. Then *Run*!';}
+      else if(r===1){st.B=['←','←','←','↑'];txt='This orange code makes the robots *bump*. Fix it so both reach their stars!';}
+      else if(r===2){st.B=['↑','←','←'];txt='The orange code is *one step short*. Fix it, then Run.';}
       else if(r===3){st.need=false;st.B=['↑','←','←','←'];st.ask={ans:'At the same time',o:['At the same time','One after the other'],ok:'Yes! That is concurrent.'};txt='When you press Run, do the robots move *at the same time* or *one after the other*?';}
-      else{st.need=false;st.B=['↑','←','←','←'];st.ask={ans:'It would end 1 square too far left',o:shuffle(['It would end 1 square too far left','Nothing would change','It would go up']),ok:'Yes! One more step changes where it ends.'};txt='What happens if we add one more *←* to the pink code?';}
+      else{st.need=false;st.B=['↑','←','←','←'];st.ask={ans:'It would end 1 square too far left',o:shuffle(['It would end 1 square too far left','Nothing would change','It would go up']),ok:'Yes! One more step changes where it ends.'};txt='What happens if we add one more *←* to the orange code?';}
       reset();st.setup=false;return txt;}};}
 });
 
@@ -235,7 +235,7 @@ const NAME=o=>(o.big?'big ':'small ')+(o.ci?'blue ':'red ')+['triangle','square'
 P.lesson({id:'sort2',title:'Venn and Carroll diagrams',strand:'Data',codes:['D1.1'],
  guide:{goal:'Sort sets of data about people or things according to two attributes, using tables and logic diagrams, including Venn and Carroll diagrams.',words:'sort, attribute, Venn diagram, Carroll diagram, overlap, both, neither, table',
   ask:['What goes in the middle of a Venn diagram?','Where does a blue square go if the circles are “red” and “square”?','How is a Carroll diagram like a table?'],home:'Sort your family’s shoes in a Venn diagram: “has laces” and “is black”. Who goes in the middle?'},
- learn:[{say:'Two circles, one overlap.',speech:'One circle is for red shapes. The other is for squares. A red square is both, so it goes in the middle where the circles overlap. A blue triangle is neither, so it goes outside!',view:'model',demo:'venn'},
+ learn:[{say:'Two circles, one overlap.',speech:'Theo makes one circle for red shapes. The other is for squares. A red square is both, so it goes in the middle where the circles overlap. A blue triangle is neither, so it goes outside!',view:'model',demo:'venn'},
         {say:'Read about Carroll diagrams.',speech:'A Carroll diagram is a table. The rows say red or not red. The columns say square or not square. Each shape goes in exactly one box.',view:'read'},
         {say:'Watch: the Carroll diagram.',speech:'Now the same shapes move into a Carroll diagram. Red squares, red not-squares, not-red squares, and not-red not-squares.',view:'model',demo:'carroll'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -282,7 +282,7 @@ const TT={rows:['Grade 1','Grade 2'],cols:['walk','bus','car']};
 P.lesson({id:'tally2',title:'Two-way tally tables',strand:'Data',codes:['D1.2'],
  guide:{goal:'Collect data through observations, experiments and interviews to answer questions about two pieces of information, and organize the data in two-way tally tables.',words:'survey, tally, two-way table, row, column, total',
   ask:['What two things does this table show?','How many Grade 2 students take the bus?','How do tally marks show 5?'],home:'Ask family and friends two questions: “Cat or dog?” and “Kid or grown-up?” Make a two-way tally table.'},
- learn:[{say:'Ask two questions!',speech:'We asked students two things: what grade they are in, and how they get to school. Each student gets one tally mark in the right box. Watch the table fill!',view:'model',demo:'fill'},
+ learn:[{say:'Ask two questions!',speech:'Ayo asked students two things: what grade they are in, and how they get to school. Each student gets one tally mark in the right box. Watch the table fill!',view:'model',demo:'fill'},
         {say:'Read about two-way tables.',speech:'A two-way table has rows and columns. The rows show one piece of information, like grade. The columns show another, like walk, bus or car. Tally marks are grouped in fives.',view:'read'},
         {say:'Watch: read a box.',speech:'Find the row for Grade two and the column for bus. There are six tallies. Six Grade two students take the bus.',view:'model',demo:'read'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -302,7 +302,7 @@ P.lesson({id:'tally2',title:'Two-way tally tables',strand:'Data',codes:['D1.2'],
  build(S,grp,mode,game){const st=S.st;const g2=new THREE.Group();grp.add(g2);const cw=1.1,ch=.95,x0=-1.1,z0=-2.55;
   ['walk','bus','car'].forEach((t,i)=>{const l=label(t,{size:.2,color:acc()});l.position.set(x0+i*cw,.1,z0-.65);grp.add(l);});TT.rows.forEach((t,j)=>{const l=label(t,{size:.17,color:acc()});l.position.set(x0-1.0,.1,z0+j*ch);grp.add(l);});
   function draw(){clearGroup(g2);for(let j=0;j<2;j++)for(let i=0;i<3;i++){const b=mk(G('g2tb',()=>new THREE.BoxGeometry(cw*.95,.04,ch*.92)),lam(j?'#eef2ff':'#fef3c7'),20);b.position.set(x0+i*cw,.02,z0+j*ch);g2.add(b);A.drag(b,{tap:()=>tap(j,i)});
-      const n=st.t[j][i];for(let k=0;k<n;k++){const grpI=Math.floor(k/5),kk=k%5;if(kk===4){const st2=mk(G('g2ts2',()=>new THREE.BoxGeometry(.3,.025,.025)),lam('#be185d'),0);st2.position.set(x0+i*cw-.33+grpI*.38+.06,.08,z0+j*ch);st2.rotation.y=.5;g2.add(st2);}
+      const n=st.t[j][i];for(let k=0;k<n;k++){const grpI=Math.floor(k/5),kk=k%5;if(kk===4){const st2=mk(G('g2ts2',()=>new THREE.BoxGeometry(.3,.025,.025)),lam('#c2410c'),0);st2.position.set(x0+i*cw-.33+grpI*.38+.06,.08,z0+j*ch);st2.rotation.y=.5;g2.add(st2);}
         else{const s=mk(G('g2ts',()=>new THREE.BoxGeometry(.025,.025,.34)),lam(INK),0);s.position.set(x0+i*cw-.4+grpI*.38+kk*.06,.06,z0+j*ch);g2.add(s);}}
       const l=label(String(n),{size:.15,bg:'#ffffff'});l.position.set(x0+i*cw+.38,.2,z0+j*ch-.3);g2.add(l);}A.redraw();}
   function tap(j,i){if(st.t[j][i]>=10){A.bad('That box is full!');return;}st.t[j][i]++;A.pop();draw();A.say(TT.rows[j]+', '+TT.cols[i]+': '+st.t[j][i]);if(mode==='play'&&!st.setup&&st.need&&st.need(st))game.solved(st.needOk);}
@@ -326,7 +326,7 @@ const PETS=[0,1,1,2,1,3,0,1,2,1,4,2,1,0,2];
 P.lesson({id:'graph2',title:'Line plots, bar graphs and mode',strand:'Data',codes:['D1.3','D1.4','D1.5'],
  guide:{goal:'Display data in concrete graphs, pictographs, line plots and bar graphs with sources, titles and labels; identify the mode; and analyse data to draw conclusions.',words:'line plot, bar graph, title, label, scale, mode, most common',
   ask:['What is the mode of this data?','How is a line plot different from a bar graph?','What can you conclude from the graph?'],home:'Ask friends how many pets they have. Make a line plot with an X for each answer. Find the mode!'},
- learn:[{say:'An X for each answer.',speech:'We asked fifteen students: how many pets do you have? Each answer gets an X above its number on the line plot. Watch the Xs stack up!',view:'model',demo:'plot'},
+ learn:[{say:'An X for each answer.',speech:'Jayden asked fifteen students: how many pets do you have? Each answer gets an X above its number on the line plot. Watch the Xs stack up!',view:'model',demo:'plot'},
         {say:'Read about the mode.',speech:'The mode is the answer that happens most often. The tallest stack shows it. Here, the mode is one pet. A data set can have one mode, more than one, or none.',view:'read'},
         {say:'Watch: a bar graph.',speech:'The same data can be a bar graph. Each bar shows how many students gave each answer. The tallest bar is still one pet: the mode!',view:'model',demo:'bar'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -370,7 +370,7 @@ function counts(st){const c=[0,0,0,0,0];st.data.forEach(v=>c[v]++);return c;}
 P.lesson({id:'chance2',title:'Likely or unlikely?',strand:'Data',codes:['D2.1','D2.2'],
  guide:{goal:'Use the words impossible, possible and certain to describe the likelihood of complementary events, make predictions, and test whether the mode of data from another population will be the same.',words:'impossible, possible, certain, likely, unlikely, complementary, predict, mode',
   ask:['If you can pick red or not red, what are the two events?','Is picking red likely or unlikely with 1 red and 9 blue?','Will another class have the same favourite colour?'],home:'Put 3 red and 1 blue sock in a bag. Predict which colour you will pull. Try it 10 times!'},
- learn:[{say:'Red or not red?',speech:'This bag has eight red marbles and two blue ones. When we pick one, it is either red or not red. Those are complementary events: one of them must happen! Red is likely. Not red is unlikely.',view:'model',demo:'pick'},
+ learn:[{say:'Red or not red?',speech:'Priya’s bag has eight red marbles and two blue ones. When she picks one, it is either red or not red. Those are complementary events: one of them must happen! Red is likely. Not red is unlikely.',view:'model',demo:'pick'},
         {say:'Read about likelihood.',speech:'Certain means it will happen. Impossible means it cannot. If red is certain, then not red is impossible. Likely and unlikely are in between.',view:'read'},
         {say:'Watch: many picks.',speech:'Let’s pick twenty times, putting the marble back each time. Most picks are red, just as we predicted!',view:'model',demo:'many'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},

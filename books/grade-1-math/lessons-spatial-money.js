@@ -6,18 +6,18 @@ const {THREE,V,W,D,PY,PX,X0,TW,INK,RED,BLUE,GREY,VIBE,FT,ZS,G,M,lam,mk,unitBox,c
 const acc=()=>P.ACC;
 const rnd=(a,b)=>a+Math.floor(Math.random()*(b-a+1)),pick=a=>a[Math.floor(Math.random()*a.length)],shuffle=a=>a.slice().sort(()=>Math.random()-.5);
 function choices(game,list,ans,ok,lab){return list.map(o=>({t:lab?lab(o):String(o),big:true,fn:()=>{if(o===ans){if(game)game.solved(ok);else A.good(ok);}else A.bad('Not quite. Try again!');}}));}
-const COL=['#ff4f8b','#ff8a3d','#ffc04d','#5fd38a','#2f7de1','#8b5cf6'];
+const COL=['#ff6b35','#ff8a3d','#ffc04d','#5fd38a','#2f7de1','#8b5cf6'];
 
 /* =========================================================
    19. Shapes and solids
    ========================================================= */
-const SOL=[{k:'sphere',n:'sphere',roll:true,stack:false,face:'none',col:'#ff4f8b'},{k:'cube',n:'cube',roll:false,stack:true,face:'square',col:'#2f7de1'},{k:'cylinder',n:'cylinder',roll:true,stack:true,face:'circle',col:'#5fd38a'},{k:'cone',n:'cone',roll:true,stack:false,face:'circle',col:'#ffc04d'},{k:'prism',n:'rectangular prism',roll:false,stack:true,face:'rectangle',col:'#8b5cf6'}];
+const SOL=[{k:'sphere',n:'sphere',roll:true,stack:false,face:'none',col:'#ff6b35'},{k:'cube',n:'cube',roll:false,stack:true,face:'square',col:'#2f7de1'},{k:'cylinder',n:'cylinder',roll:true,stack:true,face:'circle',col:'#5fd38a'},{k:'cone',n:'cone',roll:true,stack:false,face:'circle',col:'#ffc04d'},{k:'prism',n:'rectangular prism',roll:false,stack:true,face:'rectangle',col:'#8b5cf6'}];
 function solid(k,c,s){s=s||1;let geo;if(k==='sphere')geo=new THREE.SphereGeometry(.24*s,22,16);else if(k==='cube')geo=new THREE.BoxGeometry(.42*s,.42*s,.42*s);else if(k==='cylinder')geo=new THREE.CylinderGeometry(.21*s,.21*s,.46*s,26);else if(k==='cone')geo=new THREE.ConeGeometry(.24*s,.5*s,26);else geo=new THREE.BoxGeometry(.6*s,.32*s,.36*s);
   geo.computeBoundingBox();const m=mk(geo,lam(c),20);m.position.y=-geo.boundingBox.min.y;const g=new THREE.Group();g.add(m);return g;}
 P.lesson({id:'shapes1',title:'Shapes and solids',strand:'Spatial Sense',codes:['E1.1','E1.2'],
  guide:{goal:'Sort three-dimensional objects and two-dimensional shapes by one attribute and identify the sorting rule, and construct 3D objects and find 2D shapes in structures.',words:'sphere, cube, cylinder, cone, rectangular prism, circle, square, triangle, rectangle, roll, stack, face',
   ask:['Which solids can roll?','What flat shape is on the end of a cylinder?','What solids did you use to build your castle?'],home:'Find solids at home: a ball (sphere), a can (cylinder), a box (prism). Which ones roll? Which ones stack?'},
- learn:[{say:'Meet the solids!',speech:'Here are five solids: a sphere, a cube, a cylinder, a cone and a rectangular prism. Watch each one. Some can roll, and some can stack!',view:'model',demo:'tour'},
+ learn:[{say:'Meet the solids!',speech:'Kai has five solids: a sphere, a cube, a cylinder, a cone and a rectangular prism. Watch each one. Some can roll, and some can stack!',view:'model',demo:'tour'},
         {say:'Read about faces.',speech:'A flat side of a solid is called a face. A cube has square faces. A cylinder has circle faces on its ends. A rectangular prism has rectangle faces.',view:'read'},
         {say:'Watch: build a castle.',speech:'Let’s build a castle! Cubes and prisms make the walls. Cylinders make the towers. Cones make the roofs. Can you see the shapes?',view:'model',demo:'castle'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -67,7 +67,7 @@ const PATS=[[[0,1,1],[1,1,1],[0,1,1],[0,0,1]],[[1,0,0],[1,1,0],[1,1,1],[1,1,0]],
 P.lesson({id:'mirror1',title:'Matching halves',strand:'Spatial Sense',codes:['E1.3'],
  guide:{goal:'Construct and describe two-dimensional shapes and three-dimensional objects that have matching halves.',words:'matching halves, line of symmetry, fold, mirror, same',
   ask:['How do you know the two halves match?','Where is the fold line on a heart?','Can a 3D object have matching halves?'],home:'Fold a paper in half and cut a shape along the fold. Open it: are the halves the same?'},
- learn:[{say:'Make it match!',speech:'This picture has a fold line in the middle. The left side is done. Let’s fill in the right side so both halves match, like a mirror. Now fold it: the halves fit perfectly!',view:'model',demo:'fill'},
+ learn:[{say:'Make it match!',speech:'Zara’s picture has a fold line in the middle. The left side is done. Let’s fill in the right side so both halves match, like a mirror. Now fold it: the halves fit perfectly!',view:'model',demo:'fill'},
         {say:'Read about matching halves.',speech:'A shape has matching halves if you can fold it so both sides fit on top of each other. A heart, a butterfly and a square all have matching halves.',view:'read'},
         {say:'Watch: fold to check.',speech:'Fold the picture along the line. If every coloured square lands on a coloured square, the halves match!',view:'model',demo:'fold'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -78,7 +78,7 @@ P.lesson({id:'mirror1',title:'Matching halves',strand:'Spatial Sense',codes:['E1
  init:k=>({pi:0,R:[[0,0,0],[0,0,0],[0,0,0],[0,0,0]],fold:0,need:false,ask:null}),
  left(p,S){const g=p.g;let y=header(p,S);
   y=para(p,y,'A shape has *matching halves* when both sides are the *same*, like a mirror.')+16;
-  g.fillStyle='#ff4f8b';g.beginPath();g.moveTo(X0+150,y+220);g.bezierCurveTo(X0+20,y+130,X0+40,y+20,X0+150,y+70);g.bezierCurveTo(X0+260,y+20,X0+280,y+130,X0+150,y+220);g.fill();g.setLineDash([10,8]);g.strokeStyle=INK;g.lineWidth=4;g.beginPath();g.moveTo(X0+150,y+20);g.lineTo(X0+150,y+240);g.stroke();g.setLineDash([]);
+  g.fillStyle='#ff6b35';g.beginPath();g.moveTo(X0+150,y+220);g.bezierCurveTo(X0+20,y+130,X0+40,y+20,X0+150,y+70);g.bezierCurveTo(X0+260,y+20,X0+280,y+130,X0+150,y+220);g.fill();g.setLineDash([10,8]);g.strokeStyle=INK;g.lineWidth=4;g.beginPath();g.moveTo(X0+150,y+20);g.lineTo(X0+150,y+240);g.stroke();g.setLineDash([]);
   const s=40;for(let r=0;r<4;r++)for(let c=0;c<6;c++){const on=c<3?PATS[0][r][c]:PATS[0][r][5-c];g.fillStyle=on?'#2f7de1':'#f1f5f9';g.fillRect(X0+380+c*s,y+40+r*s,s-3,s-3);}g.setLineDash([8,6]);g.strokeStyle=INK;g.beginPath();g.moveTo(X0+380+3*s-1.5,y+20);g.lineTo(X0+380+3*s-1.5,y+220);g.stroke();g.setLineDash([]);y+=270;
   y=para(p,y,'The dashed *fold line* splits the shape into two matching halves.')+10;
   y=keyWords(p,y,[['matching halves','two sides that are the same'],['fold line','where you fold to check']]);
@@ -87,7 +87,7 @@ P.lesson({id:'mirror1',title:'Matching halves',strand:'Spatial Sense',codes:['E1
  build(S,grp,mode,game){const st=S.st,c=.46,z0=-2.85;const g2=new THREE.Group(),flap=new THREE.Group();grp.add(g2);flap.position.set(0,.03,0);grp.add(flap);
   const line=mk(new THREE.BoxGeometry(.04,.06,4*c+.2),lam(INK),0);line.position.set(0,.06,z0+1.5*c);grp.add(line);
   function draw(){clearGroup(g2);clearGroup(flap);const L=PATS[st.pi];for(let r=0;r<4;r++)for(let k=0;k<3;k++){const on=L[r][k];const t=mk(G('g1mt',()=>new THREE.BoxGeometry(c*.94,.06,c*.94)),lam(on?'#2f7de1':'#f8fafc'),20);t.position.set(-(3-k-.5)*c,.03,z0+r*c);flap.add(t);
-      const on2=st.R[r][k];const t2=mk(G('g1mt',()=>new THREE.BoxGeometry(c*.94,.06,c*.94)),lam(on2?'#ff4f8b':'#f8fafc'),20);t2.position.set((k+.5)*c,.03,z0+r*c);g2.add(t2);A.drag(t2,{tap:()=>tog(r,k)});}
+      const on2=st.R[r][k];const t2=mk(G('g1mt',()=>new THREE.BoxGeometry(c*.94,.06,c*.94)),lam(on2?'#ff6b35':'#f8fafc'),20);t2.position.set((k+.5)*c,.03,z0+r*c);g2.add(t2);A.drag(t2,{tap:()=>tog(r,k)});}
     flap.rotation.z=-st.fold*Math.PI;A.redraw();}
   function tog(r,k){if(st.fold)return;st.R[r][k]=st.R[r][k]?0:1;A.pop();draw();if(mode==='play'&&!st.setup&&st.need&&match(st))game.solved('The halves match! Beautiful!');}
   function fold(){const f0=st.fold,f1=f0?0:1;tween(.9,t=>{st.fold=f0+(f1-f0)*t;flap.rotation.z=-st.fold*Math.PI;}).then(()=>{A.pop();if(f1)A.say(match(st)?'They match!':'Not yet: some squares do not match.');A.redraw();});}
@@ -111,7 +111,7 @@ const POS={on:[0,.62,0],under:[0,.12,0],beside:[.95,.12,0],front:[0,.12,.75],beh
 P.lesson({id:'where1',title:'Where is it?',strand:'Spatial Sense',codes:['E1.4','E1.5'],
  guide:{goal:'Describe the relative locations of objects or people using positional language, and give and follow directions for moving from one location to another.',words:'on, under, beside, in front of, behind, between, left, right, forward, turn',
   ask:['Where is the ball: on or under the table?','What is beside the chair?','How do you get from the door to the table?'],home:'Play “Where is teddy?” Hide a toy and give clues: under, behind, beside…'},
- learn:[{say:'Where is the ball?',speech:'Watch the ball move around the table. The ball is on the table. Now it is under the table. Now it is beside the table. Now in front of the table, and now behind the table!',view:'model',demo:'tour'},
+ learn:[{say:'Where is the ball?',speech:'Watch Leo’s ball move around the table. The ball is on the table. Now it is under the table. Now it is beside the table. Now in front of the table, and now behind the table!',view:'model',demo:'tour'},
         {say:'Read the position words.',speech:'Position words tell where things are: on, under, beside, in front of, behind and between. Direction words tell how to move: forward, back, left and right.',view:'read'},
         {say:'Watch: follow the directions.',speech:'The ladybug follows directions: two steps forward, then one step right. It reaches the flower!',view:'model',demo:'bug'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -123,7 +123,7 @@ P.lesson({id:'where1',title:'Where is it?',strand:'Spatial Sense',codes:['E1.4',
  left(p,S){const g=p.g;let y=header(p,S);
   y=para(p,y,'*Position words* tell where something is.')+16;
   const tb=(x,yy)=>{g.fillStyle='#b45309';g.fillRect(x-60,yy,120,14);g.fillRect(x-54,yy+14,10,60);g.fillRect(x+44,yy+14,10,60);};
-  [['on',0,-22],['under',0,52],['beside',100,52]].forEach(([t,dx,dy],i)=>{const x=X0+110+i*270;tb(x,y+60);g.beginPath();g.arc(x+dx,y+60+dy,18,0,Math.PI*2);g.fillStyle='#ff4f8b';g.fill();T(g,t,x,y+170,FT.bodyB,acc(),'center');});y+=200;
+  [['on',0,-22],['under',0,52],['beside',100,52]].forEach(([t,dx,dy],i)=>{const x=X0+110+i*270;tb(x,y+60);g.beginPath();g.arc(x+dx,y+60+dy,18,0,Math.PI*2);g.fillStyle='#ff6b35';g.fill();T(g,t,x,y+170,FT.bodyB,acc(),'center');});y+=200;
   [['in front of','closer to you'],['behind','on the far side'],['between','in the middle of two things']].forEach(([a,b],i)=>{T(g,a,X0+20,y+i*46+30,FT.bodyB,acc());T(g,b,X0+260,y+i*46+30,FT.body);});y+=164;
   y=para(p,y,'*Directions:* 2 steps forward, then 1 step right.')+10;
   y=keyWords(p,y,[['position','where something is'],['direction','which way to move']]);
@@ -133,9 +133,9 @@ P.lesson({id:'where1',title:'Where is it?',strand:'Spatial Sense',codes:['E1.4',
   const top=mk(new THREE.BoxGeometry(1.2,.08,.8),lam('#d97706'),20);top.position.set(tc.x,.5,tc.z);grp.add(top);[[-1,-1],[1,-1],[-1,1],[1,1]].forEach(([a,b])=>{const l=mk(new THREE.BoxGeometry(.07,.48,.07),lam('#b45309'),0);l.position.set(tc.x+a*.52,.24,tc.z+b*.32);grp.add(l);});
   const chair=new THREE.Group();const seat=mk(new THREE.BoxGeometry(.4,.06,.4),lam('#2f7de1'),20);seat.position.y=.3;chair.add(seat);const back=mk(new THREE.BoxGeometry(.4,.4,.06),lam('#2f7de1'),20);back.position.set(0,.5,-.17);chair.add(back);[[-1,-1],[1,-1],[-1,1],[1,1]].forEach(([a,b])=>{const l=mk(new THREE.BoxGeometry(.05,.3,.05),lam('#1d4ed8'),0);l.position.set(a*.17,.15,b*.17);chair.add(l);});chair.position.set(-2.0,0,-1.4);grp.add(chair);
   const ted=new THREE.Group();const tb2=mk(new THREE.SphereGeometry(.13,14,10),lam('#a16207'),0);tb2.position.y=.13;ted.add(tb2);const th=mk(new THREE.SphereGeometry(.09,12,10),lam('#a16207'),0);th.position.y=.3;ted.add(th);ted.position.set(-2.0,.33,-1.4);grp.add(ted);
-  const ball=mk(new THREE.SphereGeometry(.12,18,14),lam('#ff4f8b'),0);grp.add(ball);
+  const ball=mk(new THREE.SphereGeometry(.12,18,14),lam('#ff6b35'),0);grp.add(ball);
   const gridO=V(.9,0,-.9),c=.42;for(let i=0;i<3;i++)for(let j=0;j<4;j++){const t=mk(G('g1wt',()=>new THREE.BoxGeometry(c*.94,.03,c*.94)),lam((i+j)%2?'#dcfce7':'#f0fdf4'),20);t.position.set(gridO.x+i*c,.015,gridO.z-j*c);grp.add(t);}
-  const fl=new THREE.Group();const fs=mk(new THREE.CylinderGeometry(.015,.015,.3,6),lam('#16a34a'),0);fs.position.y=.15;fl.add(fs);for(let k=0;k<5;k++){const pt=mk(G('g1pt',()=>new THREE.SphereGeometry(.05,8,6)),lam('#f472b6'),0);pt.position.set(Math.cos(k*1.256)*.07,.32,Math.sin(k*1.256)*.07);fl.add(pt);}fl.position.set(gridO.x+1*c,0,gridO.z-3*c);g2.add(fl);
+  const fl=new THREE.Group();const fs=mk(new THREE.CylinderGeometry(.015,.015,.3,6),lam('#16a34a'),0);fs.position.y=.15;fl.add(fs);for(let k=0;k<5;k++){const pt=mk(G('g1pt',()=>new THREE.SphereGeometry(.05,8,6)),lam('#fb923c'),0);pt.position.set(Math.cos(k*1.256)*.07,.32,Math.sin(k*1.256)*.07);fl.add(pt);}fl.position.set(gridO.x+1*c,0,gridO.z-3*c);g2.add(fl);
   const bug=new THREE.Group();const bb=mk(new THREE.SphereGeometry(.1,14,10,0,Math.PI*2,0,Math.PI/2),lam('#ef4444'),0);bug.add(bb);[[.04,.04],[-.04,-.03],[.03,-.05]].forEach(([x,z])=>{const d=mk(G('g1dot',()=>new THREE.SphereGeometry(.02,6,5)),lam(INK),0);d.position.set(x,.08,z);bug.add(d);});grp.add(bug);
   function placeBall(){const p0=POS[st.at];ball.position.set(tc.x+p0[0],p0[1],tc.z+p0[2]);}
   function placeBug(){bug.position.set(gridO.x+st.bug[0]*c,.04,gridO.z-st.bug[1]*c);}
@@ -158,7 +158,7 @@ P.lesson({id:'where1',title:'Where is it?',strand:'Spatial Sense',codes:['E1.4',
 P.lesson({id:'measure1',title:'Longer, heavier, holds more',strand:'Spatial Sense',codes:['E2.1','E2.2'],
  guide:{goal:'Identify measurable attributes such as length, area, mass, capacity and angle, and compare and order everyday objects by length, area, mass and capacity.',words:'long, longer, longest, short, heavy, heavier, light, holds more, covers more, area, capacity, mass',
   ask:['How can you tell which pencil is longer?','What does a balance show?','Which cup holds more water?'],home:'Line up 3 spoons from shortest to longest. Which toy is heavier? Which cup holds more?'},
- learn:[{say:'Compare the lengths.',speech:'Line up the pencils at the same starting line. The blue pencil is the longest. The yellow one is the shortest. Now they are in order!',view:'model',demo:'len'},
+ learn:[{say:'Compare the lengths.',speech:'Amara lines up the pencils at the same starting line. The blue pencil is the longest. The yellow one is the shortest. Now they are in order!',view:'model',demo:'len'},
         {say:'Read about measuring.',speech:'We can measure how long something is: its length. How heavy it is: its mass. How much it holds: its capacity. And how much space it covers: its area.',view:'read'},
         {say:'Watch: the balance.',speech:'Put a toy on each side of the balance. The heavier side goes down. The apple is heavier than the feather!',view:'model',demo:'mass'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -205,7 +205,7 @@ const SEA=m=>m<2||m===11?['winter','#93c5fd']:m<5?['spring','#86efac']:m<8?['sum
 P.lesson({id:'calendar1',title:'Days, weeks and months',strand:'Spatial Sense',codes:['E2.3'],
  guide:{goal:'Read the date on a calendar, and use a calendar to identify days, weeks, months, holidays and seasons.',words:'calendar, date, day, week, month, year, season, yesterday, today, tomorrow',
   ask:['How many days are in a week?','What day comes after Tuesday?','Which season comes after winter?'],home:'Find today’s date on a calendar. Circle your birthday and count the weeks until it comes!'},
- learn:[{say:'Read the calendar!',speech:'A calendar shows the days of a month. Each row is one week: seven days, from Sunday to Saturday. Let’s find the fifteenth. It is a Thursday!',view:'model',demo:'find'},
+ learn:[{say:'Read the calendar!',speech:'A calendar shows the days of a month. Each row is one week: seven days, from Sunday to Saturday. Milo’s party is on the fifteenth. It is a Thursday!',view:'model',demo:'find'},
         {say:'Read about months and seasons.',speech:'There are twelve months in a year. Winter, spring, summer and fall are the four seasons. In Ontario, winter is snowy and summer is hot!',view:'read'},
         {say:'Watch: flip the months.',speech:'Let’s flip through the months. January, February, March… each season has its own colour.',view:'model',demo:'flip'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -250,7 +250,7 @@ const MONEY=[{n:'nickel',v:5,t:'5¢',r:.212,c:'#cbd5e1',k:'coin'},{n:'dime',v:10
 P.lesson({id:'money1',title:'Canadian coins and bills',strand:'Financial Literacy',codes:['F1.1'],
  guide:{goal:'Identify the various Canadian coins up to 50¢, and coins and bills up to $50, and compare their values.',words:'coin, bill, nickel, dime, quarter, loonie, toonie, cents, dollars, value',
   ask:['Which coin is worth 10¢?','Is a bigger coin always worth more?','Which bill is worth the most: $5, $10 or $20?'],home:'Look at real coins with a grown-up. Sort them by value. Which is the smallest coin? Is it worth the least?'},
- learn:[{say:'Meet Canada’s money!',speech:'Here are Canadian coins: the nickel is five cents, the dime is ten cents, the quarter is twenty-five cents, and the fifty-cent coin. The loonie is one dollar, and the toonie is two dollars. The bills are five, ten, twenty and fifty dollars!',view:'model',demo:'tour'},
+ learn:[{say:'Meet Canada’s money!',speech:'Suki has Canadian coins: the nickel is five cents, the dime is ten cents, the quarter is twenty-five cents, and the fifty-cent coin. The loonie is one dollar, and the toonie is two dollars. The bills are five, ten, twenty and fifty dollars!',view:'model',demo:'tour'},
         {say:'Read about value.',speech:'Value means how much money a coin or bill is worth. A bigger coin is not always worth more! The dime is the smallest coin, but it is worth more than the nickel.',view:'read'},
         {say:'Watch: order by value.',speech:'Let’s line up the money from least to greatest value: five cents, ten cents, twenty-five cents, fifty cents, one dollar, two dollars, then the bills!',view:'model',demo:'order'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},

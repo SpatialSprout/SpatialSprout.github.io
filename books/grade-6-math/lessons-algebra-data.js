@@ -16,7 +16,7 @@ const ex=(k,c)=>(k===1?'':k)+'n'+(c?(c>0?' + '+c:' − '+(-c)):'');
 P.lesson({id:'patterns6',title:'Linear growing patterns',strand:'Algebra',codes:['C1.1','C1.2','C1.3','C1.4'],
  guide:{goal:'Identify linear and non-linear growing patterns, represent them with tables, graphs and algebraic expressions, use the rule to predict any term, and create patterns with whole numbers and decimals.',words:'linear, term number, expression, pattern rule, table of values, graph, constant difference',
   ask:['How can you tell from a table that a pattern is linear?','What is the 20th term of 3n + 2? How do you know without building it?','Why is 1, 4, 9, 16 not linear?'],home:'Make a pattern with toothpicks: 1 square uses 4, 2 squares in a row use 7, 3 use 10. Write the rule as an expression.'},
- learn:[{say:'Same change every time: linear.',speech:'This pattern starts at five and grows by three each time. The difference is always three, so the points on the graph form a straight line. It is linear. Its rule is three n plus two.',view:'model',demo:'linear'},
+ learn:[{say:'Same change every time: linear.',speech:'Malik’s pattern starts at five and grows by three each time. The difference is always three, so the points on the graph form a straight line. It is linear. Its rule is three n plus two.',view:'model',demo:'linear'},
         {say:'Read about expressions for patterns.',speech:'The term number is n. If each term grows by three, the expression starts with three n. Then adjust: term one is five, and three times one is three, so add two. The rule is three n plus two.',view:'read'},
         {say:'Watch: a pattern that is not linear.',speech:'Now the towers are square numbers: one, four, nine, sixteen. The differences grow: three, five, seven. The graph curves, so this pattern is not linear.',view:'model',demo:'square'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -36,7 +36,7 @@ P.lesson({id:'patterns6',title:'Linear growing patterns',strand:'Algebra',codes:
   y=keyWords(p,y,[['linear pattern','a pattern with a constant difference; its graph is a straight line'],['expression','a rule like 3n + 2, where n is the term number']]);
   predict(p,y,S,'p15','What is the 10th term of 4n − 1?','*39.* 4 × 10 − 1 = 39.');},
  readout(p,S,y){const g=p.g,st=S.st,f=v=>st.sc===1?String(v):(v*st.sc).toFixed(1);T(g,'n',X0,y+36,FT.smallB);T(g,'term',X0,y+80,FT.smallB);
-  for(let n=1;n<=6;n++){const v=val(st,n-1);const hide=n-1===st.miss;T(g,String(n),X0+120+(n-1)*110,y+36,ZS(30),INK,'center');T(g,hide?(st.user?f(st.user):'?'):f(v),X0+120+(n-1)*110,y+80,ZS(30),hide?'#e2457a':'#7c3aed','center');}
+  for(let n=1;n<=6;n++){const v=val(st,n-1);const hide=n-1===st.miss;T(g,String(n),X0+120+(n-1)*110,y+36,ZS(30),INK,'center');T(g,hide?(st.user?f(st.user):'?'):f(v),X0+120+(n-1)*110,y+80,ZS(30),hide?'#e4572e':'#7c3aed','center');}
   T(g,st.sq?'Rule: n × n (not linear)':'Rule: '+(st.sc===1?ex(st.k,st.c):ex(st.k/10,st.c/10).replace(/(\d)\.(\d)/g,'$1.$2'))+'  (linear)',X0,y+122,FT.bodyB,acc());return y+130;},
  build(S,grp,mode,game){const st=S.st,u=.075,Z=-1.6,xs=n=>-1.9+n*.76;const towers=new THREE.Group(),line=new THREE.Group();grp.add(towers,line);
   const base=mk(new THREE.BoxGeometry(4.5,.03,1.1),[lam('#efe9ff'),lam('#efe9ff'),cellMat('#f7f3ff',18,4),lam('#efe9ff'),lam('#efe9ff'),lam('#efe9ff')],20);base.position.set(0,.015,Z);grp.add(base);
@@ -44,7 +44,7 @@ P.lesson({id:'patterns6',title:'Linear growing patterns',strand:'Algebra',codes:
   function draw(){clearGroup(towers);clearGroup(line);const tops=[];
     for(let n=0;n<6;n++){const isM=n===st.miss;const h=isM?st.user:val(st,n);const g=new THREE.Group();g.position.set(xs(n),0,Z);towers.add(g);
       const col=isM?'#ffd24a':VIBE[n%6];const H=Math.max(.01,h*u);const m=mk(new THREE.BoxGeometry(.32,H,.32),[lam(col),lam(col),lam(col),lam(col),cellMat(col,1,Math.max(1,h)),cellMat(col,1,Math.max(1,h))],20);m.position.y=H/2+.03;g.add(m);
-      if(isM){A.drag(g,{tap:()=>setU(st.user+1)});const q=label(st.user?f(st.user):'?',{size:.24,bg:'#ffffff',border:'#e2457a'});q.position.y=H+.35;g.add(q);}
+      if(isM){A.drag(g,{tap:()=>setU(st.user+1)});const q=label(st.user?f(st.user):'?',{size:.24,bg:'#ffffff',border:'#e4572e'});q.position.y=H+.35;g.add(q);}
       else{const l=label(f(h),{size:.2});l.position.y=H+.22;g.add(l);tops.push(V(xs(n),H+.06,Z+.3));}
       const tn=label('n = '+(n+1),{size:.14,color:GREY});tn.position.set(0,.2,.6);g.add(tn);}
     for(let i=0;i<tops.length-1;i++){const a=tops[i],b=tops[i+1];const s=new THREE.Mesh(new THREE.CylinderGeometry(.02,.02,a.distanceTo(b),6),lam(st.sq?'#f08a24':'#7c3aed'));s.position.copy(a).add(b).multiplyScalar(.5);s.quaternion.setFromUnitVectors(V(0,1,0),b.clone().sub(a).normalize());line.add(s);}
@@ -73,7 +73,7 @@ function val(st,n){return st.sq?(n+1)*(n+1):st.k*(n+1)+st.c;}
 P.lesson({id:'monomials6',title:'Like terms and evaluating expressions',strand:'Algebra',codes:['C2.1','C2.2'],
  guide:{goal:'Add monomials with a degree of 1 using algebra tiles, and evaluate algebraic expressions with whole numbers and decimal tenths.',words:'monomial, like terms, coefficient, variable, algebra tile, evaluate, substitute',
   ask:['Why can 2x and 3x be added, but not 2x and 3?','What is 4x when x = 2.5?','How do algebra tiles show 3x + 2?'],home:'Use long pasta for x and beads for 1. Show 2x + 3 and 4x + 1, then combine them.'},
- learn:[{say:'Long tiles are x, small tiles are 1.',speech:'An x tile stands for the variable x. A small square stands for one. Two x plus three, plus three x plus one. Watch the like terms slide together: five x plus four.',view:'model',demo:'combine'},
+ learn:[{say:'Long tiles are x, small tiles are 1.',speech:'An x tile stands for the variable x. A small square stands for one. Yuna has two x plus three, plus three x plus one. Watch the like terms slide together: five x plus four.',view:'model',demo:'combine'},
         {say:'Read about like terms.',speech:'Like terms have the same variable. To add them, add the coefficients: two x plus three x is five x. Constants combine with constants.',view:'read'},
         {say:'Watch: evaluate with a decimal.',speech:'Evaluate five x plus four when x is two point five. Each x tile stretches to two point five. Five times two point five is twelve point five, plus four is sixteen point five.',view:'model',demo:'eval'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -128,7 +128,7 @@ function ex2(e){const [k,c]=e;if(!k&&!c)return '0';return (k?(k===1?'':k)+'x':''
 P.lesson({id:'equations6',title:'Equations with several terms',strand:'Algebra',codes:['C2.3'],
  guide:{goal:'Solve equations that involve multiple terms and whole numbers by combining like terms and using a balance model, and verify the solutions.',words:'equation, like terms, combine, balance, solve, verify',
   ask:['How does 2n + 3n + 5 = 40 become 5n + 5 = 40?','What do you do to both sides to keep the balance?','How do you check that n = 7 is correct?'],home:'Make a balance puzzle with a ruler on a pencil and coins: 2 bags + 3 bags + 5 coins balance 40 coins.'},
- learn:[{say:'Combine like terms first.',speech:'Two n plus three n plus five equals forty. Combine like terms: five n plus five equals forty. Watch the balance as n changes. When n is seven, it is level.',view:'model',demo:'solve'},
+ learn:[{say:'Combine like terms first.',speech:'On Ezra’s balance, two n plus three n plus five equals forty. Combine like terms: five n plus five equals forty. Watch the balance as n changes. When n is seven, it is level.',view:'model',demo:'solve'},
         {say:'Read the steps.',speech:'Combine like terms. Undo the addition by subtracting five from both sides: five n equals thirty-five. Undo the multiplication: n equals seven. Verify: fourteen plus twenty-one plus five is forty.',view:'read'},
         {say:'Watch: terms on both sides.',speech:'Four n plus six equals two n plus twenty. Take two n from both sides: two n plus six equals twenty. So n is seven.',view:'model',demo:'both'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -152,7 +152,7 @@ P.lesson({id:'equations6',title:'Equations with several terms',strand:'Algebra',
   const u=.07;function blocks(cg,v,x0,col){const tens=Math.floor(v/10),ones=v%10;let x=x0;for(let i=0;i<tens;i++){const r=unitBox(1,10,1,col,u);r.position.set(x,.03+5*u,(i%2)*.09-.05);cg.add(r);x+=u*.75;}x+=.04;for(let i=0;i<ones;i++){const c=unitBox(1,1,1,col,u);c.position.set(x+Math.floor(i/5)*(u+.01),.03+u/2+(i%5)*u,0);cg.add(c);}}
   function bags(cg,n,col,x0,z){for(let b=0;b<n;b++){const bag=new THREE.Group();const sk=mk(G('b6'+col,()=>new THREE.CylinderGeometry(.1,.13,.3,14)),lam(col),0);sk.position.y=.18;bag.add(sk);const t=label('n',{size:.15,color:'#fff'});t.position.set(0,.2,.14);bag.add(t);bag.position.set(x0+b*.24,0,z);cg.add(bag);A.drag(bag,{tap:()=>setN(st.n+1)});}}
   const nL=label('',{size:.24,bg:'#ffffff',border:'#7c3aed'});grp.add(nL);
-  function fill(){const L=pans[0].userData.cg,R=pans[1].userData.cg;clearGroup(L);clearGroup(R);bags(L,st.L[0],'#8b5cf6',-.55,-.3);bags(L,st.L[1],'#e2457a',-.55+st.L[0]*.24,-.3);if(st.Lc)blocks(L,st.Lc,-.55,'#16a36f');
+  function fill(){const L=pans[0].userData.cg,R=pans[1].userData.cg;clearGroup(L);clearGroup(R);bags(L,st.L[0],'#8b5cf6',-.55,-.3);bags(L,st.L[1],'#e4572e',-.55+st.L[0]*.24,-.3);if(st.Lc)blocks(L,st.Lc,-.55,'#16a36f');
     if(st.R)bags(R,st.R,'#8b5cf6',-.45,-.3);blocks(R,st.Rc,-.55,'#2f7de1');const Lv=(st.L[0]+st.L[1])*st.n+st.Lc,Rv=st.R*st.n+st.Rc;tAng=Math.max(-.3,Math.min(.3,(Lv-Rv)*.01));}
   function place(){beam.rotation.z=ang;[-1,1].forEach((s,i)=>pans[i].position.set(PV.x+s*ARM*Math.cos(ang),PV.y+s*ARM*Math.sin(ang)-.76,PV.z));nL.userData.set('n = '+st.n);nL.position.set(0,2.35,PV.z);}
   function setN(n){n=Math.max(0,Math.min(60,n));if(n===st.n)return;st.n=n;A.pop();fill();const Lv=(st.L[0]+st.L[1])*n+st.Lc,Rv=st.R*n+st.Rc;if(Lv===Rv){A.good('Balanced! n = '+n+'.');if(mode==='play'&&!st.setup)game.solved('n = '+n+'. Check: both sides are '+Lv+'.');}A.redraw();}
@@ -177,7 +177,7 @@ P.lesson({id:'equations6',title:'Equations with several terms',strand:'Algebra',
 P.lesson({id:'inequal6',title:'Inequalities with two operations',strand:'Algebra',codes:['C2.4'],
  guide:{goal:'Solve inequalities that involve two operations and whole numbers up to 100, verify the solutions, and graph them on a number line.',words:'inequality, two operations, boundary, solution set, verify, graph',
   ask:['How do you find the boundary of 3x + 4 < 40?','Is the boundary itself a solution of 2x − 5 ≥ 15?','Why do the solutions of 4x + 2 > 30 continue to the right?'],home:'“Tickets cost $7 each plus a $5 fee. You have $50.” Write an inequality and find how many tickets you can buy.'},
- learn:[{say:'Solve the equation to find the boundary.',speech:'Three x plus four is less than forty. First solve three x plus four equals forty: three x is thirty-six, so x is twelve. Twelve is the boundary, but it is not a solution. The solutions are less than twelve. Watch the graph.',view:'model',demo:'solve'},
+ learn:[{say:'Solve the equation to find the boundary.',speech:'Lucia needs three x plus four to be less than forty. First solve three x plus four equals forty: three x is thirty-six, so x is twelve. Twelve is the boundary, but it is not a solution. The solutions are less than twelve. Watch the graph.',view:'model',demo:'solve'},
         {say:'Read the steps.',speech:'Step one: solve the related equation to find the boundary. Step two: test the boundary and a number on each side. Step three: graph all the whole numbers that work.',view:'read'},
         {say:'Watch: greater than.',speech:'Two x minus five is greater than fifteen. The equation two x minus five equals fifteen gives x equals ten. Ten is not a solution; eleven is. The solutions go up from eleven.',view:'model',demo:'greater'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -231,7 +231,7 @@ const LV6=[{s:[0,5,0],goal:[5,0],rocks:[],best:1,hint:'Repeat { if blocked: turn
 P.lesson({id:'coding6',title:'Efficient code with conditionals',strand:'Algebra',codes:['C3.1','C3.2'],
  guide:{goal:'Write, run, read and alter code with loops and conditional statements, describe how changes affect the outcome, and make code more efficient by using fewer blocks.',words:'efficient, loop, conditional, if… else…, debug, outcome, sensor',
   ask:['Why is Repeat 11 { if blocked: turn right, else: forward } more efficient than writing every step?','What happens if you change “turn right” to “turn left”?','How do you find a bug in code that almost works?'],home:'Write directions to walk around your home using “if there is a wall, turn right; else, walk forward”. Does it work?'},
- learn:[{say:'A conditional with a sensor.',speech:'The robot has a sensor. The code says: if the way ahead is blocked, turn right; else, go forward. Put it in a loop and the robot follows the walls on its own. Watch: just two blocks of code.',view:'model',demo:'run'},
+ learn:[{say:'A conditional with a sensor.',speech:'Arjun’s robot has a sensor. The code says: if the way ahead is blocked, turn right; else, go forward. Put it in a loop and the robot follows the walls on its own. Watch: just two blocks of code.',view:'model',demo:'run'},
         {say:'Read about efficient code.',speech:'Efficient code does the job with fewer blocks. Loops repeat steps, and conditionals let the code decide what to do. Changing one block can change the whole outcome.',view:'read'},
         {say:'Watch: change one word.',speech:'Change turn right to turn left. The same loop now sends the robot a different way. Small changes in code can have big effects.',view:'model',demo:'alter'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -243,7 +243,7 @@ P.lesson({id:'coding6',title:'Efficient code with conditionals',strand:'Algebra'
  left(p,S){const g=p.g;let y=header(p,S);
   y=para(p,y,'A *conditional* lets code make decisions. With a *sensor*, the robot checks if the square ahead is *blocked*.')+16;
   rr(g,X0,y,480,200,16);g.fillStyle='#24203f';g.fill();const MF='700 26px "Atkinson Hyperlegible", monospace';
-  T(g,'Repeat 11 times {',X0+24,y+46,MF,'#ffd86b');T(g,'if blocked ahead:',X0+60,y+86,MF,'#9fe6ff');T(g,'turn right ↻',X0+100,y+120,MF,'#ffb3cf');T(g,'else: forward ↑',X0+60,y+156,MF,'#9fe6ff');T(g,'}',X0+24,y+190,MF,'#ffd86b');
+  T(g,'Repeat 11 times {',X0+24,y+46,MF,'#ffd86b');T(g,'if blocked ahead:',X0+60,y+86,MF,'#9fe6ff');T(g,'turn right ↻',X0+100,y+120,MF,'#ffc98f');T(g,'else: forward ↑',X0+60,y+156,MF,'#9fe6ff');T(g,'}',X0+24,y+190,MF,'#ffd86b');
   T(g,'2 blocks',X0+520,y+60,ZS(40),'#16a36f');T(g,'instead of 11',X0+520,y+100,FT.body,GREY);T(g,'= efficient!',X0+520,y+140,FT.bodyB,'#16a36f');y+=232;
   y=para(p,y,'*Debugging:* if the robot stops early, check the *repeat number*. If it goes the wrong way, check the *condition* or the *turn*.')+12;
   y=keyWords(p,y,[['efficient','does the job with fewer steps or blocks'],['conditional','code that runs only when a condition is true']]);
@@ -288,7 +288,7 @@ const DC=[['number of pets','discrete'],['height of a plant','continuous'],['goa
 P.lesson({id:'data6',title:'Discrete and continuous data',strand:'Data',codes:['D1.1','D1.2'],
  guide:{goal:'Describe the difference between discrete and continuous data, give examples, collect qualitative and quantitative data, and organize data using intervals.',words:'discrete data, continuous data, qualitative, quantitative, interval, frequency table',
   ask:['Can you have 2.5 pets? What kind of data is “number of pets”?','Why is height continuous?','How do intervals help organize 30 different heights?'],home:'Measure the heights of family members to the nearest centimetre. Is the data discrete or continuous? Group it into intervals of 10 cm.'},
- learn:[{say:'Counted or measured?',speech:'Discrete data is counted: it can only be certain values, like three pets. Continuous data is measured: it can be any value in a range, like a height of one hundred forty-two point five centimetres. Watch the cards sort.',view:'model',demo:'sort'},
+ learn:[{say:'Counted or measured?',speech:'Discrete data is counted: it can only be certain values, like Chloe’s three pets. Continuous data is measured: it can be any value in a range, like a height of one hundred forty-two point five centimetres. Watch the cards sort.',view:'model',demo:'sort'},
         {say:'Read about intervals.',speech:'When data has many different values, group it into equal intervals, like one hundred thirty to one hundred thirty-nine. Count how many values fall in each interval to make a frequency table.',view:'read'},
         {say:'Watch: data falls into intervals.',speech:'These heights drop into bins of ten centimetres each. The bins show where most of the data is.',view:'model',demo:'bins'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -343,7 +343,7 @@ const BINS=['130–139','140–149','150–159','160–169','170–179'];
 P.lesson({id:'histogram6',title:'Histograms and broken-line graphs',strand:'Data',codes:['D1.3','D1.4'],
  guide:{goal:'Choose and create histograms and broken-line graphs with titles, labels, sources and appropriate scales, and use them in an infographic.',words:'histogram, interval, frequency, broken-line graph, trend, scale, source, infographic',
   ask:['Why are there no gaps between the bars of a histogram?','Why is a broken-line graph good for data over time?','Which graph would you use for the temperature every hour?'],home:'Record the outdoor temperature every hour on a weekend day. Draw a broken-line graph and describe the trend.'},
- learn:[{say:'Histograms show intervals.',speech:'A histogram is a bar graph for intervals of continuous data. The bars touch because the intervals are next to each other. Watch the jump distances fill their intervals.',view:'model',demo:'hist'},
+ learn:[{say:'Histograms show intervals.',speech:'A histogram is a bar graph for intervals of continuous data. The bars touch because the intervals are next to each other. Watch Malik’s jump distances fill their intervals.',view:'model',demo:'hist'},
         {say:'Read about choosing a graph.',speech:'Use a histogram for data grouped in intervals. Use a broken-line graph to show how something changes over time. Every graph needs a title, labels, a scale and a source.',view:'read'},
         {say:'Watch: a broken-line graph.',speech:'This broken-line graph shows the temperature every two hours. The line goes up in the morning and down in the evening. That is the trend.',view:'model',demo:'line'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -358,7 +358,7 @@ P.lesson({id:'histogram6',title:'Histograms and broken-line graphs',strand:'Data
   [2,5,8,6,3].forEach((f,i)=>{g.fillStyle=['#93c5fd','#60a5fa','#3b82f6','#2563eb','#1d4ed8'][i];g.fillRect(ox+i*bw,oy-f*20,bw,f*20);g.strokeStyle='#fff';g.strokeRect(ox+i*bw,oy-f*20,bw,f*20);});
   ['2.0','2.5','3.0','3.5','4.0','4.5'].forEach((t,i)=>T(g,t,ox+i*bw,oy+22,FT.cap,GREY,'center'));T(g,'distance (m)',ox+150,oy+48,FT.cap,GREY,'center');
   const lx=X0+440,ly=oy;T(g,'Temperature Today',lx+170,y+24,FT.smallB,INK,'center');g.strokeStyle=INK;g.lineWidth=3;g.beginPath();g.moveTo(lx,y+40);g.lineTo(lx,ly);g.lineTo(lx+350,ly);g.stroke();
-  g.strokeStyle='#e2457a';g.lineWidth=4;g.beginPath();[8,10,15,19,21,18,12].forEach((t,i)=>{const x=lx+20+i*52,yy=ly-t*8;i?g.lineTo(x,yy):g.moveTo(x,yy);});g.stroke();[8,10,15,19,21,18,12].forEach((t,i)=>{g.beginPath();g.arc(lx+20+i*52,ly-t*8,6,0,Math.PI*2);g.fillStyle='#e2457a';g.fill();});
+  g.strokeStyle='#e4572e';g.lineWidth=4;g.beginPath();[8,10,15,19,21,18,12].forEach((t,i)=>{const x=lx+20+i*52,yy=ly-t*8;i?g.lineTo(x,yy):g.moveTo(x,yy);});g.stroke();[8,10,15,19,21,18,12].forEach((t,i)=>{g.beginPath();g.arc(lx+20+i*52,ly-t*8,6,0,Math.PI*2);g.fillStyle='#e4572e';g.fill();});
   T(g,'time of day',lx+170,ly+48,FT.cap,GREY,'center');y+=300;
   [['Histogram','continuous data in equal intervals; bars touch'],['Broken-line graph','change over time; points joined by lines']].forEach(([a,b],i)=>{T(g,a,X0,y+i*40,FT.bodyB,acc());T(g,b,X0+250,y+i*40,FT.small);});y+=90;
   y=para(p,y,'An *infographic* combines graphs, numbers and short facts to tell a clear story. Always include the *source*.')+8;
@@ -373,8 +373,8 @@ P.lesson({id:'histogram6',title:'Histograms and broken-line graphs',strand:'Data
         const l=label(String(f),{size:.2});l.position.set(x0+(i+.5)*bw,h+.2,Z-.2);g2.add(l);});
       HI.forEach((t,i)=>{const l=label(t.split('–')[0],{size:.15,color:GREY});l.position.set(x0+i*bw,.12,Z+.25);g2.add(l);});const l=label('4.5',{size:.15,color:GREY});l.position.set(x0+5*bw,.12,Z+.25);g2.add(l);}
     else{title.userData.set('Temperature Today (°C) — source: school weather station');const x0=-1.8,dx=.6;const pts=st.temps.map((t,i)=>V(x0+i*dx,.1+t*.085,Z-.2));
-      for(let i=0;i<pts.length-1;i++){const a=pts[i],b=pts[i+1];const s=new THREE.Mesh(new THREE.CylinderGeometry(.025,.025,a.distanceTo(b),8),lam('#e2457a'));s.position.copy(a).add(b).multiplyScalar(.5);s.quaternion.setFromUnitVectors(V(0,1,0),b.clone().sub(a).normalize());g2.add(s);}
-      pts.forEach((p,i)=>{const sel=st.sel===i;const d=mk(G('hp6',()=>new THREE.SphereGeometry(.09,14,10)),lam(sel?'#f59e0b':'#e2457a'),0);d.position.copy(p);g2.add(d);A.drag(d,{tap:()=>tap(i)});const l=label(HR[i],{size:.13,color:GREY});l.position.set(p.x,.12,Z+.25);g2.add(l);
+      for(let i=0;i<pts.length-1;i++){const a=pts[i],b=pts[i+1];const s=new THREE.Mesh(new THREE.CylinderGeometry(.025,.025,a.distanceTo(b),8),lam('#e4572e'));s.position.copy(a).add(b).multiplyScalar(.5);s.quaternion.setFromUnitVectors(V(0,1,0),b.clone().sub(a).normalize());g2.add(s);}
+      pts.forEach((p,i)=>{const sel=st.sel===i;const d=mk(G('hp6',()=>new THREE.SphereGeometry(.09,14,10)),lam(sel?'#f59e0b':'#e4572e'),0);d.position.copy(p);g2.add(d);A.drag(d,{tap:()=>tap(i)});const l=label(HR[i],{size:.13,color:GREY});l.position.set(p.x,.12,Z+.25);g2.add(l);
         if(sel){const v=label(st.temps[i]+' °C',{size:.2,bg:'#ffffff'});v.position.set(p.x,p.y+.3,p.z);g2.add(v);}});}
     A.redraw();}
   function tap(i){st.sel=i;A.pop();draw();if(mode==='play'&&!st.setup&&st.want){if(st.want(i))game.solved(st.wantOk);else A.bad('Not that one. Read the question again.');}}
@@ -400,26 +400,26 @@ const HI=['2.0–2.5','2.5–3.0','3.0–3.5','3.5–4.0','4.0–4.5'],HR=['6 a.
 P.lesson({id:'range6',title:'Range, mean, median and mode',strand:'Data',codes:['D1.5','D1.6'],
  guide:{goal:'Determine the range as a measure of spread and the mean, median and mode, use them to compare data sets, and analyse data, including misleading graphs, to draw conclusions.',words:'range, spread, mean, median, mode, compare, consistent, misleading',
   ask:['Two players have the same mean score. How can the range tell them apart?','Which measure changes most when one very large value is added?','How can a graph mislead you?'],home:'Record your bedtime for a week. Find the range and the median. Is your bedtime consistent?'},
- learn:[{say:'Range shows the spread.',speech:'Two basketball players. Both have a mean of ten points. Player A scores between eight and twelve. Player B scores between two and eighteen. Watch the range bars: A is more consistent.',view:'model',demo:'range'},
+ learn:[{say:'Range shows the spread.',speech:'Yuna compares two basketball players. Both have a mean of ten points. Player A scores between eight and twelve. Player B scores between two and eighteen. Watch the range bars: A is more consistent.',view:'model',demo:'range'},
         {say:'Read the measures.',speech:'Range is the greatest value minus the least value. The mean, median and mode describe the centre. Together they help compare data sets.',view:'read'},
         {say:'Watch: an outlier.',speech:'Add a score of forty to player A. The mean jumps up, but the median hardly moves. The range grows a lot.',view:'model',demo:'outlier'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
         {say:'Your turn: compare the sets.',speech:'Your turn. Compare the two data sets with the measures, and answer the questions.',view:'model'}],
  fig:'Two data sets as towers, with their range bars.',rz:.3,
- explore:['Compare *set A* (blue) and *set B* (pink).','The bars on the right show each *range*.','Press *Sort* to find medians.'],
+ explore:['Compare *set A* (blue) and *set B* (orange).','The bars on the right show each *range*.','Press *Sort* to find medians.'],
  howTo:'Use the towers and the measures to answer the question.',
  init:k=>({A:[8,10,12,9,11],B:[2,18,10,6,14],ask:null}),
  left(p,S){const g=p.g;let y=header(p,S);
   y=para(p,y,'The *range* tells how *spread out* data is: range = greatest − least. A small range means the data is *consistent*.')+16;
-  [['Player A','8, 9, 10, 11, 12','mean 10','range 4','#2f7de1'],['Player B','2, 6, 10, 14, 18','mean 10','range 16','#e2457a']].forEach(([a,b,c,d,col],i)=>{rr(g,X0,y+i*80,TW,70,14);g.fillStyle=tint(col,.14);g.fill();T(g,a,X0+20,y+i*80+44,FT.bodyB,col);T(g,b,X0+180,y+i*80+44,FT.body);T(g,c,X0+500,y+i*80+44,FT.small);T(g,d,X0+TW-20,y+i*80+44,FT.bodyB,col,'right');});y+=180;
+  [['Player A','8, 9, 10, 11, 12','mean 10','range 4','#2f7de1'],['Player B','2, 6, 10, 14, 18','mean 10','range 16','#e4572e']].forEach(([a,b,c,d,col],i)=>{rr(g,X0,y+i*80,TW,70,14);g.fillStyle=tint(col,.14);g.fill();T(g,a,X0+20,y+i*80+44,FT.bodyB,col);T(g,b,X0+180,y+i*80+44,FT.body);T(g,c,X0+500,y+i*80+44,FT.small);T(g,d,X0+TW-20,y+i*80+44,FT.bodyB,col,'right');});y+=180;
   y=para(p,y,'Same mean, different spread: *Player A is more consistent*.')+14;
   [['Range','greatest − least'],['Mean','total ÷ number of values'],['Median','middle value when sorted'],['Mode','most common value']].forEach(([a,b],i)=>{T(g,a,X0,y+i*40,FT.bodyB,acc());T(g,b,X0+150,y+i*40,FT.body);});y+=170;
   y=para(p,y,'*Misleading graphs* can hide the spread or start an axis above zero. Check the numbers before drawing a conclusion.')+8;
   predict(p,y,S,'p22','Data: 3, 7, 7, 9, 24. Which describes the centre better, the mean or the median?','*The median (7).* The 24 pulls the mean up to 10.');},
  readout(p,S,y){const g=p.g,st=S.st,m=s=>{const v=s.slice().sort((a,b)=>a-b),n=v.length,sum=v.reduce((a,b)=>a+b,0);return {r:v[n-1]-v[0],mean:Math.round(sum/n*10)/10,med:n%2?v[(n-1)/2]:(v[n/2-1]+v[n/2])/2};};
-  const a=m(st.A),b=m(st.B);T(g,'A: range '+a.r+' · mean '+a.mean+' · median '+a.med,X0,y+40,FT.bodyB,'#2f7de1');T(g,'B: range '+b.r+' · mean '+b.mean+' · median '+b.med,X0,y+82,FT.bodyB,'#e2457a');return y+94;},
+  const a=m(st.A),b=m(st.B);T(g,'A: range '+a.r+' · mean '+a.mean+' · median '+a.med,X0,y+40,FT.bodyB,'#2f7de1');T(g,'B: range '+b.r+' · mean '+b.mean+' · median '+b.med,X0,y+82,FT.bodyB,'#e4572e');return y+94;},
  build(S,grp,mode,game){const st=S.st,u=.08;const g2=new THREE.Group();grp.add(g2);
-  function draw(){clearGroup(g2);[[st.A,'#2f7de1',-2.6],[st.B,'#e2457a',-1.5]].forEach(([arr,col,z])=>{arr.forEach((v,i)=>{const h=v*u;const b=mk(new THREE.BoxGeometry(.3,Math.max(.01,h),.3),[lam(col),lam(col),lam(col),lam(col),cellMat(col,1,v),cellMat(col,1,v)],20);b.position.set(-2.0+i*.42,h/2+.02,z);g2.add(b);const l=label(String(v),{size:.16});l.position.set(-2.0+i*.42,h+.18,z);g2.add(l);});
+  function draw(){clearGroup(g2);[[st.A,'#2f7de1',-2.6],[st.B,'#e4572e',-1.5]].forEach(([arr,col,z])=>{arr.forEach((v,i)=>{const h=v*u;const b=mk(new THREE.BoxGeometry(.3,Math.max(.01,h),.3),[lam(col),lam(col),lam(col),lam(col),cellMat(col,1,v),cellMat(col,1,v)],20);b.position.set(-2.0+i*.42,h/2+.02,z);g2.add(b);const l=label(String(v),{size:.16});l.position.set(-2.0+i*.42,h+.18,z);g2.add(l);});
       const mn=Math.min(...arr),mx=Math.max(...arr);const rb=mk(new THREE.BoxGeometry(.18,(mx-mn)*u,.18),new THREE.MeshLambertMaterial({color:col,transparent:true,opacity:.55}),0);rb.position.set(1.4,(mn+mx)/2*u+.02,z);g2.add(rb);
       [mn,mx].forEach(v=>{const t=mk(G('rgt6',()=>new THREE.BoxGeometry(.4,.025,.25)),lam(col),0);t.position.set(1.4,v*u+.02,z);g2.add(t);});const rl=label('range '+(mx-mn),{size:.18,bg:'#ffffff',border:col});rl.position.set(1.9,(mn+mx)/2*u+.1,z);g2.add(rl);
       const sum=arr.reduce((a,b)=>a+b,0),mean=sum/arr.length;const ml=mk(new THREE.BoxGeometry(arr.length*.42+.1,.015,.38),lam('#f59e0b'),0);ml.position.set(-2.0+(arr.length-1)*.21,mean*u+.02,z);g2.add(ml);});A.redraw();}
@@ -430,7 +430,7 @@ P.lesson({id:'range6',title:'Range, mean, median and mode',strand:'Data',codes:[
     demo(n){st.ask=null;st.A=[8,10,12,9,11];st.B=[2,18,10,6,14];draw();if(n==='range')A.seq([[900,()=>A.say('Both means are 10. A: range 4. B: range 16.')]]);if(n==='outlier')A.seq([[800,()=>{st.A.push(40);draw();A.say('Mean 15, median 10.5: the outlier pulls the mean.')}]]);},
     task(r){st.setup=true;st.ask=null;let txt;st.A=Array.from({length:5},()=>rnd(6,14));st.B=Array.from({length:5},()=>rnd(1,20));const R=s=>Math.max(...s)-Math.min(...s);
       if(R(st.A)===R(st.B))st.B[0]=st.B[0]>10?1:20;
-      if(r===0){const v=R(st.B);st.ask={ans:v,o:opts(v,[1,-1,2,-2],0),ok:'Yes! '+Math.max(...st.B)+' − '+Math.min(...st.B)+' = '+v+'.'};txt='What is the *range* of set *B* (pink)?';}
+      if(r===0){const v=R(st.B);st.ask={ans:v,o:opts(v,[1,-1,2,-2],0),ok:'Yes! '+Math.max(...st.B)+' − '+Math.min(...st.B)+' = '+v+'.'};txt='What is the *range* of set *B* (orange)?';}
       else if(r===1){const ans=R(st.A)<R(st.B)?'Set A':'Set B';st.ask={ans,o:['Set A','Set B'],ok:'Yes! A smaller range means more consistent.'};txt='Which set is *more consistent*?';}
       else if(r===2){st.A=[rnd(4,8),rnd(4,8),rnd(4,8),rnd(4,8),rnd(4,8)];const s=st.A.reduce((a,b)=>a+b,0);st.A[4]+=(5-s%5)%5;const mean=st.A.reduce((a,b)=>a+b,0)/5;st.ask={ans:mean,o:opts(mean,[1,-1,2],0),ok:'Yes! The total ÷ 5 = '+mean+'.'};txt='What is the *mean* of set *A* (blue)?';}
       else if(r===3){st.A=[5,6,6,8,30];st.ask={ans:'Median',o:['Mean','Median'],ok:'Yes! The median (6) is not pulled by the 30.'};txt='Set A has an outlier (30). Which measure best shows a *typical* value?';}
@@ -445,7 +445,7 @@ const SP4=[['red','#e0453a'],['blue','#2f7de1'],['green','#16a36f'],['yellow','#
 P.lesson({id:'prob6',title:'Probability of two independent events',strand:'Data',codes:['D2.1','D2.2'],
  guide:{goal:'Express probabilities as fractions, decimals and percents, show them on a probability line, and determine and compare the theoretical and experimental probabilities of two independent events.',words:'independent events, outcome, sample space, table, theoretical probability, experimental probability, percent',
   ask:['Does the coin landing heads change the spinner?','How many outcomes are there for a coin and a 4-part spinner?','Why might 40 trials give a different answer from the theory?'],home:'Flip a coin and roll a die together 30 times. Count how often you get heads and a 6. Compare with 1/12.'},
- learn:[{say:'Two events, one table.',speech:'Flip a coin and spin a four-colour spinner. The coin does not change the spinner: they are independent. The table shows all eight outcomes. Heads and red is one of eight: one eighth, zero point one two five, or twelve point five percent.',view:'model',demo:'table'},
+ learn:[{say:'Two events, one table.',speech:'Ezra flips a coin and spins a four-colour spinner. The coin does not change the spinner: they are independent. The table shows all eight outcomes. Heads and red is one of eight: one eighth, zero point one two five, or twelve point five percent.',view:'model',demo:'table'},
         {say:'Read about independent events.',speech:'For two independent events, list every pair of outcomes in a table or tree. The theoretical probability is the number of favourable outcomes over the total number of outcomes.',view:'read'},
         {say:'Watch: forty trials.',speech:'Now flip and spin forty times. Each trial lights up a cell in the table. The experimental results are close to five each, but not exactly.',view:'model',demo:'trials'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},

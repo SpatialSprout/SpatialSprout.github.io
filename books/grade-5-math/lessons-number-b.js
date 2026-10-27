@@ -18,11 +18,11 @@ function digitCube(t,bg,s,fg){const geo=G('d5cube'+s,()=>new THREE.BoxGeometry(s
 /* =========================================================
    8. Multiplying by 0.1 and 0.01; estimating with decimals
    ========================================================= */
-const PLC=['#16a36f','#2f7de1','#e2457a','#e89a00','#0fa5a5','#8b5cf6'];
+const PLC=['#16a36f','#2f7de1','#e4572e','#e89a00','#0fa5a5','#8b5cf6'];
 P.lesson({id:'times01',title:'Multiplying by 0.1 and 0.01',strand:'Number',codes:['B2.3'],
  guide:{goal:'Use mental math to multiply whole numbers by 0.1 and 0.01 by seeing how digits shift on a place-value chart, and estimate sums and differences of decimal numbers.',words:'tenth, hundredth, shift, place-value chart, mental math, estimate',
   ask:['Why does × 0.1 make a number smaller?','Where does the 7 go when you find 47 × 0.01?','About how much is 3.48 + 5.61?'],home:'Shopping math: a 10% discount is like × 0.1. What is 10% of $40? Of $25?'},
- learn:[{say:'× 0.1 moves digits one place right.',speech:'Multiplying by zero point one is the same as finding one tenth. Every digit moves one place to the right. Watch thirty-four become three point four.',view:'model',demo:'x01'},
+ learn:[{say:'× 0.1 moves digits one place right.',speech:'Multiplying by zero point one is the same as finding one tenth. Every digit moves one place to the right. Watch Layla’s thirty-four become three point four.',view:'model',demo:'x01'},
         {say:'Read the place-value shifts.',speech:'Times zero point one moves the digits one place right. Times zero point zero one moves them two places right. The number gets smaller.',view:'read'},
         {say:'Watch: × 0.01.',speech:'Now multiply five hundred twenty by zero point zero one. That is one hundredth of it. The digits move two places right: five point two.',view:'model',demo:'x001'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -35,7 +35,7 @@ P.lesson({id:'times01',title:'Multiplying by 0.1 and 0.01',strand:'Number',codes
   y=para(p,y,'*× 0.1* means *one tenth of*. *× 0.01* means *one hundredth of*. Each digit slides to the *right*, so the number gets smaller.')+18;
   const cw=(TW-210)/6;['H','T','O','.','t','h'].forEach((h,i)=>{const x=X0+i*cw+cw/2;if(h==='.'){T(g,'.',x,y+150,ZS(80),INK,'center');return;}rr(g,X0+i*cw+6,y,cw-12,44,10);g.fillStyle=tint(PLC[i<3?i+1:i],.18);g.fill();T(g,h,x,y+32,FT.smallB,PLC[i<3?i+1:i],'center');});
   const row=(dig,yy,lab,col)=>{dig.forEach((d,i)=>{if(d==null)return;rr(g,X0+i*cw+14,yy,cw-28,60,10);g.fillStyle=col;g.fill();T(g,d,X0+i*cw+cw/2,yy+46,ZS(42),'#fff','center');});T(g,lab,X0+TW,yy+42,FT.bodyB,INK,'right');};
-  row([null,'3','4',null,null,null],y+60,'34',BLUE);row([null,null,'3',null,'4',null],y+130,'× 0.1 = 3.4','#e2457a');row([null,null,'0',null,'3','4'],y+200,'× 0.01 = 0.34','#8b5cf6');y+=286;
+  row([null,'3','4',null,null,null],y+60,'34',BLUE);row([null,null,'3',null,'4',null],y+130,'× 0.1 = 3.4','#e4572e');row([null,null,'0',null,'3','4'],y+200,'× 0.01 = 0.34','#8b5cf6');y+=286;
   y=para(p,y,'*Estimating* with decimals: round to friendly numbers first. 3.48 + 5.61 is about *3.5 + 5.6 = 9.1*, or about *3 + 6 = 9*.')+12;
   y=keyWords(p,y,[['× 0.1','the same as dividing by 10'],['× 0.01','the same as dividing by 100']]);
   predict(p,y,S,'p8','What is 250 × 0.01?','*2.5.* Each digit moves two places right.');},
@@ -73,7 +73,7 @@ P.lesson({id:'times01',title:'Multiplying by 0.1 and 0.01',strand:'Number',codes
 P.lesson({id:'addsub5',title:'Adding and subtracting to 100 000',strand:'Number',codes:['B2.4'],
  guide:{goal:'Represent and solve addition and subtraction problems with whole numbers up to 100 000 and decimal numbers to hundredths, using the standard algorithm with regrouping, and check by estimating.',words:'algorithm, column, regroup, carry, decimal point, hundredths, estimate',
   ask:['Why must the decimal points line up?','How do you regroup across a zero, like 40 003 − 1256?','How can estimating check 47.85 + 23.69?'],home:'Add up a grocery bill with prices like $3.49 and $12.75. Estimate first, then add exactly.'},
- learn:[{say:'Line up the places and add from the right.',speech:'Line up the places. Start with the ones. When a column adds to ten or more, write the ones digit and carry one to the next column. Watch.',view:'model',demo:'add'},
+ learn:[{say:'Line up the places and add from the right.',speech:'Line up the places, like Mateo. Start with the ones. When a column adds to ten or more, write the ones digit and carry one to the next column. Watch.',view:'model',demo:'add'},
         {say:'Read about decimals in columns.',speech:'With decimals, line up the decimal points so tenths add to tenths and hundredths add to hundredths. Then add just like whole numbers.',view:'read'},
         {say:'Watch: subtracting hundredths.',speech:'Now subtract decimals. When the top digit is too small, regroup one from the next place into ten.',view:'model',demo:'sub'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -137,18 +137,18 @@ P.lesson({id:'addsub5',title:'Adding and subtracting to 100 000',strand:'Number'
 P.lesson({id:'fracadd5',title:'Adding and subtracting fractions',strand:'Number',codes:['B2.5'],
  guide:{goal:'Add and subtract fractions with like denominators, using fraction strips and a number line, in everyday contexts.',words:'like denominators, numerator, denominator, sum, difference, improper fraction, mixed number',
   ask:['Why do we add the numerators but keep the denominator?','Why is 3/8 + 2/8 not 5/16?','What is 7/6 − 4/6?'],home:'Share a pizza cut into 8 slices. If you eat 3/8 and a friend eats 2/8, how much is gone? How much is left?'},
- learn:[{say:'Add pieces of the same size.',speech:'Three eighths plus two eighths. The pieces are all eighths, so we just count them: three pieces plus two pieces is five pieces. Five eighths.',view:'model',demo:'add'},
+ learn:[{say:'Add pieces of the same size.',speech:'Keiko eats three eighths and Jordan eats two eighths. The pieces are all eighths, so we just count them: three pieces plus two pieces is five pieces. Five eighths.',view:'model',demo:'add'},
         {say:'Read the rule.',speech:'When the denominators are the same, add or subtract the numerators. The denominator stays the same, because the size of the pieces does not change.',view:'read'},
         {say:'Watch: take pieces away.',speech:'Now seven sixths minus four sixths. Start with seven sixth-pieces. Take away four of them. Three sixths are left, which is one half.',view:'model',demo:'sub'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
-        {say:'Your turn: add or take pieces.',speech:'Your turn. Add the pink pieces, or tap blue pieces to take them away. Then choose the answer.',view:'model'}],
+        {say:'Your turn: add or take pieces.',speech:'Your turn. Add the orange pieces, or tap blue pieces to take them away. Then choose the answer.',view:'model'}],
  fig:'Fraction pieces on a two-whole track.',rz:-.1,
- explore:['For *+*, press *Add a piece* to place the pink pieces.','For *−*, *tap blue pieces* to take them away.','Then choose the *answer*.'],
- howTo:'Read the problem. Add the pink pieces or tap pieces away, then choose the answer.',
+ explore:['For *+*, press *Add a piece* to place the orange pieces.','For *−*, *tap blue pieces* to take them away.','Then choose the *answer*.'],
+ howTo:'Read the problem. Add the orange pieces or tap pieces away, then choose the answer.',
  init:k=>({d:8,a:3,b:2,op:'+',k:0}),
  left(p,S){const g=p.g;let y=header(p,S);
   y=para(p,y,'Fractions with *like denominators* are made of the *same size* pieces, so you can count them.')+16;
-  const bw=TW-40,w=bw/8;for(let i=0;i<8;i++){rr(g,X0+i*w+2,y,w-4,60,8);g.fillStyle=i<3?'#2f7de1':i<5?'#e2457a':'#e9eef7';g.fill();}T(g,'3/8',X0+1.5*w,y+40,ZS(32),'#fff','center');T(g,'2/8',X0+4*w,y+40,ZS(32),'#fff','center');y+=100;
+  const bw=TW-40,w=bw/8;for(let i=0;i<8;i++){rr(g,X0+i*w+2,y,w-4,60,8);g.fillStyle=i<3?'#2f7de1':i<5?'#e4572e':'#e9eef7';g.fill();}T(g,'3/8',X0+1.5*w,y+40,ZS(32),'#fff','center');T(g,'2/8',X0+4*w,y+40,ZS(32),'#fff','center');y+=100;
   T(g,'3/8 + 2/8 = 5/8',X0,y,ZS(46),acc());T(g,'not 5/16!',X0+430,y-4,FT.hand,RED);y+=60;
   for(let i=0;i<7;i++){rr(g,X0+i*w+2,y,w-4,60,8);g.fillStyle=i<3?'#16a36f':'#dfe5ef';g.fill();if(i>=3){g.strokeStyle=RED;g.lineWidth=4;g.beginPath();g.moveTo(X0+i*w+10,y+8);g.lineTo(X0+(i+1)*w-10,y+52);g.stroke();}}
   T(g,'(sixths)',X0+7*w+10,y+40,FT.small,GREY);y+=100;T(g,'7/6 − 4/6 = 3/6 = 1/2',X0,y,ZS(46),acc());y+=50;
@@ -157,12 +157,12 @@ P.lesson({id:'fracadd5',title:'Adding and subtracting fractions',strand:'Number'
   predict(p,y,S,'p10','A ribbon is 9/10 m long. You cut off 4/10 m. How much is left?','*5/10 m (1/2 m).* 9 − 4 = 5 tenths.');},
  readout(p,S,y){const g=p.g,st=S.st,res=st.op==='+'?st.a+st.b:st.a-st.b;const done=st.k===st.b;
   T(g,st.a+'/'+st.d+' '+(st.op==='+'?'+':'−')+' '+st.b+'/'+st.d+' = '+(done&&st.shown?res+'/'+st.d+(res>st.d?' = '+mixed(res,st.d):''):'?'),X0,y+52,ZS(46),acc());
-  T(g,done?'Choose the answer.':st.op==='+'?'Add '+(st.b-st.k)+' more pink piece'+(st.b-st.k===1?'':'s')+'.':'Tap '+(st.b-st.k)+' more blue piece'+(st.b-st.k===1?'':'s')+' to take away.',X0,y+92,FT.bodyB);return y+100;},
+  T(g,done?'Choose the answer.':st.op==='+'?'Add '+(st.b-st.k)+' more orange piece'+(st.b-st.k===1?'':'s')+'.':'Tap '+(st.b-st.k)+' more blue piece'+(st.b-st.k===1?'':'s')+' to take away.',X0,y+92,FT.bodyB);return y+100;},
  build(S,grp,mode,game){const st=S.st,Z=-1.75,L=1.95,x0=-1.95;const track=mk(new THREE.BoxGeometry(2*L+.1,.04,.9),lam('#eef2f8'),20);track.position.set(0,.02,Z);grp.add(track);
   [0,1,2].forEach(k=>{const t=mk(new THREE.BoxGeometry(.03,.5,1.0),lam(INK),0);t.position.set(x0+k*L,.25,Z);grp.add(t);const l=label(String(k),{size:.3});l.position.set(x0+k*L,.75,Z+.1);grp.add(l);});
   const pcs=new THREE.Group();grp.add(pcs);const sum=label('',{size:.34,bg:'#ffffff'});sum.position.set(0,1.5,Z);grp.add(sum);let gone=[];
   function draw(){clearGroup(pcs);const w=L/st.d;const n=st.op==='+'?st.a+st.k:st.a;
-    for(let i=0;i<n;i++){const pink=st.op==='+'&&i>=st.a,off=st.op==='−'&&gone.indexOf(i)>=0;const m=mk(G('fa5'+st.d,()=>new THREE.BoxGeometry(w-.03,.3,.66)),lam(off?'#dfe5ef':pink?'#e2457a':'#2f7de1'),20);
+    for(let i=0;i<n;i++){const orange=st.op==='+'&&i>=st.a,off=st.op==='−'&&gone.indexOf(i)>=0;const m=mk(G('fa5'+st.d,()=>new THREE.BoxGeometry(w-.03,.3,.66)),lam(off?'#dfe5ef':orange?'#e4572e':'#2f7de1'),20);
       m.position.set(x0+(i+.5)*w,off?.04:.18,Z);if(off)m.scale.set(1,.25,1);pcs.add(m);if(st.d<=10&&!off){const l=label('1/'+st.d,{size:.15,color:'#fff'});l.position.set(x0+(i+.5)*w,.42,Z);pcs.add(l);}
       if(st.op==='−'&&!off)A.drag(m,{tap:()=>takeAway(i)});}
     const res=st.op==='+'?st.a+st.k:st.a-st.k;sum.userData.set(res+'/'+st.d);A.redraw();}
@@ -193,7 +193,7 @@ P.lesson({id:'fracadd5',title:'Adding and subtracting fractions',strand:'Number'
 P.lesson({id:'mult5',title:'Multiplying two-digit numbers',strand:'Number',codes:['B2.6'],
  guide:{goal:'Represent and solve problems that multiply a two-digit number by a two-digit number with an area model and with the standard algorithm, and connect the two methods.',words:'area model, partial product, algorithm, tens, ones, estimate',
   ask:['What are the four partial products for 23 × 47?','Where are those partial products in the algorithm?','Estimate 38 × 52 before you calculate.'],home:'A theatre has 24 rows of 36 seats. How many seats in all? Draw the area model together.'},
- learn:[{say:'Split both numbers into tens and ones.',speech:'Twenty-three times forty-seven. Split twenty-three into twenty and three, and forty-seven into forty and seven. The area model has four parts. Watch them fill in.',view:'model',demo:'parts'},
+ learn:[{say:'Split both numbers into tens and ones.',speech:'Jordan needs twenty-three times forty-seven. Split twenty-three into twenty and three, and forty-seven into forty and seven. The area model has four parts. Watch them fill in.',view:'model',demo:'parts'},
         {say:'Read the connection.',speech:'The four partial products are eight hundred, one hundred forty, one hundred twenty, and twenty-one. Their sum is one thousand eighty-one. The algorithm adds the same parts in two rows.',view:'read'},
         {say:'Watch: the two rows of the algorithm.',speech:'Three times forty-seven is one hundred forty-one: that is the bottom strip. Twenty times forty-seven is nine hundred forty: that is the top strip. One hundred forty-one plus nine hundred forty is one thousand eighty-one.',view:'model',demo:'rows'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -204,7 +204,7 @@ P.lesson({id:'mult5',title:'Multiplying two-digit numbers',strand:'Number',codes
  init:k=>({a:23,b:47,shown:[false,false,false,false]}),
  left(p,S){const g=p.g;let y=header(p,S);
   y=para(p,y,'Split each factor into *tens and ones*. The area model makes *four partial products*.')+20;
-  const ox=X0+60,wT=360,wO=110,hT=170,hO=70,C=['#2f7de1','#e2457a','#16a36f','#e89a00'];
+  const ox=X0+60,wT=360,wO=110,hT=170,hO=70,C=['#2f7de1','#e4572e','#16a36f','#e89a00'];
   [[0,0,wT,hT,'20 × 40','800'],[wT,0,wO,hT,'20 × 7','140'],[0,hT,wT,hO,'3 × 40','120'],[wT,hT,wO,hO,'3 × 7','21']].forEach(([x,yy,w,h,a,b],i)=>{rr(g,ox+x+3,y+yy+3,w-6,h-6,8);g.fillStyle=tint(C[i],.25);g.fill();g.lineWidth=3;g.strokeStyle=C[i];g.stroke();
     T(g,a,ox+x+w/2,y+yy+h/2-(h>100?8:-2),h>100?FT.small:FT.cap,INK,'center');if(h>100)T(g,b,ox+x+w/2,y+yy+h/2+32,ZS(34),INK,'center');else T(g,b,ox+x+w-12,y+yy+h-12,FT.smallB,INK,'right');});
   T(g,'40',ox+wT/2,y-8,FT.bodyB,INK,'center');T(g,'7',ox+wT+wO/2,y-8,FT.bodyB,INK,'center');T(g,'20',ox-30,y+hT/2+8,FT.bodyB,INK,'center');T(g,'3',ox-30,y+hT+hO/2+8,FT.bodyB,INK,'center');
@@ -215,7 +215,7 @@ P.lesson({id:'mult5',title:'Multiplying two-digit numbers',strand:'Number',codes
   predict(p,y,S,'p11','Estimate 38 × 52.','*About 2000.* 38 is about 40 and 52 is about 50: 40 × 50 = 2000.');},
  readout(p,S,y){const g=p.g,st=S.st,pp=parts(st.a,st.b);T(g,st.a+' × '+st.b+' = '+pp.map((v,i)=>st.shown[i]?String(v):'?').join(' + '),X0,y+50,ZS(40),acc());
   if(st.shown.every(x=>x))T(g,'= '+st.a*st.b,X0,y+92,ZS(40));return y+100;},
- build(S,grp,mode,game){const st=S.st,cols=['#2f7de1','#e2457a','#16a36f','#e89a00'];const blocks=new THREE.Group();grp.add(blocks);
+ build(S,grp,mode,game){const st=S.st,cols=['#2f7de1','#e4572e','#16a36f','#e89a00'];const blocks=new THREE.Group();grp.add(blocks);
   function draw(){clearGroup(blocks);const aT=Math.floor(st.a/10)*10,aO=st.a%10,bT=Math.floor(st.b/10)*10,bO=st.b%10;
     const WX=3.7,WZ=2.7,wbT=Math.max(1.6,WX*bT/st.b),wbO=Math.max(.55,WX-wbT),dzT=Math.max(1.4,WZ*aT/st.a),dzO=Math.max(.55,WZ-dzT);const sx=WX/(wbT+wbO),sz=WZ/(dzT+dzO);
     const xs=[-1.85,-1.85+wbT*sx],ws=[wbT*sx,wbO*sx],zs=[-3.0,-3.0+dzT*sz],ds=[dzT*sz,dzO*sz];const pp=parts(st.a,st.b);
@@ -244,7 +244,7 @@ function parts(a,b){const aT=Math.floor(a/10)*10,aO=a%10,bT=Math.floor(b/10)*10,
 P.lesson({id:'divide5',title:'Dividing by two-digit numbers',strand:'Number',codes:['B2.7'],
  guide:{goal:'Represent and solve problems that divide a three-digit number by a two-digit number with an area model and with the algorithm, and express any remainder in a way that fits the problem.',words:'divisor, dividend, quotient, remainder, area model, partial quotient',
   ask:['How does knowing 10 × 16 = 160 help with 384 ÷ 16?','What does the remainder mean if you are packing books into boxes?','How can multiplication check your answer?'],home:'Share 250 stickers among 12 friends. How many each, and how many left? Should the leftovers be shared, kept, or need another sheet?'},
- learn:[{say:'Build a rectangle with a known side.',speech:'Three hundred eighty-four divided by sixteen. Think of a rectangle with an area of three hundred eighty-four and a side of sixteen. How long is the other side? Watch us build it in friendly chunks.',view:'model',demo:'build'},
+ learn:[{say:'Build a rectangle with a known side.',speech:'Amani divides three hundred eighty-four by sixteen. Think of a rectangle with an area of three hundred eighty-four and a side of sixteen. How long is the other side? Watch us build it in friendly chunks.',view:'model',demo:'build'},
         {say:'Read about partial quotients.',speech:'Ten times sixteen is one hundred sixty. Take it away twice: three hundred twenty. Sixty-four is left, which is four times sixteen. Ten plus ten plus four is twenty-four.',view:'read'},
         {say:'Watch: a remainder.',speech:'Now two hundred fifty divided by twelve. After twenty groups, ten is left over. Ten is less than twelve, so ten is the remainder.',view:'model',demo:'rem'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -264,7 +264,7 @@ P.lesson({id:'divide5',title:'Dividing by two-digit numbers',strand:'Number',cod
   predict(p,y,S,'p12','175 students ride buses that hold 40 each. How many buses are needed?','*5 buses.* 175 ÷ 40 = 4 R15, and the 15 students still need a bus.');},
  readout(p,S,y){const g=p.g,st=S.st,used=st.chunks.reduce((a,b)=>a+b,0),left=st.n-used*st.d;
   T(g,st.n+' ÷ '+st.d+' = '+(st.chunks.length?st.chunks.join(' + '):'?')+(left<st.d?' = '+used+(left?' R'+left:''):''),X0,y+48,ZS(42),acc());T(g,'Left to share: '+left,X0,y+90,FT.bodyB);return y+100;},
- build(S,grp,mode,game){const st=S.st,Z0=-2.9,DZ=1.5,x0=-2.2,C=['#2f7de1','#16a36f','#e89a00','#e2457a','#8b5cf6','#0fa5a5'];const g2=new THREE.Group();grp.add(g2);let done=false;
+ build(S,grp,mode,game){const st=S.st,Z0=-2.9,DZ=1.5,x0=-2.2,C=['#2f7de1','#16a36f','#e89a00','#e4572e','#8b5cf6','#0fa5a5'];const g2=new THREE.Group();grp.add(g2);let done=false;
   const used=()=>st.chunks.reduce((a,b)=>a+b,0),left=()=>st.n-used()*st.d;
   function draw(){clearGroup(g2);const q=Math.floor(st.n/st.d)+1,ux=3.3/Math.max(q,10);let x=x0;
     const outline=mk(new THREE.BoxGeometry(Math.min(3.3,ux*st.n/st.d),.02,DZ),lam('#eef2f8'),20);outline.position.set(x0+Math.min(3.3,ux*st.n/st.d)/2,.01,Z0+DZ/2);g2.add(outline);
@@ -294,7 +294,7 @@ P.lesson({id:'divide5',title:'Dividing by two-digit numbers',strand:'Number',cod
 P.lesson({id:'unitfrac5',title:'Multiplying and dividing by unit fractions',strand:'Number',codes:['B2.8'],
  guide:{goal:'Multiply and divide one-digit whole numbers by unit fractions, using fraction pieces and drawings.',words:'unit fraction, multiply, divide, how many groups, whole',
   ask:['Why is 3 ÷ 1/4 bigger than 3?','What does 4 × 1/3 mean?','How many 1/2-cup scoops are in 5 cups?'],home:'Use a 1/4 cup to measure 2 cups of rice. How many scoops? Write it as 2 ÷ 1/4 = 8.'},
- learn:[{say:'× 1/4 means groups of a fourth.',speech:'Three times one fourth means three groups of one fourth. Watch three fourth-pieces line up. Three times one fourth is three fourths.',view:'model',demo:'mul'},
+ learn:[{say:'× 1/4 means groups of a fourth.',speech:'Zane adds three times one fourth. That means three groups of one fourth. Watch three fourth-pieces line up. Three times one fourth is three fourths.',view:'model',demo:'mul'},
         {say:'Read about dividing by a unit fraction.',speech:'Three divided by one fourth asks: how many fourths fit in three wholes? Each whole has four fourths, so three wholes have twelve fourths.',view:'read'},
         {say:'Watch: cut the wholes.',speech:'Watch three whole bars get cut into fourths. Now count the pieces: twelve. So three divided by one fourth is twelve.',view:'model',demo:'div'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -305,7 +305,7 @@ P.lesson({id:'unitfrac5',title:'Multiplying and dividing by unit fractions',stra
  init:k=>({op:'×',w:3,d:4,k:0,cut:1}),
  left(p,S){const g=p.g;let y=header(p,S);
   y=para(p,y,'*Multiplying* a whole number by a unit fraction makes *groups* of that piece:')+14;
-  for(let i=0;i<3;i++){rr(g,X0+i*130,y,124,56,8);g.fillStyle='#e2457a';g.fill();T(g,'1/4',X0+i*130+62,y+38,ZS(30),'#fff','center');}g.strokeStyle=INK;g.lineWidth=3;g.strokeRect(X0-4,y-6,524,68);
+  for(let i=0;i<3;i++){rr(g,X0+i*130,y,124,56,8);g.fillStyle='#e4572e';g.fill();T(g,'1/4',X0+i*130+62,y+38,ZS(30),'#fff','center');}g.strokeStyle=INK;g.lineWidth=3;g.strokeRect(X0-4,y-6,524,68);
   T(g,'3 × 1/4 = 3/4',X0+560,y+40,ZS(36),acc());y+=96;
   y=para(p,y,'*Dividing* a whole number by a unit fraction asks *how many pieces fit*:')+14;
   for(let b=0;b<3;b++)for(let i=0;i<4;i++){rr(g,X0+b*184+i*44,y,40,56,6);g.fillStyle=['#2f7de1','#16a36f','#e89a00'][b];g.fill();}
@@ -315,11 +315,11 @@ P.lesson({id:'unitfrac5',title:'Multiplying and dividing by unit fractions',stra
   predict(p,y,S,'p13','How many 1/3-cup scoops are in 2 cups?','*6 scoops.* 2 ÷ 1/3 = 6, because each cup holds 3 thirds.');},
  readout(p,S,y){const g=p.g,st=S.st;const ans=st.op==='×'?st.w+'/'+st.d:String(st.w*st.d);T(g,st.w+' '+st.op+' 1/'+st.d+' = '+(st.ready&&st.shown?ans:'?'),X0,y+52,ZS(50),acc());
   T(g,st.op==='×'?st.w+' groups of 1/'+st.d:'How many 1/'+st.d+' pieces fit in '+st.w+' whole'+(st.w>1?'s':'')+'?',X0,y+94,FT.bodyB);return y+102;},
- build(S,grp,mode,game){const st=S.st;const g2=new THREE.Group();grp.add(g2);const C=['#2f7de1','#16a36f','#e89a00','#e2457a','#8b5cf6','#0fa5a5','#f08a24','#4f9aa0','#c2410c'];
+ build(S,grp,mode,game){const st=S.st;const g2=new THREE.Group();grp.add(g2);const C=['#2f7de1','#16a36f','#e89a00','#e4572e','#8b5cf6','#0fa5a5','#f08a24','#4f9aa0','#c2410c'];
   function draw(){clearGroup(g2);
     if(st.op==='×'){const L=3.6,x0=-1.8,Z=-1.7;const tr=mk(new THREE.BoxGeometry(L+.1,.04,.9),lam('#eef2f8'),20);tr.position.set(0,.02,Z);g2.add(tr);
       [0,1].forEach(k=>{const t=mk(new THREE.BoxGeometry(.03,.5,1),lam(INK),0);t.position.set(x0+k*L,.25,Z);g2.add(t);const l=label(String(k),{size:.3});l.position.set(x0+k*L,.75,Z);g2.add(l);});
-      const w=L/st.d;for(let i=0;i<st.k;i++){const m=mk(new THREE.BoxGeometry(w-.03,.3,.66),lam('#e2457a'),20);m.position.set(x0+(i+.5)*w,.18,Z);g2.add(m);const l=label('1/'+st.d,{size:.16,color:'#fff'});l.position.set(x0+(i+.5)*w,.42,Z);g2.add(l);}
+      const w=L/st.d;for(let i=0;i<st.k;i++){const m=mk(new THREE.BoxGeometry(w-.03,.3,.66),lam('#e4572e'),20);m.position.set(x0+(i+.5)*w,.18,Z);g2.add(m);const l=label('1/'+st.d,{size:.16,color:'#fff'});l.position.set(x0+(i+.5)*w,.42,Z);g2.add(l);}
       st.ready=st.k===st.w;}
     else{const n=st.w,bw=Math.min(1.3,4.2/n-.12),gap=.12,tot=n*bw+(n-1)*gap,x0=-tot/2;let cnt=0;
       for(let b=0;b<n;b++){const pieces=st.cut;const pw=bw/pieces;for(let i=0;i<pieces;i++){const m=mk(new THREE.BoxGeometry(pw-(pieces>1?.03:0),.34,.9),lam(C[b%C.length]),20);m.position.set(x0+b*(bw+gap)+(i+.5)*pw,.17+(pieces>1?.03*(i%2):0),-1.8);g2.add(m);cnt++;
@@ -348,7 +348,7 @@ P.lesson({id:'unitfrac5',title:'Multiplying and dividing by unit fractions',stra
 P.lesson({id:'ratio5',title:'Equivalent ratios and rates',strand:'Number',codes:['B2.9'],
  guide:{goal:'Represent and create equivalent ratios and rates using models, tables and drawings, in everyday contexts.',words:'ratio, rate, equivalent, batch, for every, table of values',
   ask:['Why does 4 : 6 make the same colour as 2 : 3?','If 2 red make 3 white, how much white goes with 8 red?','How is a ratio like a recipe?'],home:'Mix juice or lemonade with a recipe: 1 scoop for every 3 cups of water. Double it, triple it, and write the ratios.'},
- learn:[{say:'A ratio compares amounts.',speech:'A pink paint recipe uses two cups of red for every three cups of white. The ratio is two to three. Watch: two batches make four to six. Three batches make six to nine. Same pink every time!',view:'model',demo:'grow'},
+ learn:[{say:'A ratio compares amounts.',speech:'Layla’s orange paint recipe uses two cups of red for every three cups of white. The ratio is two to three. Watch: two batches make four to six. Three batches make six to nine. Same orange every time!',view:'model',demo:'grow'},
         {say:'Read the ratio table.',speech:'In a ratio table, multiply both parts by the same number. Two to three, four to six, six to nine, and eight to twelve are all equivalent ratios.',view:'read'},
         {say:'Watch: a rate.',speech:'A rate compares two different kinds of things, like three dollars for two muffins. Six dollars buys four muffins, and nine dollars buys six muffins.',view:'model',demo:'rate'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -362,7 +362,7 @@ P.lesson({id:'ratio5',title:'Equivalent ratios and rates',strand:'Number',codes:
   const cw=120;rr(g,X0,y,cw*4+170,120,14);g.fillStyle=tint(acc(),.08);g.fill();T(g,'red',X0+20,y+48,FT.smallB,'#e0453a');T(g,'white',X0+20,y+98,FT.smallB,GREY);
   for(let i=1;i<=4;i++){T(g,String(2*i),X0+150+(i-.5)*cw,y+48,ZS(38),'#e0453a','center');T(g,String(3*i),X0+150+(i-.5)*cw,y+98,ZS(38),INK,'center');}
   T(g,'× 2',X0+150+1.5*cw,y+150,FT.hand,BLUE,'center');T(g,'× 3',X0+150+2.5*cw,y+150,FT.hand,BLUE,'center');
-  for(let i=1;i<=4;i++){g.beginPath();g.arc(X0+150+(i-.5)*cw,y+200,22,0,Math.PI*2);g.fillStyle='#f4a3b8';g.fill();}T(g,'same pink!',X0+620,y+208,FT.hand,'#e2457a');y+=246;
+  for(let i=1;i<=4;i++){g.beginPath();g.arc(X0+150+(i-.5)*cw,y+200,22,0,Math.PI*2);g.fillStyle='#f7b27a';g.fill();}T(g,'same orange!',X0+620,y+208,FT.hand,'#e4572e');y+=246;
   y=para(p,y,'A *rate* compares different things: *$3 for 2 muffins*. Equivalent rates: $6 for 4, $9 for 6.')+12;
   y=keyWords(p,y,[['ratio','a comparison of two amounts, like 2 : 3'],['equivalent ratios','ratios that show the same relationship']]);
   predict(p,y,S,'p14','A recipe uses 1 cup of rice for every 2 cups of water. How much water for 4 cups of rice?','*8 cups.* 1 : 2 = 4 : 8.');},
@@ -375,7 +375,7 @@ P.lesson({id:'ratio5',title:'Equivalent ratios and rates',strand:'Number',codes:
       for(let k=0;k<st.a;k++){const c=K.a==='dollars'?cup(0,true):cup(K.ca,false);c.position.set(x+((k%2)-.5)*.24,K.a==='dollars'?.04+Math.floor(k/2)*0:.11,-2.7+Math.floor(k/2)*.27);g2.add(c);}
       for(let k=0;k<st.b;k++){const c=K.b==='muffins'?mk(G('muf5',()=>new THREE.SphereGeometry(.11,14,10)),lam('#b8793b'),0):cup(K.cb,false);c.position.set(x+((k%2)-.5)*.24,.11,-1.45+Math.floor(k/2)*.27);g2.add(c);}
       const t=label(String(i+1),{size:.2,color:GREY});t.position.set(x,.25,-.05);g2.add(t);A.drag(tray,{tap:()=>setN(st.n-1)});}
-    const mix=st.kind==='paint'?mk(new THREE.SphereGeometry(.22,20,14),lam('#f4a3b8'),0):null;if(mix){mix.position.set(1.95,.25,-.1);g2.add(mix);}
+    const mix=st.kind==='paint'?mk(new THREE.SphereGeometry(.22,20,14),lam('#f7b27a'),0):null;if(mix){mix.position.set(1.95,.25,-.1);g2.add(mix);}
     lab.userData.set(st.a*st.n+' '+K.a+' : '+st.b*st.n+' '+K.b);check();A.redraw();}
   function setN(n){n=Math.max(1,Math.min(6,n));if(n===st.n)return;st.n=n;A.pop();draw();}
   function check(){if(mode==='play'&&!st.setup&&st.target&&st.target(st.n))game.solved(st.a+' : '+st.b+' = '+st.a*st.n+' : '+st.b*st.n+'!');}

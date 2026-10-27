@@ -16,7 +16,7 @@ const sgn=v=>v<0?'−'+(-v):String(v);
    24. Properties of quadrilaterals
    ========================================================= */
 const Q6={square:{v:[[-.9,-.9],[.9,-.9],[.9,.9],[-.9,.9]],sym:[0,45,90,135],rot:4,col:'#16a36f'},rectangle:{v:[[-1.2,-.7],[1.2,-.7],[1.2,.7],[-1.2,.7]],sym:[0,90],rot:2,col:'#2f7de1'},
-  rhombus:{v:[[0,-.9],[1.25,0],[0,.9],[-1.25,0]],sym:[0,90],rot:2,col:'#f08a24'},parallelogram:{v:[[-1.2,-.6],[.7,-.6],[1.2,.6],[-.7,.6]],sym:[],rot:2,col:'#e2457a'},
+  rhombus:{v:[[0,-.9],[1.25,0],[0,.9],[-1.25,0]],sym:[0,90],rot:2,col:'#f08a24'},parallelogram:{v:[[-1.2,-.6],[.7,-.6],[1.2,.6],[-.7,.6]],sym:[],rot:2,col:'#e4572e'},
   trapezoid:{v:[[-1.2,.6],[1.2,.6],[.6,-.6],[-.6,-.6]],sym:[90],rot:1,col:'#8b5cf6'},kite:{v:[[0,-1.0],[.75,-.25],[0,.95],[-.75,-.25]],sym:[90],rot:1,col:'#0fa5a5'}};
 const QN=Object.keys(Q6);
 function diag(k){const v=Q6[k].v;const d1=[v[2][0]-v[0][0],v[2][1]-v[0][1]],d2=[v[3][0]-v[1][0],v[3][1]-v[1][1]];const L1=Math.hypot(...d1),L2=Math.hypot(...d2);
@@ -24,7 +24,7 @@ function diag(k){const v=Q6[k].v;const d1=[v[2][0]-v[0][0],v[2][1]-v[0][1]],d2=[
 P.lesson({id:'quads6',title:'Properties of quadrilaterals',strand:'Spatial Sense',codes:['E1.1'],
  guide:{goal:'Create lists of the geometric properties of quadrilaterals, including the properties of their diagonals, line symmetry and rotational symmetry.',words:'diagonal, perpendicular, bisect, line symmetry, rotational symmetry, order of rotation, quadrilateral',
   ask:['Which quadrilaterals have diagonals that cross at right angles?','What does “order of rotational symmetry 2” mean?','Why does a kite have line symmetry but no rotational symmetry?'],home:'Cut out a paper rectangle and a paper square. Spin each one on a pencil tip. How many times does it fit in its outline in one full turn?'},
- learn:[{say:'Diagonals tell a shape apart.',speech:'A diagonal joins opposite corners. In a square, the diagonals are equal, they cross at a right angle, and they cut each other in half. Watch the diagonals appear on each shape.',view:'model',demo:'diag'},
+ learn:[{say:'Diagonals tell a shape apart.',speech:'A diagonal joins opposite corners. In Lucia’s square, the diagonals are equal, they cross at a right angle, and they cut each other in half. Watch the diagonals appear on each shape.',view:'model',demo:'diag'},
         {say:'Read about symmetry.',speech:'Line symmetry folds a shape onto itself. Rotational symmetry turns it onto itself. A rectangle fits its outline twice in one full turn, so its order of rotational symmetry is two.',view:'read'},
         {say:'Watch: spin to test rotational symmetry.',speech:'Watch the square spin. It fits its outline after every quarter turn: four times in a full turn. Its order of rotational symmetry is four.',view:'model',demo:'spin'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -72,7 +72,7 @@ P.lesson({id:'quads6',title:'Properties of quadrilaterals',strand:'Spatial Sense
 P.lesson({id:'build6',title:'Building from top, front and side views',strand:'Spatial Sense',codes:['E1.2'],
  guide:{goal:'Construct three-dimensional objects when given their top, front and side views.',words:'top view, front view, side view, structure, construct, cube',
   ask:['Which view tells you where the cubes stand on the floor?','How do the front and side views tell you how tall each stack is?','Can two different buildings match the same three views?'],home:'Draw three views of a block structure, hand them to someone, and ask them to build it without peeking.'},
- learn:[{say:'Three clues to one building.',speech:'The top view shows which squares have cubes. The front view shows the tallest stack in each column. The side view shows the tallest stack in each row. Watch a building grow to match all three.',view:'model',demo:'build'},
+ learn:[{say:'Three clues to one building.',speech:'Arjun’s top view shows which squares have cubes. The front view shows the tallest stack in each column. The side view shows the tallest stack in each row. Watch a building grow to match all three.',view:'model',demo:'build'},
         {say:'Read the strategy.',speech:'Start with the top view: put one cube on each shaded square. Then use the front and side views to decide how tall each stack must be. Check all three views at the end.',view:'read'},
         {say:'Watch: checking the views.',speech:'When a view matches, its panel turns green. All three green means the building is correct.',view:'model',demo:'check'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -84,7 +84,7 @@ P.lesson({id:'build6',title:'Building from top, front and side views',strand:'Sp
  left(p,S){const g=p.g;let y=header(p,S);
   y=para(p,y,'To build from views, use the *top view* for the footprint, and the *front* and *side* views for the heights.')+16;
   const s=36,view=(ox,oy,cols,title,col)=>{cols.forEach((n,c)=>{for(let k=0;k<n;k++){g.fillStyle=col;g.fillRect(ox+c*s,oy-(k+1)*s,s-3,s-3);}});g.strokeStyle=INK;g.lineWidth=2;g.beginPath();g.moveTo(ox-6,oy);g.lineTo(ox+3*s+6,oy);g.stroke();T(g,title,ox+s*1.5,oy+28,FT.smallB,INK,'center');};
-  const H=[[1,0,0],[2,1,0],[3,1,1]];view(X0+10,y+130,fv(H),'front','#2f7de1');view(X0+200,y+130,sv(H),'side','#e2457a');
+  const H=[[1,0,0],[2,1,0],[3,1,1]];view(X0+10,y+130,fv(H),'front','#2f7de1');view(X0+200,y+130,sv(H),'side','#e4572e');
   for(let r=0;r<3;r++)for(let c=0;c<3;c++){g.fillStyle=H[r][c]?'#16a36f':'#eef2f8';g.fillRect(X0+390+c*s,y+22+r*s,s-3,s-3);}T(g,'top',X0+390+s*1.5,y+158,FT.smallB,INK,'center');
   [['1','Top view: put 1 cube on each green square.'],['2','Front view: make each column’s tallest stack match.'],['3','Side view: make each row’s tallest stack match.'],['4','Check all three!']].forEach(([n,t],i)=>{T(g,n,X0+12,y+214+i*48,ZS(30),acc());wrap(g,t,X0+50,y+212+i*48,TW-60,28,{font:FT.body});});y+=420;
   y=keyWords(p,y,[['view','a flat drawing of what you see from one side'],['construct','build an object from a plan or drawing']]);
@@ -95,7 +95,7 @@ P.lesson({id:'build6',title:'Building from top, front and side views',strand:'Sp
   const pan=(w,h,d)=>mk(new THREE.BoxGeometry(w,h,d),lam('#ffffff'),20);const wB=pan(1.5,1.45,.04);wB.position.set(cx,.72,-3.05);grp.add(wB);const wS=pan(.04,1.45,1.5);wS.position.set(-1.35,.72,cz);grp.add(wS);const tP=pan(1.45,.03,1.45);tP.position.set(1.7,.015,-.55);grp.add(tP);
   const labs=[['FRONT',cx,1.62,-3.0],['SIDE',-1.35,1.62,cz],['TOP',1.7,.3,-1.45]].map(([t,x,y2,z])=>{const l=label(t,{size:.17,bg:'#ffffff'});l.position.set(x,y2,z);grp.add(l);return l;});
   const views=new THREE.Group();grp.add(views);const vs=.42;
-  function drawViews(){clearGroup(views);const ok=chk(st);const fc=ok.f?'#16a36f':'#2f7de1',sc=ok.s?'#16a36f':'#e2457a',tc=ok.t?'#16a36f':'#64748b';
+  function drawViews(){clearGroup(views);const ok=chk(st);const fc=ok.f?'#16a36f':'#2f7de1',sc=ok.s?'#16a36f':'#e4572e',tc=ok.t?'#16a36f':'#64748b';
     fv(st.tgt).forEach((n,q)=>{for(let k=0;k<n;k++){const m=mk(G('b6fv',()=>new THREE.BoxGeometry(vs*.92,vs*.92,.03)),lam(fc),0);m.position.set(cx+(q-1)*vs,.12+vs/2+k*vs,-3.02);views.add(m);}});
     sv(st.tgt).forEach((n,r)=>{for(let k=0;k<n;k++){const m=mk(G('b6sv',()=>new THREE.BoxGeometry(.03,vs*.92,vs*.92)),lam(sc),0);m.position.set(-1.32,.12+vs/2+k*vs,cz+(r-1)*vs);views.add(m);}});
     for(let r=0;r<3;r++)for(let q=0;q<3;q++)if(st.tgt[r][q]){const m=mk(G('b6tv',()=>new THREE.BoxGeometry(vs*.92,.03,vs*.92)),lam(tc),0);m.position.set(1.7+(q-1)*vs,.04,-.55+(r-1)*vs);views.add(m);}}
@@ -122,7 +122,7 @@ function chk(st){const fp=h=>h.map(r=>r.map(v=>v?1:0)).flat().join();return {f:f
 P.lesson({id:'quadrants6',title:'Four quadrants and transformations',strand:'Spatial Sense',codes:['E1.3','E1.4'],
  guide:{goal:'Plot and read coordinates in all four quadrants, describe translations, and perform and predict combinations of translations, reflections and rotations up to 360°.',words:'quadrant, origin, x-axis, y-axis, negative coordinate, translation, reflection, rotation, combination',
   ask:['In which quadrant is (−3, 2)?','What happens to (4, −1) when it is reflected in the y-axis?','Is a 270° clockwise rotation the same as a 90° counterclockwise rotation?'],home:'Draw axes on graph paper and plot your family’s initials using points in all four quadrants.'},
- learn:[{say:'Four quadrants.',speech:'The axes split the plane into four quadrants. Points left of the y-axis have negative x. Points below the x-axis have negative y. Watch the pin visit each quadrant.',view:'model',demo:'tour'},
+ learn:[{say:'Four quadrants.',speech:'The axes split Chloe’s map into four quadrants. Points left of the y-axis have negative x. Points below the x-axis have negative y. Watch the pin visit each quadrant.',view:'model',demo:'tour'},
         {say:'Read about transformations.',speech:'A translation slides. A reflection in the x-axis changes the sign of y. A reflection in the y-axis changes the sign of x. A rotation of one hundred eighty degrees about the origin changes both signs.',view:'read'},
         {say:'Watch: two moves in a row.',speech:'Reflect the flag in the y-axis, then rotate it ninety degrees clockwise about the origin. Predict where it lands before it moves.',view:'model',demo:'combo'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -136,7 +136,7 @@ P.lesson({id:'quadrants6',title:'Four quadrants and transformations',strand:'Spa
   const s=28,ox=X0+170,oy=y+160;g.strokeStyle='#d8dde8';g.lineWidth=1;for(let i=-5;i<=5;i++){g.beginPath();g.moveTo(ox+i*s,oy-5*s);g.lineTo(ox+i*s,oy+5*s);g.stroke();g.beginPath();g.moveTo(ox-5*s,oy+i*s);g.lineTo(ox+5*s,oy+i*s);g.stroke();}
   g.strokeStyle=INK;g.lineWidth=3;g.beginPath();g.moveTo(ox-5*s,oy);g.lineTo(ox+5*s,oy);g.moveTo(ox,oy-5*s);g.lineTo(ox,oy+5*s);g.stroke();
   [['II (−, +)',-3,3],['I (+, +)',3,3],['III (−, −)',-3,-3],['IV (+, −)',3,-3]].forEach(([t,x,yy])=>T(g,t,ox+x*s,oy-yy*s+8,FT.smallB,acc(),'center'));
-  g.beginPath();g.arc(ox-4*s,oy-2*s,7,0,Math.PI*2);g.fillStyle='#e2457a';g.fill();T(g,'(−4, 2)',ox-4*s,oy-2*s-14,FT.cap,'#e2457a','center');
+  g.beginPath();g.arc(ox-4*s,oy-2*s,7,0,Math.PI*2);g.fillStyle='#e4572e';g.fill();T(g,'(−4, 2)',ox-4*s,oy-2*s-14,FT.cap,'#e4572e','center');
   [['Reflect in x-axis','(x, y) → (x, −y)'],['Reflect in y-axis','(x, y) → (−x, y)'],['Rotate 180° about O','(x, y) → (−x, −y)'],['Rotate 90° clockwise','(x, y) → (y, −x)']].forEach(([a,b],i)=>{T(g,a,X0+380,y+40+i*64,FT.smallB,acc());T(g,b,X0+380,y+70+i*64,FT.body);});y+=330;
   y=keyWords(p,y,[['quadrant','one of the four regions made by the axes'],['origin','the point (0, 0) where the axes cross']]);
   predict(p,y,S,'p26','Reflect (2, −3) in the x-axis, then in the y-axis. Where is it?','*(−2, 3).* That is the same as a 180° rotation about the origin.');},
@@ -147,7 +147,7 @@ P.lesson({id:'quadrants6',title:'Four quadrants and transformations',strand:'Spa
   [[X(-5.3),Z(0),X(5.3),Z(0)],[X(0),Z(-5.3),X(0),Z(5.3)]].forEach(([a,b,c,d])=>{const m=new THREE.Mesh(new THREE.BoxGeometry(c!==a?Math.abs(c-a):.03,.04,d!==b?Math.abs(d-b):.03),lam(INK));m.position.set((a+c)/2,.05,(b+d)/2);grp.add(m);});
   for(let i=-5;i<=5;i++){if(!i)continue;const lx=label(sgn(i),{size:.13,color:i<0?'#2563eb':GREY});lx.position.set(X(i),.1,Z(0)+.16);grp.add(lx);const ly=label(sgn(i),{size:.13,color:i<0?'#2563eb':GREY});ly.position.set(X(0)-.17,.1,Z(i));grp.add(ly);}
   [['I',3.5,3.5],['II',-3.5,3.5],['III',-3.5,-3.5],['IV',3.5,-3.5]].forEach(([t,x,y])=>{const l=label(t,{size:.22,color:'#cbd5e1'});l.position.set(X(x),.08,Z(y));grp.add(l);});
-  const shG=new THREE.Group(),ghG=new THREE.Group();grp.add(shG,ghG);const pin=new THREE.Group();const pm=mk(new THREE.ConeGeometry(.09,.26,16),lam('#e2457a'),0);pm.rotation.x=Math.PI;pm.position.y=.18;pin.add(pm);const ph=mk(new THREE.SphereGeometry(.09,14,10),lam('#e2457a'),0);ph.position.y=.36;pin.add(ph);grp.add(pin);
+  const shG=new THREE.Group(),ghG=new THREE.Group();grp.add(shG,ghG);const pin=new THREE.Group();const pm=mk(new THREE.ConeGeometry(.09,.26,16),lam('#e4572e'),0);pm.rotation.x=Math.PI;pm.position.y=.18;pin.add(pm);const ph=mk(new THREE.SphereGeometry(.09,14,10),lam('#e4572e'),0);ph.position.y=.36;pin.add(ph);grp.add(pin);
   const ptag=label('',{size:.2,bg:'#ffffff'});grp.add(ptag);
   function flag(pts,col,op,dash){const g=new THREE.Group();g.add(slab(pts.map(([x,y])=>[X(x),Z(y)]),col,dash?.02:.08,op));if(!dash){const P3=pts.map(([x,y])=>V(X(x),.1,Z(y)));for(let i=0;i<3;i++)g.add(seg(P3[i],P3[(i+1)%3],INK,.012));const d=mk(new THREE.SphereGeometry(.06,12,10),lam('#ffd24a'),0);d.position.copy(P3[0]).setY(.15);g.add(d);}return g;}
   function draw(){clearGroup(shG);clearGroup(ghG);shG.add(flag(st.sh,'#2f7de1',.85));if(st.gh)ghG.add(flag(st.gh,'#16a36f',.4,true));pin.position.set(X(st.pin[0]),0,Z(st.pin[1]));ptag.userData.set('('+sgn(st.pin[0])+', '+sgn(st.pin[1])+')');ptag.position.set(X(st.pin[0]),.7,Z(st.pin[1]));pin.visible=ptag.visible=!st.gh;check();A.redraw();}
@@ -180,7 +180,7 @@ const mf=(q,i)=>{const d=6-i;let s=String(q);if(d>0){s=s.padStart(d+1,'0');s=s.s
 P.lesson({id:'convert6',title:'Converting metric units',strand:'Spatial Sense',codes:['E2.1'],
  guide:{goal:'Measure length, area, mass and capacity with appropriate metric units, and solve problems that convert smaller units to larger ones and larger units to smaller ones.',words:'convert, kilometre, metre, centimetre, millimetre, kilogram, gram, litre, millilitre, base ten',
   ask:['Why do you divide when you change grams to kilograms?','How many metres are in 2.5 km?','Which is longer: 1500 m or 1.2 km?'],home:'Read package labels: 750 mL, 1.5 L, 454 g. Change each to the other unit together.'},
- learn:[{say:'Up the stairs: divide by 10.',speech:'Going up the metric staircase to a bigger unit divides by ten at every step. Watch two thousand five hundred metres climb to kilometres: two hundred fifty, twenty-five, two point five.',view:'model',demo:'up'},
+ learn:[{say:'Up the stairs: divide by 10.',speech:'Going up the metric staircase to a bigger unit divides by ten at every step. Watch Malik’s two thousand five hundred metres climb to kilometres: two hundred fifty, twenty-five, two point five.',view:'model',demo:'up'},
         {say:'Read both directions.',speech:'Larger unit to smaller unit: multiply. Smaller unit to larger unit: divide. One kilometre is one thousand metres, so two thousand five hundred metres is two point five kilometres.',view:'read'},
         {say:'Watch: down the stairs.',speech:'Now four point two kilograms walks down to grams: forty-two, four hundred twenty, four thousand two hundred grams.',view:'model',demo:'down'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -191,14 +191,14 @@ P.lesson({id:'convert6',title:'Converting metric units',strand:'Spatial Sense',c
  init:k=>({kind:'length',q:2500000,i:3,start:3,hide:false,ask:null,need:null}),
  left(p,S){const g=p.g;let y=header(p,S);
   y=para(p,y,'To convert, count the *steps* between units. Each step is a factor of *10*.')+14;
-  ['km','hm','dam','m','dm','cm','mm'].forEach((u,i)=>{const x=X0+i*118,h=200-i*24;rr(g,x,y+220-h,110,h,8);g.fillStyle=tint(['#c2410c','#ea580c','#f97316','#2f7de1','#16a36f','#e2457a','#8b5cf6'][i],.35);g.fill();T(g,u,x+55,y+220-h+36,FT.bodyB,INK,'center');});
+  ['km','hm','dam','m','dm','cm','mm'].forEach((u,i)=>{const x=X0+i*118,h=200-i*24;rr(g,x,y+220-h,110,h,8);g.fillStyle=tint(['#c2410c','#ea580c','#f97316','#2f7de1','#16a36f','#e4572e','#8b5cf6'][i],.35);g.fill();T(g,u,x+55,y+220-h+36,FT.bodyB,INK,'center');});
   T(g,'÷10 going up',X0+600,y+40,FT.hand,'#c2410c');T(g,'×10 going down',X0+600,y+80,FT.hand,BLUE);y+=250;
   [['2500 m → km','÷ 1000 = 2.5 km'],['450 cm → m','÷ 100 = 4.5 m'],['3200 g → kg','÷ 1000 = 3.2 kg'],['4.2 km → m','× 1000 = 4200 m']].forEach(([a,b],i)=>{rr(g,X0,y+i*54,TW,46,12);g.fillStyle=tint(acc(),.08+i%2*.04);g.fill();T(g,a,X0+20,y+i*54+32,FT.bodyB);T(g,b,X0+TW-20,y+i*54+32,FT.bodyB,acc(),'right');});y+=230;
   y=keyWords(p,y,[['convert','change a measurement to another unit'],['base ten','each unit is 10 times the next smaller one']]);
   predict(p,y,S,'p27','Which is more: 1500 mL or 1.2 L?','*1500 mL.* 1.2 L = 1200 mL.');},
  readout(p,S,y){const g=p.g,st=S.st,U=MU6[st.kind];T(g,mf(st.q,st.start)+' '+U[st.start]+' = '+(st.hide&&st.i!==st.start?'?':mf(st.q,st.i))+' '+U[st.i],X0,y+52,ZS(46),acc());
   const d=st.i-st.start;T(g,d>0?'× '+Math.pow(10,d):d<0?'÷ '+Math.pow(10,-d):'Move the ball to convert.',X0,y+94,FT.bodyB);return y+100;},
- build(S,grp,mode,game){const st=S.st,cols=['#c2410c','#ea580c','#f97316','#2f7de1','#16a36f','#e2457a','#8b5cf6'];const stairs=new THREE.Group();grp.add(stairs);
+ build(S,grp,mode,game){const st=S.st,cols=['#c2410c','#ea580c','#f97316','#2f7de1','#16a36f','#e4572e','#8b5cf6'];const stairs=new THREE.Group();grp.add(stairs);
   const ball=mk(new THREE.SphereGeometry(.2,22,16),lam('#ffd24a'),0);grp.add(ball);const tag=label('',{size:.26,bg:'#ffffff'});grp.add(tag);const xs=i=>-2.0+i*.66,hs=i=>1.5-i*.2;
   function drawS(){clearGroup(stairs);MU6[st.kind].forEach((u,i)=>{const b=mk(new THREE.BoxGeometry(.62,hs(i),1.0),lam(cols[i]),20);b.position.set(xs(i),hs(i)/2,-1.7);stairs.add(b);const l=label(u,{size:.24,color:'#fff'});l.position.set(xs(i),hs(i)-.2,-1.17);stairs.add(l);A.drag(b,{tap:()=>go(i)});});place(false);}
   function place(anim){const p=V(xs(st.i),hs(st.i)+.2,-1.7);if(anim)hop(ball,p,.35,.35);else ball.position.copy(p);tag.userData.set(st.hide&&st.i!==st.start?'? '+MU6[st.kind][st.i]:mf(st.q,st.i)+' '+MU6[st.kind][st.i]);tag.position.set(p.x,p.y+.6,-1.7);A.redraw();}
@@ -222,7 +222,7 @@ P.lesson({id:'convert6',title:'Converting metric units',strand:'Spatial Sense',c
 P.lesson({id:'angles360',title:'Measuring angles up to 360°',strand:'Spatial Sense',codes:['E2.2'],
  guide:{goal:'Use a protractor to measure and construct angles up to 360°, and explain how an angle measured clockwise relates to the same angle measured counterclockwise.',words:'reflex angle, full turn, 360°, clockwise, counterclockwise, protractor',
   ask:['Why do clockwise and counterclockwise measures add to 360°?','How can a 180° protractor measure a 250° angle?','What kind of angle is 300°?'],home:'Stand facing the door, then turn 90°, 180°, 270° and 360° clockwise. Where are you facing each time?'},
- learn:[{say:'A full turn is 360°.',speech:'A full circle is three hundred sixty degrees. Angles bigger than one hundred eighty degrees are reflex angles. Watch the arm sweep all the way around.',view:'model',demo:'sweep'},
+ learn:[{say:'A full turn is 360°.',speech:'A full circle is three hundred sixty degrees. Angles bigger than one hundred eighty degrees are reflex angles. Watch Yuna’s arm sweep all the way around.',view:'model',demo:'sweep'},
         {say:'Read about clockwise and counterclockwise.',speech:'The same opening can be measured two ways. If it is one hundred ten degrees counterclockwise, it is two hundred fifty degrees clockwise, because together they make a full turn of three hundred sixty degrees.',view:'read'},
         {say:'Watch: measure a reflex angle.',speech:'To measure a reflex angle with a half-circle protractor, measure the smaller angle and subtract from three hundred sixty. Three hundred sixty minus one hundred ten is two hundred fifty.',view:'model',demo:'reflex'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -235,11 +235,11 @@ P.lesson({id:'angles360',title:'Measuring angles up to 360°',strand:'Spatial Se
   y=para(p,y,'A full turn is *360°*. An angle between 180° and 360° is a *reflex* angle.')+16;
   const cx=X0+200,cy=y+170,R=150;g.beginPath();g.arc(cx,cy,R,0,Math.PI*2);g.fillStyle='#eef4ff';g.fill();g.strokeStyle='#2f7de1';g.lineWidth=3;g.stroke();
   for(let a=0;a<360;a+=30){const r=a*Math.PI/180;g.beginPath();g.moveTo(cx+Math.cos(r)*R,cy-Math.sin(r)*R);g.lineTo(cx+Math.cos(r)*(R-18),cy-Math.sin(r)*(R-18));g.stroke();T(g,String(a),cx+Math.cos(r)*(R+24),cy-Math.sin(r)*(R+24)+7,FT.cap,'#2f7de1','center');}
-  g.beginPath();g.moveTo(cx,cy);g.arc(cx,cy,60,0,-250*Math.PI/180,true);g.closePath();g.fillStyle='rgba(226,69,122,.3)';g.fill();g.strokeStyle=INK;g.lineWidth=5;g.beginPath();g.moveTo(cx+R,cy);g.lineTo(cx,cy);g.lineTo(cx+Math.cos(250*Math.PI/180)*R,cy-Math.sin(250*Math.PI/180)*R);g.stroke();
-  T(g,'250° counterclockwise',X0+410,y+120,FT.bodyB,'#e2457a');T(g,'= 110° clockwise',X0+410,y+160,FT.bodyB,'#2f7de1');T(g,'250 + 110 = 360',X0+410,y+210,ZS(34),acc());y+=360;
+  g.beginPath();g.moveTo(cx,cy);g.arc(cx,cy,60,0,-250*Math.PI/180,true);g.closePath();g.fillStyle='rgba(228,87,46,.3)';g.fill();g.strokeStyle=INK;g.lineWidth=5;g.beginPath();g.moveTo(cx+R,cy);g.lineTo(cx,cy);g.lineTo(cx+Math.cos(250*Math.PI/180)*R,cy-Math.sin(250*Math.PI/180)*R);g.stroke();
+  T(g,'250° counterclockwise',X0+410,y+120,FT.bodyB,'#e4572e');T(g,'= 110° clockwise',X0+410,y+160,FT.bodyB,'#2f7de1');T(g,'250 + 110 = 360',X0+410,y+210,ZS(34),acc());y+=360;
   y=keyWords(p,y,[['reflex angle','an angle greater than 180° and less than 360°'],['clockwise','turning the same way as the hands of a clock']]);
   predict(p,y,S,'p28','An angle is 75° clockwise. What is it counterclockwise?','*285°.* 360 − 75 = 285.');},
- readout(p,S,y){const g=p.g,st=S.st;T(g,st.a+'° counterclockwise',X0,y+50,ZS(44),'#e2457a');T(g,'= '+(360-st.a)%360+'° clockwise   ·   '+kind(st.a),X0,y+92,FT.bodyB,'#2f7de1');return y+100;},
+ readout(p,S,y){const g=p.g,st=S.st;T(g,st.a+'° counterclockwise',X0,y+50,ZS(44),'#e4572e');T(g,'= '+(360-st.a)%360+'° clockwise   ·   '+kind(st.a),X0,y+92,FT.bodyB,'#2f7de1');return y+100;},
  build(S,grp,mode,game){const st=S.st,Vx=V(0,.12,-1.75),L=1.3;
   const ring=new THREE.Mesh((()=>{const gg=new THREE.RingGeometry(1.0,1.4,96);gg.rotateX(-Math.PI/2);return gg;})(),new THREE.MeshLambertMaterial({color:'#bcd6ff',transparent:true,opacity:.55,side:THREE.DoubleSide}));ring.position.set(Vx.x,.06,Vx.z);grp.add(ring);
   for(let a=0;a<360;a+=10){const r=a*Math.PI/180,len=a%30===0?.22:.12;const t=new THREE.Mesh(G('a3t'+len,()=>new THREE.BoxGeometry(len,.015,.012)),lam('#2f7de1'));t.position.set(Vx.x+Math.cos(r)*(1.4-len/2),.08,Vx.z-Math.sin(r)*(1.4-len/2));t.rotation.y=r;grp.add(t);
@@ -247,7 +247,7 @@ P.lesson({id:'angles360',title:'Measuring angles up to 360°',strand:'Spatial Se
   const arm=col=>{const m=mk(new THREE.BoxGeometry(L,.07,.08),lam(col),20);m.geometry.translate(L/2,0,0);return m;};const a1=arm(INK);a1.position.copy(Vx);grp.add(a1);const a2=arm(INK);a2.position.copy(Vx);grp.add(a2);
   const tip=mk(new THREE.SphereGeometry(.14,18,14),lam('#ffd24a'),0);grp.add(tip);let arcC=null,arcW=null;const lab=label('',{size:.28,bg:'#ffffff'});grp.add(lab);
   function draw(){const r=st.a*Math.PI/180;a2.rotation.y=r;tip.position.set(Vx.x+Math.cos(r)*L,.15,Vx.z-Math.sin(r)*L);[arcC,arcW].forEach(o=>{if(o){grp.remove(o);disposeObj(o);}});
-    const g1=new THREE.RingGeometry(.35,.48,64,1,0,Math.max(.01,r));g1.rotateX(-Math.PI/2);arcC=new THREE.Mesh(g1,new THREE.MeshLambertMaterial({color:'#e2457a',side:THREE.DoubleSide}));arcC.position.set(Vx.x,.11,Vx.z);grp.add(arcC);
+    const g1=new THREE.RingGeometry(.35,.48,64,1,0,Math.max(.01,r));g1.rotateX(-Math.PI/2);arcC=new THREE.Mesh(g1,new THREE.MeshLambertMaterial({color:'#e4572e',side:THREE.DoubleSide}));arcC.position.set(Vx.x,.11,Vx.z);grp.add(arcC);
     const g2=new THREE.RingGeometry(.55,.62,64,1,r,Math.max(.01,2*Math.PI-r));g2.rotateX(-Math.PI/2);arcW=new THREE.Mesh(g2,new THREE.MeshLambertMaterial({color:'#2f7de1',side:THREE.DoubleSide,transparent:true,opacity:.7}));arcW.position.set(Vx.x,.1,Vx.z);grp.add(arcW);
     lab.userData.set(st.a+'° ↺   ·   '+(360-st.a)%360+'° ↻');lab.position.set(Vx.x,1.0,Vx.z-1.6);check();A.redraw();}
   function setA(a){a=((Math.round(a/5)*5)%360+360)%360;if(a===0)a=360;if(a===st.a)return;st.a=a;A.pop();draw();}
@@ -273,7 +273,7 @@ function kind(a){return a<90?'acute':a===90?'right':a<180?'obtuse':a===180?'stra
 P.lesson({id:'anglerel6',title:'Supplementary, complementary and opposite angles',strand:'Spatial Sense',codes:['E2.3'],
  guide:{goal:'Use the properties of supplementary, complementary and opposite angles, and of the interior and exterior angles of triangles, to find unknown angle measures.',words:'supplementary, complementary, opposite angles, interior angle, exterior angle, straight angle',
   ask:['Why do supplementary angles add to 180°?','If one angle of a right-angle split is 35°, what is the other?','Why are opposite angles equal?'],home:'Look at scissors opening and closing. As one angle gets bigger, what happens to the opposite one? And the one beside it?'},
- learn:[{say:'Angles on a straight line.',speech:'Two angles that make a straight line are supplementary: they add to one hundred eighty degrees. Watch the ray turn. As one angle grows, the other shrinks.',view:'model',demo:'supp'},
+ learn:[{say:'Angles on a straight line.',speech:'Two angles that make a straight line are supplementary: they add to one hundred eighty degrees. Watch Ezra turn the ray. As one angle grows, the other shrinks.',view:'model',demo:'supp'},
         {say:'Read the four relationships.',speech:'Supplementary angles add to one hundred eighty. Complementary angles add to ninety. Opposite angles, where two lines cross, are equal. A triangle’s exterior angle equals the sum of the two opposite interior angles.',view:'read'},
         {say:'Watch: crossing lines.',speech:'When two lines cross, the opposite angles are always equal. Watch them change together.',view:'model',demo:'cross'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -286,10 +286,10 @@ P.lesson({id:'anglerel6',title:'Supplementary, complementary and opposite angles
   y=para(p,y,'Angles that share a vertex or a line are *related*. Use the relationships to find unknown angles.')+16;
   const cell=(i,title,rule,drawFn)=>{const x=X0+(i%2)*(TW/2+8),yy=y+Math.floor(i/2)*190;rr(g,x,yy,TW/2-8,180,14);g.fillStyle=tint(acc(),.07);g.fill();T(g,title,x+16,yy+32,FT.bodyB,acc());T(g,rule,x+16,yy+170,FT.small);drawFn(x+TW/4-4,yy+122);};
   const ln=(x1,y1,x2,y2)=>{g.strokeStyle=INK;g.lineWidth=4;g.beginPath();g.moveTo(x1,y1);g.lineTo(x2,y2);g.stroke();};
-  cell(0,'Supplementary','a + b = 180°',(cx,cy)=>{ln(cx-120,cy,cx+120,cy);ln(cx,cy,cx+60,cy-80);T(g,'120°',cx-60,cy-18,FT.cap,'#e2457a');T(g,'60°',cx+70,cy-14,FT.cap,'#2f7de1');});
-  cell(1,'Complementary','a + b = 90°',(cx,cy)=>{ln(cx-60,cy,cx+80,cy);ln(cx-60,cy,cx-60,cy-100);ln(cx-60,cy,cx+30,cy-70);T(g,'35°',cx+20,cy-14,FT.cap,'#2f7de1');T(g,'55°',cx-50,cy-70,FT.cap,'#e2457a');});
-  cell(2,'Opposite','a = c, b = d',(cx,cy)=>{ln(cx-110,cy+40,cx+110,cy-40);ln(cx-110,cy-40,cx+110,cy+40);T(g,'40°',cx-80,cy+6,FT.cap,'#2f7de1');T(g,'40°',cx+60,cy+6,FT.cap,'#2f7de1');T(g,'140°',cx-18,cy-30,FT.cap,'#e2457a');});
-  cell(3,'Exterior angle','ext = a + b',(cx,cy)=>{ln(cx-100,cy,cx+120,cy);ln(cx-100,cy,cx+10,cy-90);ln(cx+10,cy-90,cx+50,cy);T(g,'50°',cx-80,cy-10,FT.cap);T(g,'70°',cx,cy-60,FT.cap);T(g,'120°',cx+66,cy-12,FT.cap,'#e2457a');});y+=390;
+  cell(0,'Supplementary','a + b = 180°',(cx,cy)=>{ln(cx-120,cy,cx+120,cy);ln(cx,cy,cx+60,cy-80);T(g,'120°',cx-60,cy-18,FT.cap,'#e4572e');T(g,'60°',cx+70,cy-14,FT.cap,'#2f7de1');});
+  cell(1,'Complementary','a + b = 90°',(cx,cy)=>{ln(cx-60,cy,cx+80,cy);ln(cx-60,cy,cx-60,cy-100);ln(cx-60,cy,cx+30,cy-70);T(g,'35°',cx+20,cy-14,FT.cap,'#2f7de1');T(g,'55°',cx-50,cy-70,FT.cap,'#e4572e');});
+  cell(2,'Opposite','a = c, b = d',(cx,cy)=>{ln(cx-110,cy+40,cx+110,cy-40);ln(cx-110,cy-40,cx+110,cy+40);T(g,'40°',cx-80,cy+6,FT.cap,'#2f7de1');T(g,'40°',cx+60,cy+6,FT.cap,'#2f7de1');T(g,'140°',cx-18,cy-30,FT.cap,'#e4572e');});
+  cell(3,'Exterior angle','ext = a + b',(cx,cy)=>{ln(cx-100,cy,cx+120,cy);ln(cx-100,cy,cx+10,cy-90);ln(cx+10,cy-90,cx+50,cy);T(g,'50°',cx-80,cy-10,FT.cap);T(g,'70°',cx,cy-60,FT.cap);T(g,'120°',cx+66,cy-12,FT.cap,'#e4572e');});y+=390;
   y=keyWords(p,y,[['supplementary','two angles that add to 180°'],['complementary','two angles that add to 90°']]);
   predict(p,y,S,'p29','Two lines cross. One angle is 115°. What are the other three?','*65°, 115° and 65°.* Neighbours are supplementary; opposites are equal.');},
  readout(p,S,y){const g=p.g,st=S.st,a=st.a;let t;if(st.kind==='line')t=a+'° + '+(180-a)+'° = 180°';else if(st.kind==='right')t=a+'° + '+(90-a)+'° = 90°';else if(st.kind==='cross')t=a+'°, '+(180-a)+'°, '+a+'°, '+(180-a)+'°';else{const [x,yv]=st.tri;t='interior '+x+'°, '+yv+'°, '+(180-x-yv)+'°  ·  exterior '+(x+yv)+'°';}
@@ -300,13 +300,13 @@ P.lesson({id:'anglerel6',title:'Supplementary, complementary and opposite angles
     const mid=(a0+a1)/2;const l=label(txt,{size:.22,bg:'#ffffff',border:col});l.position.set(c.x+Math.cos(mid)*(r+.38),.4,c.z-Math.sin(mid)*(r+.38));g2.add(l);}
   const P2=(c,ang,len)=>V(c.x+Math.cos(ang)*len,.12,c.z-Math.sin(ang)*len);
   function draw(){clearGroup(g2);const a=st.a*Math.PI/180;tip.visible=st.kind!=='tri';
-    if(st.kind==='line'){line(P2(Vx,0,L),P2(Vx,Math.PI,L));line(Vx,P2(Vx,a,L*.9),'#334155');tip.position.copy(P2(Vx,a,L*.9));arc(Vx,.4,0,a,'#2f7de1',st.a+'°');arc(Vx,.55,a,Math.PI,'#e2457a',(180-st.a)+'°');}
-    else if(st.kind==='right'){const C=V(-1.0,.12,-.7);line(C,P2(C,0,2.6));line(C,P2(C,Math.PI/2,2.2));line(C,P2(C,a,2.2),'#334155');tip.position.copy(P2(C,a,2.2));arc(C,.5,0,a,'#2f7de1',st.a+'°');arc(C,.7,a,Math.PI/2,'#e2457a',(90-st.a)+'°');
+    if(st.kind==='line'){line(P2(Vx,0,L),P2(Vx,Math.PI,L));line(Vx,P2(Vx,a,L*.9),'#334155');tip.position.copy(P2(Vx,a,L*.9));arc(Vx,.4,0,a,'#2f7de1',st.a+'°');arc(Vx,.55,a,Math.PI,'#e4572e',(180-st.a)+'°');}
+    else if(st.kind==='right'){const C=V(-1.0,.12,-.7);line(C,P2(C,0,2.6));line(C,P2(C,Math.PI/2,2.2));line(C,P2(C,a,2.2),'#334155');tip.position.copy(P2(C,a,2.2));arc(C,.5,0,a,'#2f7de1',st.a+'°');arc(C,.7,a,Math.PI/2,'#e4572e',(90-st.a)+'°');
       [[.25,0,.25,.25],[0,.25,.25,.25]].forEach(([x1,z1,x2,z2])=>line(V(C.x+x1,.12,C.z-z1),V(C.x+x2,.12,C.z-z2),INK));}
-    else if(st.kind==='cross'){line(P2(Vx,0,L),P2(Vx,Math.PI,L));line(P2(Vx,a,L),P2(Vx,a+Math.PI,L),'#334155');tip.position.copy(P2(Vx,a,L));arc(Vx,.4,0,a,'#2f7de1',st.a+'°');arc(Vx,.55,a,Math.PI,'#e2457a',(180-st.a)+'°');arc(Vx,.4,Math.PI,Math.PI+a,'#2f7de1',st.a+'°');arc(Vx,.55,Math.PI+a,2*Math.PI,'#e2457a',(180-st.a)+'°');}
+    else if(st.kind==='cross'){line(P2(Vx,0,L),P2(Vx,Math.PI,L));line(P2(Vx,a,L),P2(Vx,a+Math.PI,L),'#334155');tip.position.copy(P2(Vx,a,L));arc(Vx,.4,0,a,'#2f7de1',st.a+'°');arc(Vx,.55,a,Math.PI,'#e4572e',(180-st.a)+'°');arc(Vx,.4,Math.PI,Math.PI+a,'#2f7de1',st.a+'°');arc(Vx,.55,Math.PI+a,2*Math.PI,'#e4572e',(180-st.a)+'°');}
     else{const [A1,B1]=st.tri.map(d=>d*Math.PI/180);const base=2.6,Ap=V(-1.6,.12,-.8),Bp=V(-1.6+base,.12,-.8);const C1=Math.PI-A1-B1;const ac=base*Math.sin(B1)/Math.sin(C1);const Cp=V(Ap.x+Math.cos(A1)*ac,.12,Ap.z-Math.sin(A1)*ac);
       line(Ap,Bp);line(Bp,Cp);line(Cp,Ap);line(Bp,V(Bp.x+1.0,.12,Bp.z),'#94a3b8');arc(Ap,.35,0,A1,'#2f7de1',st.tri[0]+'°');arc(Bp,.35,Math.PI-B1,Math.PI,'#16a36f',st.tri[1]+'°');
-      const ang=Math.atan2(-(Ap.z-Cp.z),Ap.x-Cp.x),ang2=Math.atan2(-(Bp.z-Cp.z),Bp.x-Cp.x);arc(Cp,.3,Math.min(ang,ang2),Math.max(ang,ang2),'#f59e0b',(180-st.tri[0]-st.tri[1])+'°');arc(Bp,.5,0,Math.PI-B1,'#e2457a','ext '+(st.tri[0]+st.tri[1])+'°');}
+      const ang=Math.atan2(-(Ap.z-Cp.z),Ap.x-Cp.x),ang2=Math.atan2(-(Bp.z-Cp.z),Bp.x-Cp.x);arc(Cp,.3,Math.min(ang,ang2),Math.max(ang,ang2),'#f59e0b',(180-st.tri[0]-st.tri[1])+'°');arc(Bp,.5,0,Math.PI-B1,'#e4572e','ext '+(st.tri[0]+st.tri[1])+'°');}
     A.redraw();}
   function setA(a){const max=st.kind==='right'?85:175;a=Math.max(5,Math.min(max,Math.round(a/5)*5));if(a===st.a)return;st.a=a;A.pop();draw();}
   A.drag(tip,{h:.15,move:pt=>{const lp=grp.worldToLocal(pt.clone());const c=st.kind==='right'?V(-1.0,0,-.7):Vx;let a=Math.atan2(-(lp.z-c.z),lp.x-c.x)*180/Math.PI;if(a<0)a=a<-90?175:5;setA(a);},drop:()=>draw()});
@@ -332,7 +332,7 @@ P.lesson({id:'anglerel6',title:'Supplementary, complementary and opposite angles
 P.lesson({id:'area6',title:'Areas by decomposing shapes',strand:'Spatial Sense',codes:['E2.4'],
  guide:{goal:'Determine the areas of trapezoids, rhombuses, kites and composite polygons by decomposing them into shapes with known areas.',words:'decompose, trapezoid, rhombus, kite, composite polygon, diagonal, area',
   ask:['How can a trapezoid be split into a rectangle and two triangles?','Why is the area of a rhombus half of diagonal × diagonal?','How would you find the area of an L-shaped room?'],home:'Measure an L-shaped room or garden. Split it into two rectangles and add their areas.'},
- learn:[{say:'Split into shapes you know.',speech:'This trapezoid splits into a rectangle and two triangles. Watch the pieces lift apart. Add their areas to get the area of the trapezoid.',view:'model',demo:'trap'},
+ learn:[{say:'Split into shapes you know.',speech:'Lucia’s trapezoid splits into a rectangle and two triangles. Watch the pieces lift apart. Add their areas to get the area of the trapezoid.',view:'model',demo:'trap'},
         {say:'Read the shortcuts.',speech:'Trapezoid: add the parallel sides, multiply by the height, and divide by two. Rhombus and kite: multiply the diagonals and divide by two. Composite shapes: split, find each area, then add.',view:'read'},
         {say:'Watch: a kite.',speech:'A kite splits along a diagonal into two triangles. Each triangle has the other diagonal as its base.',view:'model',demo:'kite'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -343,7 +343,7 @@ P.lesson({id:'area6',title:'Areas by decomposing shapes',strand:'Spatial Sense',
  init:k=>({kind:'trap',p:{b:8,a:4,o:2,h:4},split:false,ask:null}),
  left(p,S){const g=p.g;let y=header(p,S);
   y=para(p,y,'*Decompose* a shape into rectangles and triangles, find each area, then *add*.')+14;
-  const s=28,ox=X0+20,oy=y+150;g.fillStyle=tint('#2f7de1',.35);g.fillRect(ox+2*s,oy-4*s,4*s,4*s);g.fillStyle=tint('#e2457a',.35);g.beginPath();g.moveTo(ox,oy);g.lineTo(ox+2*s,oy);g.lineTo(ox+2*s,oy-4*s);g.closePath();g.fill();g.beginPath();g.moveTo(ox+6*s,oy);g.lineTo(ox+8*s,oy);g.lineTo(ox+6*s,oy-4*s);g.closePath();g.fill();
+  const s=28,ox=X0+20,oy=y+150;g.fillStyle=tint('#2f7de1',.35);g.fillRect(ox+2*s,oy-4*s,4*s,4*s);g.fillStyle=tint('#e4572e',.35);g.beginPath();g.moveTo(ox,oy);g.lineTo(ox+2*s,oy);g.lineTo(ox+2*s,oy-4*s);g.closePath();g.fill();g.beginPath();g.moveTo(ox+6*s,oy);g.lineTo(ox+8*s,oy);g.lineTo(ox+6*s,oy-4*s);g.closePath();g.fill();
   g.strokeStyle=INK;g.lineWidth=3;g.beginPath();g.moveTo(ox,oy);g.lineTo(ox+8*s,oy);g.lineTo(ox+6*s,oy-4*s);g.lineTo(ox+2*s,oy-4*s);g.closePath();g.stroke();T(g,'4 + 16 + 4 = 24',ox+250,oy-60,FT.bodyB);T(g,'(8 + 4) × 4 ÷ 2 = 24 cm²',ox+250,oy-20,FT.bodyB,acc());y+=180;
   [['Trapezoid','A = (a + b) × h ÷ 2'],['Rhombus / kite','A = d₁ × d₂ ÷ 2'],['Composite','split, find each area, add']].forEach(([a,b],i)=>{rr(g,X0,y+i*56,TW,48,12);g.fillStyle=tint(acc(),.1);g.fill();T(g,a,X0+20,y+i*56+33,FT.bodyB,acc());T(g,b,X0+280,y+i*56+33,FT.body);});y+=190;
   y=keyWords(p,y,[['decompose','break a shape into simpler shapes'],['composite polygon','a shape made of two or more simpler polygons']]);
@@ -351,7 +351,7 @@ P.lesson({id:'area6',title:'Areas by decomposing shapes',strand:'Spatial Sense',
  readout(p,S,y){const g=p.g,st=S.st,pc=pieces(st);T(g,pc.map(q=>q.a).join(' + ')+' = '+pc.reduce((s,q)=>s+q.a,0)+' cm²',X0,y+50,ZS(42),acc());T(g,form(st),X0,y+92,FT.bodyB);return y+100;},
  build(S,grp,mode,game){const st=S.st,c=.32,x0=-1.95,zb=-.55,NX=12,NY=8;const X=x=>x0+x*c,Z=y=>zb-y*c;
   const base=mk(new THREE.BoxGeometry(NX*c+.1,.03,NY*c+.1),[lam('#f3f6fb'),lam('#f3f6fb'),cellMat('#ffffff',NX,NY),lam('#f3f6fb'),lam('#f3f6fb'),lam('#f3f6fb')],20);base.position.set(X(NX/2),.015,Z(NY/2));grp.add(base);
-  const sh=new THREE.Group();grp.add(sh);const COL=['#2f7de1','#e2457a','#16a36f','#f59e0b'];
+  const sh=new THREE.Group();grp.add(sh);const COL=['#2f7de1','#e4572e','#16a36f','#f59e0b'];
   function draw(){clearGroup(sh);const pc=pieces(st);pc.forEach((q,i)=>{const g=new THREE.Group();const m=slab(q.pts.map(([x,y])=>[X(x),Z(y)]),COL[i%4],.1,.9);g.add(m);sh.add(g);
       const cxp=q.pts.reduce((s,p)=>s+p[0],0)/q.pts.length,cyp=q.pts.reduce((s,p)=>s+p[1],0)/q.pts.length;const l=label(q.a+' cm²',{size:.18,bg:'#ffffff',border:COL[i%4]});l.position.set(X(cxp),.35,Z(cyp));l.visible=st.split;g.add(l);
       if(st.split){const off=V(X(cxp)-X(cent(pc)[0]),0,Z(cyp)-Z(cent(pc)[1])).multiplyScalar(.18);g.position.copy(off);g.position.y=.12;}});
@@ -393,7 +393,7 @@ const NETS={cube:{n:'cube',root:{w:4,d:4,ch:[['E',{o:4,a:4,ch:[]}],['W',{o:4,a:4
 P.lesson({id:'nets6',title:'Nets and surface area',strand:'Spatial Sense',codes:['E2.5','E2.6'],
  guide:{goal:'Create and use nets to show the relationship between the faces of prisms and pyramids and their surface areas, and determine surface area by adding the areas of the faces.',words:'net, face, prism, pyramid, surface area, fold, square units',
   ask:['How does a net help you find surface area?','How many faces does a triangular prism have? What shapes are they?','Why do opposite faces of a rectangular prism have the same area?'],home:'Unfold a cereal box. Measure each face, find its area, and add them all to get the surface area.'},
- learn:[{say:'A net folds into a solid.',speech:'A net is a flat pattern that folds into a three-dimensional object. Watch this net fold up into a rectangular prism.',view:'model',demo:'fold'},
+ learn:[{say:'A net folds into a solid.',speech:'A net is a flat pattern that folds into a three-dimensional object. Watch Arjun’s net fold up into a rectangular prism.',view:'model',demo:'fold'},
         {say:'Read about surface area.',speech:'Surface area is the total area of all the faces. Unfold the object into its net, find the area of each face, and add them together.',view:'read'},
         {say:'Watch: a pyramid.',speech:'A square pyramid has a square base and four triangle faces. Six times six is thirty-six, and each triangle is six times five divided by two, which is fifteen. Thirty-six plus sixty is ninety-six square centimetres.',view:'model',demo:'pyr'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -405,13 +405,13 @@ P.lesson({id:'nets6',title:'Nets and surface area',strand:'Spatial Sense',codes:
  left(p,S){const g=p.g;let y=header(p,S);
   y=para(p,y,'A *net* is a flat pattern of faces. *Surface area* = the sum of the areas of all the faces.')+14;
   const s=34,ox=X0+40,oy=y+20;const R=(x,yy,w,h,col,t)=>{rr(g,ox+x*s,oy+yy*s,w*s-3,h*s-3,4);g.fillStyle=tint(col,.4);g.fill();g.strokeStyle=col;g.lineWidth=2;g.stroke();T(g,t,ox+(x+w/2)*s,oy+(yy+h/2)*s+8,FT.cap,INK,'center');};
-  R(2,0,6,2,'#16a36f','12');R(2,2,6,3,'#2f7de1','18');R(0,2,2,3,'#e2457a','6');R(8,2,2,3,'#e2457a','6');R(2,5,6,2,'#16a36f','12');R(2,7,6,3,'#2f7de1','18');
+  R(2,0,6,2,'#16a36f','12');R(2,2,6,3,'#2f7de1','18');R(0,2,2,3,'#e4572e','6');R(8,2,2,3,'#e4572e','6');R(2,5,6,2,'#16a36f','12');R(2,7,6,3,'#2f7de1','18');
   T(g,'6 × 3 × 2 prism',X0+430,y+60,FT.bodyB);T(g,'2 × 18 + 2 × 12 + 2 × 6',X0+430,y+110,FT.body);T(g,'= 72 cm²',X0+430,y+160,ZS(44),acc());y+=370;
   [['Cube','6 equal squares'],['Rectangular prism','3 pairs of equal rectangles'],['Triangular prism','2 triangles + 3 rectangles'],['Square pyramid','1 square + 4 triangles']].forEach(([a,b],i)=>{T(g,a,X0,y+i*40,FT.bodyB,acc());T(g,b,X0+300,y+i*40,FT.body);});y+=170;
   y=keyWords(p,y,[['net','a flat pattern that folds into a 3D object'],['surface area','the total area of all the faces']]);
   predict(p,y,S,'p31','What is the surface area of a cube with 4 cm edges?','*96 cm².* 6 faces × 16 cm² = 96 cm².');},
  readout(p,S,y){const g=p.g,st=S.st,f=faces(NETS[st.k].root);T(g,NETS[st.k].n+': '+f.length+' faces',X0,y+44,FT.bodyB,acc());T(g,'SA = '+f.join(' + ')+' = '+f.reduce((a,b)=>a+b,0)+' cm²',X0,y+86,FT.bodyB);return y+96;},
- build(S,grp,mode,game){const st=S.st,u=.2;const root=new THREE.Group();root.position.set(0,.02,-1.7);grp.add(root);let folds=[];const COL=['#2f7de1','#e2457a','#16a36f','#f59e0b','#8b5cf6','#0fa5a5'];let ci=0;
+ build(S,grp,mode,game){const st=S.st,u=.2;const root=new THREE.Group();root.position.set(0,.02,-1.7);grp.add(root);let folds=[];const COL=['#2f7de1','#e4572e','#16a36f','#f59e0b','#8b5cf6','#0fa5a5'];let ci=0;
   function face(w,d,tri,col,area){const g=new THREE.Group();let m;if(tri){const s=new THREE.Shape();s.moveTo(0,-d/2);s.lineTo(0,d/2);s.lineTo(w,0);s.closePath();const geo=new THREE.ExtrudeGeometry(s,{depth:.03,bevelEnabled:false});geo.rotateX(-Math.PI/2);m=mk(geo,new THREE.MeshLambertMaterial({color:col,side:THREE.DoubleSide}),20);}
     else{m=mk(new THREE.BoxGeometry(w,.03,d),lam(col),20);m.position.x=w/2;}g.add(m);const l=label(area+' cm²',{size:.15,color:INK,bg:'#ffffff'});l.position.set(tri?w/3:w/2,.12,0);g.add(l);return g;}
   function build(){clearGroup(root);folds=[];ci=0;const N=NETS[st.k],r=N.root;const base=new THREE.Group();const bm=mk(new THREE.BoxGeometry(r.w*u,.03,r.d*u),lam(COL[ci++%6]),20);base.add(bm);const bl=label(r.w*r.d+' cm²',{size:.15,bg:'#ffffff'});bl.position.y=.12;base.add(bl);root.add(base);
@@ -438,16 +438,16 @@ function faces(r){const out=[r.w*r.d];const walk=ch=>ch.forEach(([e,n])=>{out.pu
    32. Payment methods and sharing resources
    ========================================================= */
 const PAY6=[['Cash','accepted almost everywhere; easy to track','can be lost or stolen; no record'],['Debit card','money comes straight from your account; safe','can spend money you need; possible fees'],['Credit card','buy now, pay later; builds credit history','interest if not paid in full; easy to overspend'],['Mobile pay / e-transfer','fast and contactless','needs a phone and internet; scams'],['Cheque','safe for large amounts; has a record','slow; not accepted everywhere']];
-const FLOW=[['Trading','swap one thing for another','Ava trades her book for Ben’s ball.'],['Lending','give something to be returned later','Ava lends Ben $10; he pays it back.'],['Borrowing','take something you will return','Ben borrows $10 from the bank and repays it with interest.'],['Donating','give something with nothing back','Ava donates $5 to a food bank.']];
+const FLOW=[['Trading','swap one thing for another','Chloe trades her book for Malik’s ball.'],['Lending','give something to be returned later','Chloe lends Malik $10; he pays it back.'],['Borrowing','take something you will return','Malik borrows $10 from the bank and repays it with interest.'],['Donating','give something with nothing back','Chloe donates $5 to a food bank.']];
 P.lesson({id:'pay6',title:'Paying, trading, lending and donating',strand:'Financial Literacy',codes:['F1.1','F1.5'],
  guide:{goal:'Describe the advantages and disadvantages of different methods of payment, and describe trading, lending, borrowing and donating as ways to distribute financial and other resources.',words:'cash, debit, credit, mobile payment, cheque, trade, lend, borrow, donate, interest',
   ask:['Why might someone choose debit instead of credit?','What is the difference between lending and donating?','When you borrow from a bank, why do you pay back more?'],home:'Talk about the payment methods your family uses. What is one advantage and one disadvantage of each?'},
- learn:[{say:'Four ways resources move.',speech:'Resources move between people in different ways. Watch Ava and Ben trade, lend, borrow and donate.',view:'model',demo:'flow'},
+ learn:[{say:'Four ways resources move.',speech:'Resources move between people in different ways. Watch Chloe and Malik trade, lend, borrow and donate.',view:'model',demo:'flow'},
         {say:'Read about payment methods.',speech:'Each payment method has advantages and disadvantages. Cash is accepted almost everywhere but can be lost. Credit lets you buy now and pay later, but you may pay interest.',view:'read'},
-        {say:'Watch: borrowing with interest.',speech:'Ben borrows ten dollars from the bank. When he pays it back, he adds one dollar of interest. Borrowing costs money.',view:'model',demo:'borrow'},
+        {say:'Watch: borrowing with interest.',speech:'Malik borrows ten dollars from the bank. When he pays it back, he adds one dollar of interest. Borrowing costs money.',view:'model',demo:'borrow'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
         {say:'Your turn: try each action.',speech:'Your turn. Press Trade, Lend, Borrow or Donate, and watch where things go.',view:'model'}],
- fig:'Ava, Ben, a bank and a food bank. Things move between them.',rz:.35,
+ fig:'Chloe, Malik, a bank and a food bank. Things move between them.',rz:.35,
  explore:['Press *Trade*, *Lend*, *Borrow* or *Donate*.','Watch who ends up with what.','Read the payment methods on the left page.'],
  howTo:'Read the situation, then choose the right word or payment method.',
  init:k=>({ask:null,last:null}),
@@ -455,11 +455,11 @@ P.lesson({id:'pay6',title:'Paying, trading, lending and donating',strand:'Financ
   y=para(p,y,'Every *payment method* has pros and cons.')+10;
   PAY6.forEach(([a,b,c],i)=>{rr(g,X0,y,TW,82,12);g.fillStyle=tint(acc(),.06+i%2*.05);g.fill();T(g,a,X0+16,y+30,FT.bodyB,acc());wrap(g,'+ '+b,X0+16,y+56,TW/2-20,24,{font:FT.cap,color:'#15803d'});wrap(g,'− '+c,X0+TW/2,y+56,TW/2-16,24,{font:FT.cap,color:RED});y+=88;});y+=8;
   FLOW.forEach(([a,b])=>{T(g,a,X0,y+24,FT.bodyB,acc());T(g,b,X0+170,y+24,FT.small);y+=34;});y+=10;
-  predict(p,y,S,'p32','Ava gives her old bike to a family who needs one. Is that trading, lending or donating?','*Donating.* She gives it and gets nothing back.');},
+  predict(p,y,S,'p32','Chloe gives her old bike to a family who needs one. Is that trading, lending or donating?','*Donating.* She gives it and gets nothing back.');},
  readout(p,S,y){const g=p.g,st=S.st;const f=FLOW.find(q=>q[0]===st.last);T(g,f?f[0]+': '+f[2]:'Choose an action.',X0,y+46,FT.bodyB,acc());return y+60;},
  build(S,grp,mode,game){const st=S.st;const person=(col,x,z,name)=>{const g=new THREE.Group();const b=mk(new THREE.CylinderGeometry(.22,.28,.7,18),lam(col),20);b.position.y=.35;g.add(b);const h=mk(new THREE.SphereGeometry(.2,18,14),lam('#f2c9a0'),20);h.position.y=.88;g.add(h);
     const l=label(name,{size:.22,color:col});l.position.y=1.3;g.add(l);g.position.set(x,0,z);grp.add(g);return g;};
-  const ava=person('#e2457a',-1.1,-1.3,'Ava'),ben=person('#2f7de1',1.1,-1.3,'Ben');
+  const ava=person('#e4572e',-1.1,-1.3,'Chloe'),ben=person('#2f7de1',1.1,-1.3,'Malik');
   const bank=new THREE.Group();bank.position.set(-1.8,0,-2.8);grp.add(bank);const bb=mk(new THREE.BoxGeometry(.9,.6,.6),lam('#e5e7eb'),20);bb.position.y=.3;bank.add(bb);const roof=mk(new THREE.ConeGeometry(.6,.3,4),lam('#64748b'),20);roof.rotation.y=Math.PI/4;roof.position.y=.75;bank.add(roof);const bl=label('Bank',{size:.18});bl.position.y=1.05;bank.add(bl);
   const fb=new THREE.Group();fb.position.set(1.8,0,-2.8);grp.add(fb);const fbb=mk(new THREE.BoxGeometry(.7,.5,.5),lam('#fde68a'),20);fbb.position.y=.25;fb.add(fbb);const fl=label('Food bank',{size:.16});fl.position.y=.75;fb.add(fl);
   const coin=()=>mk(G('pc6c',()=>new THREE.CylinderGeometry(.12,.12,.04,18)),lam('#e6c15a'),0);
@@ -474,7 +474,7 @@ P.lesson({id:'pay6',title:'Paying, trading, lending and donating',strand:'Financ
     controls:()=>{const c=FLOW.map(([k])=>({t:k.replace('ing',''),fn:()=>act(k)}));if(mode==='play'&&st.ask)return choices(st.setup?null:game,st.ask.o,st.ask.ans,st.ask.ok).concat(c);return c;},
     demo(n){st.ask=null;if(n==='flow')A.seq([[600,()=>act('Trading')],[1400,()=>act('Lending')],[2200,()=>act('Donating')]]);if(n==='borrow')A.seq([[600,()=>act('Borrowing')]]);},
     task(r){st.setup=true;let txt;
-      if(r===0){const f=pick(FLOW);st.ask={ans:f[0],o:FLOW.map(q=>q[0]),ok:'Yes! '+f[0]+': '+f[1]+'.'};txt=f[2].replace('Ava','Maya').replace('Ben','Leo')+' *Which is it?*';}
+      if(r===0){const f=pick(FLOW);st.ask={ans:f[0],o:FLOW.map(q=>q[0]),ok:'Yes! '+f[0]+': '+f[1]+'.'};txt=f[2].replace('Chloe','Yuna').replace('Malik','Arjun')+' *Which is it?*';}
       else if(r===1){st.ask={ans:'Credit card',o:shuffle(['Credit card','Debit card','Cash']),ok:'Yes! Credit can charge interest if you do not pay in full.'};txt='Which payment method can charge *interest* if you do not pay the bill in full?';}
       else if(r===2){st.ask={ans:'Cash',o:shuffle(['Cash','Cheque','Credit card']),ok:'Yes! Cash leaves no record and can be lost.'};txt='Which method is accepted almost everywhere but leaves *no record* and can be *lost*?';}
       else if(r===3){st.ask={ans:'Debit card',o:shuffle(['Debit card','Credit card','Cheque']),ok:'Yes! Debit takes money straight from your account.'};txt='Which method takes money *straight from your bank account*?';}
@@ -488,7 +488,7 @@ P.lesson({id:'pay6',title:'Paying, trading, lending and donating',strand:'Financ
 P.lesson({id:'goals6',title:'Financial goals and interest',strand:'Financial Literacy',codes:['F1.2','F1.3','F1.4'],
  guide:{goal:'Identify types of financial goals and the steps to reach them, describe factors that help or interfere with reaching them, and explain interest rates and fees on accounts and loans.',words:'financial goal, short-term, long-term, saving, earning, interest rate, fee, account, loan',
   ask:['What is the difference between a short-term and a long-term goal?','How does interest help a savings goal? How does a fee hurt it?','Why do loans charge interest?'],home:'Choose a savings goal together. Plan how much to save each week, and list what could help or get in the way.'},
- learn:[{say:'Interest helps savings grow.',speech:'You save fifty dollars a year in an account that pays four percent interest. Watch the bars grow. The gold part is interest: money the bank pays you for saving.',view:'model',demo:'grow'},
+ learn:[{say:'Interest helps savings grow.',speech:'Malik saves fifty dollars a year in an account that pays four percent interest. Watch the bars grow. The gold part is interest: money the bank pays him for saving.',view:'model',demo:'grow'},
         {say:'Read about goals and interest.',speech:'Set a goal, make a plan, and track your progress. Interest on savings helps you. Fees and borrowing at high interest work against you.',view:'read'},
         {say:'Watch: a fee.',speech:'Now the account charges a monthly fee of one dollar. Twelve dollars a year comes out. The goal takes longer to reach.',view:'model',demo:'fee'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},

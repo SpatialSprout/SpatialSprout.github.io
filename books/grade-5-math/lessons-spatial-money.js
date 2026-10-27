@@ -24,7 +24,7 @@ function triInfo(p){const d2=(a,b)=>(a[0]-b[0])**2+(a[1]-b[1])**2;const s=[d2(p[
 P.lesson({id:'triangles5',title:'Classifying and constructing triangles',strand:'Spatial Sense',codes:['E1.1'],
  guide:{goal:'Identify the geometric properties of triangles, classify them by side lengths and by angles, and construct triangles when given side or angle measurements.',words:'equilateral, isosceles, scalene, acute, right, obtuse, vertex, side, angle',
   ask:['Can a triangle have two right angles? Why not?','What do you notice about the angles in an isosceles triangle?','How would you construct a triangle with sides of 3, 4 and 5 cm?'],home:'Make triangles from straws or pipe cleaners cut to different lengths. Name each one by its sides and its angles.'},
- learn:[{say:'Triangles have two names.',speech:'Every triangle gets a name from its sides and a name from its angles. Watch the vertex move. The triangle changes from acute, to right, to obtuse.',view:'model',demo:'reshape'},
+ learn:[{say:'Triangles have two names.',speech:'Every triangle gets a name from its sides and a name from its angles. Watch Amani move the vertex. The triangle changes from acute, to right, to obtuse.',view:'model',demo:'reshape'},
         {say:'Read the six names.',speech:'By sides: equilateral has three equal sides, isosceles has two, and scalene has none. By angles: acute has three angles smaller than ninety degrees, right has one right angle, and obtuse has one angle bigger than ninety degrees.',view:'read'},
         {say:'Watch: construct a 3, 4, 5 triangle.',speech:'Construct a triangle with sides three, four and five centimetres. Draw a base of four, then a side of three at a right angle. The third side measures five. It is a right scalene triangle.',view:'model',demo:'build'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -36,7 +36,7 @@ P.lesson({id:'triangles5',title:'Classifying and constructing triangles',strand:
  left(p,S){const g=p.g;let y=header(p,S);
   y=para(p,y,'Name a triangle by its *sides* and by its *angles*. Equal sides are marked with matching ticks.')+16;
   const tri=(pts,col,ox,oy,name1,name2)=>{g.beginPath();pts.forEach(([x,yy],i)=>i?g.lineTo(ox+x*.8,oy+yy*.8):g.moveTo(ox+x*.8,oy+yy*.8));g.closePath();g.fillStyle=tint(col,.3);g.fill();g.lineWidth=4;g.strokeStyle=col;g.stroke();T(g,name1,ox+56,oy+126,FT.smallB,col,'center');T(g,name2,ox+56,oy+150,FT.cap,GREY,'center');};
-  tri([[70,10],[130,120],[10,120]],'#16a36f',X0,y,'equilateral','3 equal sides');tri([[70,0],[120,120],[20,120]],'#8b5cf6',X0+290,y,'isosceles','2 equal sides');tri([[10,30],[140,120],[0,120]],'#e2457a',X0+580,y,'scalene','no equal sides');y+=172;
+  tri([[70,10],[130,120],[10,120]],'#16a36f',X0,y,'equilateral','3 equal sides');tri([[70,0],[120,120],[20,120]],'#8b5cf6',X0+290,y,'isosceles','2 equal sides');tri([[10,30],[140,120],[0,120]],'#e4572e',X0+580,y,'scalene','no equal sides');y+=172;
   tri([[40,10],[140,120],[0,120]],TCOL.acute,X0,y,'acute','all angles < 90°');tri([[10,10],[130,120],[10,120]],TCOL.right,X0+290,y,'right','one 90° angle');g.strokeStyle=INK;g.lineWidth=2;g.strokeRect(X0+290+8,y+80,16,16);
   tri([[150,40],[110,120],[0,120]],TCOL.obtuse,X0+580,y,'obtuse','one angle > 90°');y+=176;
   y=para(p,y,'The three angles of any triangle add to *180°*, so a triangle can never have two right angles.')+10;
@@ -72,12 +72,12 @@ P.lesson({id:'triangles5',title:'Classifying and constructing triangles',strand:
 /* =========================================================
    25. Congruent shapes
    ========================================================= */
-const CSH={tri:{p:[[0,0],[3,0],[0,2]],col:'#2f7de1'},para:{p:[[0,0],[3,0],[4,2],[1,2]],col:'#e2457a'},rect:{p:[[0,0],[4,0],[4,2],[0,2]],col:'#16a36f'},scal:{p:[[0,0],[4,0],[1,3]],col:'#8b5cf6'}};
+const CSH={tri:{p:[[0,0],[3,0],[0,2]],col:'#2f7de1'},para:{p:[[0,0],[3,0],[4,2],[1,2]],col:'#e4572e'},rect:{p:[[0,0],[4,0],[4,2],[0,2]],col:'#16a36f'},scal:{p:[[0,0],[4,0],[1,3]],col:'#8b5cf6'}};
 const key=pts=>pts.map(q=>q.join(',')).sort().join(';');
 P.lesson({id:'congruent5',title:'Congruent shapes',strand:'Spatial Sense',codes:['E1.2'],
  guide:{goal:'Identify and construct congruent triangles, rectangles and parallelograms, and show that two shapes are congruent by sliding, turning or flipping one onto the other.',words:'congruent, corresponding sides, corresponding angles, slide, turn, flip, match',
   ask:['How can you prove two shapes are congruent?','Are two rectangles with the same area always congruent?','Does turning a shape change its size?'],home:'Trace a cookie cutter twice on paper, then cut out the shapes. Turn and flip one to show they match exactly.'},
- learn:[{say:'Congruent means an exact match.',speech:'Two shapes are congruent if they are exactly the same size and shape. Watch the blue triangle slide, turn and land exactly on the outline. They are congruent.',view:'model',demo:'match'},
+ learn:[{say:'Congruent means an exact match.',speech:'Two shapes are congruent if they are exactly the same size and shape. Watch Zane’s blue triangle slide, turn and land exactly on the outline. They are congruent.',view:'model',demo:'match'},
         {say:'Read about congruence.',speech:'Congruent shapes have matching sides and matching angles. Sliding, turning or flipping a shape does not change its size or shape, so the copy is still congruent.',view:'read'},
         {say:'Watch: a flip.',speech:'This parallelogram only matches after a flip. A flipped shape is still congruent, because every side and angle is the same.',view:'model',demo:'flip'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -98,18 +98,18 @@ P.lesson({id:'congruent5',title:'Congruent shapes',strand:'Spatial Sense',codes:
   T(g,ok?'Exact match: congruent!':'Not matched yet',X0,y+48,ZS(44),ok?'#16a36f':acc());T(g,'Slide with the arrows or drag · Turn 90° · Flip',X0,y+88,FT.body,GREY);return y+96;},
  build(S,grp,mode,game){const st=S.st,s=.38,x0=-1.9,zb=-.45,NX=10,NY=7;const X=x=>x0+x*s,Z=y=>zb-y*s;
   const base=mk(new THREE.BoxGeometry(NX*s+.2,.03,NY*s+.2),[lam('#f3f6fb'),lam('#f3f6fb'),cellMat('#ffffff',NX,NY),lam('#f3f6fb'),lam('#f3f6fb'),lam('#f3f6fb')],20);base.position.set(X(NX/2),.015,Z(NY/2));grp.add(base);
-  const ghost=new THREE.Group(),mov=new THREE.Group(),pk=new THREE.Group();grp.add(ghost,mov,pk);let dragFrom=null;
+  const ghost=new THREE.Group(),mov=new THREE.Group(),pk=new THREE.Group();grp.add(ghost,mov,pk);let dragFrom=null,dragTo=null;
   function outline(pts,col){const g=new THREE.Group();const P3=pts.map(([x,y])=>V(X(x),.06,Z(y)));for(let i=0;i<P3.length;i++){const a=P3[i],b=P3[(i+1)%P3.length];const n=Math.max(2,Math.round(a.distanceTo(b)/.12));for(let k=0;k<n;k+=2){const q1=a.clone().lerp(b,k/n),q2=a.clone().lerp(b,Math.min(1,(k+1)/n));g.add(seg(q1,q2,col,.025));}}return g;}
   function draw(){clearGroup(ghost);clearGroup(mov);clearGroup(pk);if(st.pick){drawPick();return;}const col=CSH[st.k].col;ghost.add(outline(st.g,INK));ghost.add(slab(st.g.map(([x,y])=>[X(x),Z(y)]),'#cbd5e6',.02,.5));
     const sl=slab(st.p.map(([x,y])=>[X(x),Z(y)]),col,.12,.88);mov.add(sl);const P3=st.p.map(([x,y])=>V(X(x),.14,Z(y)));for(let i=0;i<P3.length;i++)mov.add(seg(P3[i],P3[(i+1)%P3.length],INK,.018));
     const dot=mk(new THREE.SphereGeometry(.07,10,8),lam('#ffd24a'),0);dot.position.copy(P3[0]).setY(.18);mov.add(dot);
-    A.drag(sl,{h:.12,start:()=>{dragFrom=null;},move:pt=>{const lp=grp.worldToLocal(pt.clone());if(!dragFrom)dragFrom=[lp.x,lp.z];},drop:pos=>{if(!dragFrom)return;const lp=pos;const dx=Math.round((lp.x-dragFrom[0])/s),dy=Math.round((dragFrom[1]-lp.z)/s);dragFrom=null;apply(q=>[q[0]+dx,q[1]+dy]);}});
+    A.drag(sl,{h:.12,start:()=>{dragFrom=null;dragTo=null;},move:pt=>{const lp=grp.worldToLocal(pt.clone());if(!dragFrom)dragFrom=[lp.x,lp.z];dragTo=[lp.x,lp.z];/* the shape follows the finger, snapping to the grid */mov.position.set(Math.round((lp.x-dragFrom[0])/s)*s,.04,Math.round((lp.z-dragFrom[1])/s)*s);},drop:()=>{mov.position.set(0,0,0);if(!dragFrom||!dragTo)return;const dx=Math.round((dragTo[0]-dragFrom[0])/s),dy=Math.round((dragFrom[1]-dragTo[1])/s);dragFrom=null;dragTo=null;if(dx||dy)apply(q=>[q[0]+dx,q[1]+dy]);}});
     if(key(st.p)===key(st.g)){const ok=label('congruent ✓',{size:.3,bg:'#ffffff',border:'#16a36f'});ok.position.set(X(st.g[0][0]),.9,Z(st.g[0][1]));mov.add(ok);}A.redraw();}
   function apply(f){const np=st.p.map(f);if(np.some(([x,y])=>x<0||y<0||x>NX||y>NY)){A.bad('That would leave the grid.');draw();return;}st.p=np;A.pop();draw();
     if(key(st.p)===key(st.g)){A.good('A perfect match: the shapes are congruent!');if(mode==='play'&&!st.setup)game.solved('The shapes are congruent!');}}
   const turn=()=>{const [px,py]=st.p[0];apply(([x,y])=>[px-(y-py),py+(x-px)]);};const flip=()=>{const px=st.p[0][0];apply(([x,y])=>[2*px-x,y]);};
   function drawPick(){const ref=st.pick.ref;pk.add(slab(ref.map(([x,y])=>[X(x+.5),Z(y+3.5)]),'#16a36f',.1,.9));const rl=label('this one',{size:.18,color:'#16a36f'});rl.position.set(X(1.5),.35,Z(6.7));pk.add(rl);
-    st.pick.c.forEach((c,i)=>{const ox=[4.3,7.3,4.3][i]+0,oy=[3.6,3.6,.4][i];const m=slab(c.map(([x,y])=>[X(x+ox),Z(y+oy)]),['#2f7de1','#e2457a','#f08a24'][i],.1,.9);pk.add(m);A.drag(m,{tap:()=>{if(i===st.pick.ans){A.good('Yes! Same size and shape.');if(mode==='play'&&!st.setup)game.solved('Yes! That one is congruent: it is just turned.');}else A.bad('Count the side lengths. Is it exactly the same size?');}});});A.redraw();}
+    st.pick.c.forEach((c,i)=>{const ox=[4.3,7.3,4.3][i]+0,oy=[3.6,3.6,.4][i];const m=slab(c.map(([x,y])=>[X(x+ox),Z(y+oy)]),['#2f7de1','#e4572e','#f08a24'][i],.1,.9);pk.add(m);A.drag(m,{tap:()=>{if(i===st.pick.ans){A.good('Yes! Same size and shape.');if(mode==='play'&&!st.setup)game.solved('Yes! That one is congruent: it is just turned.');}else A.bad('Count the side lengths. Is it exactly the same size?');}});});A.redraw();}
   function setUp(k,start,goal){st.pick=null;st.k=k;st.p=start;st.g=goal;draw();}
   const put=(pts,dx,dy)=>pts.map(([x,y])=>[x+dx,y+dy]);
   draw();
@@ -133,7 +133,7 @@ P.lesson({id:'congruent5',title:'Congruent shapes',strand:'Spatial Sense',codes:
 P.lesson({id:'views5',title:'Top, front and side views',strand:'Spatial Sense',codes:['E1.3'],
  guide:{goal:'Draw and identify the top, front and side views of objects built from cubes, and match drawings with objects.',words:'top view, front view, side view, perspective, structure, cube',
   ask:['Why can two different buildings have the same front view?','How does the top view show which squares have cubes?','Which view hides the cubes at the back?'],home:'Build a small tower of blocks or boxes. Each person stands on a different side and draws what they see.'},
- learn:[{say:'Three ways to look.',speech:'This structure is made of cubes. Its front view appears on the back wall, its side view on the left wall, and its top view on the floor panel. Watch the views change as we add cubes.',view:'model',demo:'build'},
+ learn:[{say:'Three ways to look.',speech:'Layla’s structure is made of cubes. Its front view appears on the back wall, its side view on the left wall, and its top view on the floor panel. Watch the views change as we add cubes.',view:'model',demo:'build'},
         {say:'Read about views.',speech:'The front view shows what you see from the front: the tallest cube in each column. The side view shows the tallest cube in each row, seen from the side. The top view shows which squares are covered.',view:'read'},
         {say:'Watch: different buildings, same view.',speech:'Two different buildings can have the same front view. Watch: moving a cube to the back does not change the front view, but the side view changes.',view:'model',demo:'move'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -160,12 +160,12 @@ P.lesson({id:'views5',title:'Top, front and side views',strand:'Spatial Sense',c
   const floor=new THREE.Group();grp.add(floor);const cubes=new THREE.Group(),views=new THREE.Group(),cardsG=new THREE.Group();grp.add(cubes,views,cardsG);
   for(let r=0;r<3;r++)for(let q=0;q<3;q++){const t=mk(G('vtile',()=>new THREE.BoxGeometry(c-.04,.04,c-.04)),lam((r+q)%2?'#e6ecf5':'#f3f6fb'),20);t.position.set(bx(q),.02,bz(r));floor.add(t);A.drag(t,{tap:()=>add(r,q)});}
   const wallB=mk(new THREE.BoxGeometry(1.5,1.45,.04),lam('#ffffff'),20);wallB.position.set(cx,.72,-3.05);grp.add(wallB);const lb=label('FRONT view',{size:.17,color:'#2f7de1'});lb.position.set(cx,1.6,-3.0);grp.add(lb);
-  const wallS=mk(new THREE.BoxGeometry(.04,1.45,1.5),lam('#ffffff'),20);wallS.position.set(-1.35,.72,cz);grp.add(wallS);const ls=label('SIDE view',{size:.17,color:'#e2457a'});ls.position.set(-1.35,1.6,cz);grp.add(ls);
+  const wallS=mk(new THREE.BoxGeometry(.04,1.45,1.5),lam('#ffffff'),20);wallS.position.set(-1.35,.72,cz);grp.add(wallS);const ls=label('SIDE view',{size:.17,color:'#e4572e'});ls.position.set(-1.35,1.6,cz);grp.add(ls);
   const tpan=mk(new THREE.BoxGeometry(1.45,.03,1.45),lam('#ffffff'),20);tpan.position.set(1.65,.015,-.55);grp.add(tpan);const lt=label('TOP view',{size:.17,color:'#16a36f'});lt.position.set(1.65,.3,-1.45);grp.add(lt);
   const vs=.42;
   function draw(){clearGroup(cubes);clearGroup(views);for(let r=0;r<3;r++)for(let q=0;q<3;q++)for(let k=0;k<st.h[r][q];k++){const m=unitBox(1,1,1,'#6ea8f5',c*.96);m.position.set(bx(q),.04+c*.48+k*c*.96,bz(r));cubes.add(m);A.drag(m,{tap:()=>rem(r,q)});}
     fv(st.h).forEach((n,q)=>{for(let k=0;k<n;k++){const m=mk(G('vfv',()=>new THREE.BoxGeometry(vs*.94,vs*.94,.03)),lam('#2f7de1'),0);m.position.set(cx+(q-1)*vs,.12+vs/2+k*vs,-3.02);views.add(m);}});
-    sv(st.h).forEach((n,r)=>{for(let k=0;k<n;k++){const m=mk(G('vsv',()=>new THREE.BoxGeometry(.03,vs*.94,vs*.94)),lam('#e2457a'),0);m.position.set(-1.32,.12+vs/2+k*vs,cz+(r-1)*vs);views.add(m);}});
+    sv(st.h).forEach((n,r)=>{for(let k=0;k<n;k++){const m=mk(G('vsv',()=>new THREE.BoxGeometry(.03,vs*.94,vs*.94)),lam('#e4572e'),0);m.position.set(-1.32,.12+vs/2+k*vs,cz+(r-1)*vs);views.add(m);}});
     for(let r=0;r<3;r++)for(let q=0;q<3;q++)if(st.h[r][q]){const m=mk(G('vtv',()=>new THREE.BoxGeometry(vs*.94,.03,vs*.94)),lam('#16a36f'),0);m.position.set(1.65+(q-1)*vs,.04,-.55+(r-1)*vs);views.add(m);const l=label(String(st.h[r][q]),{size:.16,color:'#fff'});l.position.set(1.65+(q-1)*vs,.12,-.55+(r-1)*vs);views.add(l);}
     check();A.redraw();}
   function add(r,q){if(st.cards&&!st.build)return;if(st.h[r][q]>=3){A.bad('That stack is 3 cubes tall already.');return;}st.h[r][q]++;A.pop();draw();}
@@ -173,7 +173,7 @@ P.lesson({id:'views5',title:'Top, front and side views',strand:'Spatial Sense',c
   function check(){if(mode==='play'&&!st.setup&&st.build&&st.build(st.h))game.solved('Your building has exactly that view!');}
   function cardTex(kind,data){const cv=document.createElement('canvas');cv.width=cv.height=192;const g=cv.getContext('2d');g.fillStyle='#ffffff';g.fillRect(0,0,192,192);g.strokeStyle='#1b2236';g.lineWidth=6;g.strokeRect(3,3,186,186);const s=46,ox=27;
     if(kind==='top'){for(let r=0;r<3;r++)for(let q=0;q<3;q++){g.fillStyle=data[r][q]?'#16a36f':'#eef2f8';g.fillRect(ox+q*s,ox+r*s,s-4,s-4);}}
-    else data.forEach((n,i)=>{for(let k=0;k<n;k++){g.fillStyle=kind==='front'?'#2f7de1':'#e2457a';g.fillRect(ox+i*s,165-(k+1)*s,s-4,s-4);}});
+    else data.forEach((n,i)=>{for(let k=0;k<n;k++){g.fillStyle=kind==='front'?'#2f7de1':'#e4572e';g.fillRect(ox+i*s,165-(k+1)*s,s-4,s-4);}});
     const t=new THREE.CanvasTexture(cv);t.anisotropy=4;return new THREE.MeshLambertMaterial({map:t});}
   function drawCards(){clearGroup(cardsG);if(!st.cards)return;st.cards.list.forEach((d,i)=>{const side=lam('#ffffff');const m=mk(new THREE.BoxGeometry(.72,.04,.72),[side,side,cardTex(st.cards.kind,d),side,side,side],20);m.position.set(-1.75+i*.0,.06,-2.55+i*.82);
       m.rotation.y=0;cardsG.add(m);const l=label(String.fromCharCode(65+i),{size:.18,color:INK});l.position.set(-2.2,.2,-2.55+i*.82);cardsG.add(l);A.drag(m,{tap:()=>{if(i===st.cards.ans){A.good('Yes! That is the '+st.cards.kind+' view.');if(mode==='play'&&!st.setup)game.solved('Yes! Card '+String.fromCharCode(65+i)+' is the '+st.cards.kind+' view.');}else A.bad('Look again from the '+st.cards.kind+'.');}});});
@@ -202,7 +202,7 @@ function randH(){let h;do{h=[0,1,2].map(()=>[0,1,2].map(()=>Math.random()<.35?0:
 P.lesson({id:'coords5',title:'Coordinates and transformations',strand:'Spatial Sense',codes:['E1.4','E1.5'],
  guide:{goal:'Plot and read coordinates in the first quadrant using different scales, describe translations between points, and perform and predict translations, reflections and rotations up to 180° on a grid.',words:'coordinates, scale, ordered pair, translation, reflection, rotation, clockwise, counterclockwise, centre of rotation',
   ask:['If each grid line is worth 5, where is the point two lines across and three lines up?','How is a rotation different from a reflection?','Which point of a shape stays still in a rotation?'],home:'Draw a grid where each line counts by 2. Hide a “treasure” at a point and give clues with coordinates.'},
- learn:[{say:'Grids can count by 2s or 5s.',speech:'On this grid each line is worth two. To plot six, ten, go three lines across, which is six, and five lines up, which is ten. Watch the pin.',view:'model',demo:'plot'},
+ learn:[{say:'Grids can count by 2s or 5s.',speech:'On Mateo’s grid each line is worth two. To plot six, ten, go three lines across, which is six, and five lines up, which is ten. Watch the pin.',view:'model',demo:'plot'},
         {say:'Read about transformations.',speech:'A translation slides a shape. A reflection flips it over a line. A rotation turns it around a point, clockwise or counterclockwise, by ninety or one hundred eighty degrees.',view:'read'},
         {say:'Watch: a rotation.',speech:'The flag turns ninety degrees clockwise around the yellow point. That point stays still while the rest of the shape turns. Then another ninety degrees makes one hundred eighty.',view:'model',demo:'rotate'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -214,7 +214,7 @@ P.lesson({id:'coords5',title:'Coordinates and transformations',strand:'Spatial S
  left(p,S){const g=p.g;let y=header(p,S);
   y=para(p,y,'A *scale* tells what each grid line is worth. With a scale of 2, the lines are 0, 2, 4, 6… Always read *across (x) first*, then *up (y)*.')+16;
   const s=36,ox=X0+40,oy=y+290;g.strokeStyle='#d8dde8';g.lineWidth=2;for(let i=0;i<=7;i++){g.beginPath();g.moveTo(ox+i*s,oy);g.lineTo(ox+i*s,oy-7*s);g.stroke();g.beginPath();g.moveTo(ox,oy-i*s);g.lineTo(ox+7*s,oy-i*s);g.stroke();T(g,String(i*2),ox+i*s,oy+26,FT.cap,GREY,'center');T(g,String(i*2),ox-16,oy-i*s+7,FT.cap,GREY,'center');}
-  g.strokeStyle=INK;g.lineWidth=3;g.beginPath();g.moveTo(ox,oy-7*s);g.lineTo(ox,oy);g.lineTo(ox+7*s,oy);g.stroke();g.beginPath();g.arc(ox+3*s,oy-5*s,9,0,Math.PI*2);g.fillStyle='#e2457a';g.fill();T(g,'(6, 10)',ox+3*s+14,oy-5*s-8,FT.smallB,'#e2457a');
+  g.strokeStyle=INK;g.lineWidth=3;g.beginPath();g.moveTo(ox,oy-7*s);g.lineTo(ox,oy);g.lineTo(ox+7*s,oy);g.stroke();g.beginPath();g.arc(ox+3*s,oy-5*s,9,0,Math.PI*2);g.fillStyle='#e4572e';g.fill();T(g,'(6, 10)',ox+3*s+14,oy-5*s-8,FT.smallB,'#e4572e');
   const tri=(pts,col,dash)=>{g.beginPath();pts.forEach(([a,b],i)=>i?g.lineTo(ox+a*s,oy-b*s):g.moveTo(ox+a*s,oy-b*s));g.closePath();if(dash){g.setLineDash([6,5]);g.strokeStyle=col;g.lineWidth=3;g.stroke();g.setLineDash([]);}else{g.fillStyle=tint(col,.5);g.fill();g.strokeStyle=col;g.lineWidth=3;g.stroke();}};
   tri([[1,1],[1,3],[2,2]],'#2f7de1');tri([[1,1],[3,1],[2,0]].map(([a,b])=>[a,b+0]),'#16a36f',true);
   [['Translation','slide: 3 right, 2 up'],['Reflection','flip over a line'],['Rotation','turn around a point: 90° or 180°, clockwise or counterclockwise']].forEach(([a,b],i)=>{T(g,a,X0+340,y+60+i*86,FT.bodyB,acc());wrap(g,b,X0+340,y+94+i*86,TW-340,28,{font:FT.small});});y+=330;
@@ -226,7 +226,7 @@ P.lesson({id:'coords5',title:'Coordinates and transformations',strand:'Spatial S
   [[X(0),Z(0),X(N+.4),Z(0)],[X(0),Z(0),X(0),Z(N+.4)]].forEach(([a,b,c,d])=>{const len=Math.hypot(c-a,d-b);const m=new THREE.Mesh(new THREE.BoxGeometry(c!==a?len:.03,.04,d!==b?len:.03),lam(INK));m.position.set((a+c)/2,.05,(b+d)/2);grp.add(m);});
   const labs=new THREE.Group();grp.add(labs);const shG=new THREE.Group(),ghG=new THREE.Group();grp.add(shG,ghG);
   const mirror=new THREE.Mesh(new THREE.BoxGeometry(.05,.45,N*s+.2),new THREE.MeshLambertMaterial({color:'#e0453a',transparent:true,opacity:.5}));mirror.position.set(X(4),.22,Z(N/2));grp.add(mirror);
-  const pin=new THREE.Group();const pm=mk(new THREE.ConeGeometry(.1,.3,16),lam('#e2457a'),0);pm.rotation.x=Math.PI;pm.position.y=.2;pin.add(pm);const ph=mk(new THREE.SphereGeometry(.1,14,10),lam('#e2457a'),0);ph.position.y=.4;pin.add(ph);grp.add(pin);
+  const pin=new THREE.Group();const pm=mk(new THREE.ConeGeometry(.1,.3,16),lam('#e4572e'),0);pm.rotation.x=Math.PI;pm.position.y=.2;pin.add(pm);const ph=mk(new THREE.SphereGeometry(.1,14,10),lam('#e4572e'),0);ph.position.y=.4;pin.add(ph);grp.add(pin);
   const ptag=label('',{size:.2,bg:'#ffffff'});grp.add(ptag);const scl=label('',{size:.2,color:GREY});scl.position.set(X(N)+.15,.2,Z(N)-.15);grp.add(scl);
   function axes(){clearGroup(labs);for(let i=0;i<=N;i++){const lx=label(String(i*st.sc),{size:.16,color:GREY});lx.position.set(X(i),.1,Z(0)+.22);labs.add(lx);const ly=label(String(i*st.sc),{size:.16,color:GREY});ly.position.set(X(0)-.24,.1,Z(i));labs.add(ly);}scl.userData.set('1 line = '+st.sc);}
   function flag(pts,col,op,dash){const g=new THREE.Group();g.add(slab(pts.map(([x,y])=>[X(x),Z(y)]),col,dash?.02:.08,op));const P3=pts.map(([x,y])=>V(X(x),.1,Z(y)));if(!dash)for(let i=0;i<3;i++)g.add(seg(P3[i],P3[(i+1)%3],INK,.015));
@@ -263,7 +263,7 @@ const mfmt=(q,i)=>{const d=6-i;let s=String(q);if(d>0){s=s.padStart(d+1,'0');s=s
 P.lesson({id:'metric5',title:'Metric units and converting',strand:'Spatial Sense',codes:['E2.1','E2.2'],
  guide:{goal:'Use appropriate metric units to estimate and measure length, area, mass and capacity, and convert larger metric units into smaller ones using the base-ten relationships among units.',words:'kilometre, metre, centimetre, millimetre, kilogram, gram, litre, millilitre, convert, prefix',
   ask:['Why do you multiply by 1000 to change kilometres to metres?','Which unit would you use for the mass of a paper clip? Of a dog?','How many millilitres are in 2.5 L?'],home:'Read labels in the kitchen: 750 mL, 1.5 kg, 355 mL. Convert each one to the other unit together.'},
- learn:[{say:'Each step down is × 10.',speech:'Metric units are like a staircase. Each step down to a smaller unit multiplies the number by ten. Watch three kilometres walk down the stairs to metres: thirty, three hundred, three thousand.',view:'model',demo:'down'},
+ learn:[{say:'Each step down is × 10.',speech:'Metric units are like a staircase. Each step down to a smaller unit multiplies the number by ten. Watch Keiko’s three kilometres walk down the stairs to metres: thirty, three hundred, three thousand.',view:'model',demo:'down'},
         {say:'Read the base-ten relationships.',speech:'One kilometre is one thousand metres. One metre is one hundred centimetres. One centimetre is ten millimetres. Kilograms, grams, litres and millilitres work the same way.',view:'read'},
         {say:'Watch: decimals convert too.',speech:'One point seven five metres walks down two steps to centimetres. Times ten, times ten: one hundred seventy-five centimetres.',view:'model',demo:'decimal'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -274,14 +274,14 @@ P.lesson({id:'metric5',title:'Metric units and converting',strand:'Spatial Sense
  init:k=>({kind:'length',q:3000000,i:0,start:0,hide:false,ask:null,need:null}),
  left(p,S){const g=p.g;let y=header(p,S);
   y=para(p,y,'Metric units are *base ten*. Each prefix is 10 times the next smaller one. To change a larger unit to a smaller one, *multiply*.')+16;
-  const st=['km','hm','dam','m','dm','cm','mm'];st.forEach((u,i)=>{const x=X0+i*118,h=200-i*24;rr(g,x,y+220-h,110,h,8);g.fillStyle=tint(['#7c3aed','#8b5cf6','#a78bfa','#2f7de1','#16a36f','#e2457a','#f08a24'][i],.35);g.fill();T(g,u,x+55,y+220-h+36,FT.bodyB,INK,'center');if(i<6)T(g,'×10',x+110,y+240-h+26,FT.hand,BLUE,'center');});y+=250;
+  const st=['km','hm','dam','m','dm','cm','mm'];st.forEach((u,i)=>{const x=X0+i*118,h=200-i*24;rr(g,x,y+220-h,110,h,8);g.fillStyle=tint(['#7c3aed','#8b5cf6','#a78bfa','#2f7de1','#16a36f','#e4572e','#f08a24'][i],.35);g.fill();T(g,u,x+55,y+220-h+36,FT.bodyB,INK,'center');if(i<6)T(g,'×10',x+110,y+240-h+26,FT.hand,BLUE,'center');});y+=250;
   [['1 km = 1000 m','1 kg = 1000 g'],['1 m = 100 cm','1 L = 1000 mL'],['1 cm = 10 mm','1 m² = 10 000 cm²']].forEach(([a,b],i)=>{T(g,a,X0,y+i*44,FT.bodyB,acc());T(g,b,X0+TW/2,y+i*44,FT.bodyB,acc());});y+=130;
   y=para(p,y,'*Estimate first:* a door is about 2 m tall, a paper clip has a mass of about 1 g, a juice box holds about 200 mL, a classroom floor is about 80 m².')+10;
   y=keyWords(p,y,[['kilo-','1000 times the base unit'],['milli-','one thousandth of the base unit']]);
   predict(p,y,S,'p28','How many grams are in 2.4 kg?','*2400 g.* 2.4 × 1000 = 2400.');},
  readout(p,S,y){const g=p.g,st=S.st,U=MU[st.kind];T(g,mfmt(st.q,st.start)+' '+U[st.start]+' = '+(st.hide&&st.i!==st.start?'?':mfmt(st.q,st.i))+' '+U[st.i],X0,y+52,ZS(48),acc());
   T(g,st.i>st.start?'× '+Math.pow(10,st.i-st.start)+' ('+(st.i-st.start)+' step'+(st.i-st.start>1?'s':'')+' down)':st.i<st.start?'÷ '+Math.pow(10,st.start-st.i):'Move the ball to convert.',X0,y+94,FT.bodyB);return y+100;},
- build(S,grp,mode,game){const st=S.st,cols=['#7c3aed','#8b5cf6','#a78bfa','#2f7de1','#16a36f','#e2457a','#f08a24'];const stairs=new THREE.Group();grp.add(stairs);
+ build(S,grp,mode,game){const st=S.st,cols=['#7c3aed','#8b5cf6','#a78bfa','#2f7de1','#16a36f','#e4572e','#f08a24'];const stairs=new THREE.Group();grp.add(stairs);
   const ball=mk(new THREE.SphereGeometry(.2,22,16),lam('#ffd24a'),0);grp.add(ball);const tag=label('',{size:.26,bg:'#ffffff'});grp.add(tag);const xs=i=>-2.0+i*.66,hs=i=>1.5-i*.2;
   function drawStairs(){clearGroup(stairs);const U=MU[st.kind];U.forEach((u,i)=>{const b=mk(new THREE.BoxGeometry(.62,hs(i),1.0),lam(cols[i]),20);b.position.set(xs(i),hs(i)/2,-1.7);stairs.add(b);const l=label(u,{size:.24,color:'#fff'});l.position.set(xs(i),hs(i)-.2,-1.17);stairs.add(l);
       A.drag(b,{tap:()=>moveTo2(i)});if(i<6){const a=label('×10',{size:.15,color:BLUE});a.position.set(xs(i)+.33,hs(i)+.12,-1.05);stairs.add(a);}});place(false);}
@@ -310,7 +310,7 @@ P.lesson({id:'metric5',title:'Metric units and converting',strand:'Spatial Sense
 P.lesson({id:'protractor5',title:'Measuring angles with a protractor',strand:'Spatial Sense',codes:['E2.3','E2.4'],
  guide:{goal:'Compare angles by matching and by measuring with non-standard units, explain how protractors work, use them to measure and construct angles up to 180°, and use benchmark angles to estimate.',words:'angle, degree (°), protractor, vertex, arm, benchmark angle, estimate',
   ask:['Why does a protractor have two rows of numbers?','How can 45°, 90° and 180° help you estimate an angle?','How many 15° wedges fit in a right angle?'],home:'Fold a paper circle in half, then quarters, then eighths. Use the folds as benchmarks of 180°, 90° and 45°.'},
- learn:[{say:'Count the wedges first.',speech:'Before protractors, we can measure with small wedges. This angle holds six wedges. If each wedge is fifteen degrees, the angle is ninety degrees. Watch them fill in.',view:'model',demo:'wedges'},
+ learn:[{say:'Count the wedges first.',speech:'Before protractors, Jordan measures with small wedges. This angle holds six wedges. If each wedge is fifteen degrees, the angle is ninety degrees. Watch them fill in.',view:'model',demo:'wedges'},
         {say:'Read how a protractor works.',speech:'A protractor is a half circle split into one hundred eighty degrees. Put its centre on the vertex. Line up zero with one arm. Read where the other arm crosses, on the scale that starts at zero.',view:'read'},
         {say:'Watch: construct 130°.',speech:'To construct a one hundred thirty degree angle, start with one arm on zero, then open the other arm until it reaches one hundred thirty. It is a bit less than one hundred thirty-five, our benchmark.',view:'model',demo:'build'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -336,12 +336,12 @@ P.lesson({id:'protractor5',title:'Measuring angles with a protractor',strand:'Sp
   for(let a=0;a<=180;a+=5){const r=a*Math.PI/180,len=a%30===0?.26:a%10===0?.17:.09;const t=new THREE.Mesh(G('ptk'+len,()=>new THREE.BoxGeometry(len,.015,.012)),lam('#2f7de1'));t.position.set(Vx.x+Math.cos(r)*(1.85-len/2),.08,Vx.z-Math.sin(r)*(1.85-len/2));t.rotation.y=r;grp.add(t);
     if(a%30===0){const l=label(String(a),{size:.17,color:'#2f7de1'});l.position.set(Vx.x+Math.cos(r)*1.25,.14,Vx.z-Math.sin(r)*1.25);grp.add(l);const o=label(String(180-a),{size:.13,color:GREY});o.position.set(Vx.x+Math.cos(r)*2.03,.14,Vx.z-Math.sin(r)*2.03);grp.add(o);}}
   const arm=col=>{const m=mk(new THREE.BoxGeometry(L,.07,.08),lam(col),20);m.geometry.translate(L/2,0,0);return m;};const a1=arm(INK);a1.position.copy(Vx);grp.add(a1);const a2=arm(INK);a2.position.copy(Vx);grp.add(a2);
-  const vtx=mk(new THREE.SphereGeometry(.09,16,12),lam('#e2457a'),0);vtx.position.copy(Vx);grp.add(vtx);const tip=mk(new THREE.SphereGeometry(.15,18,14),lam('#ffd24a'),0);grp.add(tip);
+  const vtx=mk(new THREE.SphereGeometry(.09,16,12),lam('#e4572e'),0);vtx.position.copy(Vx);grp.add(vtx);const tip=mk(new THREE.SphereGeometry(.15,18,14),lam('#ffd24a'),0);grp.add(tip);
   const wedG=new THREE.Group();wedG.position.set(Vx.x,.09,Vx.z);grp.add(wedG);let arc=null;const deg=label('',{size:.34,bg:'#ffffff'});grp.add(deg);
   function draw(){const r=st.a*Math.PI/180;a2.rotation.y=r;tip.position.set(Vx.x+Math.cos(r)*L,.15,Vx.z-Math.sin(r)*L);if(arc){grp.remove(arc);disposeObj(arc);arc=null;}clearGroup(wedG);
-    if(st.wedges){const n=Math.floor(st.a/15+1e-9);for(let k=0;k<n;k++){const m=mk(wedgeGeo(1.3,.04,k*15*Math.PI/180+.01,(k+1)*15*Math.PI/180-.01),lam(k%2?'#ffb3cf':'#ffd86b'),0);wedG.add(m);}
+    if(st.wedges){const n=Math.floor(st.a/15+1e-9);for(let k=0;k<n;k++){const m=mk(wedgeGeo(1.3,.04,k*15*Math.PI/180+.01,(k+1)*15*Math.PI/180-.01),lam(k%2?'#ffc98f':'#ffd86b'),0);wedG.add(m);}
       const rem=st.a-n*15;if(rem>0){const m=mk(wedgeGeo(1.3,.04,n*15*Math.PI/180+.01,st.a*Math.PI/180),lam('#e5e7eb'),0);wedG.add(m);}}
-    else{const ring=new THREE.RingGeometry(.4,.52,40,1,0,r);ring.rotateX(-Math.PI/2);arc=new THREE.Mesh(ring,new THREE.MeshLambertMaterial({color:'#e2457a',side:THREE.DoubleSide}));arc.position.set(Vx.x,.12,Vx.z);grp.add(arc);}
+    else{const ring=new THREE.RingGeometry(.4,.52,40,1,0,r);ring.rotateX(-Math.PI/2);arc=new THREE.Mesh(ring,new THREE.MeshLambertMaterial({color:'#e4572e',side:THREE.DoubleSide}));arc.position.set(Vx.x,.12,Vx.z);grp.add(arc);}
     deg.userData.set(st.a+'°'+(st.wedges?'  = '+(st.a/15).toFixed(st.a%15?1:0)+' wedges':''));const mr=r/2;deg.position.set(Vx.x+Math.cos(mr)*.9,.55,Vx.z-Math.sin(mr)*.9);check();A.redraw();}
   function setA(a){a=Math.max(5,Math.min(180,Math.round(a/5)*5));if(a===st.a)return;st.a=a;A.pop();draw();}
   A.drag(tip,{h:.15,move:pt=>{const lp=grp.worldToLocal(pt.clone());let a=Math.atan2(-(lp.z-Vx.z),lp.x-Vx.x)*180/Math.PI;if(a<0)a=a<-90?180:5;setA(a);},drop:()=>draw()});
@@ -367,7 +367,7 @@ P.lesson({id:'protractor5',title:'Measuring angles with a protractor',strand:'Sp
 P.lesson({id:'area5',title:'Area of parallelograms and triangles',strand:'Spatial Sense',codes:['E2.5','E2.6'],
  guide:{goal:'Use the area relationships among rectangles, parallelograms and triangles to develop the formulas A = b × h and A = b × h ÷ 2, solve problems with them, and show that shapes with the same area can have different perimeters.',words:'base, height, area, perimeter, parallelogram, triangle, formula, square units',
   ask:['Why is the height of a parallelogram not the slanted side?','Why is a triangle exactly half of a parallelogram?','Can two rectangles with an area of 24 m² have different perimeters?'],home:'Cut a parallelogram from paper. Cut off a triangle and slide it to make a rectangle. Measure both!'},
- learn:[{say:'Cut and slide: a parallelogram becomes a rectangle.',speech:'Cut the triangle off one end of the parallelogram and slide it to the other end. Now it is a rectangle with the same base and the same height. So the area of a parallelogram is base times height.',view:'model',demo:'cut'},
+ learn:[{say:'Cut and slide: a parallelogram becomes a rectangle.',speech:'Amani cuts the triangle off one end of the parallelogram and slides it to the other end. Now it is a rectangle with the same base and the same height. So the area of a parallelogram is base times height.',view:'model',demo:'cut'},
         {say:'Read the two formulas.',speech:'For a parallelogram, area equals base times height. Two copies of a triangle make a parallelogram, so the area of a triangle is base times height divided by two.',view:'read'},
         {say:'Watch: two triangles make a parallelogram.',speech:'Copy the triangle, turn the copy halfway around, and fit it against the first one. Together they make a parallelogram. One triangle is half of it.',view:'model',demo:'tri'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -378,7 +378,7 @@ P.lesson({id:'area5',title:'Area of parallelograms and triangles',strand:'Spatia
  init:k=>({kind:'para',b:6,h:4,o:2,done:false,w:6,rh:4,want:null,ask:null}),
  left(p,S){const g=p.g;let y=header(p,S);
   y=para(p,y,'Area relationships give us formulas. The *height* is always measured straight up from the base, at a right angle.')+16;
-  const s=30,ox=X0+20,oy=y+140;g.fillStyle=tint('#e2457a',.4);g.beginPath();g.moveTo(ox,oy);g.lineTo(ox+6*s,oy);g.lineTo(ox+8*s,oy-4*s);g.lineTo(ox+2*s,oy-4*s);g.closePath();g.fill();g.strokeStyle='#e2457a';g.lineWidth=3;g.stroke();
+  const s=30,ox=X0+20,oy=y+140;g.fillStyle=tint('#e4572e',.4);g.beginPath();g.moveTo(ox,oy);g.lineTo(ox+6*s,oy);g.lineTo(ox+8*s,oy-4*s);g.lineTo(ox+2*s,oy-4*s);g.closePath();g.fill();g.strokeStyle='#e4572e';g.lineWidth=3;g.stroke();
   g.setLineDash([6,5]);g.strokeStyle=INK;g.beginPath();g.moveTo(ox+2*s,oy);g.lineTo(ox+2*s,oy-4*s);g.stroke();g.setLineDash([]);T(g,'h = 4',ox+2*s+8,oy-2*s,FT.cap);T(g,'b = 6',ox+3*s,oy+24,FT.cap,INK,'center');
   T(g,'→',ox+8*s+30,oy-2*s,ZS(40),BLUE);g.fillStyle=tint('#2f7de1',.4);g.fillRect(ox+10*s,oy-4*s,6*s,4*s);g.strokeStyle='#2f7de1';g.strokeRect(ox+10*s,oy-4*s,6*s,4*s);T(g,'6 × 4 = 24 cm²',ox+10*s,oy+24,FT.smallB);y+=180;
   rr(g,X0,y,TW,110,16);g.fillStyle=tint(acc(),.1);g.fill();T(g,'Parallelogram:  A = b × h',X0+24,y+46,ZS(36),acc());T(g,'Triangle:  A = b × h ÷ 2',X0+24,y+94,ZS(36),acc());y+=136;
@@ -394,10 +394,10 @@ P.lesson({id:'area5',title:'Area of parallelograms and triangles',strand:'Spatia
   const poly=(pts,col,h,op)=>slab(pts.map(([x,y])=>[X(x),Z(y)]),col,h,op);
   function draw(){clearGroup(sh);piece=null;copy=null;corner.visible=st.kind==='rect';
     if(st.kind==='rect'){for(let r=0;r<st.rh;r++)for(let q=0;q<st.w;q++){const t=mk(G('ar5t',()=>new THREE.BoxGeometry(c-.03,.06,c-.03)),lam((r+q)%2?'#4cc38a':'#16a36f'),20);t.position.set(X(q+.5),.05,Z(r+.5));sh.add(t);}
-      const P4=[[0,0],[st.w,0],[st.w,st.rh],[0,st.rh]].map(([x,y])=>V(X(x),.1,Z(y)));for(let i=0;i<4;i++)sh.add(seg(P4[i],P4[(i+1)%4],'#e2457a',.025));
+      const P4=[[0,0],[st.w,0],[st.w,st.rh],[0,st.rh]].map(([x,y])=>V(X(x),.1,Z(y)));for(let i=0;i<4;i++)sh.add(seg(P4[i],P4[(i+1)%4],'#e4572e',.025));
       corner.position.set(X(st.w),.2,Z(st.rh));const l=label('A '+st.w*st.rh+' cm²  ·  P '+2*(st.w+st.rh)+' cm',{size:.24,bg:'#ffffff'});l.position.set(X(st.w/2),.75,Z(st.rh)-.2);sh.add(l);check();A.redraw();return;}
     const b=st.b,h=st.h,o=st.o;
-    if(st.kind==='para'){sh.add(poly([[o,0],[b,0],[b+o,h],[o,h]],'#e2457a',.1,.85));piece=new THREE.Group();piece.add(poly([[0,0],[o,0],[o,h]],'#f59bbb',.1,.95));sh.add(piece);if(st.done)piece.position.x=b*c;}
+    if(st.kind==='para'){sh.add(poly([[o,0],[b,0],[b+o,h],[o,h]],'#e4572e',.1,.85));piece=new THREE.Group();piece.add(poly([[0,0],[o,0],[o,h]],'#f7a96b',.1,.95));sh.add(piece);if(st.done)piece.position.x=b*c;}
     else{sh.add(poly([[0,0],[b,0],[o,h]],'#2f7de1',.1,.85));copy=new THREE.Group();const M=V(X((b+o)/2),0,Z(h/2));copy.position.copy(M);const inner=poly([[0,0],[b,0],[o,h]],'#9cc2f5',.1,.6);inner.position.set(-M.x,.02,-M.z);copy.add(inner);sh.add(copy);copy.visible=st.done;if(st.done)copy.rotation.y=Math.PI;}
     const hl=[V(X(o),.14,Z(0)),V(X(o),.14,Z(h))];const n=8;for(let k=0;k<n;k+=2)sh.add(seg(hl[0].clone().lerp(hl[1],k/n),hl[0].clone().lerp(hl[1],(k+1)/n),INK,.018));
     const lb=label('b = '+b+' cm',{size:.2,color:INK});lb.position.set(X(b/2),.2,Z(0)+.25);sh.add(lb);const lh=label('h = '+h+' cm',{size:.2,color:INK});lh.position.set(X(o)+.38,.35,Z(h/2));sh.add(lh);check();A.redraw();}
@@ -426,13 +426,13 @@ P.lesson({id:'area5',title:'Area of parallelograms and triangles',strand:'Spatia
 /* =========================================================
    31. Sales tax and Canadian taxes
    ========================================================= */
-const GOODS5=[{n:'Notebook',p:3.49,col:'#2f7de1',s:[.34,.06,.44]},{n:'Pencils',p:2.75,col:'#f2c200',s:[.4,.08,.18]},{n:'Calculator',p:8.25,col:'#475569',s:[.26,.06,.4]},{n:'Bottle',p:12.50,col:'#16a36f',cyl:true},{n:'Headphones',p:19.95,col:'#e2457a',torus:true},{n:'Backpack',p:24.99,col:'#8b5cf6',s:[.42,.46,.24]}];
+const GOODS5=[{n:'Notebook',p:3.49,col:'#2f7de1',s:[.34,.06,.44]},{n:'Pencils',p:2.75,col:'#f2c200',s:[.4,.08,.18]},{n:'Calculator',p:8.25,col:'#475569',s:[.26,.06,.4]},{n:'Bottle',p:12.50,col:'#16a36f',cyl:true},{n:'Headphones',p:19.95,col:'#e4572e',torus:true},{n:'Backpack',p:24.99,col:'#8b5cf6',s:[.42,.46,.24]}];
 const TAXES=[['Federal','income tax, GST','national defence, health transfers, Canada Pension'],['Provincial','income tax, provincial part of HST','schools, hospitals, highways'],['Municipal','property tax','local roads, parks, libraries, garbage pickup, fire service']];
 const r2=v=>Math.round(v*100)/100;
 P.lesson({id:'tax5',title:'Sales tax and where taxes go',strand:'Financial Literacy',codes:['F1.2','F1.6'],
  guide:{goal:'Estimate and calculate the cost of several items priced in dollars and cents, including sales tax, and describe the taxes collected by each level of government in Canada and the services they pay for.',words:'subtotal, sales tax, HST, total, estimate, federal, provincial, municipal, income tax, property tax',
   ask:['Why is the total at the register more than the price on the shelf?','How can 10% help you estimate 13% tax?','Which level of government pays for your local library? How?'],home:'Look at a receipt together. Find the subtotal, the HST and the total. Estimate the tax first, then check.'},
- learn:[{say:'Add the prices: the subtotal.',speech:'Put a notebook for three dollars forty-nine and a bottle for twelve dollars fifty in the cart. Line up the decimal points and add: the subtotal is fifteen dollars ninety-nine.',view:'model',demo:'cart'},
+ learn:[{say:'Add the prices: the subtotal.',speech:'Zane puts a notebook for three dollars forty-nine and a bottle for twelve dollars fifty in the cart. Line up the decimal points and add: the subtotal is fifteen dollars ninety-nine.',view:'model',demo:'cart'},
         {say:'Read about taxes in Canada.',speech:'In Ontario, most things we buy have thirteen percent harmonized sales tax, called HST. Governments collect taxes to pay for services: the federal government, the province, and your city or town.',view:'read'},
         {say:'Watch: add the HST.',speech:'Thirteen percent of fifteen dollars ninety-nine is about two dollars eight cents. To estimate, find ten percent, one dollar sixty, and add a bit more. The total is eighteen dollars seven cents.',view:'model',demo:'tax'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -445,7 +445,7 @@ P.lesson({id:'tax5',title:'Sales tax and where taxes go',strand:'Financial Liter
   y=para(p,y,'At the store, add the prices to get the *subtotal*. Then the *HST* (13% in Ontario) is added to get the *total*.')+14;
   rr(g,X0,y,TW,140,16);g.fillStyle='#1f2937';g.fill();const MF='700 28px "Atkinson Hyperlegible", monospace';[['Subtotal','$15.99'],['HST 13%','$2.08'],['TOTAL','$18.07']].forEach(([a,b],i)=>{T(g,a,X0+30,y+42+i*38,MF,i===2?'#7ef0b0':'#cbd5e1');T(g,b,X0+TW-30,y+42+i*38,MF,i===2?'#7ef0b0':'#cbd5e1','right');});y+=164;
   y=para(p,y,'*Estimate 13%:* 10% of $15.99 is about $1.60; 3% more is about $0.48. So the tax is about *$2.08*.')+14;
-  TAXES.forEach(([a,b,c],i)=>{rr(g,X0,y,TW,84,14);g.fillStyle=tint(['#2f7de1','#16a36f','#e2457a'][i],.12);g.fill();T(g,a,X0+20,y+34,FT.bodyB,['#2f7de1','#16a36f','#e2457a'][i]);T(g,'collects '+b,X0+200,y+34,FT.small);wrap(g,'pays for '+c,X0+200,y+64,TW-220,24,{font:FT.cap,color:GREY});y+=90;});
+  TAXES.forEach(([a,b,c],i)=>{rr(g,X0,y,TW,84,14);g.fillStyle=tint(['#2f7de1','#16a36f','#e4572e'][i],.12);g.fill();T(g,a,X0+20,y+34,FT.bodyB,['#2f7de1','#16a36f','#e4572e'][i]);T(g,'collects '+b,X0+200,y+34,FT.small);wrap(g,'pays for '+c,X0+200,y+64,TW-220,24,{font:FT.cap,color:GREY});y+=90;});
   y=keyWords(p,y,[['HST','harmonized sales tax: 13% in Ontario'],['property tax','a tax on homes and land that pays for city services']]);
   predict(p,y,S,'p31','Estimate the HST on a $40 jacket.','*About $5.* 10% is $4, and 13% is a bit more: $5.20.');},
  readout(p,S,y){const g=p.g,st=S.st,sub=r2(st.cart.reduce((a,i)=>a+GOODS5[i].p,0)),tax=r2(sub*.13);T(g,'Subtotal '+money(sub)+'   +   HST '+money(tax)+'   =   '+money(r2(sub+tax)),X0,y+46,FT.bodyB,acc());
@@ -479,11 +479,11 @@ P.lesson({id:'tax5',title:'Sales tax and where taxes go',strand:'Financial Liter
 /* =========================================================
    32. Budgets, credit and debt
    ========================================================= */
-const CATS=[{k:'needs',n:'Needs',col:'#2f7de1'},{k:'wants',n:'Wants',col:'#e2457a'},{k:'save',n:'Savings',col:'#16a36f'},{k:'give',n:'Giving',col:'#f08a24'}];
+const CATS=[{k:'needs',n:'Needs',col:'#2f7de1'},{k:'wants',n:'Wants',col:'#e4572e'},{k:'save',n:'Savings',col:'#16a36f'},{k:'give',n:'Giving',col:'#f08a24'}];
 P.lesson({id:'budget5',title:'Budgets, credit and debt',strand:'Financial Literacy',codes:['F1.1','F1.3','F1.4'],
  guide:{goal:'Describe ways money is transferred, design basic budgets for earning and spending scenarios, and explain credit and debt and how they affect financial decisions.',words:'budget, income, expense, balanced, credit, debt, interest, borrow, e-transfer, direct deposit',
   ask:['What makes a budget balanced?','Why can buying on credit cost more than paying cash?','What are three ways money can move from one person to another?'],home:'Plan a budget for a family pizza night: income $40. List needs, wants and savings. Is it balanced?'},
- learn:[{say:'A budget plans every dollar.',speech:'You earn forty dollars a month. A budget splits it into needs, wants, savings and giving. Watch the blocks stack up. When the expenses match the income, the budget is balanced.',view:'model',demo:'budget'},
+ learn:[{say:'A budget plans every dollar.',speech:'Layla earns forty dollars a month. A budget splits it into needs, wants, savings and giving. Watch the blocks stack up. When the expenses match the income, the budget is balanced.',view:'model',demo:'budget'},
         {say:'Read about credit and debt.',speech:'Credit lets you buy now and pay later. The money you owe is debt. Lenders usually charge interest, so you pay back more than you borrowed.',view:'read'},
         {say:'Watch: paying off a debt.',speech:'You borrow sixty dollars for a game, with ten percent interest. You now owe sixty-six dollars. Watch the debt shrink as you pay twenty-two dollars each month.',view:'model',demo:'credit'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -494,7 +494,7 @@ P.lesson({id:'budget5',title:'Budgets, credit and debt',strand:'Financial Litera
  init:k=>({inc:40,b:{needs:0,wants:0,save:0,give:0},view:'budget',debt:0,month:0,plan:null,ask:null}),
  left(p,S){const g=p.g;let y=header(p,S);
   y=para(p,y,'A *budget* is a plan for your money. *Income* comes in; *expenses* go out. A budget is *balanced* when they are equal.')+14;
-  const s=24;[['Income',8,'#8b5cf6'],['Needs',3,'#2f7de1'],['Wants',2,'#e2457a'],['Savings',2,'#16a36f'],['Giving',1,'#f08a24']].forEach(([n,k,c],i)=>{const x=X0+20+i*150;for(let j=0;j<k;j++){rr(g,x,y+220-(j+1)*s,90,s-3,4);g.fillStyle=c;g.fill();}T(g,n,x+45,y+250,FT.smallB,c,'center');T(g,'$'+k*5,x+45,y+214-k*s,FT.small,INK,'center');});y+=300;
+  const s=24;[['Income',8,'#8b5cf6'],['Needs',3,'#2f7de1'],['Wants',2,'#e4572e'],['Savings',2,'#16a36f'],['Giving',1,'#f08a24']].forEach(([n,k,c],i)=>{const x=X0+20+i*150;for(let j=0;j<k;j++){rr(g,x,y+220-(j+1)*s,90,s-3,4);g.fillStyle=c;g.fill();}T(g,n,x+45,y+250,FT.smallB,c,'center');T(g,'$'+k*5,x+45,y+214-k*s,FT.small,INK,'center');});y+=300;
   [['Credit','borrowing to buy now and pay later'],['Debt','money you owe'],['Interest','the extra cost of borrowing']].forEach(([a,b],i)=>{T(g,a,X0,y+i*40,FT.bodyB,acc());T(g,b,X0+160,y+i*40,FT.body);});y+=126;
   y=para(p,y,'*Moving money:* cash, cheque, debit, e-transfer, direct deposit (a pay cheque into a bank account), and online payments.')+10;
   y=keyWords(p,y,[['balanced budget','income equals expenses plus savings'],['interest','money paid for borrowing money']]);
@@ -540,7 +540,7 @@ const DEALS=[[{n:3,p:4.50,u:'L',it:'juice',c:'#f59e0b'},{n:2,p:3.20,u:'L',it:'ju
 P.lesson({id:'value5',title:'Unit rates and best value',strand:'Financial Literacy',codes:['F1.5'],
  guide:{goal:'Calculate unit rates for goods and services and decide which offers the best value, considering more than price.',words:'unit rate, unit price, per, best value, compare, quantity',
   ask:['How does the price for one help you compare packages?','Is the biggest package always the best value? When is it not?','How much is 5 apples for $2.00 per apple?'],home:'At the grocery store, look at the unit price on the shelf tag. Compare two sizes of the same product.'},
- learn:[{say:'Find the price for one.',speech:'Three litres of juice cost four dollars fifty. Two litres cost three dollars twenty. Split each package into one-litre parts. The first is one dollar fifty per litre; the second is one dollar sixty. The three-litre jug is the better value.',view:'model',demo:'split'},
+ learn:[{say:'Find the price for one.',speech:'Mateo sees three litres of juice for four dollars fifty, and two litres for three dollars twenty. Split each package into one-litre parts. The first is one dollar fifty per litre; the second is one dollar sixty. The three-litre jug is the better value.',view:'model',demo:'split'},
         {say:'Read about unit rates.',speech:'A unit rate is the cost for one unit: per litre, per apple, per hour. Divide the price by the number of units. The lowest unit rate is the best price.',view:'read'},
         {say:'Watch: three packages.',speech:'Now compare three packs of paper towels. Find each price per roll. The lowest price per roll is the best value, if you will use them all.',view:'model',demo:'three'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},

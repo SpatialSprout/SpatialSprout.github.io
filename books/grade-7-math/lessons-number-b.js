@@ -18,7 +18,7 @@ const SUP=['⁰','¹','²','³','⁴','⁵','⁶','⁷','⁸','⁹'];
 P.lesson({id:'fracops7',title:'Adding and subtracting mixed numbers',strand:'Number',codes:['B2.5'],
  guide:{goal:'Add and subtract fractions and mixed numbers by creating equivalent fractions with common denominators, in various contexts.',words:'mixed number, improper fraction, common denominator, equivalent fraction, regroup',
   ask:['How can you write 1 1/2 as an improper fraction?','What common denominator works for 2/3 and 3/4?','When subtracting 2 1/4 − 3/4, why do you need to regroup?'],home:'Combine two recipes: 1 1/2 cups of flour and 2/3 cup more. How much in all? Use sixths.'},
- learn:[{say:'Line up the pieces.',speech:'One and a half plus two thirds. Cut every whole into sixths. One and a half is nine sixths, and two thirds is four sixths. Together: thirteen sixths, which is two and one sixth.',view:'model',demo:'add'},
+ learn:[{say:'Line up the pieces.',speech:'Maya’s recipe needs one and a half cups plus two thirds of a cup. Cut every whole into sixths. One and a half is nine sixths, and two thirds is four sixths. Together: thirteen sixths, which is two and one sixth.',view:'model',demo:'add'},
         {say:'Read the steps.',speech:'Find a common denominator. Rewrite each fraction or mixed number. Add or subtract the numerators. Then write the answer as a mixed number in lowest terms.',view:'read'},
         {say:'Watch: subtract with regrouping.',speech:'Two and a quarter minus three quarters. Nine quarters minus three quarters is six quarters, or one and a half.',view:'model',demo:'sub'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -30,17 +30,17 @@ P.lesson({id:'fracops7',title:'Adding and subtracting mixed numbers',strand:'Num
  left(p,S){const g=p.g;let y=header(p,S);
   y=para(p,y,'Write mixed numbers as *improper fractions* (or work with the wholes and parts), using a *common denominator*.')+14;
   [['1 1/2 + 2/3','= 9/6 + 4/6','= 13/6 = 2 1/6'],['2 1/4 − 3/4','= 9/4 − 3/4','= 6/4 = 1 1/2'],['3/4 + 5/6','= 9/12 + 10/12','= 19/12 = 1 7/12']].forEach(([a,b,c],i)=>{rr(g,X0,y+i*70,TW,62,14);g.fillStyle=tint(acc(),.08+i*.03);g.fill();T(g,a,X0+20,y+i*70+42,ZS(32),acc());T(g,b,X0+290,y+i*70+42,FT.bodyB);T(g,c,X0+TW-20,y+i*70+42,FT.bodyB,INK,'right');});y+=226;
-  const bw=TW-40;for(let i=0;i<18;i++){rr(g,X0+i*bw/18+1,y,bw/18-2,40,4);g.fillStyle=i<9?'#2f7de1':i<13?'#e2457a':'#e9eef7';g.fill();}[0,6,12,18].forEach(k=>{g.fillStyle=INK;g.fillRect(X0+k*bw/18-2,y-8,4,56);});T(g,'1 whole',X0+bw/6,y+70,FT.cap,GREY,'center');y+=100;
+  const bw=TW-40;for(let i=0;i<18;i++){rr(g,X0+i*bw/18+1,y,bw/18-2,40,4);g.fillStyle=i<9?'#2f7de1':i<13?'#e4572e':'#e9eef7';g.fill();}[0,6,12,18].forEach(k=>{g.fillStyle=INK;g.fillRect(X0+k*bw/18-2,y-8,4,56);});T(g,'1 whole',X0+bw/6,y+70,FT.cap,GREY,'center');y+=100;
   y=keyWords(p,y,[['mixed number','a whole number and a fraction, like 2 1/6'],['improper fraction','numerator greater than denominator, like 13/6']]);
   predict(p,y,S,'p8','What is 3 1/3 − 1 5/6?','*1 1/2.* 20/6 − 11/6 = 9/6 = 1 1/2.');},
  readout(p,S,y){const g=p.g,st=S.st,D2=st.D,ok=D2&&D2%st.b===0&&D2%st.d===0;T(g,fr(st.a,st.b)+' '+st.op+' '+fr(st.c,st.d)+(ok?'  =  '+st.a*D2/st.b+'/'+D2+' '+st.op+' '+st.c*D2/st.d+'/'+D2:''),X0,y+50,ZS(38),acc());
   T(g,!D2?'Choose a common denominator.':ok?(st.done?'Choose the answer.':'Press Combine.'):'That does not fit both denominators.',X0,y+92,FT.bodyB);return y+100;},
  build(S,grp,mode,game){const st=S.st,L=1.3,x0=-1.95,Z1=-2.75,Z2=-2.05,Zr=-1.0;const g1=new THREE.Group(),g2=new THREE.Group(),gr=new THREE.Group();grp.add(g1,g2,gr);
   const rt=mk(new THREE.BoxGeometry(3*L+.1,.04,.75),lam('#eef2f8'),20);rt.position.set(x0+1.5*L,.02,Zr);grp.add(rt);[0,1,2,3].forEach(k=>{const t=mk(new THREE.BoxGeometry(.03,.4,2.6),lam(INK),0);t.position.set(x0+k*L,.2,-1.9);grp.add(t);const l=label(String(k),{size:.22});l.position.set(x0+k*L,.6,Zr+.5);grp.add(l);});
-  const ls=[label('',{size:.24,bg:'#ffffff',border:'#2f7de1'}),label('',{size:.24,bg:'#ffffff',border:'#e2457a'})];ls[0].position.set(2.15,.5,Z1);ls[1].position.set(2.15,.5,Z2);grp.add(...ls);
+  const ls=[label('',{size:.24,bg:'#ffffff',border:'#2f7de1'}),label('',{size:.24,bg:'#ffffff',border:'#e4572e'})];ls[0].position.set(2.15,.5,Z1);ls[1].position.set(2.15,.5,Z2);grp.add(...ls);
   function bar(g,n,d,z,col){clearGroup(g);const w=L/d,tot=Math.ceil(n/d)*d||d;for(let i=0;i<tot;i++){const m=mk(G('fo7'+d,()=>new THREE.BoxGeometry(w-.02,.24,.5)),lam(i<n?col:'#f1f4f9'),20);m.position.set(x0+(i+.5)*w,.12+(i<n?.04:0),z);g.add(m);}}
-  function draw(){const D2=st.D,ok=D2&&D2%st.b===0&&D2%st.d===0;const n1=ok?st.a*D2/st.b:st.a,d1=ok?D2:st.b,n2=ok?st.c*D2/st.d:st.c,d2=ok?D2:st.d;bar(g1,n1,d1,Z1,'#2f7de1');bar(g2,n2,d2,Z2,'#e2457a');ls[0].userData.set(fr(st.a,st.b));ls[1].userData.set(fr(st.c,st.d));
-    clearGroup(gr);if(st.done&&ok){const w=L/D2;if(st.op==='+'){for(let i=0;i<n1+n2;i++){const m=mk(G('fo7'+D2,()=>new THREE.BoxGeometry(w-.02,.24,.5)),lam(i<n1?'#2f7de1':'#e2457a'),20);m.position.set(x0+(i+.5)*w,.16,Zr);gr.add(m);}}
+  function draw(){const D2=st.D,ok=D2&&D2%st.b===0&&D2%st.d===0;const n1=ok?st.a*D2/st.b:st.a,d1=ok?D2:st.b,n2=ok?st.c*D2/st.d:st.c,d2=ok?D2:st.d;bar(g1,n1,d1,Z1,'#2f7de1');bar(g2,n2,d2,Z2,'#e4572e');ls[0].userData.set(fr(st.a,st.b));ls[1].userData.set(fr(st.c,st.d));
+    clearGroup(gr);if(st.done&&ok){const w=L/D2;if(st.op==='+'){for(let i=0;i<n1+n2;i++){const m=mk(G('fo7'+D2,()=>new THREE.BoxGeometry(w-.02,.24,.5)),lam(i<n1?'#2f7de1':'#e4572e'),20);m.position.set(x0+(i+.5)*w,.16,Zr);gr.add(m);}}
       else for(let i=0;i<n1;i++){const gone=i>=n1-n2;const m=mk(G('fo7'+D2,()=>new THREE.BoxGeometry(w-.02,.24,.5)),lam(gone?'#fde2e2':'#2f7de1'),20);m.position.set(x0+(i+.5)*w,gone?.05:.16,Zr);if(gone)m.scale.y=.3;gr.add(m);}}A.redraw();}
   function setD(D2){st.D=D2;st.done=false;st.shown=false;A.pop();draw();}
   function combine(){const D2=st.D;if(!(D2&&D2%st.b===0&&D2%st.d===0)){A.bad('Choose a common denominator first.');return;}st.done=true;A.pop();draw();}
@@ -63,7 +63,7 @@ const pf=n=>{const o=[];let k=2;while(n>1){while(n%k===0){o.push(k);n/=k;}k++;}r
 P.lesson({id:'gcf7',title:'Greatest common factor and least common multiple',strand:'Number',codes:['B2.6'],
  guide:{goal:'Determine the greatest common factor of whole numbers up to 144, and the lowest common multiple of two and three whole numbers.',words:'factor, multiple, prime factor, greatest common factor (GCF), lowest common multiple (LCM), Venn diagram',
   ask:['How do shared prime factors give the GCF?','Why is the LCM of 4 and 6 not 24?','Two buses leave every 12 and 18 minutes. When do they leave together again?'],home:'Find the GCF to split 24 apples and 36 oranges into equal bags with nothing left over.'},
- learn:[{say:'Shared primes make the GCF.',speech:'Twelve is two times two times three. Eighteen is two times three times three. Put the shared primes in the middle of the Venn diagram: two and three. Two times three is six, the greatest common factor.',view:'model',demo:'venn'},
+ learn:[{say:'Shared primes make the GCF.',speech:'Liam has twelve apples: two times two times three. And eighteen bars: two times three times three. Put the shared primes in the middle of the Venn diagram: two and three. Two times three is six, the greatest common factor.',view:'model',demo:'venn'},
         {say:'Read about GCF and LCM.',speech:'The greatest common factor is the product of the shared primes. The lowest common multiple is the product of all the primes in the diagram, shared ones counted once.',view:'read'},
         {say:'Watch: frogs find the LCM.',speech:'A four-frog and a six-frog jump along a number line. The smaller one always jumps next. They first land together at twelve: the lowest common multiple.',view:'model',demo:'frogs'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -74,20 +74,20 @@ P.lesson({id:'gcf7',title:'Greatest common factor and least common multiple',str
  init:k=>({mode:'venn',a:12,b:18,c:0,pos:[0,0,0],sorted:false,ask:null}),
  left(p,S){const g=p.g;let y=header(p,S);
   y=para(p,y,'Write each number as a product of *primes*. Put shared primes in the middle of a *Venn diagram*.')+16;
-  g.globalAlpha=.35;g.beginPath();g.arc(X0+250,y+110,110,0,Math.PI*2);g.fillStyle='#2f7de1';g.fill();g.beginPath();g.arc(X0+400,y+110,110,0,Math.PI*2);g.fillStyle='#e2457a';g.fill();g.globalAlpha=1;
-  T(g,'12',X0+200,y+20,FT.bodyB,'#2f7de1','center');T(g,'18',X0+450,y+20,FT.bodyB,'#e2457a','center');T(g,'2',X0+190,y+120,ZS(36),INK,'center');T(g,'2   3',X0+325,y+120,ZS(36),INK,'center');T(g,'3',X0+460,y+120,ZS(36),INK,'center');
+  g.globalAlpha=.35;g.beginPath();g.arc(X0+250,y+110,110,0,Math.PI*2);g.fillStyle='#2f7de1';g.fill();g.beginPath();g.arc(X0+400,y+110,110,0,Math.PI*2);g.fillStyle='#e4572e';g.fill();g.globalAlpha=1;
+  T(g,'12',X0+200,y+20,FT.bodyB,'#2f7de1','center');T(g,'18',X0+450,y+20,FT.bodyB,'#e4572e','center');T(g,'2',X0+190,y+120,ZS(36),INK,'center');T(g,'2   3',X0+325,y+120,ZS(36),INK,'center');T(g,'3',X0+460,y+120,ZS(36),INK,'center');
   T(g,'GCF = 2 × 3 = 6',X0+560,y+80,FT.bodyB,acc());T(g,'LCM = 2 × 2 × 3 × 3 = 36',X0+560,y+130,FT.bodyB,acc());y+=240;
   y=para(p,y,'*LCM by jumping:* list multiples until they match. 4: 4, 8, *12*. 6: 6, *12*. LCM(4, 6) = 12. For three numbers, keep going until all three match: LCM(4, 6, 9) = 36.')+10;
   y=keyWords(p,y,[['GCF','the greatest number that divides into each number'],['LCM','the least number that each number divides into']]);
   predict(p,y,S,'p9','What is the GCF of 24 and 36?','*12.* 24 = 2·2·2·3 and 36 = 2·2·3·3 share 2·2·3 = 12.');},
  readout(p,S,y){const g=p.g,st=S.st;if(st.mode==='venn'){T(g,st.a+' = '+pf(st.a).join(' × ')+'    '+st.b+' = '+pf(st.b).join(' × '),X0,y+40,FT.bodyB,acc());T(g,st.sorted?'GCF '+gcd(st.a,st.b)+'   ·   LCM '+lcm(st.a,st.b):'Press Sort primes.',X0,y+82,FT.bodyB);return y+92;}
   const ns=[st.a,st.b,st.c].filter(Boolean);T(g,'Frogs: '+ns.map((n,i)=>n+'s at '+st.pos[i]).join(',  '),X0,y+40,FT.bodyB,acc());const same=st.pos.slice(0,ns.length).every(v=>v===st.pos[0])&&st.pos[0]>0;T(g,same?'Together at '+st.pos[0]+': LCM!':'Jump until they land together.',X0,y+82,FT.bodyB,same?'#16a36f':INK);return y+92;},
- build(S,grp,mode,game){const st=S.st;const g2=new THREE.Group();grp.add(g2);const FC=['#2f7de1','#e2457a','#16a36f'];
+ build(S,grp,mode,game){const st=S.st;const g2=new THREE.Group();grp.add(g2);const FC=['#2f7de1','#e4572e','#16a36f'];
   function ball(v,col){const g=new THREE.Group();const m=mk(G('gp7',()=>new THREE.SphereGeometry(.17,16,12)),lam(col),0);g.add(m);const l=label(String(v),{size:.2,color:INK});l.position.y=.33;g.add(l);return g;}
-  function draw(){clearGroup(g2);if(st.mode==='venn'){[[-.55,'#2f7de1',st.a],[.55,'#e2457a',st.b]].forEach(([x,c,n])=>{const d=mk(new THREE.CylinderGeometry(1.15,1.15,.03,48),new THREE.MeshLambertMaterial({color:c,transparent:true,opacity:.28}),0);d.position.set(x,.02,-1.9);g2.add(d);const l=label(String(n),{size:.3,color:c});l.position.set(x*2,.3,-3.0);g2.add(l);});
+  function draw(){clearGroup(g2);if(st.mode==='venn'){[[-.55,'#2f7de1',st.a],[.55,'#e4572e',st.b]].forEach(([x,c,n])=>{const d=mk(new THREE.CylinderGeometry(1.15,1.15,.03,48),new THREE.MeshLambertMaterial({color:c,transparent:true,opacity:.28}),0);d.position.set(x,.02,-1.9);g2.add(d);const l=label(String(n),{size:.3,color:c});l.position.set(x*2,.3,-3.0);g2.add(l);});
       const A1=pf(st.a),B1=pf(st.b);const shared=[];const b2=B1.slice();A1.forEach(p=>{const i=b2.indexOf(p);if(i>=0){shared.push(p);b2.splice(i,1);}});const onlyA=A1.slice();shared.forEach(p=>onlyA.splice(onlyA.indexOf(p),1));
-      if(!st.sorted){A1.forEach((p,i)=>{const b=ball(p,'#93c5fd');b.position.set(-2.0+i*.4,.2,-.5);g2.add(b);});B1.forEach((p,i)=>{const b=ball(p,'#f9a8d4');b.position.set(.4+i*.4,.2,-.5);g2.add(b);});}
-      else{onlyA.forEach((p,i)=>{const b=ball(p,'#93c5fd');b.position.set(-1.25,.2,-2.4+i*.45);g2.add(b);});b2.forEach((p,i)=>{const b=ball(p,'#f9a8d4');b.position.set(1.25,.2,-2.4+i*.45);g2.add(b);});shared.forEach((p,i)=>{const b=ball(p,'#c4b5fd');b.position.set(0,.2,-2.4+i*.45);g2.add(b);});
+      if(!st.sorted){A1.forEach((p,i)=>{const b=ball(p,'#93c5fd');b.position.set(-2.0+i*.4,.2,-.5);g2.add(b);});B1.forEach((p,i)=>{const b=ball(p,'#a5d8ff');b.position.set(.4+i*.4,.2,-.5);g2.add(b);});}
+      else{onlyA.forEach((p,i)=>{const b=ball(p,'#93c5fd');b.position.set(-1.25,.2,-2.4+i*.45);g2.add(b);});b2.forEach((p,i)=>{const b=ball(p,'#a5d8ff');b.position.set(1.25,.2,-2.4+i*.45);g2.add(b);});shared.forEach((p,i)=>{const b=ball(p,'#c4b5fd');b.position.set(0,.2,-2.4+i*.45);g2.add(b);});
         const l=label('GCF '+gcd(st.a,st.b)+'  ·  LCM '+lcm(st.a,st.b),{size:.26,bg:'#ffffff'});l.position.set(0,1.3,-1.9);g2.add(l);}}
     else{const ns=[st.a,st.b,st.c].filter(Boolean),mx=ns.reduce(lcm)*1.15,L=4.2,x0=-2.1,toX=v=>x0+v/mx*L;const tr=mk(new THREE.BoxGeometry(L+.1,.05,.1),lam('#cbd5e6'),0);tr.position.set(0,.03,-1.0);g2.add(tr);
       ns.forEach((n,i)=>{const z=-2.7+i*.6;for(let v=n;v<=mx;v+=n){const pd=mk(G('lp7',()=>new THREE.CylinderGeometry(.07,.07,.03,12)),lam(tint(FC[i],.5)),0);pd.position.set(toX(v),.02,z);g2.add(pd);}
@@ -117,7 +117,7 @@ P.lesson({id:'gcf7',title:'Greatest common factor and least common multiple',str
 P.lesson({id:'exponents7',title:'Exponents and repeated multiplication',strand:'Number',codes:['B2.7'],
  guide:{goal:'Evaluate and express repeated multiplication of whole numbers using exponential notation, in various contexts.',words:'exponent, base, power, squared, cubed, exponential notation',
   ask:['What do the base and the exponent in 2⁵ tell you?','Why is 3² called “3 squared”?','Which is greater, 2⁵ or 5²?'],home:'Fold a sheet of paper in half again and again. Count the layers: 2, 4, 8… Write each as a power of 2.'},
- learn:[{say:'Repeated multiplication.',speech:'Two to the power of three means two times two times two. The base is two, and the exponent three tells how many twos to multiply. Watch the cubes build: a line of two, a square of four, a cube of eight.',view:'model',demo:'cube'},
+ learn:[{say:'Repeated multiplication.',speech:'Ines writes two to the power of three. It means two times two times two. The base is two, and the exponent three tells how many twos to multiply. Watch the cubes build: a line of two, a square of four, a cube of eight.',view:'model',demo:'cube'},
         {say:'Read about squares and cubes.',speech:'A number to the power of two is squared, like the area of a square. A number to the power of three is cubed, like the volume of a cube. Higher powers keep multiplying.',view:'read'},
         {say:'Watch: doubling.',speech:'A bacterium splits in two every hour. After one hour: two. After two: four. After six hours: two to the sixth, sixty-four. Watch the towers double.',view:'model',demo:'double'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -134,7 +134,7 @@ P.lesson({id:'exponents7',title:'Exponents and repeated multiplication',strand:'
   y=keyWords(p,y,[['base','the number being multiplied'],['exponent','how many times the base is used as a factor']]);
   predict(p,y,S,'p10','Write 7 × 7 × 7 × 7 in exponential form and evaluate.','*7⁴ = 2401.*');},
  readout(p,S,y){const g=p.g,st=S.st,v=Math.pow(st.b,st.e);T(g,st.b+SUP[st.e]+' = '+Array(st.e).fill(st.b).join(' × ')+' = '+v.toLocaleString('en-CA').replace(/,/g,' '),X0,y+52,ZS(st.e>5?32:42),acc());return y+70;},
- build(S,grp,mode,game){const st=S.st;const g2=new THREE.Group();grp.add(g2);const C=['#2f7de1','#e2457a','#16a36f','#f59e0b','#8b5cf6','#0fa5a5'];
+ build(S,grp,mode,game){const st=S.st;const g2=new THREE.Group();grp.add(g2);const C=['#2f7de1','#e4572e','#16a36f','#f59e0b','#8b5cf6','#0fa5a5'];
   function draw(drop){clearGroup(g2);const b=st.b,e=st.e,v=Math.pow(b,e);const u=Math.min(.26,2.6/Math.max(b*(e>3?Math.ceil(v/(b*b*b)):1),b*1.2,1));let i=0;
     const blocks=e<=3?1:Math.pow(b,e-3);const per=Math.min(b,3);const s=Math.min(.26,(4.0/(Math.min(blocks,6)*(Math.min(b,5)+1)))||.26);
     if(v>400){const l=label(v.toLocaleString('en-CA').replace(/,/g,' '),{size:.5,bg:'#ffffff'});l.position.set(0,1.0,-1.8);g2.add(l);const t=label('too many cubes to show!',{size:.2,color:GREY});t.position.set(0,.5,-1.8);g2.add(t);A.redraw();return;}
@@ -161,7 +161,7 @@ P.lesson({id:'exponents7',title:'Exponents and repeated multiplication',strand:'
 P.lesson({id:'fracmult7',title:'Multiplying and dividing fractions',strand:'Number',codes:['B2.8'],
  guide:{goal:'Multiply and divide fractions by fractions, using area models, bars and other tools, in various contexts.',words:'fraction of a fraction, area model, product, quotient, common denominator, reciprocal',
   ask:['Why is 2/3 × 3/4 less than both fractions?','How does the area model show the denominator of the product?','How many 1/8 pieces fit in 3/4?'],home:'Take 3/4 of a chocolate bar, then give away 2/3 of that piece. What fraction of the whole bar did you give?'},
- learn:[{say:'Overlap the shading.',speech:'Two thirds times three quarters. Shade two of three columns blue, and three of four rows yellow. The overlap is green: six of twelve squares. Two thirds of three quarters is six twelfths, or one half.',view:'model',demo:'mul'},
+ learn:[{say:'Overlap the shading.',speech:'Kenji multiplies two thirds times three quarters. Shade two of three columns blue, and three of four rows yellow. The overlap is green: six of twelve squares. Two thirds of three quarters is six twelfths, or one half.',view:'model',demo:'mul'},
         {say:'Read the rules.',speech:'To multiply fractions, multiply the numerators and multiply the denominators. To divide, ask how many of the second fraction fit into the first. With a common denominator, divide the numerators.',view:'read'},
         {say:'Watch: dividing.',speech:'Three quarters divided by one eighth. Write three quarters as six eighths. How many one-eighth pieces fit? Six.',view:'model',demo:'div'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -184,7 +184,7 @@ P.lesson({id:'fracmult7',title:'Multiplying and dividing fractions',strand:'Numb
     if(st.op==='×'){const SZ=2.4,x0=-1.6,z0=-3.0;for(let i=0;i<b;i++)for(let j=0;j<d;j++){const bl=i<a,ye=j<c;const h=bl&&ye?.22:bl||ye?.12:.05;const m=mk(new THREE.BoxGeometry(SZ/b-.03,h,SZ/d-.03),lam(bl&&ye?'#16a36f':bl?'#93c5fd':ye?'#fde68a':'#f1f5f9'),20);m.position.set(x0+(i+.5)*SZ/b,h/2,z0+(j+.5)*SZ/d);g2.add(m);}
       const l1=label(a+'/'+b,{size:.26,color:'#2563eb'});l1.position.set(x0+SZ*a/b/2,.4,z0-.2);g2.add(l1);const l2=label(c+'/'+d,{size:.26,color:'#ca8a04'});l2.position.set(x0-.35,.4,z0+SZ*c/d/2);g2.add(l2);
       const l3=label(a*c+' of '+b*d+' squares',{size:.24,bg:'#ffffff',border:'#16a36f'});l3.position.set(1.5,.6,-1.8);g2.add(l3);}
-    else{const D2=lcm(b,d),L=3.6,x0=-1.8,n1=a*D2/b,n2=c*D2/d,w=L/D2;for(let i=0;i<D2;i++){const grpI=Math.floor(i/n2);const on=i<n1;const m=mk(G('fd7'+D2,()=>new THREE.BoxGeometry(w-.025,.3,.7)),lam(on?(grpI<Math.floor(n1/n2)?['#2f7de1','#e2457a','#16a36f','#f59e0b','#8b5cf6','#0fa5a5'][grpI%6]:'#cbd5e1'):'#f1f5f9'),20);m.position.set(x0+(i+.5)*w,.15,-2.0);g2.add(m);}
+    else{const D2=lcm(b,d),L=3.6,x0=-1.8,n1=a*D2/b,n2=c*D2/d,w=L/D2;for(let i=0;i<D2;i++){const grpI=Math.floor(i/n2);const on=i<n1;const m=mk(G('fd7'+D2,()=>new THREE.BoxGeometry(w-.025,.3,.7)),lam(on?(grpI<Math.floor(n1/n2)?['#2f7de1','#e4572e','#16a36f','#f59e0b','#8b5cf6','#0fa5a5'][grpI%6]:'#cbd5e1'):'#f1f5f9'),20);m.position.set(x0+(i+.5)*w,.15,-2.0);g2.add(m);}
       const l=label(Math.floor(n1/n2)+(n1%n2?' and '+(n1%n2)+'/'+n2:'')+' groups of '+c+'/'+d,{size:.26,bg:'#ffffff'});l.position.set(0,.9,-2.0);g2.add(l);}A.redraw();}
   draw();
   return {info:()=>st.a.join('/')+' '+st.op+' '+st.b.join('/'),
@@ -204,7 +204,7 @@ P.lesson({id:'fracmult7',title:'Multiplying and dividing fractions',strand:'Numb
 P.lesson({id:'decmult7',title:'Multiplying and dividing decimals',strand:'Number',codes:['B2.9'],
  guide:{goal:'Multiply and divide decimal numbers by decimal numbers using area models, place-value reasoning and estimation.',words:'decimal, hundredths, area model, product, quotient, estimate, place value',
   ask:['Why is 0.6 × 0.4 less than both numbers?','How many decimal places does 1.2 × 0.5 have? Why?','Why does 4.8 ÷ 0.6 give the same answer as 48 ÷ 6?'],home:'Gas costs $1.59 per litre. About how much for 0.5 L of oil at $8.40 per litre? Estimate first.'},
- learn:[{say:'Tenths times tenths make hundredths.',speech:'Zero point six times zero point four. On a hundred grid, shade six tenths across and four tenths down. The overlap is twenty-four squares: twenty-four hundredths.',view:'model',demo:'mul'},
+ learn:[{say:'Tenths times tenths make hundredths.',speech:'Zuri multiplies zero point six times zero point four. On a hundred grid, shade six tenths across and four tenths down. The overlap is twenty-four squares: twenty-four hundredths.',view:'model',demo:'mul'},
         {say:'Read the place-value rules.',speech:'Multiply as whole numbers, then count the decimal places in the factors. To divide by a decimal, multiply both numbers by ten or one hundred until the divisor is a whole number.',view:'read'},
         {say:'Watch: dividing by a decimal.',speech:'Four point eight divided by zero point six. Multiply both by ten: forty-eight divided by six is eight.',view:'model',demo:'div'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -250,7 +250,7 @@ const SIT=[{n:'apples at $0.50 each',f:x=>.5*x,prop:true,u:'apples',v:'$'},{n:'t
 P.lesson({id:'proportion7',title:'Proportional reasoning',strand:'Number',codes:['B2.10'],
  guide:{goal:'Identify proportional and non-proportional situations and apply proportional reasoning to solve problems.',words:'proportional, constant of proportionality, unit rate, ratio table, origin, non-proportional',
   ask:['How can a graph show that a situation is proportional?','Why is a taxi with a starting fee not proportional?','If 4 tickets cost $30, what do 10 cost?'],home:'Compare phone plans or bus fares. Which ones are proportional (no starting fee)?'},
- learn:[{say:'Proportional: a straight line from zero.',speech:'Apples cost fifty cents each. Zero apples cost zero dollars, and every apple adds the same amount. The points make a straight line through the origin. That is proportional.',view:'model',demo:'prop'},
+ learn:[{say:'Proportional: a straight line from zero.',speech:'Tariq’s apples cost fifty cents each. Zero apples cost zero dollars, and every apple adds the same amount. The points make a straight line through the origin. That is proportional.',view:'model',demo:'prop'},
         {say:'Read the test.',speech:'A situation is proportional when the ratio of the two quantities is always the same, and the graph is a straight line through the origin. If there is a starting fee, it is not proportional.',view:'read'},
         {say:'Watch: a taxi.',speech:'A taxi costs three dollars plus two dollars per kilometre. The line is straight but starts at three, not at zero. The ratios are not equal: five for one kilometre, but seven for two. Not proportional.',view:'model',demo:'taxi'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -262,8 +262,8 @@ P.lesson({id:'proportion7',title:'Proportional reasoning',strand:'Number',codes:
  left(p,S){const g=p.g;let y=header(p,S);
   y=para(p,y,'In a *proportional* situation, y ÷ x is always the same (the *unit rate*), and the graph is a straight line through the *origin*.')+14;
   const ox=X0+40,oy=y+220,sx=60,sy=12;g.strokeStyle=INK;g.lineWidth=3;g.beginPath();g.moveTo(ox,y+10);g.lineTo(ox,oy);g.lineTo(ox+320,oy);g.stroke();
-  g.strokeStyle='#16a36f';g.lineWidth=4;g.beginPath();g.moveTo(ox,oy);g.lineTo(ox+5*sx,oy-5*4*sy*.8);g.stroke();g.strokeStyle='#e2457a';g.beginPath();g.moveTo(ox,oy-3*sy*2);g.lineTo(ox+5*sx,oy-(3+10)*sy*1.2);g.stroke();
-  T(g,'proportional',X0+380,y+60,FT.bodyB,'#16a36f');T(g,'4 km per hour: 4/1 = 8/2 = 12/3',X0+380,y+94,FT.small);T(g,'not proportional',X0+380,y+150,FT.bodyB,'#e2457a');T(g,'$3 + $2 per km: 5/1 ≠ 7/2',X0+380,y+184,FT.small);y+=250;
+  g.strokeStyle='#16a36f';g.lineWidth=4;g.beginPath();g.moveTo(ox,oy);g.lineTo(ox+5*sx,oy-5*4*sy*.8);g.stroke();g.strokeStyle='#e4572e';g.beginPath();g.moveTo(ox,oy-3*sy*2);g.lineTo(ox+5*sx,oy-(3+10)*sy*1.2);g.stroke();
+  T(g,'proportional',X0+380,y+60,FT.bodyB,'#16a36f');T(g,'4 km per hour: 4/1 = 8/2 = 12/3',X0+380,y+94,FT.small);T(g,'not proportional',X0+380,y+150,FT.bodyB,'#e4572e');T(g,'$3 + $2 per km: 5/1 ≠ 7/2',X0+380,y+184,FT.small);y+=250;
   y=para(p,y,'*Solve with a unit rate:* 4 tickets cost $30, so 1 costs $7.50, and 10 cost *$75*.')+10;
   y=keyWords(p,y,[['proportional','y ÷ x is constant; graph through (0, 0)'],['unit rate','the amount for 1 unit']]);
   predict(p,y,S,'p13','A recipe uses 2 eggs for 12 cookies. How many eggs for 30 cookies?','*5 eggs.* 1 egg per 6 cookies, 30 ÷ 6 = 5.');},
@@ -272,11 +272,11 @@ P.lesson({id:'proportion7',title:'Proportional reasoning',strand:'Number',codes:
   function draw(){clearGroup(g2);const s=SIT[st.si];const xs=[0,1,2,3,4,5],ys=xs.map(s.f),my=Math.max(...ys),sx=.62,sy=2.2/my;
     const back=mk(new THREE.BoxGeometry(3.8,2.6,.04),lam('#ffffff'),20);back.position.set(ox+1.8,1.3,-2.6);g2.add(back);
     g2.add(seg(V(ox,.05,-2.55),V(ox+3.4,.05,-2.55),INK,.02));g2.add(seg(V(ox,.05,-2.55),V(ox,2.5,-2.55),INK,.02));
-    const pts=xs.map((x,i)=>V(ox+x*sx,.05+ys[i]*sy,-2.5));for(let i=0;i<pts.length-1;i++)g2.add(seg(pts[i],pts[i+1],s.prop?'#16a36f':'#e2457a',.025));
-    pts.forEach((p,i)=>{const d=mk(G('pp7',()=>new THREE.SphereGeometry(.07,12,10)),lam(s.prop?'#16a36f':'#e2457a'),0);d.position.copy(p);g2.add(d);const l=label(String(+ys[i].toFixed(2)),{size:.14});l.position.set(p.x,p.y+.2,p.z);g2.add(l);
+    const pts=xs.map((x,i)=>V(ox+x*sx,.05+ys[i]*sy,-2.5));for(let i=0;i<pts.length-1;i++)g2.add(seg(pts[i],pts[i+1],s.prop?'#16a36f':'#e4572e',.025));
+    pts.forEach((p,i)=>{const d=mk(G('pp7',()=>new THREE.SphereGeometry(.07,12,10)),lam(s.prop?'#16a36f':'#e4572e'),0);d.position.copy(p);g2.add(d);const l=label(String(+ys[i].toFixed(2)),{size:.14});l.position.set(p.x,p.y+.2,p.z);g2.add(l);
       const xl=label(String(xs[i]),{size:.14,color:GREY});xl.position.set(p.x,.12,-2.3);g2.add(xl);});
-    const o=mk(new THREE.TorusGeometry(.12,.02,8,20),lam(s.f(0)===0?'#16a36f':'#e2457a'),0);o.position.set(ox,.05,-2.45);g2.add(o);
-    const t=label(s.u+' → '+s.v,{size:.17,color:GREY});t.position.set(ox+1.7,.12,-2.05);g2.add(t);const res=label(s.prop?'proportional ✓':'not proportional ✗',{size:.28,bg:'#ffffff',border:s.prop?'#16a36f':'#e2457a'});res.position.set(ox+1.8,2.85,-2.6);g2.add(res);A.redraw();}
+    const o=mk(new THREE.TorusGeometry(.12,.02,8,20),lam(s.f(0)===0?'#16a36f':'#e4572e'),0);o.position.set(ox,.05,-2.45);g2.add(o);
+    const t=label(s.u+' → '+s.v,{size:.17,color:GREY});t.position.set(ox+1.7,.12,-2.05);g2.add(t);const res=label(s.prop?'proportional ✓':'not proportional ✗',{size:.28,bg:'#ffffff',border:s.prop?'#16a36f':'#e4572e'});res.position.set(ox+1.8,2.85,-2.6);g2.add(res);A.redraw();}
   draw();
   return {info:()=>SIT[st.si].n,
     controls:()=>{if(mode==='play'&&st.ask)return choices(st.setup?null:game,st.ask.o,st.ask.ans,st.ask.ok);return SIT.map((s,i)=>({t:s.n.split(':')[0].split(' at')[0],on:st.si===i,fn:()=>{st.si=i;draw();}}));},
@@ -296,7 +296,7 @@ const EXPRS=[['3 + 4 × 5'],['(3 + 4) × 5'],['20 − 6 ÷ 2'],['2 × 3² + 1'],
 P.lesson({id:'orderops7',title:'Order of operations',strand:'Number',codes:['B2.1'],
  guide:{goal:'Use the properties and order of operations, and the relationships between operations, to solve multi-step problems with whole numbers, decimals, fractions, ratios, rates and percents.',words:'order of operations, brackets, exponents, BEDMAS, multi-step, evaluate',
   ask:['Why is 3 + 4 × 5 not 35?','What changes when you add brackets?','In what order do you do × and ÷ when both appear?'],home:'Write a multi-step price problem: 3 shirts at $12 and a $5 hat, with a $10 coupon. Write one expression with brackets.'},
- learn:[{say:'Follow the order.',speech:'Three plus four times five. Multiply first: four times five is twenty. Then add: twenty-three. Watch the blocks collapse in the right order.',view:'model',demo:'run'},
+ learn:[{say:'Follow the order.',speech:'Maya solves three plus four times five. Multiply first: four times five is twenty. Then add: twenty-three. Watch the blocks collapse in the right order.',view:'model',demo:'run'},
         {say:'Read BEDMAS.',speech:'Brackets first. Then exponents. Then division and multiplication, from left to right. Then addition and subtraction, from left to right.',view:'read'},
         {say:'Watch: brackets change the answer.',speech:'Now with brackets: three plus four, in brackets, times five. The brackets go first: seven times five is thirty-five.',view:'model',demo:'brackets'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -308,7 +308,7 @@ P.lesson({id:'orderops7',title:'Order of operations',strand:'Number',codes:['B2.
  left(p,S){const g=p.g;let y=header(p,S);
   y=para(p,y,'When an expression has more than one operation, follow the *order of operations*:')+16;
   [['B','Brackets','( )'],['E','Exponents','3²'],['DM','Division and Multiplication','left to right'],['AS','Addition and Subtraction','left to right']].forEach(([a,b,c],i)=>{rr(g,X0,y+i*62,TW,54,14);g.fillStyle=tint(VIBE[i],.18);g.fill();T(g,a,X0+20,y+i*62+38,ZS(36),VIBE[i]);T(g,b,X0+120,y+i*62+36,FT.bodyB);T(g,c,X0+TW-20,y+i*62+36,FT.body,GREY,'right');});y+=268;
-  T(g,'3 + 4 × 5 = 3 + 20 = 23',X0,y+20,ZS(38),acc());T(g,'(3 + 4) × 5 = 7 × 5 = 35',X0,y+70,ZS(38),'#e2457a');y+=110;
+  T(g,'3 + 4 × 5 = 3 + 20 = 23',X0,y+20,ZS(38),acc());T(g,'(3 + 4) × 5 = 7 × 5 = 35',X0,y+70,ZS(38),'#e4572e');y+=110;
   y=keyWords(p,y,[['order of operations','the agreed order for doing operations'],['evaluate','find the value of an expression']]);
   predict(p,y,S,'p14','Evaluate 2 × 3² + 1.','*19.* 3² = 9, 2 × 9 = 18, 18 + 1 = 19.');},
  readout(p,S,y){const g=p.g,st=S.st;T(g,st.src,X0,y+40,ZS(40),GREY);T(g,'now: '+st.tok.map(t=>t.v).join(' '),X0,y+86,ZS(40),acc());return y+100;},
@@ -320,7 +320,7 @@ P.lesson({id:'orderops7',title:'Order of operations',strand:'Number',codes:['B2.
     const rng=[];for(let i=start;i<end;i++)rng.push(i);for(const ops of [['^'],['×','÷'],['+','−']]){const i=rng.find(k=>tok[k].op&&ops.includes(tok[k].v));if(i!=null)return i;}return -1;}
   function apply(tok,i){const a=+tok[i-1].v,b=+tok[i+1].v,o=tok[i].v;const r=o==='+'?a+b:o==='−'?a-b:o==='×'?a*b:o==='÷'?a/b:Math.pow(a,b);const out=tok.slice(0,i-1).concat([{v:String(Math.round(r*1000)/1000),op:false}],tok.slice(i+2));
     for(let k=0;k<out.length-2;k++){if(out[k].v==='('&&out[k+2].v===')'){out.splice(k+2,1);out.splice(k,1);}}return out;}
-  function draw(hi){clearGroup(g2);const n=st.tok.length,w=Math.min(.6,4.3/n);st.tok.forEach((t,i)=>{const isOp=t.op,br=t.v==='('||t.v===')';const col=br?'#94a3b8':isOp?{'+':'#16a36f','−':'#16a36f','×':'#2f7de1','÷':'#2f7de1','^':'#e2457a'}[t.v]:'#ffffff';
+  function draw(hi){clearGroup(g2);const n=st.tok.length,w=Math.min(.6,4.3/n);st.tok.forEach((t,i)=>{const isOp=t.op,br=t.v==='('||t.v===')';const col=br?'#94a3b8':isOp?{'+':'#16a36f','−':'#16a36f','×':'#2f7de1','÷':'#2f7de1','^':'#e4572e'}[t.v]:'#ffffff';
       const h=isOp?.35:.28;const m=mk(new THREE.BoxGeometry(w*.9,h,.6),lam(col),20);m.position.set(-2.15+(i+.5)*w,h/2,-1.8);if(i===hi)m.position.y+=.25;g2.add(m);const l=label(t.v==='^'?'^':t.v,{size:Math.min(.3,w*.6),color:isOp||br?'#ffffff':INK});l.position.set(m.position.x,h+.1+(i===hi?.25:0),-1.8);g2.add(l);
       if(isOp)A.drag(m,{tap:()=>tap(i)});});const res=n===1?label('= '+st.tok[0].v,{size:.4,bg:'#ffffff',border:'#16a36f'}):null;if(res){res.position.set(0,1.2,-1.8);g2.add(res);}A.redraw();}
   function tap(i){const k=nextIdx(st.tok);if(k<0){A.say('All done!');return;}if(i!==k){const o=st.tok[k];A.bad('Not yet! First: '+(st.tok.slice(0,k).some(t=>t.v==='(')?'inside the brackets, ':'')+(o.v==='^'?'the exponent':o.v==='×'||o.v==='÷'?'× and ÷ from the left':'+ and − from the left')+'.');return;}

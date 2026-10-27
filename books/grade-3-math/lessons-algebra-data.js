@@ -13,7 +13,7 @@ function choices(game,list,ans,ok){return list.map(o=>({t:String(o),big:true,fn:
 P.lesson({id:'patterns',title:'Repeating and growing patterns',strand:'Algebra',codes:['C1.1','C1.2','C1.3','C1.4'],
  guide:{goal:'Identify, create and extend repeating and growing patterns, find pattern rules, make predictions, and find missing terms.',words:'pattern, repeating, growing, core, term, pattern rule, table of values',
   ask:['What stays the same and what changes?','How can you find term 10 without building it?','Where do you see patterns in real life?'],home:'Look for patterns on clothes, floors and fences. Build a staircase of blocks: 1, 3, 5, 7…'},
- learn:[{say:'Patterns repeat or grow.',speech:'A pattern repeats or grows by a rule. Watch the towers grow: start at one and add two each time.',view:'model',demo:'grow'},
+ learn:[{say:'Patterns repeat or grow.',speech:'A pattern repeats or grows by a rule. Watch Mei’s towers grow: start at one and add two each time.',view:'model',demo:'grow'},
         {say:'Read about pattern rules.',speech:'A repeating pattern has a core that repeats. A growing pattern changes by the same amount each time.',view:'read'},
         {say:'Watch: predicting term 6.',speech:'If the rule is add two, term six is two more than term five.',view:'model',demo:'next'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -63,7 +63,7 @@ P.lesson({id:'patterns',title:'Repeating and growing patterns',strand:'Algebra',
 P.lesson({id:'balance',title:'Balance and equations',strand:'Algebra',codes:['C2.1','C2.2'],
  guide:{goal:'Determine whether expressions are equivalent, and use a variable (a box or letter) to stand for a missing number in an equation.',words:'equation, equal, not equal, balance, variable, expression',
   ask:['What does the = sign really mean?','How did you know how many cubes to add?','Can you write another equation that balances 7 + 5?'],home:'Use a coat hanger with two cups as a balance. Put coins in each cup and make both sides equal.'},
- learn:[{say:'= means both sides are the same.',speech:'An equation says two amounts are equal. Watch the scale: seven plus five on one side, four plus the mystery box on the other.',view:'model',demo:'solve'},
+ learn:[{say:'= means both sides are the same.',speech:'An equation says two amounts are equal. Watch Eli’s scale: seven plus five on one side, four plus the mystery box on the other.',view:'model',demo:'solve'},
         {say:'Read about variables.',speech:'A box or a letter can stand for a missing number. It is called a variable.',view:'read'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
         {say:'Your turn: balance the scale.',speech:'Your turn. Tap the yellow pan to add a cube to the mystery box. Tap the mystery cubes to take one away.',view:'model'}],
@@ -116,7 +116,7 @@ const LEVELS=[{s:[0,5,0],goal:[0,1],rocks:[[1,3],[2,2]]},{s:[0,5,0],goal:[3,2],r
 P.lesson({id:'coding',title:'Code a robot',strand:'Algebra',codes:['C3.1','C3.2','E1.4'],
  guide:{goal:'Write and execute code with sequential and repeating events, read and change existing code, and give and follow movement instructions with quarter turns.',words:'program, code, sequence, loop, repeat, debug, quarter turn',
   ask:['What would happen if two blocks swapped places?','How does ×5 make the program shorter?','Your robot bumped a rock. Which block is the bug?'],home:'Play "human robot". Give forward and quarter-turn instructions to reach the fridge. Use repeats to make it shorter.'},
- learn:[{say:'A program is steps in order.',speech:'A program is a list of steps a computer follows in order. Watch the robot run this program.',view:'model',demo:'run'},
+ learn:[{say:'A program is steps in order.',speech:'A program is a list of steps a computer follows in order. Watch Nova’s robot run this program.',view:'model',demo:'run'},
         {say:'Read about loops and debugging.',speech:'A loop repeats a step. Times three means do it three times. A turn right is a quarter turn.',view:'read'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
         {say:'Your turn: write a program.',speech:'Your turn. Add blocks, use repeat, then press run. Tap the robot to run too.',view:'model'}],
@@ -127,9 +127,9 @@ P.lesson({id:'coding',title:'Code a robot',strand:'Algebra',codes:['C3.1','C3.2'
  init:k=>({li:k==='play'?0:1,prog:k==='play'?[]:[{cmd:'F',n:3},{cmd:'R',n:1},{cmd:'F',n:3}],active:-1}),
  left(p,S){const g=p.g;let y=header(p,S);
   y=para(p,y,'A *program* is a list of steps that a computer follows in order. Coders say the steps run in *sequence*.')+16;
-  rr(g,X0,y,470,214,16);g.fillStyle='#24203f';g.fill();['1   ↑  Forward ×3','2   ↻  Turn right','3   ↑  Forward ×2'].forEach((l,i)=>T(g,l,X0+30,y+62+i*56,FT.mono,['#9fe6ff','#ffd86b','#ffb3cf'][i]));
+  rr(g,X0,y,470,214,16);g.fillStyle='#24203f';g.fill();['1   ↑  Forward ×3','2   ↻  Turn right','3   ↑  Forward ×2'].forEach((l,i)=>T(g,l,X0+30,y+62+i*56,FT.mono,['#9fe6ff','#ffd86b','#ffc98f'][i]));
   const gx=X0+520,gy=y+4,s=50;for(let i=0;i<4;i++)for(let j=0;j<6;j++){g.fillStyle=(i+j)%2?'#efeafe':'#ffffff';g.fillRect(gx+j*s,gy+i*s,s,s);g.strokeStyle='#d8cff8';g.lineWidth=2;g.strokeRect(gx+j*s,gy+i*s,s,s);}
-  g.strokeStyle='#e2457a';g.lineWidth=5;g.beginPath();g.moveTo(gx+s/2,gy+3.5*s);g.lineTo(gx+s/2,gy+.5*s);g.lineTo(gx+2.5*s,gy+.5*s);g.stroke();g.beginPath();g.arc(gx+s/2,gy+3.5*s,10,0,Math.PI*2);g.fillStyle=BLUE;g.fill();T(g,'★',gx+2.5*s,gy+.5*s+12,'700 34px serif','#f2a400','center');
+  g.strokeStyle='#e4572e';g.lineWidth=5;g.beginPath();g.moveTo(gx+s/2,gy+3.5*s);g.lineTo(gx+s/2,gy+.5*s);g.lineTo(gx+2.5*s,gy+.5*s);g.stroke();g.beginPath();g.arc(gx+s/2,gy+3.5*s,10,0,Math.PI*2);g.fillStyle=BLUE;g.fill();T(g,'★',gx+2.5*s,gy+.5*s+12,'700 34px serif','#f2a400','center');
   y+=272;y=para(p,y,'A *loop* repeats a step: ×3 means do it 3 times. *↻* is a quarter turn right, *↺* a quarter turn left. Fixing mistakes is *debugging*.')+14;
   y=keyWords(p,y,[['sequence','steps that run one after another, in order'],['loop','code that repeats a step'],['debug','find and fix a mistake in code']]);
   predict(p,y,S,'p12','The robot faces north. It runs  ↑  ↑  ↻  ↑ . Which way is it facing at the end?','*East.* ↻ is a quarter turn right, and right of north is east.');},
@@ -177,7 +177,7 @@ const RULES=[{a:['Red',i=>i.c==='red'],b:['Curved',i=>!!CURVED[i.s]]},{a:['Blue'
 P.lesson({id:'sorting',title:'Sorting with Venn diagrams',strand:'Data',codes:['D1.1'],
  guide:{goal:'Sort sets of data according to two attributes using Venn and Carroll diagrams.',words:'sort, attribute, Venn diagram, Carroll diagram, both, neither',
   ask:['Why does this shape go in the middle?','What goes outside both circles?','How is a Carroll diagram like a Venn diagram?'],home:'Sort laundry: socks and not socks, white and not white. Use two hula hoops or two loops of string.'},
- learn:[{say:'Sort by two rules at once.',speech:'A Venn diagram sorts things using two rules. Things that fit both rules go in the middle. Watch the shapes sort themselves.',view:'model',demo:'sort'},
+ learn:[{say:'Sort by two rules at once.',speech:'A Venn diagram sorts things using two rules. Things that fit both rules go in the middle. Watch Max’s shapes sort themselves.',view:'model',demo:'sort'},
         {say:'Read about Venn and Carroll diagrams.',speech:'A Carroll diagram uses a table instead of circles. Each box is one combination of the two rules.',view:'read'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
         {say:'Your turn: drag shapes into the hoops.',speech:'Your turn. Drag each shape into the right part of the Venn diagram. Shapes that fit neither rule go in the neither box.',view:'model'}],
@@ -189,8 +189,8 @@ P.lesson({id:'sorting',title:'Sorting with Venn diagrams',strand:'Data',codes:['
  left(p,S){const g=p.g;let y=header(p,S);
   y=para(p,y,'We can *sort* things by their *attributes*, like colour or shape. A *Venn diagram* uses overlapping circles for two rules.')+12;
   const cx=X0+240,cy=y+140;g.globalAlpha=.25;g.fillStyle='#ff6b6b';g.beginPath();g.arc(cx-70,cy,120,0,Math.PI*2);g.fill();g.fillStyle='#4f8df7';g.beginPath();g.arc(cx+70,cy,120,0,Math.PI*2);g.fill();g.globalAlpha=1;
-  g.lineWidth=4;g.strokeStyle='#e2457a';g.beginPath();g.arc(cx-70,cy,120,0,Math.PI*2);g.stroke();g.strokeStyle=BLUE;g.beginPath();g.arc(cx+70,cy,120,0,Math.PI*2);g.stroke();
-  T(g,'Red',cx-130,cy-130,FT.bodyB,'#e2457a','center');T(g,'Curved',cx+130,cy-130,FT.bodyB,BLUE,'center');T(g,'red cube',cx-110,cy+8,FT.small,INK,'center');T(g,'red ball',cx,cy+8,FT.smallB,INK,'center');T(g,'blue can',cx+110,cy+8,FT.small,INK,'center');
+  g.lineWidth=4;g.strokeStyle='#e4572e';g.beginPath();g.arc(cx-70,cy,120,0,Math.PI*2);g.stroke();g.strokeStyle=BLUE;g.beginPath();g.arc(cx+70,cy,120,0,Math.PI*2);g.stroke();
+  T(g,'Red',cx-130,cy-130,FT.bodyB,'#e4572e','center');T(g,'Curved',cx+130,cy-130,FT.bodyB,BLUE,'center');T(g,'red cube',cx-110,cy+8,FT.small,INK,'center');T(g,'red ball',cx,cy+8,FT.smallB,INK,'center');T(g,'blue can',cx+110,cy+8,FT.small,INK,'center');
   T(g,'both!',cx,cy+46,FT.hand,acc(),'center');const tx=X0+540,ty=y+30,cw2=140,ch2=70;
   [['','Curved','Not curved'],['Red','red ball','red cube'],['Not red','blue can','blue cube']].forEach((r,i)=>r.forEach((c,j)=>{const x=tx+j*cw2*.8-(j?0:20),yy=ty+i*ch2;if(i&&j){g.strokeStyle=INK;g.lineWidth=2;g.strokeRect(x-8,yy-44,cw2*.8,ch2);}T(g,c,x,yy,i===0||j===0?FT.smallB:FT.small,i===0||j===0?acc():INK);}));
   T(g,'Carroll diagram',tx,ty+3*ch2+10,FT.hand,BLUE);y+=300;
@@ -224,11 +224,11 @@ P.lesson({id:'sorting',title:'Sorting with Venn diagrams',strand:'Data',codes:['
 /* =========================================================
    14. Pictographs and bar graphs
    ========================================================= */
-const FRUIT=['Apples','Blueberries','Bananas','Strawberries'],FCOL=['#ff8a8a','#6ea0ff','#ffd84a','#ff8cc4'];
+const FRUIT=['Apples','Blueberries','Bananas','Strawberries'],FCOL=['#ff8a8a','#6ea0ff','#ffd84a','#ffa060'];
 P.lesson({id:'graphs',title:'Pictographs and bar graphs',strand:'Data',codes:['D1.2','D1.3','D1.5'],
  guide:{goal:'Collect and organize data in frequency tables and display it in pictographs and bar graphs using many-to-one correspondence, with titles, labels and scales; then ask and answer questions about the data.',words:'data, tally, frequency table, pictograph, bar graph, title, key, scale',
   ask:['Why do we bundle tallies in groups of five?','What does the key tell you?','What question could this graph answer?'],home:'Survey the family about favourite snacks. Make tallies, then stack blocks to build the bar graph.'},
- learn:[{say:'Graphs show data.',speech:'Data is information we collect. A class voted for their favourite fruit. Watch the votes stack up into a bar graph.',view:'model',demo:'build'},
+ learn:[{say:'Graphs show data.',speech:'Data is information we collect. Aisha’s class voted for their favourite fruit. Watch the votes stack up into a bar graph.',view:'model',demo:'build'},
         {say:'Read about tallies and keys.',speech:'A tally chart bundles marks in fives. The key tells what each cube or picture is worth.',view:'read'},
         {say:'Watch: a pictograph with a key.',speech:'Now each picture stands for two votes. Half a picture is one vote.',view:'model',demo:'pict'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -279,11 +279,11 @@ P.lesson({id:'graphs',title:'Pictographs and bar graphs',strand:'Data',codes:['D
 /* =========================================================
    15. Mean and mode
    ========================================================= */
-const KIDS=['Ana','Ben','Cai','Dev','Eli'];
+const KIDS=['Max','Aisha','Diego','Mei','Eli'];
 P.lesson({id:'mean',title:'Mean and mode',strand:'Data',codes:['D1.4','D2.2'],
  guide:{goal:'Find the mean of a data set by evening it out, identify the mode, and explain what each tells about the data.',words:'mean, average, mode, data set, even out, fair share',
   ask:['What does it mean to "even out" the towers?','Can a data set have more than one mode?','Would the mean be the same for a different class? Why might it change?'],home:'Stack coins in 5 piles of different heights. Move coins until all piles match. That height is the mean.'},
- learn:[{say:'The mean evens things out.',speech:'Five friends read some books. The mean is the number each friend would have if we evened out the towers. Watch.',view:'model',demo:'even'},
+ learn:[{say:'The mean evens things out.',speech:'Diego and four friends read some books. The mean is the number each friend would have if we evened out the towers. Watch.',view:'model',demo:'even'},
         {say:'Read about mean and mode.',speech:'To find the mean, add all the numbers, then share the total equally. The mode is the number that appears most often.',view:'read'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
         {say:'Your turn: drag cubes to even out.',speech:'Your turn. Drag a cube from a tall tower onto a short tower until every tower is the same height.',view:'model'}],
@@ -323,7 +323,7 @@ const CHANCE=['certain','likely','equally likely','unlikely','impossible'];
 P.lesson({id:'chance',title:'How likely is it?',strand:'Data',codes:['D2.1'],
  guide:{goal:'Use the words impossible, unlikely, equally likely, likely and certain to describe the likelihood of events, and use likelihood to make predictions.',words:'probability, impossible, unlikely, equally likely, likely, certain, outcome',
   ask:['Which spinner makes blue certain? Why?','Did your tally match what you predicted?','Name something at school that is unlikely to happen.'],home:'Put 3 red and 1 blue sock in a bag. Predict, then pull one out 10 times and tally.'},
- learn:[{say:'Some things are more likely.',speech:'Some things are sure to happen and some can never happen. Watch the spinner. Blue covers three fourths, so blue is likely.',view:'model',demo:'spin'},
+ learn:[{say:'Some things are more likely.',speech:'Some things are sure to happen and some can never happen. Watch Mei’s spinner. Blue covers three fourths, so blue is likely.',view:'model',demo:'spin'},
         {say:'Read the chance words.',speech:'Impossible, unlikely, equally likely, likely and certain describe how likely something is.',view:'read'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
         {say:'Your turn: spin and tally.',speech:'Your turn. Pick a spinner and tap it to spin. Count how often it lands on blue.',view:'model'}],
@@ -334,7 +334,7 @@ P.lesson({id:'chance',title:'How likely is it?',strand:'Data',codes:['D2.1'],
  init:k=>({si:1,tally:[0,0],want:null}),
  left(p,S){const g=p.g;let y=header(p,S);
   y=para(p,y,'Some things are sure to happen and some can never happen. We use special words to describe how *likely* something is.')+16;
-  const segC=['#e2457a','#ff9a5c','#ffd24a','#7fd17a','#16a36f'],lab=['impossible','unlikely','equally likely','likely','certain'],sw=TW/5;
+  const segC=['#e4572e','#ff9a5c','#ffd24a','#7fd17a','#16a36f'],lab=['impossible','unlikely','equally likely','likely','certain'],sw=TW/5;
   lab.forEach((l,i)=>{rr(g,X0+i*sw+3,y,sw-6,46,12);g.fillStyle=segC[i];g.fill();T(g,l,X0+i*sw+sw/2,y+80,FT.smallB,INK,'center');});y+=126;
   [['Rolling a 7 on a number cube','impossible',0],['Flipping heads on a coin','equally likely',2],['The sun will rise tomorrow','certain',4]].forEach(([t,w,i],k)=>{g.beginPath();g.arc(X0+12,y-8+k*40,8,0,Math.PI*2);g.fillStyle=segC[i];g.fill();T(g,t+': ',X0+30,y+k*40,FT.small);g.font=FT.small;T(g,w,X0+30+g.measureText(t+': ').width,y+k*40,FT.smallB,i===2?'#b38a00':segC[i]);});
   y+=136;const cx=X0+110,cy=y+90;for(let i=0;i<4;i++){g.beginPath();g.moveTo(cx,cy);g.arc(cx,cy,90,-Math.PI/2+i*Math.PI/2,-Math.PI/2+(i+1)*Math.PI/2);g.closePath();g.fillStyle=i<3?'#4f8df7':'#ffd24a';g.fill();g.lineWidth=3;g.strokeStyle=INK;g.stroke();}
@@ -347,7 +347,7 @@ P.lesson({id:'chance',title:'How likely is it?',strand:'Data',codes:['D2.1'],
   const disk=new THREE.Group();disk.position.set(0,.1,Z);grp.add(disk);const wed=[];for(let i=0;i<4;i++){const m=mk(wedgeGeo(R,.07,i*Math.PI/2,(i+1)*Math.PI/2),[lam('#4f8df7'),lam('#3a6fd0')],25);disk.add(m);wed.push(m);}
   function paint(){const blue=4-st.si;wed.forEach((m,i)=>{m.material=i<blue?[lam('#4f8df7'),lam('#3a6fd0')]:[lam('#ffd24a'),lam('#e0b62e')];});}
   const arrow=new THREE.Group();arrow.position.set(0,.22,Z);grp.add(arrow);const sh=new THREE.Shape();sh.moveTo(-.25,-.07);sh.lineTo(R*.72,-.05);sh.lineTo(R*.72,-.13);sh.lineTo(R*.92,0);sh.lineTo(R*.72,.13);sh.lineTo(R*.72,.05);sh.lineTo(-.25,.07);sh.closePath();
-  const ag=new THREE.ExtrudeGeometry(sh,{depth:.05,bevelEnabled:false});ag.rotateX(-Math.PI/2);arrow.add(mk(ag,lam('#e2457a'),25));
+  const ag=new THREE.ExtrudeGeometry(sh,{depth:.05,bevelEnabled:false});ag.rotateX(-Math.PI/2);arrow.add(mk(ag,lam('#e4572e'),25));
   const pin=mk(new THREE.CylinderGeometry(.09,.09,.16,20),lam('#ffffff'),30);pin.position.set(0,.22,Z);grp.add(pin);
   const tapper=new THREE.Mesh(new THREE.CylinderGeometry(R,R,.4,24),new THREE.MeshBasicMaterial({visible:false}));tapper.position.set(0,.2,Z);grp.add(tapper);A.drag(tapper,{tap:()=>spin(1)});
   const isBlue=a=>{const t=((a%(Math.PI*2))+Math.PI*2)%(Math.PI*2);return Math.floor(t/(Math.PI/2))<4-st.si;};

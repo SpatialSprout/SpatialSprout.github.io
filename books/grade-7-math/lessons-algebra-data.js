@@ -18,30 +18,30 @@ const rule=(k,c)=>(k===1?'':k===-1?'−':sgn(k))+'n'+(c?(c>0?' + '+c:' − '+(-c
 P.lesson({id:'patterns7',title:'Comparing linear patterns',strand:'Algebra',codes:['C1.1','C1.2','C1.3','C1.4'],
  guide:{goal:'Compare linear growing patterns by their constant rates and initial values, represent patterns with expressions, tables and graphs, find missing terms, and create patterns with integers.',words:'constant rate, initial value, linear, expression, integer, shrinking pattern',
   ask:['Which pattern grows faster? How can you tell from the expression?','Where do the two lines cross? What does that mean?','What is the rule for −8, −5, −2, 1?'],home:'Compare two phone plans: $10 + $2 per GB, or $4 per GB. Make a table. When do they cost the same?'},
- learn:[{say:'Two patterns, one graph.',speech:'Pattern A is two n plus six. Pattern B is four n. Pattern A starts higher, but B grows faster. Watch the towers: they are equal at term three, and after that B is ahead.',view:'model',demo:'compare'},
+ learn:[{say:'Two patterns, one graph.',speech:'Liam’s plan A is two n plus six. Plan B is four n. Plan A starts higher, but B grows faster. Watch the towers: they are equal at term three, and after that B is ahead.',view:'model',demo:'compare'},
         {say:'Read about rate and initial value.',speech:'In an expression like two n plus six, the two is the constant rate: how much it grows each term. The six moves the start. A bigger rate means a steeper line.',view:'read'},
         {say:'Watch: an integer pattern.',speech:'Now a pattern with integers: three n minus eleven. It starts at negative eight, then negative five, negative two, one, four. The towers grow up through zero.',view:'model',demo:'integer'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
         {say:'Your turn: change the patterns.',speech:'Your turn. Change the rate and start of each pattern and compare them.',view:'model'}],
  fig:'Two linear patterns as towers, with their graph lines.',rz:.3,
- explore:['Change *A* and *B*: rate (×n) and start (+c).','Blue is A, pink is B. Negative terms go *below* the line.','Find where the two patterns are *equal*.'],
+ explore:['Change *A* and *B*: rate (×n) and start (+c).','Blue is A, orange is B. Negative terms go *below* the line.','Find where the two patterns are *equal*.'],
  howTo:'Compare the patterns, find a missing term, or choose the rule.',
  init:k=>({A:[2,6],B:[4,0],one:false,miss:-1,user:0,ask:null}),
  left(p,S){const g=p.g;let y=header(p,S);
   y=para(p,y,'For a linear pattern *kn + c*, *k* is the *constant rate* (the change each term) and the pattern starts at *k + c*.')+14;
-  rr(g,X0,y,TW,110,14);g.fillStyle=tint(acc(),.08);g.fill();T(g,'n',X0+20,y+38,FT.smallB);T(g,'2n + 6',X0+20,y+70,FT.smallB,'#2f7de1');T(g,'4n',X0+20,y+100,FT.smallB,'#e2457a');
-  [1,2,3,4,5].forEach((n,i)=>{T(g,String(n),X0+170+i*110,y+38,FT.bodyB,INK,'center');T(g,String(2*n+6),X0+170+i*110,y+70,FT.bodyB,'#2f7de1','center');T(g,String(4*n),X0+170+i*110,y+100,FT.bodyB,n===3?'#16a36f':'#e2457a','center');});y+=130;
+  rr(g,X0,y,TW,110,14);g.fillStyle=tint(acc(),.08);g.fill();T(g,'n',X0+20,y+38,FT.smallB);T(g,'2n + 6',X0+20,y+70,FT.smallB,'#2f7de1');T(g,'4n',X0+20,y+100,FT.smallB,'#e4572e');
+  [1,2,3,4,5].forEach((n,i)=>{T(g,String(n),X0+170+i*110,y+38,FT.bodyB,INK,'center');T(g,String(2*n+6),X0+170+i*110,y+70,FT.bodyB,'#2f7de1','center');T(g,String(4*n),X0+170+i*110,y+100,FT.bodyB,n===3?'#16a36f':'#e4572e','center');});y+=130;
   T(g,'Equal at term 3: 2(3) + 6 = 12 = 4(3)',X0,y+20,FT.bodyB,'#16a36f');y+=50;
   y=para(p,y,'*Integer patterns:* −8, −5, −2, 1, 4… has rule *3n − 11*. Shrinking patterns have a *negative* rate: 10, 7, 4, 1, −2 is *−3n + 13*.')+10;
   y=keyWords(p,y,[['constant rate','the amount a linear pattern changes each term'],['initial value','the starting amount (the value at n = 0)']]);
   predict(p,y,S,'p15','Which grows faster: 5n + 1 or 3n + 20?','*5n + 1.* It grows by 5 each term; the other grows by 3.');},
  readout(p,S,y){const g=p.g,st=S.st,f=([k,c],n)=>k*n+c;T(g,'A: '+rule(...st.A)+'   →  '+[1,2,3,4,5,6].map(n=>sgn(f(st.A,n))).join(', '),X0,y+40,FT.bodyB,'#2f7de1');
-  if(!st.one)T(g,'B: '+rule(...st.B)+'   →  '+[1,2,3,4,5,6].map(n=>sgn(f(st.B,n))).join(', '),X0,y+80,FT.bodyB,'#e2457a');return y+92;},
+  if(!st.one)T(g,'B: '+rule(...st.B)+'   →  '+[1,2,3,4,5,6].map(n=>sgn(f(st.B,n))).join(', '),X0,y+80,FT.bodyB,'#e4572e');return y+92;},
  build(S,grp,mode,game){const st=S.st,u=.06,y0=.85,xs=n=>-1.95+n*.72;const g2=new THREE.Group();grp.add(g2);
   const base=mk(new THREE.BoxGeometry(4.5,.02,1.4),new THREE.MeshLambertMaterial({color:'#e0e7ff',transparent:true,opacity:.6}),0);base.position.set(0,y0,-1.7);grp.add(base);const zl=label('0',{size:.2});zl.position.set(-2.3,y0,-1.7);grp.add(zl);
   const f=([k,c],n)=>k*n+c;
-  function tower(v,x,z,col,miss){const g=new THREE.Group();const h=Math.abs(v)*u;if(h>0){const m=mk(new THREE.BoxGeometry(.24,h,.24),lam(miss?'#ffd24a':v<0?'#ef4444':col),20);m.position.set(x,y0+(v>0?h/2:-h/2),z);g.add(m);}const l=label(miss&&!st.user?'?':sgn(v),{size:.17,bg:miss?'#ffffff':null,color:miss?'#e2457a':INK});l.position.set(x,y0+(v>=0?h+.15:-h-.15),z);g.add(l);return g;}
-  function draw(){clearGroup(g2);const pats=st.one?[[st.A,'#2f7de1',-1.7]]:[[st.A,'#2f7de1',-2.0],[st.B,'#e2457a',-1.4]];
+  function tower(v,x,z,col,miss){const g=new THREE.Group();const h=Math.abs(v)*u;if(h>0){const m=mk(new THREE.BoxGeometry(.24,h,.24),lam(miss?'#ffd24a':v<0?'#ef4444':col),20);m.position.set(x,y0+(v>0?h/2:-h/2),z);g.add(m);}const l=label(miss&&!st.user?'?':sgn(v),{size:.17,bg:miss?'#ffffff':null,color:miss?'#e4572e':INK});l.position.set(x,y0+(v>=0?h+.15:-h-.15),z);g.add(l);return g;}
+  function draw(){clearGroup(g2);const pats=st.one?[[st.A,'#2f7de1',-1.7]]:[[st.A,'#2f7de1',-2.0],[st.B,'#e4572e',-1.4]];
     pats.forEach(([pt,col,z],pi)=>{const tops=[];for(let n=1;n<=6;n++){const miss=pi===0&&n-1===st.miss;const v=miss?st.user:f(pt,n);const t=tower(v,xs(n-1),z,col,miss);g2.add(t);if(miss)A.drag(t,{tap:()=>setU(st.user+1)});tops.push(V(xs(n-1),y0+f(pt,n)*u,z));}
       for(let i=0;i<5;i++)g2.add(seg(tops[i],tops[i+1],col,.015));});
     for(let n=1;n<=6;n++){const l=label('n='+n,{size:.13,color:GREY});l.position.set(xs(n-1),.12,-.9);g2.add(l);}A.redraw();}
@@ -67,7 +67,7 @@ P.lesson({id:'patterns7',title:'Comparing linear patterns',strand:'Algebra',code
 P.lesson({id:'monomials7',title:'Adding and subtracting monomials',strand:'Algebra',codes:['C2.1','C2.2'],
  guide:{goal:'Add and subtract monomials with a degree of 1 using algebra tiles and zero pairs, and evaluate algebraic expressions with whole numbers and decimals.',words:'monomial, like terms, coefficient, zero pair, opposite, evaluate',
   ask:['What happens when an x tile meets a −x tile?','Why is 5x − 2x = 3x?','How do you subtract −3x?'],home:'Use two colours of paper strips for x and −x. Model 4x − 6x and explain the answer.'},
- learn:[{say:'Opposite tiles cancel.',speech:'Green tiles are x, and red tiles are negative x. Four x plus negative six x: four zero pairs cancel and two red tiles are left. The sum is negative two x.',view:'model',demo:'add'},
+ learn:[{say:'Opposite tiles cancel.',speech:'Green tiles are x, and red tiles are negative x. Ines adds four x plus negative six x: four zero pairs cancel and two red tiles are left. The sum is negative two x.',view:'model',demo:'add'},
         {say:'Read the rules.',speech:'To add like terms, add the coefficients. To subtract, add the opposite: flip the colour of every tile being subtracted, then combine and cancel zero pairs.',view:'read'},
         {say:'Watch: subtract by flipping.',speech:'Three x minus negative two x. Flip the negative two x into positive two x, then add: five x.',view:'model',demo:'sub'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -114,7 +114,7 @@ P.lesson({id:'monomials7',title:'Adding and subtracting monomials',strand:'Algeb
 P.lesson({id:'equations7',title:'Equations with decimals',strand:'Algebra',codes:['C2.3'],
  guide:{goal:'Solve equations that involve multiple terms, whole numbers and decimal numbers in various contexts, and verify the solutions.',words:'equation, decimal, like terms, inverse operation, verify, solution',
   ask:['How do you solve 2.5n + 4 = 14?','Why do you subtract before you divide?','How do you check that n = 3.5 is correct?'],home:'A taxi charges $3.50 plus $1.50 per km. The ride cost $12.50. Write and solve an equation for the distance.'},
- learn:[{say:'Balance with decimals.',speech:'Two point five n plus four equals fourteen. Change n in steps of one half until the scale is level. At n equals four, both sides weigh fourteen.',view:'model',demo:'solve'},
+ learn:[{say:'Balance with decimals.',speech:'Kenji’s equation is two point five n plus four equals fourteen. Change n in steps of one half until the scale is level. At n equals four, both sides weigh fourteen.',view:'model',demo:'solve'},
         {say:'Read the steps.',speech:'Combine like terms. Subtract the constant from both sides. Divide both sides by the coefficient. Then substitute to verify.',view:'read'},
         {say:'Watch: a decimal answer.',speech:'Two n plus three n plus one point five equals nineteen. Five n equals seventeen point five, so n is three point five.',view:'model',demo:'dec'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -161,7 +161,7 @@ P.lesson({id:'equations7',title:'Equations with decimals',strand:'Algebra',codes
 P.lesson({id:'inequal7',title:'Inequalities with several terms',strand:'Algebra',codes:['C2.4'],
  guide:{goal:'Solve inequalities that involve multiple terms and whole numbers, and verify and graph the solutions.',words:'inequality, like terms, boundary, solution set, verify, graph',
   ask:['How do you simplify 2x + 3x + 5 < 60 before solving?','Is the boundary a solution?','How do you check a number from your graph?'],home:'You have $60. Shirts cost $12 and there is a $6 shipping fee. Write an inequality for how many shirts you can buy.'},
- learn:[{say:'Combine first, then solve.',speech:'Two x plus three x plus five is less than sixty. Combine like terms: five x plus five is less than sixty. The boundary is eleven, and eleven is not a solution. Watch the graph fill in from zero to ten.',view:'model',demo:'solve'},
+ learn:[{say:'Combine first, then solve.',speech:'Zuri needs two x plus three x plus five to be less than sixty. Combine like terms: five x plus five is less than sixty. The boundary is eleven, and eleven is not a solution. Watch the graph fill in from zero to ten.',view:'model',demo:'solve'},
         {say:'Read the steps.',speech:'Combine like terms. Solve the related equation for the boundary. Test the boundary and a number on each side. Graph the solutions and verify one.',view:'read'},
         {say:'Watch: greater than or equal.',speech:'Four x plus x minus three is greater than or equal to twenty-two. Five x minus three equals twenty-two at x equals five, and five is included because of the or-equal sign.',view:'model',demo:'ge'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -204,7 +204,7 @@ function test7(st,x){const v=(st.a+st.b)*x+st.c;return st.rel==='<'?v<st.r:st.re
 P.lesson({id:'coding7',title:'Coding with sub-programs',strand:'Algebra',codes:['C3.1','C3.2'],
  guide:{goal:'Write, run, read and alter efficient code that uses a defined count and sub-programs, and describe how changes to the code affect the outcome.',words:'sub-program, function, parameter, count, loop, efficient, debug',
   ask:['Why is it useful to define side(n) once and call it many times?','What changes if the count goes from 4 to 2?','How can two sub-programs draw a rectangle?'],home:'Write a “dance sub-program” called step(n): n claps and a spin. Call it with different numbers.'},
- learn:[{say:'Define it once, call it often.',speech:'The sub-program side n moves forward n squares, then turns right. The main program calls side three, four times. Watch the turtle draw a square.',view:'model',demo:'square'},
+ learn:[{say:'Define it once, call it often.',speech:'Tariq’s sub-program side n moves forward n squares, then turns right. The main program calls side three, four times. Watch the turtle draw a square.',view:'model',demo:'square'},
         {say:'Read about sub-programs and counts.',speech:'A sub-program is a named group of steps. A parameter, like n, changes what it does. A count tells how many times the main program repeats it. This makes code short and easy to change.',view:'read'},
         {say:'Watch: two sub-programs make a rectangle.',speech:'Now the main program calls side four, then side two, and repeats that twice. The turtle draws a four by two rectangle.',view:'model',demo:'rect'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -216,7 +216,7 @@ P.lesson({id:'coding7',title:'Coding with sub-programs',strand:'Algebra',codes:[
  left(p,S){const g=p.g;let y=header(p,S);
   y=para(p,y,'A *sub-program* is a named piece of code you can *call* again and again. A *parameter* changes how it behaves.')+14;
   rr(g,X0,y,460,250,16);g.fillStyle='#24203f';g.fill();const MF='700 25px "Atkinson Hyperlegible", monospace';
-  T(g,'define side(n):',X0+22,y+44,MF,'#ffd86b');T(g,'forward n',X0+60,y+80,MF,'#9fe6ff');T(g,'turn right',X0+60,y+114,MF,'#ffb3cf');T(g,'repeat 2 times:',X0+22,y+164,MF,'#ffd86b');T(g,'side(4)',X0+60,y+198,MF,'#bbf7d0');T(g,'side(2)',X0+60,y+232,MF,'#bbf7d0');
+  T(g,'define side(n):',X0+22,y+44,MF,'#ffd86b');T(g,'forward n',X0+60,y+80,MF,'#9fe6ff');T(g,'turn right',X0+60,y+114,MF,'#ffc98f');T(g,'repeat 2 times:',X0+22,y+164,MF,'#ffd86b');T(g,'side(4)',X0+60,y+198,MF,'#bbf7d0');T(g,'side(2)',X0+60,y+232,MF,'#bbf7d0');
   const s=36,ox=X0+520,oy=y+40;g.strokeStyle='#16a36f';g.lineWidth=5;g.strokeRect(ox,oy,4*s,2*s);T(g,'4 × 2 rectangle',ox,oy+2*s+36,FT.bodyB);y+=280;
   y=para(p,y,'*Efficient code:* 5 lines instead of 12. To draw a bigger rectangle, change only the *parameters*.')+10;
   y=keyWords(p,y,[['sub-program','a named set of instructions you can call'],['parameter','a value you give a sub-program, like n']]);
@@ -246,11 +246,11 @@ P.lesson({id:'coding7',title:'Coding with sub-programs',strand:'Algebra',codes:[
 /* =========================================================
    20. Circle graphs and percentages
    ========================================================= */
-const CG=[['Soccer','#2f7de1'],['Hockey','#e2457a'],['Basketball','#16a36f'],['Swimming','#f59e0b'],['Other','#8b5cf6']];
+const CG=[['Soccer','#2f7de1'],['Hockey','#e4572e'],['Basketball','#16a36f'],['Swimming','#f59e0b'],['Other','#8b5cf6']];
 P.lesson({id:'circle7',title:'Circle graphs and percentages',strand:'Data',codes:['D1.1','D1.2','D1.3','D1.4'],
  guide:{goal:'Explain why percentages are used for large data sets, collect and organize data using percentages, create circle graphs with titles, labels and sources, and use them in infographics.',words:'circle graph, sector, percent, central angle, 360°, population, sample, infographic',
   ask:['Why do circle graphs use percents instead of counts?','How many degrees is a 25% sector?','When is a circle graph a good choice? When is it not?'],home:'Survey your family about their favourite fruit. Turn the counts into percents and sketch a circle graph.'},
- learn:[{say:'Parts of a whole as percents.',speech:'Two hundred students chose their favourite sport. A circle graph shows each choice as a part of the whole, using percents. Watch the slices grow: soccer is thirty-five percent.',view:'model',demo:'build'},
+ learn:[{say:'Parts of a whole as percents.',speech:'Two hundred students told Maya their favourite sport. A circle graph shows each choice as a part of the whole, using percents. Watch the slices grow: soccer is thirty-five percent.',view:'model',demo:'build'},
         {say:'Read how to build one.',speech:'Change each count to a percent of the total. Multiply each percent by three hundred sixty degrees to find the angle of its sector. The percents must add to one hundred.',view:'read'},
         {say:'Watch: why percents?',speech:'Two schools of different sizes can be compared with percents. Forty out of two hundred is twenty percent, and the same as one hundred out of five hundred.',view:'model',demo:'compare'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -293,13 +293,13 @@ P.lesson({id:'circle7',title:'Circle graphs and percentages',strand:'Data',codes
 P.lesson({id:'dataimpact7',title:'How new data changes the measures',strand:'Data',codes:['D1.5'],
  guide:{goal:'Determine how adding or removing data changes the mean, median and mode, and describe how these changes alter the shape and distribution of the data.',words:'mean, median, mode, outlier, distribution, shape, cluster',
   ask:['Which measure changes the most when you add an outlier?','What happens to the median when you add one value in the middle?','How does removing the largest value change the shape?'],home:'Record family members’ ages. Add a grandparent’s age. How do the mean and median change?'},
- learn:[{say:'Add an outlier.',speech:'These dots show test scores. The mean is about seventy. Now add one very low score: twenty. Watch the mean slide down a lot, while the median barely moves.',view:'model',demo:'outlier'},
+ learn:[{say:'Add an outlier.',speech:'These dots show the test scores in Liam’s class. The mean is about seventy. Now add one very low score: twenty. Watch the mean slide down a lot, while the median barely moves.',view:'model',demo:'outlier'},
         {say:'Read about the effects.',speech:'The mean uses every value, so outliers pull it strongly. The median depends only on the middle, so it changes a little. The mode may not change at all.',view:'read'},
         {say:'Watch: removing data.',speech:'Remove the two lowest scores. The data clusters more tightly, and the mean and median both move up.',view:'model',demo:'remove'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
         {say:'Your turn: add and remove.',speech:'Your turn. Add or remove data points and watch the mean, median and mode markers move.',view:'model'}],
  fig:'A dot plot with markers for the mean, median and mode.',rz:.3,
- explore:['*Tap the number line* to add a value; *tap a dot* to remove it.','Watch the *mean* (gold), *median* (blue) and *mode* (pink).','Try adding an *outlier*.'],
+ explore:['*Tap the number line* to add a value; *tap a dot* to remove it.','Watch the *mean* (gold), *median* (blue) and *mode* (orange).','Try adding an *outlier*.'],
  howTo:'Predict how the measures change, then choose the answer.',
  init:k=>({d:[60,65,70,70,75,80,85],ask:null}),
  left(p,S){const g=p.g;let y=header(p,S);
@@ -313,7 +313,7 @@ P.lesson({id:'dataimpact7',title:'How new data changes the measures',strand:'Dat
   for(let v=0;v<=100;v+=5){const pd=mk(G('di7p',()=>new THREE.CylinderGeometry(.05,.05,.04,10)),lam('#ffffff'),0);pd.position.set(toX(v),.07,Z+.25);grp.add(pd);A.drag(pd,{tap:()=>add(v)});if(v%10===0){const l=label(String(v),{size:.16,color:GREY});l.position.set(toX(v),.2,Z+.5);grp.add(l);}}
   function draw(){clearGroup(g2);const cnt={};st.d.slice().sort((a,b)=>a-b).forEach(v=>{cnt[v]=(cnt[v]||0)+1;const d=mk(G('di7d',()=>new THREE.SphereGeometry(.09,14,10)),lam('#2f7de1'),0);d.position.set(toX(v),.1+(cnt[v]-1)*.19,Z-.25);g2.add(d);A.drag(d,{tap:()=>rem(v)});});
     const m=meas(st.d);[[m.mean,'#f59e0b','mean'],[m.med,'#0ea5e9','median']].forEach(([v,c,t],i)=>{const r=mk(new THREE.BoxGeometry(.03,1.3,.03),lam(c),0);r.position.set(toX(v),.65,Z-.6-i*.15);g2.add(r);const l=label(t+' '+v,{size:.17,bg:'#ffffff',border:c});l.position.set(toX(v),1.45+i*.28,Z-.6);g2.add(l);});
-    m.mode.forEach(v=>{const r=mk(new THREE.TorusGeometry(.13,.025,8,18),lam('#e2457a'),0);r.rotation.x=Math.PI/2;r.position.set(toX(v),.05,Z-.25);g2.add(r);});A.redraw();}
+    m.mode.forEach(v=>{const r=mk(new THREE.TorusGeometry(.13,.025,8,18),lam('#e4572e'),0);r.rotation.x=Math.PI/2;r.position.set(toX(v),.05,Z-.25);g2.add(r);});A.redraw();}
   function add(v){if(st.d.length>=14){A.bad('That is enough data points.');return;}st.d.push(v);A.pop();draw();}
   function rem(v){if(st.d.length<=2)return;st.d.splice(st.d.indexOf(v),1);A.pop();draw();}
   draw();
@@ -337,7 +337,7 @@ function meas(d){const s=d.slice().sort((a,b)=>a-b),n=s.length,sum=s.reduce((a,b
 P.lesson({id:'mislead7',title:'Spotting misleading graphs',strand:'Data',codes:['D1.6'],
  guide:{goal:'Analyse data presented in various ways, including circle graphs and misleading graphs, by asking and answering questions, challenging preconceived notions, and drawing conclusions.',words:'misleading, scale, broken axis, perspective, percent total, conclusion, bias',
   ask:['Why can a tilted 3D circle graph mislead?','What should the percents in a circle graph add to?','How does starting an axis at 90 change the picture?'],home:'Find an ad or news graph. Check the axis, the percents and the source. Is it fair?'},
- learn:[{say:'Same data, different pictures.',speech:'Both graphs show the same sales. On the left, the axis starts at zero. On the right, it starts at ninety, so a small difference looks huge. Watch the axis change.',view:'model',demo:'axis'},
+ learn:[{say:'Same data, different pictures.',speech:'Ines compares two graphs of the same sales. On the left, the axis starts at zero. On the right, it starts at ninety, so a small difference looks huge. Watch the axis change.',view:'model',demo:'axis'},
         {say:'Read the warning signs.',speech:'Watch out for axes that do not start at zero, uneven scales, 3D tilts that make front slices look bigger, percents that do not add to one hundred, and missing sources.',view:'read'},
         {say:'Watch: a tilted circle graph.',speech:'Tilt a circle graph and the front slice looks bigger than it is. The back slice has the same percent but looks smaller.',view:'model',demo:'tilt'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -379,7 +379,7 @@ P.lesson({id:'mislead7',title:'Spotting misleading graphs',strand:'Data',codes:[
 P.lesson({id:'dependent7',title:'Independent and dependent events',strand:'Data',codes:['D2.1','D2.2'],
  guide:{goal:'Describe the difference between independent and dependent events, explain how their probabilities differ, and determine and compare theoretical and experimental probabilities of two events.',words:'independent, dependent, with replacement, without replacement, tree diagram, theoretical, experimental',
   ask:['Why does putting the marble back make the second draw independent?','How does P(red) change if the first red marble is kept?','Give an example of dependent events in real life.'],home:'Draw two socks from a drawer without looking, without putting the first back. Is the second draw dependent?'},
- learn:[{say:'Put it back, or keep it?',speech:'A bag has three red and two blue marbles. Draw one, put it back, and draw again: the second draw is independent, with the same chances. Keep the first one, and the bag changes: the second draw is dependent.',view:'model',demo:'draw'},
+ learn:[{say:'Put it back, or keep it?',speech:'Kenji’s bag has three red and two blue marbles. Draw one, put it back, and draw again: the second draw is independent, with the same chances. Keep the first one, and the bag changes: the second draw is dependent.',view:'model',demo:'draw'},
         {say:'Read the probabilities.',speech:'With replacement, P of red then red is three fifths times three fifths, nine twenty-fifths. Without replacement, it is three fifths times two fourths, six twentieths, which is three tenths.',view:'read'},
         {say:'Watch: many trials.',speech:'Run fifty pairs of draws without replacement. The experimental probability of two reds comes close to three tenths.',view:'model',demo:'trials'},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
@@ -390,7 +390,7 @@ P.lesson({id:'dependent7',title:'Independent and dependent events',strand:'Data'
  init:k=>({r:3,b:2,repl:true,drawn:[],cnt:0,rr:0,ask:null}),
  left(p,S){const g=p.g;let y=header(p,S);
   y=para(p,y,'Events are *independent* if one does not change the chances of the other. They are *dependent* if it does.')+14;
-  [['With replacement','independent','3/5 × 3/5 = 9/25 = 0.36'],['Without replacement','dependent','3/5 × 2/4 = 6/20 = 0.3']].forEach(([a,b,c],i)=>{rr(g,X0,y+i*96,TW,86,14);g.fillStyle=tint(i?'#e2457a':'#2f7de1',.12);g.fill();T(g,a,X0+20,y+i*96+34,FT.bodyB,i?'#e2457a':'#2f7de1');T(g,b,X0+TW-20,y+i*96+34,FT.smallB,GREY,'right');T(g,'P(red, red) = '+c,X0+20,y+i*96+70,FT.body);});y+=208;
+  [['With replacement','independent','3/5 × 3/5 = 9/25 = 0.36'],['Without replacement','dependent','3/5 × 2/4 = 6/20 = 0.3']].forEach(([a,b,c],i)=>{rr(g,X0,y+i*96,TW,86,14);g.fillStyle=tint(i?'#e4572e':'#2f7de1',.12);g.fill();T(g,a,X0+20,y+i*96+34,FT.bodyB,i?'#e4572e':'#2f7de1');T(g,b,X0+TW-20,y+i*96+34,FT.smallB,GREY,'right');T(g,'P(red, red) = '+c,X0+20,y+i*96+70,FT.body);});y+=208;
   T(g,'3 red, 2 blue',X0,y+20,FT.bodyB);for(let i=0;i<5;i++){g.beginPath();g.arc(X0+220+i*40,y+14,14,0,Math.PI*2);g.fillStyle=i<3?'#e0453a':'#2f7de1';g.fill();}y+=50;
   y=para(p,y,'*Real life:* drawing names from a hat for prizes (no repeats) is dependent. Rolling two dice is independent.')+10;
   y=keyWords(p,y,[['independent events','the first result does not affect the second'],['dependent events','the first result changes the chances for the second']]);
@@ -402,7 +402,7 @@ P.lesson({id:'dependent7',title:'Independent and dependent events',strand:'Data'
   function draw(){clearGroup(mar);clearGroup(out);const bag=[];for(let i=0;i<st.r;i++)bag.push('r');for(let i=0;i<st.b;i++)bag.push('b');st.drawn.forEach(c=>{if(!st.repl)bag.splice(bag.indexOf(c),1);});
     bag.forEach((c,i)=>{const m=MB(c);const a=i*2.4,r=.2+(i%3)*.17;m.position.set(-1.0+Math.cos(a)*r,.2+Math.floor(i/6)*.2,-2.0+Math.sin(a)*r);mar.add(m);});
     st.drawn.forEach((c,i)=>{const m=MB(c);m.position.set(.8+i*.5,.2,-1.6);out.add(m);const l=label(i?'2nd':'1st',{size:.15,color:GREY});l.position.set(.8+i*.5,.5,-1.6);out.add(l);});
-    const tr=label(st.repl?'with replacement (independent)':'without replacement (dependent)',{size:.2,bg:'#ffffff',border:st.repl?'#2f7de1':'#e2457a'});tr.position.set(.5,1.4,-2.4);out.add(tr);A.redraw();}
+    const tr=label(st.repl?'with replacement (independent)':'without replacement (dependent)',{size:.2,bg:'#ffffff',border:st.repl?'#2f7de1':'#e4572e'});tr.position.set(.5,1.4,-2.4);out.add(tr);A.redraw();}
   function pair(){const bag=[];for(let i=0;i<st.r;i++)bag.push('r');for(let i=0;i<st.b;i++)bag.push('b');const a=bag.splice(rnd(0,bag.length-1),1)[0];if(st.repl)bag.push(a);const b=bag[rnd(0,bag.length-1)];return [a,b];}
   function draw2(){const [a,b]=pair();st.drawn=[a];draw();A.pop();A.later(()=>{st.drawn=[a,b];st.cnt++;if(a==='r'&&b==='r')st.rr++;A.pop();draw();A.say(a==='r'&&b==='r'?'Red, red!':'Not two reds');},700);}
   function many(n){for(let i=0;i<n;i++){const [a,b]=pair();st.cnt++;if(a==='r'&&b==='r')st.rr++;}st.drawn=[];A.pop();draw();}
