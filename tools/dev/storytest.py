@@ -12,7 +12,7 @@ with sync_playwright() as p:
     pg.route('**/three.min.js',lambda r:r.fulfill(path=f'{V}/three/build/three.min.js',content_type='text/javascript'))
     pg.route('**/SVGLoader.js',lambda r:r.fulfill(path=f'{V}/three/examples/js/loaders/SVGLoader.js',content_type='text/javascript'))
     pg.route('**/OrbitControls.js',lambda r:r.fulfill(path=f'{V}/three/examples/js/controls/OrbitControls.js',content_type='text/javascript'))
-    pg.route('**/voice.js',lambda r:r.fulfill(body='window.VOICE={};',content_type='text/javascript'))
+    pg.route('**/voice.js*',lambda r:r.fulfill(body='window.VOICE={};',content_type='text/javascript'))
     pg.route('**/fonts.googleapis.com/**',lambda r:r.fulfill(body='',content_type='text/css'))
     pg.goto(f'http://localhost:{port}/index.html'); pg.wait_for_function('window.PM&&PM.debug&&PM.debug.SP.length>1',timeout=60000)
     pg.evaluate("async()=>{const D=PM.debug;D.norender=true;D.TS=.05;D.openBook(0);for(let i=0;i<60;i++){D.sim(.5);await new Promise(r=>setTimeout(r,5));}}")

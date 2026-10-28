@@ -17,7 +17,7 @@ with sync_playwright() as p:
     pg.on('pageerror', lambda e: errs.append('PAGEERROR ' + str(e)))
     pg.route('**/three.min.js', lambda r: r.fulfill(path=f'{V}/three/build/three.min.js', content_type='text/javascript'))
     pg.route('**/SVGLoader.js', lambda r: r.fulfill(path=f'{V}/three/examples/js/loaders/SVGLoader.js', content_type='text/javascript'))
-    pg.route('**/voice.js', lambda r: r.fulfill(body='window.VOICE={};', content_type='text/javascript'))
+    pg.route('**/voice.js*', lambda r: r.fulfill(body='window.VOICE={};', content_type='text/javascript'))
     pg.route('**/OrbitControls.js', lambda r: r.fulfill(path=f'{V}/three/examples/js/controls/OrbitControls.js', content_type='text/javascript'))
     pg.route('**/fonts.googleapis.com/**', lambda r: r.fulfill(body=CSS, content_type='text/css'))
     pg.route('**/fonts.gstatic.com/**', lambda r: r.abort())

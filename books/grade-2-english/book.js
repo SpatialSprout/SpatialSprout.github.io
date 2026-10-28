@@ -1,4 +1,4 @@
-window.BOOK={grade:2,subject:'English',tiles:['A','B','C'],key:'2e',strands:'sounds and spelling, words, sentences, stories and writing',world:'reef',rounds:10,sketch:true,storyRight:true,noLearnDock:true,
+window.BOOK={grade:2,subject:'English',tiles:['A','B','C'],key:'2e',strands:'sounds and spelling, words, sentences, stories and writing',world:'reef',rounds:10,autoRounds:true,noThinker:true,sketch:true,storyRight:true,noLearnDock:true,
   strandColors:{'Sounds and Spelling':'#e8505b','Naming Words':'#2f7de1','Sentences':'#16a36f','Action Words':'#f08a24','Describing and Joining':'#8b5cf6'},
   theme:{c:['#7fd8f0','#2f7de1','#8b5cf6'],mat:'#9fd6e8',bg:'#dff1f7',paper:'#e7f6fb'},glyphs:'abcdefghijklmnopqrstuvwxyz',
   goLines:["Now it's your turn to practice!","Let's practice!","Ready, set, practice!","Your turn! Let's try ten questions.","Time to show what you know!","Let's put it into practice!","Practice time! You can do it.","Here come your questions. Let's go!","Grab your thinking cap. Let's practice!","Story time is over. Now let's practice!"],

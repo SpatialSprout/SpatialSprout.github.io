@@ -160,11 +160,11 @@ story('f06',sc=>{D.base(sc,'#eadfcf');
 /* 7 · Kelly's Broken Wrist — down the hill, a bump, a bright cast, and safety gear */
 story('f07',sc=>{D.base(sc,'#b9dc9c');
   const hill=put(sc,S.hill(.8,{c:'#a7d08c'}),-1.15,-3.0);put(sc,S.tree({s:.9}),1.7,-3.35);put(sc,S.pine({s:.9}),-1.95,-1.7);put(sc,S.bench(),1.4,-1.7,{ry:-.3});
-  const path=D.ribbon(sc,[[-1.1,.34,-3.0],[-.6,.2,-2.75],[0,.08,-2.5],[.6,.02,-2.3]],'#c9a27a',{w:.18,op:.95});
-  const kelly=person(sc,{c:'#9c36b5',h:'#e2b04a',st:'pony',s:.84},-1.15,-3.0,{ry:.9});kelly.position.y=.32;
-  const sco=put(sc,S.scooter({c:'#9c36b5'}),-1.15,-2.95,{y:.32,ry:-.8});
+  const path=D.ribbon(sc,[[-1.1,.54,-3.0],[-.6,.3,-2.75],[0,.08,-2.5],[.6,.02,-2.3]],'#c9a27a',{w:.18,op:.95});
+  const kelly=person(sc,{c:'#9c36b5',h:'#e2b04a',st:'pony',s:.84},-1.15,-3.0,{ry:.9});kelly.position.y=.53;
+  const sco=put(sc,S.scooter({c:'#9c36b5'}),-1.15,-2.95,{y:.53,ry:-.8});
   at(sc,'purple scooter',()=>{boom(sco);ST().alive(sco,true);});
-  const P0=[[-1.15,.32,-3.0],[-.6,.2,-2.75],[0,.08,-2.5],[.35,.03,-2.4]];
+  const P0=[[-1.15,.53,-3.0],[-.6,.3,-2.75],[0,.08,-2.5],[.35,.03,-2.4]];
   const curve=new THREE.CatmullRomCurve3(P0.map(p=>V(...p)));
   at(sc,'zoomed',()=>{kelly.userData.mode='kick';tween(1.6,k=>{const p=curve.getPoint(k);kelly.position.copy(p);sco.position.copy(p).add(V(0,-.02,.05));},x=>x*x);});
   const bump=put(sc,S.rock({s:.8}),.45,-2.4,{on:'bump'});
@@ -600,4 +600,8 @@ story('f28',sc=>{D.base(sc,'#cfe3b0');
   at(sc,'grew tall',()=>{trees.forEach((t,i)=>sc.later(()=>{if(t.userData.sp)D.shrink(t.userData.sp);D.grow(t,.9);for(let a=0;a<5;a++){const ap=P.mk(new THREE.SphereGeometry(.04,8,6),P.paper('#e03131',{mix:.05}));ap.position.set(Math.cos(a*1.3)*.13,.4+Math.sin(a*2)*.08,Math.sin(a*1.3)*.13+.05);t.add(ap);}},i*150));});
   at(sc,'still standing',()=>{kids.concat([jo]).forEach(k=>mode(sc,k,'cheer'));boom(trees[3]);});
 });
+
+/* practice questions: no repeated character standing in every question — just the things it is about */
+Object.keys(P.SCN).forEach(id=>{const R=P.SCN[id].rounds||{};Object.keys(R).forEach(k=>{const f=R[k];const src=String(typeof f==='function'?f:f&&f.scene);if(!/sc\.kid\(/.test(src))return;
+  if(typeof f==='function')delete R[k];else delete f.scene;});});
 })();

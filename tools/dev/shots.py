@@ -17,7 +17,7 @@ with sync_playwright() as p:
     pg.on('pageerror', lambda e: errs.append('PAGEERROR ' + str(e)))
     pg.route('**/three.min.js', lambda r: r.fulfill(path=f'{V}/three/build/three.min.js', content_type='text/javascript'))
     pg.route('**/SVGLoader.js', lambda r: r.fulfill(path=f'{V}/three/examples/js/loaders/SVGLoader.js', content_type='text/javascript'))
-    pg.route('**/voice.js', lambda r: r.fulfill(body='window.VOICE={};', content_type='text/javascript'))
+    pg.route('**/voice.js*', lambda r: r.fulfill(body='window.VOICE={};', content_type='text/javascript'))
     pg.route('**/OrbitControls.js', lambda r: r.fulfill(path=f'{V}/three/examples/js/controls/OrbitControls.js', content_type='text/javascript'))
     pg.route('**/fonts.googleapis.com/**', lambda r: r.fulfill(body=CSS, content_type='text/css'))
     pg.route('**/fonts.gstatic.com/**', lambda r: r.abort())
@@ -28,6 +28,9 @@ with sync_playwright() as p:
     import base64
     for name,t,st,mode,arg in json.loads(sys.argv[3]):
         pg.evaluate(f"""async()=>{{const D=PM.debug;D.goSpread({t});for(let i=0;i<300&&D.busy;i++){{D.sim(.5);await new Promise(r=>setTimeout(r,15));}}D.setStep({st});for(let i=0;i<10;i++){{D.sim(.2);await new Promise(r=>setTimeout(r,30));}}}}""")
+        if mode=='taskat':
+            pg.evaluate(f"""async()=>{{const D=PM.debug,S=D.S;S.game.phase='play';S.game.round=1;S.game.text=D.api.taskAt({arg});D.A.redraw();for(let i=0;i<40;i++){{D.sim(.1);await new Promise(r=>setTimeout(r,25));}}}}""")
+            pg.wait_for_timeout(400); pg.screenshot(path=f'{out}/{name}.png',timeout=180000)
         if mode=='round':
             pg.evaluate(f"""async()=>{{const D=PM.debug,S=D.S;S.game.phase='play';S.game.round={arg};S.game.text=D.api.task({arg});D.A.redraw();for(let i=0;i<40;i++){{D.sim(.1);await new Promise(r=>setTimeout(r,25));}}}}""")
         if mode in ('page','round'):

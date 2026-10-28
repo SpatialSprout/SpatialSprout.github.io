@@ -151,9 +151,9 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 
 <div class="sheetwrap" id="sheet" hidden><div class="sheet" role="dialog" aria-modal="true" id="sheetBody"></div></div>
 
-<script src="book.js"></script>
-<script src="brand.js"></script>
-<script src="voice.js"></script>
+<script src="book.js?v=a1bd6d2b"></script>
+<script src="brand.js?v=111ada48"></script>
+<script src="voice.js?v=757dde01"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/SVGLoader.js"></script>
@@ -242,7 +242,7 @@ controls.addEventListener('start',()=>{autoCam=false;});
 Object.assign(controls,{enableDamping:true,dampingFactor:.08,maxPolarAngle:Math.PI*.44,minDistance:2.5,maxDistance:45,screenSpacePanning:true});
 const hemi=new THREE.HemisphereLight(0xffffff,0x9aa3b5,.62);scene.add(hemi);
 const sun=new THREE.DirectionalLight(0xfff4e2,.78);sun.position.set(-6,12,5);sun.castShadow=true;
-sun.shadow.mapSize.set(2048,2048);Object.assign(sun.shadow.camera,{left:-13,right:13,top:13,bottom:-13,near:1,far:40});sun.shadow.bias=-.0006;scene.add(sun);PM.lights={sun,hemi,scene};
+sun.shadow.mapSize.set(2048,2048);Object.assign(sun.shadow.camera,{left:-13,right:13,top:13,bottom:-13,near:1,far:40});sun.shadow.bias=-.0006;scene.add(sun);PM.lights={sun,hemi,scene,renderer};
 const lamp=new THREE.SpotLight(0xffd59a,0,30,.75,.55,1);lamp.position.set(6,8,-3);lamp.castShadow=true;lamp.shadow.mapSize.set(1024,1024);lamp.shadow.bias=-.0008;scene.add(lamp);scene.add(lamp.target);
 (function(){const m=new THREE.MeshBasicMaterial({colorWrite:false,depthWrite:false});
   [[-11,8,.3,.3,.3,7],[-12.8,8,.3,.3,.3,7],[-11.9,8,-3,2.2,.3,.25],[-11.9,8,3.4,2.2,.3,.25]].forEach(b=>{const o=new THREE.Mesh(new THREE.BoxGeometry(b[3],b[4],b[5]),m);o.position.set(b[0],b[1],b[2]);o.castShadow=true;scene.add(o);});})();
@@ -557,6 +557,7 @@ function pose(v){
   /* close-ups: the story text, the story text with its scene, and the acted scene itself */
   if(v==='storyL'){const tg=V(-W/2,PY,-D/2+D*.27);const d=fitDist(W*1.0,D*.44);return {p:tg.clone().add(V(0,.95,.34).normalize().multiplyScalar(d)),t:tg};}
   if(v==='storyW'){const tg=V(0,PY+.2,-D/2+D*.32);const d=fitDist(2*W*1.04,D*.66);return {p:tg.clone().add(V(0,.9,.52).normalize().multiplyScalar(d)),t:tg};}
+  if(v==='readM'){const tg=V(-W/2,PY+.25,.15);const d=fitDist(W*1.02,D*.98);return {p:tg.clone().add(V(0,.88,.47).normalize().multiplyScalar(d)),t:tg};}
   if(v==='pageR'){const tg=V(W/2,PY+.3,.2);const d=fitDist(W*1.04,D*1.0);return {p:tg.clone().add(V(0,.86,.52).normalize().multiplyScalar(d)),t:tg};}
   if(v==='stage'&&BK.storyRight){const tg=V(W/2,PY+.45,1.7);const d=fitDist(W*.98,D*.58);return {p:tg.clone().add(V(0,.8,.66).normalize().multiplyScalar(d)),t:tg};}
   if(v==='stage'){const tg=V(W/2,PY+.4,-D/2+D*.36);const d=fitDist(W*.96,D*.56);return {p:tg.clone().add(V(0,.78,.72).normalize().multiplyScalar(d)),t:tg};}
@@ -564,7 +565,7 @@ function pose(v){
 /* camera director: close and simple for small hands. Stories: the camera goes to the text, then to the
    scene that acts it out; on a phone held upright one page at a time, the 3D side while things happen. */
 let camDir=0;const wideStage=()=>(stage.clientWidth/(stage.clientHeight||1))>1.15;
-function autoView(sp,s){if(s.storyRead)return 'pageR';if(s.story3d)return wideStage()?'storyW':'storyL';if(wideStage())return 'book';
+function autoView(sp,s){if(s.storyRead)return 'pageR';if(BK.storyRight&&sp.kind==='learn')return 'readM';if(s.story3d)return wideStage()?'storyW':'storyL';if(wideStage())return 'book';
   if(sp.kind==='play')return 'model';if(sp.kind==='learn'&&(s.view==='theory'||s.view==='model')&&(s.demo||s.cues))return PM.STAGE?'stage':'model';return s.view==='read'||s.story?'read':'book';}
 function setView(v,instant){const orig=v;if(v==='theory')v=(stage.clientWidth/(stage.clientHeight||1))>1.15?'book':'read';if(!bookOpen)v='cover';view=v;{const lb=document.getElementById('bLeftPg'),rb=document.getElementById('bRightPg');if(lb){lb.classList.toggle('on',v==='read');rb.classList.toggle('on',v==='model');}}document.querySelectorAll('.views button').forEach(b=>b.classList.toggle('on',b.dataset.view===v));
   refreshDock(true);applyCam();const q=pose(orig==='theory'&&v==='book'?'tbook':v);basePose=q;if(instant){camera.position.copy(q.p);controls.target.copy(q.t);camTween=null;return;}
@@ -987,8 +988,9 @@ function setStep(i){lineCut=false;const sp=SP[cur];stepI=Math.max(0,Math.min(sp.
   if(s.go&&S&&!S.game.done){A.stopSeq();A.later(()=>startGame(S),250);}
   showStory(s.story?sp:null);if(s.story){guideMode='hello';guideT=0;if(PLAY)A.later(()=>mascotCheer(false,true),700);}
   const tk=++playTok;const adv=()=>{if(tk!==playTok||!playing)return;if(stepI<sp.steps.length-1)setStep(stepI+1);else if((sp.kind==='intro'||sp.kind==='learn')&&cur<SP.length-1)goSpread(cur+1,0,true);else setPlay(false);};
-  const txt=s.speech||s.say;const t0=Date.now();lineBusy=true;const spoke=speak(txt,()=>{if(tk===playTok)lineBusy=false;setTimeout(adv,Math.max((s.demo&&!s.quietDemo?2400:s.story?1400:(s.cues?1700:1100))*(BK.grade>=6?.6:1),holdMs-(Date.now()-t0)));});if(!spoke)lineBusy=false;
+  const txt=s.speech||s.say;const t0=Date.now();lineBusy=true;const spoke=speak(txt,()=>{if(tk===playTok)lineBusy=false;if(tk===playTok&&curApi.stepEnd)try{curApi.stepEnd(s);}catch(e){console.error(e);}setTimeout(adv,Math.max((s.demo&&!s.quietDemo?2400:s.story?1400:(s.cues?1700:1100))*(BK.grade>=6?.6:1),holdMs-(Date.now()-t0)));});if(!spoke)lineBusy=false;
   if(s.cues&&s.cues.length)startCues(s,txt,spoke);
+  if(!spoke&&curApi.stepEnd){const tk3=playTok;setTimeout(()=>{if(tk3===playTok)try{curApi.stepEnd(s);}catch(e){}},Math.max(3000,txt.split(' ').length*380));}
   if(playing&&!spoke)setTimeout(adv,Math.max(holdMs,s.demo?6000:3800,txt.split(' ').length*380));
   if(s.howto&&!playing){const tk2=playTok;setTimeout(()=>{if(tk2===playTok&&SP[cur]===sp&&stepI===i&&S&&S.game.phase==='howto')setStep(stepI+1);},holdMs+2500);}
   if(s.go){playing=false;playTok++;$('#icPlay').innerHTML='<path d="M5 3.5v13l11-6.5z"/>';$('#bPlay').classList.remove('on');}}
@@ -1157,20 +1159,20 @@ const loaded=new Promise(r=>{if(document.readyState==='complete')r();else window
 Promise.all([Promise.race([Promise.all([fl,imgs]),new Promise(r=>setTimeout(r,3000))]).catch(()=>{}),loaded]).then(start);
 })();
 </script>
-<script src="pics.js"></script>
-<script src="sketch.js"></script>
-<script src="kit.js"></script>
-<script src="subject-kit.js"></script>
-<script src="stage.js"></script>
-<script src="g2.js"></script>
-<script src="scenes.js"></script>
-<script src="dioramas.js"></script>
-<script src="lessons-a.js"></script>
-<script src="lessons-b.js"></script>
-<script src="lessons-c.js"></script>
-<script src="lessons-d.js"></script>
-<script src="stories.js"></script>
-<script src="vtime.js"></script>
+<script src="pics.js?v=1e207c54"></script>
+<script src="sketch.js?v=14bfb1d1"></script>
+<script src="kit.js?v=06660d24"></script>
+<script src="subject-kit.js?v=b0632eba"></script>
+<script src="stage.js?v=787d6a84"></script>
+<script src="g2.js?v=7c9e0bee"></script>
+<script src="scenes.js?v=23a1c9c1"></script>
+<script src="dioramas.js?v=fb343848"></script>
+<script src="lessons-a.js?v=74c47b67"></script>
+<script src="lessons-b.js?v=d1aa2637"></script>
+<script src="lessons-c.js?v=420974ab"></script>
+<script src="lessons-d.js?v=bc54299f"></script>
+<script src="stories.js?v=48f4a878"></script>
+<script src="vtime.js?v=f699f2e3"></script>
 
 </body>
 </html>
