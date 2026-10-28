@@ -25,13 +25,32 @@ function cardMat(n,col){return M('sd'+n+col,()=>{const c=document.createElement(
   const draw=()=>{const g=c.getContext('2d');g.clearRect(0,0,256,256);g.fillStyle=col;g.fillRect(0,0,256,256);rr(g,14,14,228,228,34);g.fillStyle='#ffffff';g.fill();
     const o=img(n);if(o&&o.ok)g.drawImage(o.im,40,40,176,176);else{g.fillStyle=INK;g.font='700 34px sans-serif';g.textAlign='center';g.fillText(n,128,140);}t.needsUpdate=true;};
   draw();const o=img(n);if(o&&!o.ok)o.cbs.push(draw);return new THREE.MeshLambertMaterial({map:t});});}
-/* a pop-up standee: a thick picture card leaning back on a round base, with a name tag */
+/* the real thing in 3D: a code-built toy when there is one, otherwise the picture's own vector art
+   extruded into a chunky 3D figure (each colour is its own raised layer). No card, no badge. */
+const FIG={};const FIGQ={};
+function figGeo(cp,done){if(FIG[cp])return done(FIG[cp]);(FIGQ[cp]=FIGQ[cp]||[]).push(done);if(FIGQ[cp].length>1)return;
+  const fin=r=>{FIG[cp]=r;const q=FIGQ[cp];FIGQ[cp]=null;q.forEach(f=>{try{f(r);}catch(e){console.error(e);}});};
+  if(!THREE.SVGLoader||!window.fetch)return fin(null);
+  fetch('e/'+cp+'.svg').then(r=>r.text()).then(txt=>{const data=new THREE.SVGLoader().parse(txt);const paths=data.paths.filter(p=>{const f=p.userData&&p.userData.style&&p.userData.style.fill;return f&&f!=='none'&&f!=='transparent';});
+    const n=paths.length,step=Math.min(.16,2.2/Math.max(1,n)),parts=[];
+    paths.forEach((p,i)=>{const shapes=THREE.SVGLoader.createShapes(p);if(!shapes.length)return;const st=p.userData.style;
+      const geo=new THREE.ExtrudeGeometry(shapes,{depth:i===0?4.2:2.6,curveSegments:7,bevelEnabled:true,bevelThickness:.35,bevelSize:.22,bevelSegments:2});geo.translate(0,0,i===0?-1.6:i*step);
+      const op=st.fillOpacity==null?1:+st.fillOpacity;parts.push({geo,col:st.fill,op});});fin(parts);}).catch(e=>{console.warn('fig',cp,e);fin(null);});}
+function figMat(col,op){return M('fg'+col+op,()=>new THREE.MeshLambertMaterial(op<1?{color:col,transparent:true,opacity:op}:{color:col}));}
 function standee(n,o){o=o||{};const col=o.col||COLS[0];const g=new THREE.Group();g.userData.name=n;g.userData.label=o.label==null?n:o.label;
-  const base=mk(G('sd_base',()=>new THREE.CylinderGeometry(.3,.34,.06,24)),lam(col),0);base.position.y=.03;g.add(base);
-  const piv=new THREE.Group();piv.position.y=.06;piv.rotation.x=-.42;g.add(piv);
-  const side=lam(col);const card=mk(G('sd_card',()=>new THREE.BoxGeometry(.74,.74,.06)),[side,side,side,side,cardMat(n,col),side],20);card.position.y=.37;piv.add(card);
-  if(o.label!==false&&g.userData.label){const L=label(g.userData.label,{size:.19,bg:'#ffffff',border:col});L.position.set(0,.86,-.33);g.add(L);}
-  if(o.s)g.scale.setScalar(o.s);g.userData.piv=piv;return g;}
+  const ring=mk(G('fg_ring',()=>new THREE.RingGeometry(.25,.32,40)),new THREE.MeshBasicMaterial({color:col,transparent:true,opacity:.45,depthWrite:false}),0);ring.rotation.x=-Math.PI/2;ring.position.y=.006;g.add(ring);
+  const sh=mk(G('fg_sh',()=>new THREE.CircleGeometry(.25,32)),new THREE.MeshBasicMaterial({color:'#1b2236',transparent:true,opacity:.12,depthWrite:false}),0);sh.rotation.x=-Math.PI/2;sh.position.y=.004;g.add(sh);
+  const piv=new THREE.Group();piv.rotation.x=-.28;g.add(piv);g.userData.piv=piv;
+  const K0=P.K||{};const TOY=K0.TOYS&&K0.TOYS[n]&&K0.toy;
+  const SP=P.STAGE&&P.STAGE.PROPS,REAL=['sun','moon','cloud','rainbow','snowman','bicycle','canoe','coat','helmet','sunglasses','hat','lifejacket','turnip','pot'];
+  const fit=o=>{const b=new THREE.Box3().setFromObject(o),sz=b.getSize(new THREE.Vector3());const k=Math.min(.82/Math.max(.01,sz.y),.95/Math.max(.01,sz.x,sz.z));o.scale.multiplyScalar(k);const b2=new THREE.Box3().setFromObject(o);o.position.y-=b2.min.y;return o;};
+  if(SP&&SP[n]&&REAL.includes(n)){const w=new THREE.Group();w.add(SP[n]());piv.add(fit(w));}
+  else if(TOY){const w=new THREE.Group();w.add(K0.toy(n,{s:2.1}));piv.add(fit(w));}
+  else{const cp=PICS[n];if(cp)figGeo(cp,parts=>{if(!parts){/* no vector art: a simple word block */return;}const fg=new THREE.Group();const s=.0215;fg.scale.set(s,-s,s);fg.position.set(-18*s,36*s+.02,0);
+      parts.forEach(pt=>{const m=new THREE.Mesh(pt.geo,figMat(pt.col,pt.op));m.castShadow=true;fg.add(m);});const f0=new THREE.Group();f0.add(fg);f0.scale.setScalar(.01);piv.add(f0);
+      tween(.45,k=>f0.scale.setScalar(Math.max(.01,k<.8?k/.8*1.1:1.1-(k-.8)/.2*.1)));});}
+  if(o.label!==false&&g.userData.label){const L=label(g.userData.label,{size:.17,bg:'#ffffff',border:col});L.position.set(0,.98,0);g.add(L);}
+  if(o.s)g.scale.setScalar(o.s);return g;}
 function glyphMat(txt,col,bg,w){return M('gl'+txt+col+bg+w,()=>{const c=document.createElement('canvas');const cw=Math.min(1024,Math.round(256*w/.46));c.width=cw;c.height=256;const g=c.getContext('2d');
   g.fillStyle=bg;g.fillRect(0,0,cw,256);g.strokeStyle='rgba(27,34,54,.22)';g.lineWidth=12;g.strokeRect(6,6,cw-12,244);g.fillStyle=col;
   const fs=txt.length<=2?176:Math.min(150,Math.floor(cw*1.5/Math.max(1,txt.length)));g.font='700 '+fs+'px "Zilla Slab", Georgia, serif';g.textAlign='center';g.textBaseline='middle';g.fillText(txt,cw/2,140);
@@ -136,7 +155,7 @@ P.unit=function(d){(window.__UNITS=window.__UNITS||[]).push(d);
    Object.keys(X.rounds||{}).forEach(k=>{const r=d.rounds[+k];if(!r)return;const f=X.rounds[k];if(typeof f==='function')r.scene=f;else{r.scene=f.scene;if(f.set)r.set=f.set;if(f.o)r.o=f.o;if(f.ans!=null)r.ans=f.ans;if(f.q)r.q=f.q;}});}
   const sets=d.steps.map(s=>s.set);
   P.theory=P.theory||{};
-  P.theory[d.id]=d.steps.map((s,i)=>({say:s.say,speech:s.speech,demo:'s'+i,cues:(s.cues||[]).map(c=>{const q={w:c[0]};if(c[1])q.p=r=>find(r,c[1]);if(c[2])q.l=c[2];if(c[3])q.demo='s'+i+c[3];if(c[4])q.keep=true;if(!q.p&&!q.l&&!q.demo)q.hl=c[0];return q;})}));
+  P.theory[d.id]=d.steps.map((s,i)=>({say:s.say,speech:s.speech,demo:'s'+i,story3d:i===0&&!!(d.page&&d.page.story),cues:(s.cues||[]).map(c=>{const q={w:c[0]};if(c[1])q.p=r=>find(r,c[1]);if(c[2])q.l=c[2];if(c[3])q.demo='s'+i+c[3];if(c[4])q.keep=true;if(!q.p&&!q.l&&!q.demo)q.hl=c[0];return q;})}));
   if(d.tries)TRIES[d.id]=d.tries;
   const W=d.watch||[];
   P.lesson({id:d.id,title:d.title,strand:d.strand,codes:d.codes,guide:d.guide,
