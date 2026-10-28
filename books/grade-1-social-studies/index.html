@@ -855,7 +855,7 @@ function tickCues(){const cr=cueRun;if(!cr||busy)return;if(cr.tok!==playTok){cue
   if(cr.k>=cr.list.length)cueRun=null;}
 PM.spot={on:spotOn,off:spotOff,pick:pickObjs,stop(){cueRun=null;},get run(){return cueRun;},get list(){return spots;}};
 /* ================= exports for lesson files ================= */
-Object.assign(PM,{THREE,V,W,D,PY,PX,CW,CH,X0,TW,INK,RED,BLUE,GREY,TEAL,VIBE,FT,ZS,G,M,lam,mk,ink,unitBox,cellMat,label,starGeo,wedgeGeo,clearGroup,disposeObj,rr,T,wrap,para,header,keyWords,predict,
+Object.assign(PM,{kid,CREW,THREE,V,W,D,PY,PX,CW,CH,X0,TW,INK,RED,BLUE,GREY,TEAL,VIBE,FT,ZS,G,M,lam,mk,ink,unitBox,cellMat,label,starGeo,wedgeGeo,clearGroup,disposeObj,rr,T,wrap,para,header,keyWords,predict,
   flapBox,tryIt,box,caption,hot,starsRow,cxOf,cyOf,tint,moveTo,hop,tween,burst,easeOut,easeIO,easeBack,A,movers,get ACC(){return ACC;}});
 
 /* ================= spreads ================= */
@@ -927,7 +927,7 @@ function gameSolved(S,msg){const g=S.game;if(g.lock||g.done||g.setup||g.phase!==
   A.good(msg||'Correct!');cheerVoice(true);mascotCheer(false);guideCheer(false);addPts(pts);A.redraw();
   A.later(()=>{g.lock=false;g.round++;g.miss=false;if(g.round>=5){g.done=true;A.win();addPts(25);mascotCheer(true);guideCheer(true);speak(PLAY?LINES.winKid:LINES.winOld);A.say('You won all 5 rounds! +25 bonus points. Next lesson coming up…');A.redraw();
       const tk=++nextTok,here=cur;setTimeout(()=>{if(tk===nextTok&&cur===here&&!busy&&cur<SP.length-1&&S.game.done)goSpread(cur+1,0,true);},6500);}
-    else{g.setup=true;try{g.text=S.api.task(g.round);}finally{g.setup=false;}A.say('Round '+(g.round+1)+': '+g.text.replace(/\*/g,''));}A.redraw();},1600);}
+    else{g.setup=true;try{g.text=S.api.task(g.round);}finally{g.setup=false;}A.say('Round '+(g.round+1)+': '+g.text.replace(/\*/g,''));}A.redraw();},Math.max(1600,+((S.api&&S.api.hold&&S.api.hold())||0)));}
 function replay(S){nextTok++;S.game={round:0,stars:0,done:false,text:'',phase:'play',miss:false,streak:0};S.game.setup=true;try{S.game.text=S.api.task(0);}finally{S.game.setup=false;}A.say('New game! '+S.game.text.replace(/\*/g,''));A.redraw();}
 
 /* ================= activity dock ================= */
@@ -1139,6 +1139,8 @@ Promise.all([Promise.race([Promise.all([fl,imgs]),new Promise(r=>setTimeout(r,30
 <script src="pics.js"></script>
 <script src="kit.js"></script>
 <script src="subject-kit.js"></script>
+<script src="stage.js"></script>
+<script src="scenes.js"></script>
 <script src="lessons-a.js"></script>
 <script src="lessons-b.js"></script>
 <script src="stories.js"></script>
