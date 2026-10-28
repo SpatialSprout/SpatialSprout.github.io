@@ -153,7 +153,7 @@ P.unit=function(d){(window.__UNITS=window.__UNITS||[]).push(d);
         st.ang=null;st.perm=set.build?(set.keep?set.build.map((w,i)=>i):shuffle(set.build.map((w,i)=>i))):null;if(state==='done')finish();draw();}
       function finish(){const set=st.set;if(set.bins)st.place=set.items.map(it=>it[1]);if(set.fill){st.filled=set.ans;st.filledOk=true;}if(set.build)st.built=set.build.map((w,i)=>i);if(set.order)st.ord=set.order.map(n=>set.row.indexOf(n));if(set.ans&&set.row&&!set.fill){[].concat(set.ans).forEach(a=>{const i=set.row.indexOf(a);if(i>=0)st.lit.push(i);});}if(set.cell)st.cellLit=set.cell;if(set.cross!=null)st.crossed=set.cross;st.msg=set.doneMsg||st.msg;}
       const say=(t)=>{if(t)A.say(t);};
-      const act=(text)=>{if(!P.STAGE)return;if(!reg.sc)reg.sc=P.STAGE.makeScene(g2,st,set.row||set.fill||set.build||set.bins||set.grid?.3:.7);try{P.STAGE.actOut(reg.sc,text,reg.pic);}catch(e){console.error(e);}};
+      const act=(text)=>{if(!P.STAGE)return;if(!reg.sc){const s0=st.set||{};reg.sc=P.STAGE.makeScene(g2,st,s0.row||s0.fill||s0.build||s0.bins||s0.grid?.3:.7);}try{P.STAGE.actOut(reg.sc,text,reg.pic);}catch(e){console.error(e);}};
       const H={
         item(i,n){A.pop();const set=st.set;const it=reg.items[i];
           if(set.order){if(st.ord.includes(i))return;st.ord.push(i);draw();say(String(st.ord.length));if(st.ord.length===set.order.length){const ok=st.ord.every((k,j)=>set.row[k]===set.order[j]);
