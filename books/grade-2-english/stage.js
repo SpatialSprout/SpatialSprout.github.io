@@ -65,7 +65,7 @@ const PROPS={
    for(let i=0;i<4;i++){const b=box(.09,.62,.02,'#8d6e63');b.position.y=.33;const arm=new THREE.Group();arm.rotation.z=i*Math.PI/2;arm.add(b);hub.add(arm);}const d=box(.14,.22,.02,'#5d4037');d.position.set(0,.11,.26);g.add(d);g.userData.spin=hub;return g;},
  heart(){const g=new THREE.Group();const s=new THREE.Shape();s.moveTo(0,-.15);s.bezierCurveTo(-.3,.05,-.12,.25,0,.1);s.bezierCurveTo(.12,.25,.3,.05,0,-.15);const h=mk(new THREE.ExtrudeGeometry(s,{depth:.06,bevelEnabled:false}),lam('#ec407a'),0);g.add(h);return g;}
 };
-function prop(n,o){o=o||{};let g;if(PROPS[n])g=PROPS[n]();else if(K.TOYS[n]&&!o.card)g=K.toy(n,{s:o.toyS||1.6});else g=K2.standee(n,{col:o.col||K2.COLS[(o.ci||0)%K2.COLS.length],label:o.label==null?false:o.label,s:o.s||.9});
+function prop(n,o){o=o||{};let g;if(PROPS[n])g=PROPS[n]();else if(K.TOYS[n]&&!o.card)g=K.toy(n,{s:o.toyS||1.6});else g=K2.standee(n,{col:o.col||K2.COLS[(o.ci||0)%K2.COLS.length],label:o.label==null?false:o.label,s:o.s||.9,bare:o.bare});
   g.userData.name=o.name||n;g.userData.kind=n;if(o.s&&(PROPS[n]||K.TOYS[n]))g.scale.multiplyScalar(o.s);return g;}
 
 /* ---------- how each thing comes alive ---------- */
@@ -91,7 +91,7 @@ function alive(o,big){if(!o||!o.parent)return Promise.resolve();const kind=o.use
   return tween(.8*B,k=>{o.position.y=p0.y+Math.sin(k*Math.PI)*.5;o.rotation.y=r0.y+k*Math.PI*2;}).then(done);}
 
 /* ---------- acting kids ---------- */
-function actor(i,o){o=o||{};const k=P.kid(P.CREW[i%P.CREW.length]);k.scale.setScalar(o.s||.8);const u=k.userData;u.mode=o.mode||'idle';u.t=Math.random()*3;u.ry=o.ry||0;k.rotation.y=u.ry;
+function actor(i,o){o=o||{};const k=P.kid(typeof i==='object'?i:P.CREW[i%P.CREW.length]);k.scale.setScalar(o.s||.8);const u=k.userData;u.mode=o.mode||'idle';u.t=Math.random()*3;u.ry=o.ry||0;k.rotation.y=u.ry;
   u.name=o.name||'kid';u.kind='child';u.actor=true;return k;}
 function headPos(k){const v=new THREE.Vector3(0,.94,0);k.userData.head.parent.localToWorld(v.copy(k.userData.head.position));return v;}
 function animActor(k,dt){const u=k.userData,a=u.arms,h=u.head,b=u.body;u.t+=dt;const t=u.t;let L=-.18,Rr=.18,Lx=0,Rx=0,hx=0,hz=Math.sin(t*1.3)*.05,hy=0,by=0,bx=0,brx=0,ry=u.ry;
@@ -120,7 +120,7 @@ function animActor(k,dt){const u=k.userData,a=u.arms,h=u.head,b=u.body;u.t+=dt;c
    case 'kick':by=.02;Lx=.4;Rx=-.4;brx=Math.sin(t*6)*.15;break;
    default:by=Math.sin(t*2)*.01;}
   a[0].rotation.z=lerp(a[0].rotation.z,L,.25);a[1].rotation.z=lerp(a[1].rotation.z,Rr,.25);a[0].rotation.x=lerp(a[0].rotation.x,Lx,.25);a[1].rotation.x=lerp(a[1].rotation.x,Rx,.25);
-  h.rotation.x=lerp(h.rotation.x,hx,.2);h.rotation.z=hz;h.rotation.y=lerp(h.rotation.y,hy,.3);b.position.y=by;b.position.x=bx;b.rotation.x=lerp(b.rotation.x,brx,.2);k.rotation.y=lerp(k.rotation.y,ry,.15);}
+  h.rotation.x=lerp(h.rotation.x,hx,.2);h.rotation.z=hz;h.rotation.y=lerp(h.rotation.y,hy,.3);b.position.y=by;b.position.x=bx;b.rotation.x=lerp(b.rotation.x,brx,.2);k.rotation.y=lerp(k.rotation.y,ry,.15);if(u.extra)u.extra(k,dt);}
 
 /* ---------- particles ---------- */
 function particles(g,kind,area){const grp=new THREE.Group();g.add(grp);const n=kind==='snow'?36:kind==='rain'?40:kind==='notes'?6:kind==='steam'?10:kind==='zzz'?3:kind==='sparkle'?14:12;const list=[];
@@ -132,7 +132,10 @@ function particles(g,kind,area){const grp=new THREE.Group();g.add(grp);const n=k
   return grp;}
 
 /* ---------- the scene object handed to a lesson ---------- */
-function makeScene(g0,st,off){const live=[],ticks=[];const g2=new THREE.Group();g2.position.z=off==null?.7:off;g0.add(g2);const timers=[];let clock=0;const sc={
+function makeScene(g0,st,off){const live=[],ticks=[];const g2=new THREE.Group();g2.position.z=off==null?.7:off;g0.add(g2);const timers=[];let clock=0;const ons=[];const sc={
+  /* story sync: run f when the narration reaches the nth time a word (or phrase) is read */
+  on(w,f,nth){ons.push({w:String(w).toLowerCase(),f,nth:nth||1,done:false});return sc;},
+  get ons(){return ons;},
   after(ms,f){timers.push({at:clock+ms/1000,f});},
   later(f,ms){timers.push({at:clock+(ms||0)/1000,f});},
   g:g2,

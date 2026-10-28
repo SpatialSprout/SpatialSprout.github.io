@@ -242,7 +242,7 @@ controls.addEventListener('start',()=>{autoCam=false;});
 Object.assign(controls,{enableDamping:true,dampingFactor:.08,maxPolarAngle:Math.PI*.44,minDistance:2.5,maxDistance:45,screenSpacePanning:true});
 const hemi=new THREE.HemisphereLight(0xffffff,0x9aa3b5,.62);scene.add(hemi);
 const sun=new THREE.DirectionalLight(0xfff4e2,.78);sun.position.set(-6,12,5);sun.castShadow=true;
-sun.shadow.mapSize.set(2048,2048);Object.assign(sun.shadow.camera,{left:-13,right:13,top:13,bottom:-13,near:1,far:40});sun.shadow.bias=-.0006;scene.add(sun);
+sun.shadow.mapSize.set(2048,2048);Object.assign(sun.shadow.camera,{left:-13,right:13,top:13,bottom:-13,near:1,far:40});sun.shadow.bias=-.0006;scene.add(sun);PM.lights={sun,hemi,scene};
 const lamp=new THREE.SpotLight(0xffd59a,0,30,.75,.55,1);lamp.position.set(6,8,-3);lamp.castShadow=true;lamp.shadow.mapSize.set(1024,1024);lamp.shadow.bias=-.0008;scene.add(lamp);scene.add(lamp.target);
 (function(){const m=new THREE.MeshBasicMaterial({colorWrite:false,depthWrite:false});
   [[-11,8,.3,.3,.3,7],[-12.8,8,.3,.3,.3,7],[-11.9,8,-3,2.2,.3,.25],[-11.9,8,3.4,2.2,.3,.25]].forEach(b=>{const o=new THREE.Mesh(new THREE.BoxGeometry(b[3],b[4],b[5]),m);o.position.set(b[0],b[1],b[2]);o.castShadow=true;scene.add(o);});})();
@@ -557,12 +557,14 @@ function pose(v){
   /* close-ups: the story text, the story text with its scene, and the acted scene itself */
   if(v==='storyL'){const tg=V(-W/2,PY,-D/2+D*.27);const d=fitDist(W*1.0,D*.44);return {p:tg.clone().add(V(0,.95,.34).normalize().multiplyScalar(d)),t:tg};}
   if(v==='storyW'){const tg=V(0,PY+.2,-D/2+D*.32);const d=fitDist(2*W*1.04,D*.66);return {p:tg.clone().add(V(0,.9,.52).normalize().multiplyScalar(d)),t:tg};}
+  if(v==='pageR'){const tg=V(W/2,PY+.3,.2);const d=fitDist(W*1.04,D*1.0);return {p:tg.clone().add(V(0,.86,.52).normalize().multiplyScalar(d)),t:tg};}
+  if(v==='stage'&&BK.storyRight){const tg=V(W/2,PY+.45,1.7);const d=fitDist(W*.98,D*.58);return {p:tg.clone().add(V(0,.8,.66).normalize().multiplyScalar(d)),t:tg};}
   if(v==='stage'){const tg=V(W/2,PY+.4,-D/2+D*.36);const d=fitDist(W*.96,D*.56);return {p:tg.clone().add(V(0,.78,.72).normalize().multiplyScalar(d)),t:tg};}
   const tg=V(0,PY,.1);const d=fitDist(2*W*1.0,D*1.0);return {p:tg.clone().add(V(0,1,.6).normalize().multiplyScalar(d)),t:tg};}
 /* camera director: close and simple for small hands. Stories: the camera goes to the text, then to the
    scene that acts it out; on a phone held upright one page at a time, the 3D side while things happen. */
 let camDir=0;const wideStage=()=>(stage.clientWidth/(stage.clientHeight||1))>1.15;
-function autoView(sp,s){if(s.story3d)return wideStage()?'storyW':'storyL';if(wideStage())return 'book';
+function autoView(sp,s){if(s.storyRead)return 'pageR';if(s.story3d)return wideStage()?'storyW':'storyL';if(wideStage())return 'book';
   if(sp.kind==='play')return 'model';if(sp.kind==='learn'&&(s.view==='theory'||s.view==='model')&&(s.demo||s.cues))return PM.STAGE?'stage':'model';return s.view==='read'||s.story?'read':'book';}
 function setView(v,instant){const orig=v;if(v==='theory')v=(stage.clientWidth/(stage.clientHeight||1))>1.15?'book':'read';if(!bookOpen)v='cover';view=v;{const lb=document.getElementById('bLeftPg'),rb=document.getElementById('bRightPg');if(lb){lb.classList.toggle('on',v==='read');rb.classList.toggle('on',v==='model');}}document.querySelectorAll('.views button').forEach(b=>b.classList.toggle('on',b.dataset.view===v));
   refreshDock(true);applyCam();const q=pose(orig==='theory'&&v==='book'?'tbook':v);basePose=q;if(instant){camera.position.copy(q.p);controls.target.copy(q.t);camTween=null;return;}
@@ -865,6 +867,10 @@ function tickCues(){const cr=cueRun;if(!cr||busy)return;if(cr.tok!==playTok){cue
   else ch=(now-cr.t0)/1000*13;
   while(cr.k<cr.list.length&&cr.list[cr.k].i<=ch){const q=cr.list[cr.k++];try{if(q.demo&&q.demo!=='hold'&&curApi.demo)curApi.demo(q.demo);}catch(e){console.error(e);}if(q.p||q.l)spotOn(q);else if(q.hl){setHL(q.hl);A.redraw();}}
   if(cr.k>=cr.list.length)cueRun=null;}
+PM.voNow=()=>{const vc=voClock;if(!vc||vc.tok!==voTok)return null;if(vc.dev)return {dev:true,ch:vc.ch,el:(performance.now()-vc.t0)/1000};return {t:VO.currentTime,dur:vc.dur};};
+PM.vhash=vhash;
+PM.redrawR=()=>{if(cur<0||building||busy)return;drawPage(rightP,SP[cur],'R');};
+PM.curStep=()=>cur>=0&&SP[cur]?SP[cur].steps[stepI]:null;
 PM.spot={on:spotOn,off:spotOff,pick:pickObjs,stop(){cueRun=null;},get run(){return cueRun;},get list(){return spots;}};
 /* ================= exports for lesson files ================= */
 Object.assign(PM,{paperBase,kid,CREW,THREE,V,W,D,PY,PX,CW,CH,X0,TW,INK,RED,BLUE,GREY,TEAL,VIBE,FT,ZS,G,M,lam,mk,ink,unitBox,cellMat,label,starGeo,wedgeGeo,clearGroup,disposeObj,rr,T,wrap,para,header,keyWords,predict,
@@ -896,7 +902,7 @@ const INTRO={id:'intro',kind:'intro',title:'Welcome',strand:'',color:TEAL,num:''
     if(stamps[L.id])drawStamp(g,x+colW-40,y+36,24);hot(p,x,y,colW-10,rowH-6,()=>goSpread(SP.indexOf(L.learnSp)));});},
  build(S,grp){return {};}};
 
-function learnRight(p,S,L){const g=p.g;let y=cyOf(L.rz==null?.55:L.rz);if(L.readout)y=L.readout(p,S,y)||y;
+function learnRight(p,S,L){if(PM.learnRight&&PM.learnRight(p,S,L))return;const g=p.g;let y=cyOf(L.rz==null?.55:L.rz);if(L.readout)y=L.readout(p,S,y)||y;
   y=caption(p,y+26,'Fig. '+L.n+'a',L.fig||'')+12;const tips=L.explore||[];const h=74+tips.length*44;box(p,y,h,'Explore');
   tips.forEach((t,i)=>{g.beginPath();g.arc(X0+42,y+80+i*44,9,0,Math.PI*2);g.fillStyle=VIBE[i%6];g.fill();wrap(g,t,X0+64,y+88+i*44,TW-90,30,{font:FT.small,bold:FT.smallB});});}
 function practiceLeft(p,S,L){const g=p.g;let y=header(p,S);
@@ -921,7 +927,7 @@ function learnSteps(L){const why=(PM.why||{})[L.id]||'';
   const core=(L.learn||[]).filter(s=>!/^predict/i.test((s.speech||s.say||'').trim())&&!/^your turn/i.test((s.say||'').trim()));
   const TH2=(PM.theory||{})[L.id];const theory=TH2?TH2.map(s=>Object.assign({view:'read'},s)):core.filter(s=>s.view==='read'),demos=core.filter(s=>s.view!=='read');const firstDemo=(demos.find(d=>d.demo)||{}).demo;
   return [{say:'Lesson '+L.n+': '+L.title,speech:'Lesson '+L.n+'. '+L.title+'.'+(why?' '+why:''),view:'read',story:true}]
-    .concat(theory.map(s=>Object.assign({},s,{view:'theory',demo:s.demo||firstDemo,quietDemo:!s.demo&&!s.cues})),demos);}
+    .concat(theory.filter(s=>!s.storyRead).map(s=>Object.assign({},s,{view:'theory',demo:s.demo||firstDemo,quietDemo:!s.demo&&!s.cues})),demos,theory.filter(s=>s.storyRead));}
 function makeSpreads(){SP=[INTRO];LESSONS.forEach((L,i)=>{L.n=i+1;L.color=STRAND[L.strand]||TEAL;
   const base={L,title:L.title,strand:L.strand,codes:L.codes||[],color:L.color};
   const ls=Object.assign({},base,{kind:'learn',id:L.id,num:'Lesson '+L.n,steps:learnSteps(L),left:(p,S)=>L.left(p,S),right:(p,S)=>learnRight(p,S,L)});
@@ -948,7 +954,7 @@ function replay(S){nextTok++;S.game={round:0,stars:0,done:false,text:'',phase:'p
 /* ================= activity dock ================= */
 let dockSig='';
 function refreshDock(noCam){const dock=$('#dock');const sp=SP[cur];
-  const show=bookOpen&&!busy&&cur>=0&&sp&&sp.kind!=='intro'&&view!=='read'&&!(sp.steps[stepI]&&sp.steps[stepI].view==='theory'&&view==='book');
+  const show=bookOpen&&!busy&&cur>=0&&sp&&sp.kind!=='intro'&&!(BK.noLearnDock&&sp.kind==='learn')&&view!=='read'&&!(sp.steps[stepI]&&sp.steps[stepI].view==='theory'&&view==='book');
   if(!show){if(!dock.hidden){dock.hidden=true;if(!noCam){applyCam();if(!camTween)setView(view);}}return;}
   const S=sp.S,api=curApi||{};const dS=$('#dStars'),dI=$('#dInfo'),dB=$('#dBtns');
   if(sp.kind==='play'){const g=S.game;dS.innerHTML=Array.from({length:NR()},(_,i)=>i).map(i=>i<g.stars?'★':'<i>★</i>').join('');dI.textContent=g.done?'You won! Next lesson is coming up.':g.phase==='howto'?'Get ready…':'Round '+(g.round+1)+' · '+challenger(sp.L,g.round)+'’s challenge: '+(g.text||'').replace(/\*/g,'');}
@@ -1152,16 +1158,19 @@ Promise.all([Promise.race([Promise.all([fl,imgs]),new Promise(r=>setTimeout(r,30
 })();
 </script>
 <script src="pics.js"></script>
+<script src="sketch.js"></script>
 <script src="kit.js"></script>
 <script src="subject-kit.js"></script>
 <script src="stage.js"></script>
 <script src="g2.js"></script>
 <script src="scenes.js"></script>
+<script src="dioramas.js"></script>
 <script src="lessons-a.js"></script>
 <script src="lessons-b.js"></script>
 <script src="lessons-c.js"></script>
 <script src="lessons-d.js"></script>
 <script src="stories.js"></script>
+<script src="vtime.js"></script>
 
 </body>
 </html>
