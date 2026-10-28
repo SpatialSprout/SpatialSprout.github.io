@@ -41,7 +41,7 @@
   var lives = C.books.filter(function (b) { return b.status === "live" && b.lessons; });
   var set = function (id, v) { var e = $(id); if (e) e.textContent = v; };
   var nLessons = lives.reduce(function (a, b) { return a + b.lessons.length; }, 0);
-  set("fBooks", String(lives.length)); set("fLessons", String(nLessons)); set("fRounds", String(nLessons * 5));
+  set("fBooks", String(lives.length)); set("fLessons", String(nLessons)); set("fRounds", String(lives.reduce(function (a, b) { return a + b.lessons.length * (b.grade === 2 ? 10 : 5); }, 0)));
   var lib = $("libSub");
   if (lib && lives.length) { var names = lives.map(function (b) { return "Grade " + b.grade + " " + b.subject; });
     var list = names.length > 1 ? names.slice(0, -1).join(", ") + " and " + names[names.length - 1] : names[0];

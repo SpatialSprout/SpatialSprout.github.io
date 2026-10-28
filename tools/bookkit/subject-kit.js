@@ -42,7 +42,7 @@ function standee(n,o){o=o||{};const col=o.col||COLS[0];const g=new THREE.Group()
   const sh=mk(G('fg_sh',()=>new THREE.CircleGeometry(.25,32)),new THREE.MeshBasicMaterial({color:'#1b2236',transparent:true,opacity:.12,depthWrite:false}),0);sh.rotation.x=-Math.PI/2;sh.position.y=.004;g.add(sh);
   const piv=new THREE.Group();piv.rotation.x=-.28;g.add(piv);g.userData.piv=piv;
   const K0=P.K||{};const TOY=K0.TOYS&&K0.TOYS[n]&&K0.toy;
-  const SP=P.STAGE&&P.STAGE.PROPS,REAL=['sun','moon','cloud','rainbow','snowman','bicycle','canoe','coat','helmet','sunglasses','hat','lifejacket','turnip','pot'];
+  const SP=P.STAGE&&P.STAGE.PROPS,REAL=['sun','moon','cloud','rainbow','snowman','bicycle','canoe','coat','helmet','sunglasses','hat','lifejacket','turnip','pot','windmill'];
   const fit=o=>{const b=new THREE.Box3().setFromObject(o),sz=b.getSize(new THREE.Vector3());const k=Math.min(.82/Math.max(.01,sz.y),.95/Math.max(.01,sz.x,sz.z));o.scale.multiplyScalar(k);const b2=new THREE.Box3().setFromObject(o);o.position.y-=b2.min.y;return o;};
   if(SP&&SP[n]&&REAL.includes(n)){const w=new THREE.Group();w.add(SP[n]());piv.add(fit(w));}
   else if(TOY){const w=new THREE.Group();w.add(K0.toy(n,{s:2.1}));piv.add(fit(w));}
@@ -76,29 +76,40 @@ const CUSTOM={};
 
 /* ---------------- the page (left) ---------------- */
 function bold(t){return t;}
-function drawStory(p,y,sty){const g=p.g;const lines=wrap(g,sty.text,0,0,TW-60,36,{font:FT.body,bold:FT.bodyB,dry:true});const ph=sty.pics?86:0;const h=lines+ph+84;
+function drawStory(p,y,sty){const g=p.g;const lines=wrap(g,sty.text,0,0,TW-60,36,{font:FT.body,bold:FT.bodyB,dry:true});const ph=sty.pics&&CMP<3?86:0;const h=lines+ph+84;
   rr(g,X0,y,TW,h,20);g.fillStyle='#ffffff';g.fill();g.lineWidth=3;g.strokeStyle=tint(acc(),.5);g.stroke();
   rr(g,X0,y,TW,52,20);g.fillStyle=tint(acc(),.14);g.fill();pic(g,'book',X0+34,y+26,34);T(g,sty.title,X0+62,y+37,FT.h3,INK);
   let yy=wrap(g,sty.text,X0+30,y+92,TW-60,36,{font:FT.body,bold:FT.bodyB,boldColor:acc()});
-  if(sty.pics){const n=sty.pics.length,sp=Math.min(110,(TW-60)/n);sty.pics.forEach((k,i)=>picTile(g,k,X0+TW/2-(n-1)*sp/2+i*sp,yy+30,60,COLS[i%COLS.length]));}
+  if(sty.pics&&CMP<3){const n=sty.pics.length,sp=Math.min(110,(TW-60)/n);sty.pics.forEach((k,i)=>picTile(g,k,X0+TW/2-(n-1)*sp/2+i*sp,yy+30,60,COLS[i%COLS.length]));}
   return y+h+22;}
-function drawBox(p,y,b){const g=p.g;const tl=b.text?wrap(g,b.text,0,0,TW-56,36,{font:FT.body,bold:FT.bodyB,dry:true}):0;const exn=(b.ex||[]).length,cols=Math.min(exn,b.cols||((b.ex||[]).some(e=>(e[1]||'').replace(/\*/g,'').length>9)?3:4)),rows=Math.ceil(exn/Math.max(1,cols));
-  const exh=rows*(b.big?150:122);const h=70+tl+exh+(b.note?44:0)+18;P.box(p,y,h,b.title);let yy=y+70;
+function drawBox(p,y,b){const g=p.g;const tl=b.text?wrap(g,b.text,0,0,TW-56,36,{font:FT.body,bold:FT.bodyB,dry:true}):0;
+  if(b.lines){/* worked examples: each line in its own soft card, one or two columns; cards grow to fit wrapped text */const L=b.lines,cols=b.cols||(L.some(t=>t.replace(/\*/g,'').length>22)?1:2),rows=Math.ceil(L.length/cols);
+    const FNT=CMP>=4?FT.smallB:FT.bodyB,LH=CMP>=4?26:30,pad=CMP>=4?5:CMP>=1?9:18,GP=CMP>=3?6:10,cw=(TW-56-(cols-1)*14)/cols;
+    const nl=L.map(t=>Math.max(1,Math.round(wrap(g,t,0,0,cw-30,LH,{font:FNT,bold:FNT,dry:true})/LH)));const rh=[];for(let r=0;r<rows;r++){let m=1;for(let c=0;c<cols;c++){const k=r*cols+c;if(k<L.length)m=Math.max(m,nl[k]);}rh.push(m*LH+pad*2);}
+    const tot=rh.reduce((a,b)=>a+b+GP,0);const h=70+(tl?tl+10:0)+tot+(b.note?44:0)+18;P.box(p,y,h,b.title);let yy=y+70;if(b.text)yy=wrap(g,b.text,X0+28,yy+26,TW-56,36,{font:FT.body,bold:FT.bodyB,boldColor:acc()})+2;
+    let ry=yy;for(let r=0;r<rows;r++){for(let c=0;c<cols;c++){const k=r*cols+c;if(k>=L.length)continue;const cx=X0+28+c*(cw+14);rr(g,cx,ry,cw,rh[r],14);g.fillStyle=tint(acc(),.1);g.fill();
+      wrap(g,L[k],cx+18,ry+pad+LH*.78,cw-30,LH,{font:FNT,bold:FNT,boldColor:'#e4572e'});}ry+=rh[r]+GP;}yy=ry;
+    if(b.note)T(g,b.note,X0+28,yy+28,FT.hand,acc());return y+h+20;}
+const exn=(b.ex||[]).length,cols=Math.min(exn,b.cols||((b.ex||[]).some(e=>(e[1]||'').replace(/\*/g,'').length>9)?3:4)),rows=Math.ceil(exn/Math.max(1,cols));
+  const cw0=(TW-40)/Math.max(1,cols),PS0=CMP>=4?40:CMP>=1?48:(b.big?84:64),LO=CMP?34:b.big?52:40;const mxl=Math.max(1,...(b.ex||[]).map(e=>Math.round(wrap(g,e[1]||'',0,0,cw0-12,30,{font:FT.bodyB,bold:FT.bodyB,dry:true})/30)));
+  const RH=Math.max(CMP>=5?76:CMP>=4?84:CMP>=1?100:(b.big?150:122),PS0+LO+(mxl-1)*30+14);const exh=rows*RH;const h=70+tl+exh+(b.note?44:0)+18;P.box(p,y,h,b.title);let yy=y+70;
   if(b.text)yy=wrap(g,b.text,X0+28,yy+26,TW-56,36,{font:FT.body,bold:FT.bodyB,boldColor:acc()})-4;
-  if(exn){const cw=(TW-40)/cols;b.ex.forEach((e,i)=>{const cx=X0+20+cw*(i%cols)+cw/2,cy=yy+Math.floor(i/cols)*(b.big?150:122);const ps=b.big?84:64;
-    if(e[0])picTile(g,e[0],cx,cy+ps/2+6,ps,COLS[i%COLS.length]);wrap(g,e[1]||'',cx-cw/2+6,cy+ps+(b.big?52:40),cw-12,30,{font:FT.bodyB,bold:FT.bodyB,boldColor:'#e4572e',center:true});});yy+=exh;}
+  if(exn){const cw=(TW-40)/cols;b.ex.forEach((e,i)=>{const cx=X0+20+cw*(i%cols)+cw/2,cy=yy+Math.floor(i/cols)*RH;const ps=CMP>=4?40:CMP>=1?48:(b.big?84:64);
+    if(e[0])picTile(g,e[0],cx,cy+ps/2+6,ps,COLS[i%COLS.length]);wrap(g,e[1]||'',cx-cw/2+6,cy+ps+(CMP?34:b.big?52:40),cw-12,30,{font:FT.bodyB,bold:FT.bodyB,boldColor:'#e4572e',center:true});});yy+=exh;}
   if(b.note)T(g,b.note,X0+28,yy+28,FT.hand,acc());return y+h+20;}
 function drawCards(p,y,cards){const g=p.g;const hh=cards.some(c=>(c.q||'').replace(/\*/g,'').length>32||(c.a||'').replace(/\*/g,'').length>34)?182:150;return exGrid(p,y,cards.length,cards[0].h||hh,(i,x,yy,w,h)=>{const c=cards[i];let ty=yy+34;
   if(c.q)ty=wrap(g,c.q,x+56,yy+34,w-70,28,{font:FT.smallB,bold:FT.smallB,boldColor:acc()})+2;
   const ps=c.pics||[];const n=ps.length,sp=Math.min(76,(w-40)/Math.max(1,n));const py=ty+30;ps.forEach((k,j)=>{const cx=x+30+sp/2+j*sp;pic(g,k,cx,py,Math.min(58,sp-6));
     if(c.o&&c.o.includes(j)){g.beginPath();g.arc(cx,py,Math.min(36,sp/2),0,Math.PI*2);g.strokeStyle='#e4572e';g.lineWidth=4;g.stroke();}if(c.x&&c.x.includes(j))xMark(g,cx,py,Math.min(50,sp-10));});
   if(c.a)wrap(g,c.a,x+30,(n?py+60:ty+24),w-50,30,{font:FT.hand,bold:FT.hand,color:acc(),boldColor:'#e4572e'});});}
-function drawPage(p,S,d){let y=header(p,S);const pg=d.page||{};
+let CMP=0;/* compact level while fitting a page: 1 tighter example rows, 2 no cards, 3 no key words or story pictures, 4 smallest */
+function drawPage(p,S,d){let y=0;for(let lv=0;lv<=5;lv++){if(lv>0&&P.paperBase){P.paperBase(p);p.hot=[];p.flaps=[];}CMP=lv;y=drawPage1(p,S,d);if(y<=1300)break;}CMP=0;return y;}
+function drawPage1(p,S,d){let y=header(p,S);const pg=d.page||{};
   if(pg.intro)y=P.para(p,y+6,pg.intro)+16;
   if(pg.story)y=drawStory(p,y-6,pg.story);
   (pg.boxes||[]).forEach(b=>{y=drawBox(p,y-4,b);});
-  if(pg.cards&&pg.cards.length&&y<1150)y=drawCards(p,y,pg.cards);
-  if(pg.words&&y<1220)y=keyWords(p,y,pg.words);return y;}
+  if(CMP<2&&pg.cards&&pg.cards.length&&y<1150)y=drawCards(p,y,pg.cards);
+  if(CMP<3&&pg.words&&y<1220)y=keyWords(p,y,pg.words);return y;}
 
 /* ---------------- the model (right) ---------------- */
 const Z0=-1.85,ZF=-.8;
@@ -135,28 +146,33 @@ function render(g2,st,h){const set=st.set||{};const reg={items:[],opts:[],built:
     const rest=perm.filter(i=>!built.includes(i));const rw=rest.reduce((a,i)=>a+bw(words[i])+.12*sc,0);let rx=-rw/2;
     rest.forEach(i=>{const w=bw(words[i]);const b=block(words[i],{side:'#8fd3ff'});b.position.set(rx+w/2,0,-.78);b.userData.opt=words[i];g2.add(b);reg.opts.push(b);A.drag(b,{tap:()=>h.word(i)});rx+=w+.12*sc;});
     if(set.pic){const s=standee(set.pic,{col:COLS[2],label:false,s:.8});s.userData.kind=set.pic;s.position.set(0,0,-2.75);g2.add(s);reg.pic=s;}}
+  /* answer blocks on the page for dock questions (short answers only): tap one to answer */
+  if(set.choices&&st.round&&st.round.o){const L=set.choices,n=L.length,ws=L.map(t=>BW(t)),tot=ws.reduce((a,b)=>a+b,0)+.25*(n-1),sc=Math.min(1,4.3/tot);let x=-tot*sc/2;
+    L.forEach((t,i)=>{const ok=st.chosen===t;const b=block(t,{side:ok?'#5fd38a':COLS[(i*2+1)%COLS.length]});b.scale.setScalar(sc);b.position.set(x+ws[i]*sc/2,0,set.row?-.72:-1.05);x+=ws[i]*sc+.25*sc;b.userData.opt=t;g2.add(b);reg.opts.push(b);A.drag(b,{tap:()=>h.choice(t,b)});});}
   /* a map grid: rows A, B, C… and columns 1, 2, 3… */
   if(set.grid){const gd=set.grid,cs=Math.min(.78,4.2/gd.cols,2.4/gd.rows),x0=-(gd.cols-1)*cs/2,z0=-2.75+cs/2;
     for(let r=0;r<gd.rows;r++)for(let c=0;c<gd.cols;c++){const id='ABCDEF'[r]+(c+1);const lit=st.cellLit===id;const t=mk(G('k2cell'+cs,()=>new THREE.BoxGeometry(cs*.96,.05,cs*.96)),lam(lit?'#ffe08a':((r+c)%2?'#e8f5e9':'#f1f8e9')),20);
       t.position.set(x0+c*cs,.025,z0+r*cs);t.userData.cell=id;g2.add(t);A.drag(t,{tap:()=>h.cell(id)});const it=(gd.items||{})[id];if(it){const s=standee(it,{col:COLS[(r*3+c)%COLS.length],label:false,s:cs*1.05});s.position.set(x0+c*cs,.05,z0+r*cs+.05);s.userData.cellOf=id;g2.add(s);A.drag(s,{tap:()=>h.cell(id)});}}
     for(let r=0;r<gd.rows;r++){const L=label('ABCDEF'[r],{size:.26,color:acc()});L.position.set(x0-cs*.85,.2,z0+r*cs);g2.add(L);}
-    for(let c=0;c<gd.cols;c++){const L=label(String(c+1),{size:.26,color:acc()});L.position.set(x0+c*cs,.12,z0+(gd.rows-.5)*cs+.22);g2.add(L);}}
+    for(let c=0;c<gd.cols;c++){const L=label(String(c+1),{size:.26,color:acc()});L.position.set(x0+c*cs,.12,z0-cs*.78);g2.add(L);}}
   return reg;}
 
 /* ---------------- lesson factory ---------------- */
-const TRIES={};
+const TRIES={},MORE={};
+/* Grade 2+: a bonus story on the practice page (some questions are about it) */
+P.practiceStory=function(L,p,S,y){const m=MORE[L.id];if(!m)return 0;y=P.para(p,y,m.lead||'Read the story. Then answer the questions on the model page.')+10;return drawStory(p,y,m)+4;};
 P.practiceMore=function(L,p,S,y){const list=TRIES[L.id];if(!list||y>1080)return;T(p.g,'Warm up: try it!',X0,y+34,FT.h3,INK);let yy=y+56;list.forEach(([q,a],i)=>{if(yy+200<1310)yy=P.tryIt(p,yy+30,S,'try'+i,i+1,q,a);});};
 function live(o,big){if(P.STAGE)return P.STAGE.alive(o,big);jump(o);}
 function jump(o){if(!o)return;const y0=o.position.y,r0=o.rotation.y;tween(.6,k=>{o.position.y=y0+Math.sin(Math.PI*k)*.45;o.rotation.y=r0+k*Math.PI*2;}).then(()=>{o.position.y=y0;o.rotation.y=r0;});}
 function shake(o){if(!o)return;const x0=o.position.x;tween(.4,k=>{o.position.x=x0+Math.sin(k*Math.PI*6)*.08*(1-k);}).then(()=>{o.position.x=x0;});}
 function solvedSet(set){const s=JSON.parse(JSON.stringify(set));return s;}
 P.unit=function(d){(window.__UNITS=window.__UNITS||[]).push(d);
-  {const X=(P.SCN||{})[d.id]||{};(X.steps||[]).forEach((f,i)=>{if(!f||!d.steps[i])return;if(typeof f==='function')d.steps[i].set=Object.assign({},d.steps[i].set,{scene:f});else{d.steps[i].set=Object.assign({},f.set||{},{scene:f.scene});}});
+  {const X=(P.SCN||{})[d.id]||(P.autoScene&&P.autoScene(d))||{};(X.steps||[]).forEach((f,i)=>{if(!f||!d.steps[i])return;if(typeof f==='function')d.steps[i].set=Object.assign({},d.steps[i].set,{scene:f});else{d.steps[i].set=Object.assign({},f.set||{},{scene:f.scene});}});
    Object.keys(X.rounds||{}).forEach(k=>{const r=d.rounds[+k];if(!r)return;const f=X.rounds[k];if(typeof f==='function')r.scene=f;else{r.scene=f.scene;if(f.set)r.set=f.set;if(f.o)r.o=f.o;if(f.ans!=null)r.ans=f.ans;if(f.q)r.q=f.q;}});}
   const sets=d.steps.map(s=>s.set);
   P.theory=P.theory||{};
   P.theory[d.id]=d.steps.map((s,i)=>({say:s.say,speech:s.speech,demo:'s'+i,story3d:i===0&&!!(d.page&&d.page.story),cues:(s.cues||[]).map(c=>{const q={w:c[0]};if(c[1])q.p=r=>find(r,c[1]);if(c[2])q.l=c[2];if(c[3])q.demo='s'+i+c[3];if(c[4])q.keep=true;if(!q.p&&!q.l&&!q.demo)q.hl=c[0];return q;})}));
-  if(d.tries)TRIES[d.id]=d.tries;
+  if(d.tries)TRIES[d.id]=d.tries;if(d.more)MORE[d.id]=d.more;
   const W=d.watch||[];
   P.lesson({id:d.id,title:d.title,strand:d.strand,codes:d.codes,guide:d.guide,
     learn:[{say:W[0]||'Watch!',speech:W[1]||W[0]||'Watch!',view:'model',demo:'play'}],
@@ -168,7 +184,7 @@ P.unit=function(d){(window.__UNITS=window.__UNITS||[]).push(d);
     build(S,grp,mode,game0){const game={solved:m=>{reg.hold=0;try{if(reg.scene&&reg.scene.win){const h=reg.scene.win(st.round);reg.hold=typeof h==='number'?h:(reg.scene.hold||2800);}else if(st.round&&st.round.o)reg.items.forEach((o,j)=>A.later(()=>live(o,true),j*150));}catch(e){console.error(e);}game0.solved(m);},get round(){return game0.round;}};
       const bad=m=>{try{if(reg.scene&&reg.scene.miss)reg.scene.miss();}catch(e){}A.bad(m);};const st=S.st;const g2=K.stage(grp);let reg={items:[],opts:[]};const play=()=>mode==='play'&&!st.setup&&st.round;
       function draw(){clearGroup(g2);reg=render(g2,st,H);A.redraw();}
-      function useSet(set,state){st.set=set;st.place=set.bins?set.items.map(()=>null):[];st.ord=[];st.lit=[];st.built=[];st.filled=null;st.filledOk=false;st.sel=null;st.crossed=null;st.cellLit=null;
+      function useSet(set,state){st.set=set;st.colDone=st.lineDone=st.shareDone=st.unitsDone=st.balDone=false;st.place=set.bins?set.items.map(()=>null):[];st.ord=[];st.lit=[];st.built=[];st.filled=null;st.filledOk=false;st.sel=null;st.crossed=null;st.cellLit=null;
         st.ang=null;st.perm=set.build?(set.keep?set.build.map((w,i)=>i):shuffle(set.build.map((w,i)=>i))):null;if(state==='done')finish();draw();}
       function finish(){const set=st.set;if(set.bins)st.place=set.items.map(it=>it[1]);if(set.fill){st.filled=set.ans;st.filledOk=true;}if(set.build)st.built=set.build.map((w,i)=>i);if(set.order)st.ord=set.order.map(n=>set.row.indexOf(n));if(set.ans&&set.row&&!set.fill){[].concat(set.ans).forEach(a=>{const i=set.row.indexOf(a);if(i>=0)st.lit.push(i);});}if(set.cell)st.cellLit=set.cell;if(set.cross!=null)st.crossed=set.cross;st.msg=set.doneMsg||st.msg;}
       const say=(t)=>{if(t)A.say(t);};
@@ -190,6 +206,7 @@ P.unit=function(d){(window.__UNITS=window.__UNITS||[]).push(d);
         word(i){A.pop();const set=st.set;st.built.push(i);draw();if(st.built.length===set.build.length){const ok=st.built.every((k,j)=>set.build[k]===set.build[j]);
           if(ok){act(set.build.join(' '));A.good();st.msg=set.build.join(' ');A.redraw();if(play())game.solved(st.round.ok||'Yes! That sentence makes sense.');}else{if(play())bad(st.round.hint||'Hmm, that does not make sense. Try again!');else say('Try again!');st.built=[];A.later(draw,800);}}},
         redrawCustom(){draw();},
+        choice(t,b){A.pop();if(!play())return;if(String(t)===String(st.round.ans)){st.chosen=t;draw();const o=reg.opts.find(x=>x.userData.opt===t);if(o)live(o,true);game.solved(st.round.ok||'Yes!');}else{shake(b);bad(st.round.hint||'Not that one. Try again!');}},
         cell(id){A.pop();st.cellLit=id;draw();const it=((st.set.grid||{}).items||{})[id];say(id+(it?': '+it:''));if(play()&&st.round.cell){if(id===st.round.cell)game.solved(st.round.ok||'Yes! '+id+'.');else bad(st.round.hint||'Find the row letter first, then the column number.');}}
       };
       function check(){const set=st.set;if(st.place.some(v=>v==null))return;const ok=set.items.every((it,i)=>it[1]===st.place[i]);if(ok&&P.STAGE)reg.items.forEach((o,j)=>A.later(()=>live(o),j*120));
@@ -215,7 +232,9 @@ P.unit=function(d){(window.__UNITS=window.__UNITS||[]).push(d);
           if(set.order){const idx=shuffle(set.row.map((x,i)=>i));set=Object.assign({},set,{row:idx.map(i=>set.row[i]),labels:set.labels?idx.map(i=>set.labels[i]):undefined});}
           if(set.opts)set=Object.assign({},set,{opts:shuffle(set.opts)});
           if(set.bins)set=Object.assign({},set,{items:shuffle(set.items)});
-          if(R.scene)set=Object.assign({},set,{scene:R.scene});else if(P.STAGE&&!set.row&&!set.fill&&!set.build&&!set.bins&&!set.grid&&!set.custom)set=Object.assign({},set,{scene:(sc,st2,s2)=>P.STAGE.thinker(sc,st2,s2,{kid:r%6})});useSet(set);st.setup=false;return R.q;}};}});
+          if(R.scene)set=Object.assign({},set,{scene:R.scene});else if(P.STAGE&&!set.row&&!set.fill&&!set.build&&!set.bins&&!set.grid&&!set.custom)set=Object.assign({},set,{scene:(sc,st2,s2)=>P.STAGE.thinker(sc,st2,s2,{kid:r%6})});
+          if(R.o&&!set.fill&&!set.build&&!set.bins&&!set.grid&&!set.custom&&R.o.length<=4&&R.o.every(t=>String(t).length<=16))set=Object.assign({},set,{choices:shuffle(R.o.map(String))});
+          st.chosen=null;useSet(set);st.setup=false;return R.q;}};}});
 };
 P.K2={standee,block,crate,find,pic,picTile,img,CUSTOM,COLS,render,jump,shake,mixHex};
 })();

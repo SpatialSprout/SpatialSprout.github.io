@@ -606,6 +606,8 @@ function finishPage(p,side,sp){const g=p.g,L=side==='L';
   if(L){g.textAlign='left';g.fillText(String(num),X0,1358);g.fillText(TITLE+' · '+SUB,X0+60,1358);}
   else{g.textAlign='left';if(sp.codes&&sp.codes.length)g.fillText('Ontario '+sp.codes.map(c=>GR+'.'+c).join(' · '),X0,1358);g.textAlign='right';g.fillText(String(num),X0+TW,1358);g.fillStyle=TEAL;g.fillText(BRANDNAME,X0+TW-60,1358);}g.textAlign='left';}
 const cxOf=x=>(x+W/2)*PX,cyOf=z=>(z+D/2)*PX;
+const NR=()=>(window.BOOK&&BOOK.rounds)||5;const NRW=()=>['zero','one','two','three','four','five','six','seven','eight','nine','ten'][NR()]||String(NR());
+function goLine(L){const gl=(BOOK.goLines&&BOOK.goLines.length)?BOOK.goLines:null;if(!gl)return {say:"It's your turn! Let's play!",speech:LINES.go};const k=((L.n||1)*7+3)%gl.length;const x=gl[k];return typeof x==='string'?{say:x,speech:x}:x;}
 function starsRow(g,x,y,n,of,size){for(let i=0;i<of;i++)T(g,'★',x+i*size*1.1,y,ZS(size),i<n?'#f2a400':'#d7dbe3');}
 
 /* ================= sounds ================= */
@@ -857,7 +859,7 @@ function tickCues(){const cr=cueRun;if(!cr||busy)return;if(cr.tok!==playTok){cue
   if(cr.k>=cr.list.length)cueRun=null;}
 PM.spot={on:spotOn,off:spotOff,pick:pickObjs,stop(){cueRun=null;},get run(){return cueRun;},get list(){return spots;}};
 /* ================= exports for lesson files ================= */
-Object.assign(PM,{kid,CREW,THREE,V,W,D,PY,PX,CW,CH,X0,TW,INK,RED,BLUE,GREY,TEAL,VIBE,FT,ZS,G,M,lam,mk,ink,unitBox,cellMat,label,starGeo,wedgeGeo,clearGroup,disposeObj,rr,T,wrap,para,header,keyWords,predict,
+Object.assign(PM,{paperBase,kid,CREW,THREE,V,W,D,PY,PX,CW,CH,X0,TW,INK,RED,BLUE,GREY,TEAL,VIBE,FT,ZS,G,M,lam,mk,ink,unitBox,cellMat,label,starGeo,wedgeGeo,clearGroup,disposeObj,rr,T,wrap,para,header,keyWords,predict,
   flapBox,tryIt,box,caption,hot,starsRow,cxOf,cyOf,tint,moveTo,hop,tween,burst,easeOut,easeIO,easeBack,A,movers,get ACC(){return ACC;}});
 
 /* ================= spreads ================= */
@@ -872,7 +874,7 @@ const INTRO={id:'intro',kind:'intro',title:'Welcome',strand:'',color:TEAL,num:''
   const tc=['#ffd24a','#ff8a5b','#7fe0c8'];let x=X0;['Grade',GR,SUBJ].forEach((w,i)=>{g.font=ZS(52);const tw=g.measureText(w).width+36;rr(g,x,330,tw,74,18);g.fillStyle=tc[i];g.fill();T(g,w,x+18,385,ZS(52),INK);x+=tw+14;});
   let y=wrap(g,BK.introLine||'A math book that stands up off the page. Every lesson has a *Learn* spread with the idea and a model that shows it, and a *Practice* spread with questions and a 3D game.',X0,600,TW,42,{font:FT.body,bold:FT.bodyB});
   y+=24;T(g,'How to use this book',X0,y,FT.h3);y+=52;
-  ['Read the idea on the left page.','Press play: the model shows you how it works.','Touch, drag and build with the model.','Then play the game and win 5 rounds.','Earn points, stars and stamps, and grow your rank!'].forEach((s,i)=>{
+  ['Read the idea on the left page.','Press play: the model shows you how it works.','Touch, drag and build with the model.','Then practise and win '+NR()+' rounds.','Earn points, stars and stamps, and grow your rank!'].forEach((s,i)=>{
     g.beginPath();g.arc(X0+20,y-9,20,0,Math.PI*2);g.fillStyle=VIBE[i];g.fill();T(g,String(i+1),X0+20,y,FT.smallB,'#fff','center');T(g,s,X0+56,y,FT.body);y+=50;});
   y=Math.max(y+10,1000);g.fillStyle=tint(TEAL,.25);g.fillRect(X0,y,TW,2);y+=58;
   T(g,'What is inside',X0,y,FT.h3);y+=30;const sts=[...new Set(LESSONS.map(L=>L.strand))];const cw2=TW/Math.max(1,sts.length);
@@ -889,18 +891,21 @@ const INTRO={id:'intro',kind:'intro',title:'Welcome',strand:'',color:TEAL,num:''
 function learnRight(p,S,L){const g=p.g;let y=cyOf(L.rz==null?.55:L.rz);if(L.readout)y=L.readout(p,S,y)||y;
   y=caption(p,y+26,'Fig. '+L.n+'a',L.fig||'')+12;const tips=L.explore||[];const h=74+tips.length*44;box(p,y,h,'Explore');
   tips.forEach((t,i)=>{g.beginPath();g.arc(X0+42,y+80+i*44,9,0,Math.PI*2);g.fillStyle=VIBE[i%6];g.fill();wrap(g,t,X0+64,y+88+i*44,TW-90,30,{font:FT.small,bold:FT.smallB});});}
-function practiceLeft(p,S,L){const g=p.g;let y=header(p,S);y=para(p,y,'Your crew has *5 challenges* for you. Every right answer earns *points*: more for a first try and for a streak!')+18;
+function practiceLeft(p,S,L){const g=p.g;let y=header(p,S);
+  if(PM.practiceStory){const y2=PM.practiceStory(L,p,S,y);if(y2){y=y2;const i=rankIdx(PTS);rr(g,X0,y,TW,96,22);g.fillStyle=tint(TH.c[0],.16);g.fill();T(g,'YOUR POINTS',X0+26,y+38,FT.eyebrow,ACC);T(g,String(PTS),X0+26,y+80,ZS(40),INK);T(g,RANKS[i][1],X0+200,y+76,ZS(36),'#16a36f');
+      starsRow(g,X0+TW-NR()*24-20,y+62,S.game.stars,NR(),22);if(S.st.won)drawStamp(g,X0+TW-60,y-36,40);y+=118;if(PM.practiceMore)try{PM.practiceMore(L,p,S,y);}catch(e){console.error(e);}return;}}
+  y=para(p,y,'Your crew has *'+NR()+' challenges* for you. Every right answer earns *points*: more for a first try and for a streak!')+18;
   const ht=wrap(g,L.howTo||'',0,0,TW-56,36,{font:FT.body,dry:true});box(p,y,ht+96,'How to play');wrap(g,L.howTo||'',X0+28,y+90,TW-56,36,{font:FT.body,bold:FT.bodyB});y+=ht+126;
   const i=rankIdx(PTS),nx=RANKS[i+1];rr(g,X0,y,TW,180,22);const gr=g.createLinearGradient(X0,0,X0+TW,0);gr.addColorStop(0,tint(TH.c[0],.22));gr.addColorStop(1,tint(TH.c[2],.18));g.fillStyle=gr;g.fill();
   T(g,'YOUR POINTS',X0+28,y+44,FT.eyebrow,ACC);T(g,String(PTS),X0+28,y+118,ZS(72),INK);T(g,RANKS[i][1],X0+330,y+82,ZS(44),'#16a36f');
   if(nx){rr(g,X0+330,y+106,TW-360,18,9);g.fillStyle='rgba(27,34,54,.1)';g.fill();const f=(PTS-RANKS[i][0])/(nx[0]-RANKS[i][0]);rr(g,X0+330,y+106,Math.max(18,(TW-360)*f),18,9);g.fillStyle='#16a36f';g.fill();
     T(g,(nx[0]-PTS)+' points to '+nx[1],X0+330,y+154,FT.small,GREY);}y+=212;
-  T(g,'This lesson',X0,y+10,FT.smallB,GREY);starsRow(g,X0+190,y+16,S.game.stars,5,40);if(S.st.won)drawStamp(g,X0+TW-70,y,52);y+=60;
+  T(g,'This lesson',X0,y+10,FT.smallB,GREY);starsRow(g,X0+190,y+16,S.game.stars,NR(),NR()>5?22:40);if(S.st.won)drawStamp(g,X0+TW-70,y,52);y+=60;
   const tips=L.explore||[];if(tips.length){T(g,'Tips',X0,y+20,FT.h3);y+=40;tips.forEach((t,k)=>{g.beginPath();g.arc(X0+12,y+12,8,0,Math.PI*2);g.fillStyle=VIBE[k%6];g.fill();y=wrap(g,t,X0+34,y+22,TW-40,32,{font:FT.small,bold:FT.smallB})+8;});}
   if(PM.practiceMore)try{PM.practiceMore(L,p,S,y);}catch(e){console.error(e);}}
 function practiceRight(p,S,L){const g=p.g;let y=cyOf(L.rz==null?.55:L.rz);if(L.readout)y=L.readout(p,S,y)||y;y+=24;const Gm=S.game;
-  const tt=Gm.done?'You won all 5 rounds! Press Play again for new puzzles.':Gm.phase==='howto'?'Get ready. The first question is coming!':(Gm.text||'');const th=wrap(g,tt,0,0,TW-60,38,{font:FT.bodyB,dry:true});const h=Math.max(150,th+110);
-  box(p,y,h,'Round '+Math.min(Gm.round+1,5)+' of 5');starsRow(g,X0+TW-210,y+44,Gm.stars,5,34);wrap(g,tt,X0+30,y+96,TW-60,38,{font:FT.bodyB,boldColor:ACC});
+  const tt=Gm.done?'You won all '+NR()+' rounds! Press Play again for new puzzles.':Gm.phase==='howto'?'Get ready. The first question is coming!':(Gm.text||'');const th=wrap(g,tt,0,0,TW-60,38,{font:FT.bodyB,dry:true});const h=Math.max(150,th+110);
+  box(p,y,h,(NR()>5?'Question ':'Round ')+Math.min(Gm.round+1,NR())+' of '+NR());starsRow(g,X0+TW-(NR()>5?300:210),y+44,Gm.stars,NR(),NR()>5?26:34);wrap(g,tt,X0+30,y+96,TW-60,38,{font:FT.bodyB,boldColor:ACC});
   p.stampAt={x:X0+TW-90,y:y+h-60};if(S.st.won)drawStamp(g,X0+TW-90,y+h-50,56);
   caption(p,y+h+44,'Fig. '+L.n+'b',L.fig||'');}
 
@@ -912,7 +917,7 @@ function learnSteps(L){const why=(PM.why||{})[L.id]||'';
 function makeSpreads(){SP=[INTRO];LESSONS.forEach((L,i)=>{L.n=i+1;L.color=STRAND[L.strand]||TEAL;
   const base={L,title:L.title,strand:L.strand,codes:L.codes||[],color:L.color};
   const ls=Object.assign({},base,{kind:'learn',id:L.id,num:'Lesson '+L.n,steps:learnSteps(L),left:(p,S)=>L.left(p,S),right:(p,S)=>learnRight(p,S,L)});
-  const ps=Object.assign({},base,{kind:'play',id:L.id+'-p',num:'Lesson '+L.n+' · Practice',steps:[{say:"It's your turn! Let's play!",speech:LINES.go,view:'model',go:true}],left:(p,S)=>practiceLeft(p,S,L),right:(p,S)=>practiceRight(p,S,L)});
+  const ps=Object.assign({},base,{kind:'play',id:L.id+'-p',num:'Lesson '+L.n+' · Practice',steps:[Object.assign(goLine(L),{view:'model',go:true})],left:(p,S)=>practiceLeft(p,S,L),right:(p,S)=>practiceRight(p,S,L)});
   L.learnSp=ls;SP.push(ls,ps);});
   SP.forEach((s,i)=>{s.page=1+2*i;});}
 let LESSONS=[];
@@ -927,7 +932,7 @@ function startGame(S){const g=S.game;if(g.phase==='play'||g.done)return;g.phase=
 let nextTok=0;
 function gameSolved(S,msg){const g=S.game;if(g.lock||g.done||g.setup||g.phase!=='play'||SP[cur].S!==S)return;g.lock=true;g.stars++;const pts=(g.miss?10:15)+(!g.miss&&g.streak>=2?5:0);g.streak=g.miss?0:g.streak+1;
   A.good(msg||'Correct!');cheerVoice(true);mascotCheer(false);guideCheer(false);addPts(pts);A.redraw();
-  A.later(()=>{g.lock=false;g.round++;g.miss=false;if(g.round>=5){g.done=true;A.win();addPts(25);mascotCheer(true);guideCheer(true);speak(PLAY?LINES.winKid:LINES.winOld);A.say('You won all 5 rounds! +25 bonus points. Next lesson coming up…');A.redraw();
+  A.later(()=>{g.lock=false;g.round++;g.miss=false;if(g.round>=NR()){g.done=true;A.win();addPts(25);mascotCheer(true);guideCheer(true);speak(NR()!==5?(BOOK.winLine||'Amazing! You finished all '+NRW()+' questions!'):(PLAY?LINES.winKid:LINES.winOld));A.say('You won all '+NR()+' rounds! +25 bonus points. Next lesson coming up…');A.redraw();
       const tk=++nextTok,here=cur;setTimeout(()=>{if(tk===nextTok&&cur===here&&!busy&&cur<SP.length-1&&S.game.done)goSpread(cur+1,0,true);},6500);}
     else{g.setup=true;try{g.text=S.api.task(g.round);}finally{g.setup=false;}A.say('Round '+(g.round+1)+': '+g.text.replace(/\*/g,''));}A.redraw();},Math.max(1600,+((S.api&&S.api.hold&&S.api.hold())||0)));}
 function replay(S){nextTok++;S.game={round:0,stars:0,done:false,text:'',phase:'play',miss:false,streak:0};S.game.setup=true;try{S.game.text=S.api.task(0);}finally{S.game.setup=false;}A.say('New game! '+S.game.text.replace(/\*/g,''));A.redraw();}
@@ -938,7 +943,7 @@ function refreshDock(noCam){const dock=$('#dock');const sp=SP[cur];
   const show=bookOpen&&!busy&&cur>=0&&sp&&sp.kind!=='intro'&&view!=='read'&&!(sp.steps[stepI]&&sp.steps[stepI].view==='theory'&&view==='book');
   if(!show){if(!dock.hidden){dock.hidden=true;if(!noCam){applyCam();if(!camTween)setView(view);}}return;}
   const S=sp.S,api=curApi||{};const dS=$('#dStars'),dI=$('#dInfo'),dB=$('#dBtns');
-  if(sp.kind==='play'){const g=S.game;dS.innerHTML=[0,1,2,3,4].map(i=>i<g.stars?'★':'<i>★</i>').join('');dI.textContent=g.done?'You won! Next lesson is coming up.':g.phase==='howto'?'Get ready…':'Round '+(g.round+1)+' · '+challenger(sp.L,g.round)+'’s challenge: '+(g.text||'').replace(/\*/g,'');}
+  if(sp.kind==='play'){const g=S.game;dS.innerHTML=Array.from({length:NR()},(_,i)=>i).map(i=>i<g.stars?'★':'<i>★</i>').join('');dI.textContent=g.done?'You won! Next lesson is coming up.':g.phase==='howto'?'Get ready…':'Round '+(g.round+1)+' · '+challenger(sp.L,g.round)+'’s challenge: '+(g.text||'').replace(/\*/g,'');}
   else{dS.textContent='';dI.textContent=(api.info?api.info():'')||'';}
   let ctl=[];try{ctl=api.controls?api.controls():[];}catch(e){console.error(e);}
   if(sp.kind==='play'&&S.game.phase==='howto'&&!S.game.done)ctl=[{t:"▶ Let's play!",go:true,big:true,fn:()=>{startGame(S);}}];
