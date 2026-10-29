@@ -36,15 +36,16 @@ function figGeo(cp,done){if(FIG[cp])return done(FIG[cp]);(FIGQ[cp]=FIGQ[cp]||[])
     paths.forEach((p,i)=>{const shapes=THREE.SVGLoader.createShapes(p);if(!shapes.length)return;const st=p.userData.style;
       const geo=new THREE.ExtrudeGeometry(shapes,{depth:i===0?4.2:2.6,curveSegments:7,bevelEnabled:true,bevelThickness:.35,bevelSize:.22,bevelSegments:2});geo.translate(0,0,i===0?-1.6:i*step);
       const op=st.fillOpacity==null?1:+st.fillOpacity;parts.push({geo,col:st.fill,op});});fin(parts);}).catch(e=>{console.warn('fig',cp,e);fin(null);});}
-function figMat(col,op){return M('fg'+col+op,()=>new THREE.MeshLambertMaterial(op<1?{color:col,transparent:true,opacity:op}:{color:col}));}
+function figMat(col,op){if(P.matFor)return P.matFor(col,op);return M('fg'+col+op,()=>new THREE.MeshLambertMaterial(op<1?{color:col,transparent:true,opacity:op}:{color:col}));}
 function standee(n,o){o=o||{};const col=o.col||COLS[0];const g=new THREE.Group();g.userData.name=n;g.userData.label=o.label==null?n:o.label;
-  const ring=mk(G('fg_ring',()=>new THREE.RingGeometry(.25,.32,40)),new THREE.MeshBasicMaterial({color:col,transparent:true,opacity:.45,depthWrite:false}),0);ring.rotation.x=-Math.PI/2;ring.position.y=.006;g.add(ring);
-  const sh=mk(G('fg_sh',()=>new THREE.CircleGeometry(.25,32)),new THREE.MeshBasicMaterial({color:'#1b2236',transparent:true,opacity:.12,depthWrite:false}),0);sh.rotation.x=-Math.PI/2;sh.position.y=.004;g.add(sh);
+  if(!o.bare){const ring=mk(G('fg_ring',()=>new THREE.RingGeometry(.25,.32,40)),new THREE.MeshBasicMaterial({color:col,transparent:true,opacity:.45,depthWrite:false}),0);ring.rotation.x=-Math.PI/2;ring.position.y=.006;g.add(ring);
+  const sh=mk(G('fg_sh',()=>new THREE.CircleGeometry(.25,32)),new THREE.MeshBasicMaterial({color:'#1b2236',transparent:true,opacity:.12,depthWrite:false}),0);sh.rotation.x=-Math.PI/2;sh.position.y=.004;g.add(sh);}
   const piv=new THREE.Group();piv.rotation.x=-.28;g.add(piv);g.userData.piv=piv;
   const K0=P.K||{};const TOY=K0.TOYS&&K0.TOYS[n]&&K0.toy;
   const SP=P.STAGE&&P.STAGE.PROPS,REAL=['sun','moon','cloud','rainbow','snowman','bicycle','canoe','coat','helmet','sunglasses','hat','lifejacket','turnip','pot','windmill'];
   const fit=o=>{const b=new THREE.Box3().setFromObject(o),sz=b.getSize(new THREE.Vector3());const k=Math.min(.82/Math.max(.01,sz.y),.95/Math.max(.01,sz.x,sz.z));o.scale.multiplyScalar(k);const b2=new THREE.Box3().setFromObject(o);o.position.y-=b2.min.y;return o;};
-  if(SP&&SP[n]&&REAL.includes(n)){const w=new THREE.Group();w.add(SP[n]());piv.add(fit(w));}
+  if(P.PROP3&&P.PROP3[n]&&!(SP&&SP[n]&&REAL.includes(n))){const w=new THREE.Group();w.add(P.PROP3[n]({}));piv.add(fit(w));piv.rotation.x=0;}
+  else if(SP&&SP[n]&&REAL.includes(n)){const w=new THREE.Group();w.add(SP[n]());piv.add(fit(w));}
   else if(TOY){const w=new THREE.Group();w.add(K0.toy(n,{s:2.1}));piv.add(fit(w));}
   else{const cp=PICS[n];if(cp)figGeo(cp,parts=>{if(!parts){/* no vector art: a simple word block */return;}const fg=new THREE.Group();const s=.0215;fg.scale.set(s,-s,s);fg.position.set(-18*s,36*s+.02,0);
       parts.forEach(pt=>{const m=new THREE.Mesh(pt.geo,figMat(pt.col,pt.op));m.castShadow=true;fg.add(m);});const f0=new THREE.Group();f0.add(fg);f0.scale.setScalar(.01);piv.add(f0);
@@ -106,7 +107,7 @@ let CMP=0;/* compact level while fitting a page: 1 tighter example rows, 2 no ca
 function drawPage(p,S,d){let y=0;for(let lv=0;lv<=5;lv++){if(lv>0&&P.paperBase){P.paperBase(p);p.hot=[];p.flaps=[];}CMP=lv;y=drawPage1(p,S,d);if(y<=1300)break;}CMP=0;return y;}
 function drawPage1(p,S,d){let y=header(p,S);const pg=d.page||{};
   if(pg.intro)y=P.para(p,y+6,pg.intro)+16;
-  if(pg.story)y=drawStory(p,y-6,pg.story);
+  if(pg.story&&!(window.BOOK||{}).storyRight)y=drawStory(p,y-6,pg.story);
   (pg.boxes||[]).forEach(b=>{y=drawBox(p,y-4,b);});
   if(CMP<2&&pg.cards&&pg.cards.length&&y<1150)y=drawCards(p,y,pg.cards);
   if(CMP<3&&pg.words&&y<1220)y=keyWords(p,y,pg.words);return y;}
@@ -135,12 +136,13 @@ function render(g2,st,h){const set=st.set||{};const reg={items:[],opts:[],built:
       g2.add(s);reg.items.push(s);
       A.drag(s,{tap:()=>h.sortTap(i),drop:pos=>{let best=null,bd=9;bins.forEach((b,j)=>{const d=Math.abs(pos.x-b.position.x)+Math.max(0,pos.z-(-1.45))*1.5;if(d<bd){bd=d;best=j;}});if(pos.z>-1.3)best=null;h.sortDrop(i,best);}});});}
   /* letters or words with one gap, and answer blocks to choose from */
-  if(set.fill){const parts=set.fill,ws0=parts.map(t=>t==='_'?bw(st.filled||set.ans||'a'):bw(t)),tot0=ws0.reduce((a,b)=>a+b,0)+.07*(parts.length-1),fsc=Math.min(1,(set.pic&&!set.row?3.2:4.4)/tot0),ws=ws0.map(w=>w*fsc),gap=.07*fsc,tot=tot0*fsc;
+  if(set.fill){const parts=set.fill,ws0=parts.map(t=>t==='_'?bw(st.filled||set.ans||'a'):bw(t)),tot0=ws0.reduce((a,b)=>a+b,0)+.07*(parts.length-1),fsc=Math.min(1,(set.pic&&!set.row?3.2:3.9)/tot0),ws=ws0.map(w=>w*fsc),gap=.07*fsc,tot=tot0*fsc;
     const hasPic=!!set.pic&&!set.row;let x=-tot/2+(hasPic?.55:0);if(hasPic){const s=standee(set.pic,{col:COLS[1],label:set.picLabel||false,s:.95});s.userData.kind=set.pic;s.position.set(Math.max(-2.05,x-.75),0,-1.95);g2.add(s);reg.items.push(s);reg.pic=s;x=Math.max(x,-1.4);}
     const z=set.row?-1.55:-1.9;parts.forEach((t,i)=>{const w=ws[i];let b;if(t==='_'){b=st.filled?block(st.filled,{side:'#5fd38a'}):ghost(w/fsc);b.userData.gap=1;}else b=block(t,{side:set.side||'#ffd24a'});b.scale.setScalar(fsc);b.position.set(x+w/2,0,z);b.userData.part=String(i);g2.add(b);x+=w+gap;});
-    const opts=set.opts||[];const sp=Math.min(1.0,4.2/Math.max(1,opts.length));opts.forEach((t,i)=>{if(st.filled&&t===st.filled&&st.filledOk)return;const b=block(t,{side:'#8fd3ff'});b.position.set((i-(opts.length-1)/2)*sp,0,set.row?-.62:-.78);b.userData.opt=t;g2.add(b);reg.opts.push(b);A.drag(b,{tap:()=>h.opt(t,b)});});}
+    const opts=set.opts||[];const ow=opts.map(t=>bw(t)),otot=ow.reduce((a,b)=>a+b,0)+.3*(opts.length-1),osc=Math.min(1,3.9/Math.max(.01,otot));let ox=-otot*osc/2;const oxs=ow.map(w=>{const c=ox+w*osc/2;ox+=w*osc+.3*osc;return c;});
+    opts.forEach((t,i)=>{if(st.filled&&t===st.filled&&st.filledOk)return;const b=block(t,{side:'#8fd3ff'});b.scale.setScalar(osc);b.position.set(oxs[i],0,set.row?-.62:-.78);b.userData.opt=t;g2.add(b);reg.opts.push(b);A.drag(b,{tap:()=>h.opt(t,b)});});}
   /* build a sentence: tap the word blocks in order */
-  if(set.build){const words=set.build,perm=st.perm||words.map((w,i)=>i);const built=st.built||[];const full=words.reduce((a,w)=>a+BW(w)+.06,0),sc=Math.min(1,4.4/full);const bw=t=>BW(t)*sc;const block=(t,o)=>{const b=BLOCK(t,o);b.scale.setScalar(sc);return b;};let x=-full*sc/2;
+  if(set.build){const words=set.build,perm=st.perm||words.map((w,i)=>i);const built=st.built||[];const full=words.reduce((a,w)=>a+BW(w)+.06,0),sc=Math.min(1,3.9/full);const bw=t=>BW(t)*sc;const block=(t,o)=>{const b=BLOCK(t,o);b.scale.setScalar(sc);return b;};let x=-full*sc/2;
     const line=mk(G('k2line',()=>new THREE.BoxGeometry(4.5,.02,.06)),lam('#c9cfdc'),0);line.position.set(0,.01,-1.6);g2.add(line);
     built.forEach(i=>{const w=bw(words[i]);const b=block(words[i],{side:'#5fd38a'});b.position.set(x+w/2,0,-1.88);g2.add(b);reg.built.push(b);x+=w+.06*sc;});
     const rest=perm.filter(i=>!built.includes(i));const rw=rest.reduce((a,i)=>a+bw(words[i])+.12*sc,0);let rx=-rw/2;
@@ -158,7 +160,38 @@ function render(g2,st,h){const set=st.set||{};const reg={items:[],opts:[],built:
   return reg;}
 
 /* ---------------- lesson factory ---------------- */
-const TRIES={},MORE={};
+const TRIES={},MORE={},STORY={};const BKs=window.BOOK||{};
+/* ---------- story time on the right page: the text, read word by word ---------- */
+function storyToks(sy){const title=String(sy.title).trim(),raw=String(sy.text);let plain='',bold=[];let b=false;for(const ch of raw){if(ch==='*'){b=!b;continue;}plain+=ch;bold.push(b);}
+  const toks=[];const tt=title.split(/\s+/).filter(Boolean);tt.forEach(w=>toks.push({w,b:false,title:true}));
+  const re=/\S+/g;let m;while((m=re.exec(plain))){let bb=false;for(let i=m.index;i<m.index+m[0].length;i++)if(bold[i])bb=true;toks.push({w:m[0],b:bb});}
+  const speech=title+(/[.!?]$/.test(title)?' ':'. ')+plain.replace(/\s+/g,' ').trim();
+  /* character offset of each word in the speech, for device voices that report a char index */
+  let off=0;toks.forEach(t=>{const i=speech.indexOf(t.w,off);t.at=i<0?off:i;off=(i<0?off:i)+t.w.length;});
+  toks.forEach(t=>{t.n=wnorm(t.w);});return {toks,speech,title};}
+function wnorm(w){return String(w).toLowerCase().replace(/[’‘]/g,"'").replace(/[^a-z0-9']/g,'').replace(/'s$/,'').replace(/^'+|'+$/g,'');}
+P.storyOf=id=>STORY[id];
+function wordAt(SY,S0){const n=SY.toks.length;const vn=P.voNow&&P.voNow();const VT=(window.VTIME||{})[P.vhash?P.vhash(SY.speech):''];
+  if(vn&&!vn.dev){S0.voiced=true;if(VT){for(let i=0;i<n;i++)if(vn.t<VT[i])return i;return n;}const dur=vn.dur||n*.38;return Math.min(n,Math.floor(vn.t/dur*n*1.02));}
+  if(vn&&vn.dev){S0.voiced=true;let k=-1;SY.toks.forEach((t,i)=>{if(t.at<=vn.ch)k=i;});return Math.max(k,Math.min(n,Math.floor(vn.el*2.5)));}
+  if(S0.voiced)return n;if(S0.t<1.2)return -1;return Math.min(n,Math.floor((S0.t-1.2)/.38));}
+P.learnRight=function(p,S,L){const SY=STORY[L.id];if(!SY)return false;const g=p.g,st=S.st;const wi=st.storyOn?st.wi:-2;
+  const x0=X0-16,w0=TW+32,top=34,bottom=650;let fs=38,lh=54,tl=0,lines=null;
+  const lay=()=>{g.font='400 '+fs+'px "Atkinson Hyperlegible", sans-serif';const sp=g.measureText(' ').width;lines=[[]];let lw=0;const maxW=w0-64;
+    SY.toks.forEach((t,i)=>{if(t.title)return;g.font=(t.b?'700 ':'400 ')+fs+'px "Atkinson Hyperlegible", sans-serif';const tw=g.measureText(t.w).width;if(lw+tw>maxW&&lw>0){lines.push([]);lw=0;}lines[lines.length-1].push({t,i,x:lw,tw});lw+=tw+sp;});
+    return top+128+lines.length*lh;};
+  while(lay()>bottom-24&&fs>26){fs-=2;lh=Math.round(fs*1.42);}
+  const h=Math.max(lay(),360)+24-top;g.save();g.shadowColor='rgba(27,34,54,.14)';g.shadowBlur=18;g.shadowOffsetY=6;rr(g,x0,top,w0,h,26);g.fillStyle='#fffdf7';g.fill();g.restore();
+  g.lineWidth=3;rr(g,x0,top,w0,h,26);g.strokeStyle=tint(acc(),.45);g.stroke();
+  pic(g,'book',x0+50,top+48,46);T(g,'STORY TIME',x0+86,top+42,FT.eyebrow,acc());
+  /* title words light up too, they are read first */
+  g.font='700 44px "Zilla Slab", Georgia, serif';let tx=x0+86;SY.toks.forEach((t,i)=>{if(!t.title)return;const tw=g.measureText(t.w).width;if(i===wi){g.save();rr(g,tx-6,top+56,tw+12,54,12);g.fillStyle='rgba(255,212,59,.85)';g.fill();g.restore();}
+    g.fillStyle=wi>=0&&i>wi?'#8a90a0':INK;g.textAlign='left';g.fillText(t.w,tx,top+98);tx+=tw+g.measureText(' ').width;});
+  let y=top+128+fs*.2;lines.forEach(Ln=>{y+=lh;Ln.forEach(({t,i,x,tw})=>{const X=x0+32+x;const cur=i===wi,done=wi>=0&&i<wi,todo=wi>=0&&i>wi;
+      if(cur){g.save();rr(g,X-6,y-fs*1.02,tw+12,fs*1.32,12);g.fillStyle='rgba(255,212,59,.9)';g.fill();g.restore();}
+      g.font=(t.b||cur?'700 ':'400 ')+fs+'px "Atkinson Hyperlegible", sans-serif';g.fillStyle=cur?INK:todo?'#9aa0ae':t.b?acc():INK;g.textAlign='left';g.fillText(t.w,X,y);});});
+  if(wi<0){T(g,st.storyOn?'Listen and follow the words…':'Read me after the lesson!',x0+w0-32,top+42,FT.hand,acc(),'right');}
+  return true;};
 /* Grade 2+: a bonus story on the practice page (some questions are about it) */
 P.practiceStory=function(L,p,S,y){const m=MORE[L.id];if(!m)return 0;y=P.para(p,y,m.lead||'Read the story. Then answer the questions on the model page.')+10;return drawStory(p,y,m)+4;};
 P.practiceMore=function(L,p,S,y){const list=TRIES[L.id];if(!list||y>1080)return;T(p.g,'Warm up: try it!',X0,y+34,FT.h3,INK);let yy=y+56;list.forEach(([q,a],i)=>{if(yy+200<1310)yy=P.tryIt(p,yy+30,S,'try'+i,i+1,q,a);});};
@@ -166,12 +199,14 @@ function live(o,big){if(P.STAGE)return P.STAGE.alive(o,big);jump(o);}
 function jump(o){if(!o)return;const y0=o.position.y,r0=o.rotation.y;tween(.6,k=>{o.position.y=y0+Math.sin(Math.PI*k)*.45;o.rotation.y=r0+k*Math.PI*2;}).then(()=>{o.position.y=y0;o.rotation.y=r0;});}
 function shake(o){if(!o)return;const x0=o.position.x;tween(.4,k=>{o.position.x=x0+Math.sin(k*Math.PI*6)*.08*(1-k);}).then(()=>{o.position.x=x0;});}
 function solvedSet(set){const s=JSON.parse(JSON.stringify(set));return s;}
-P.unit=function(d){(window.__UNITS=window.__UNITS||[]).push(d);
+P.unit=function(d){(window.__UNITS=window.__UNITS||[]).push(d);if(BKs.autoRounds&&P.autoRounds)try{P.autoRounds(d);}catch(e){console.error(e);}
   {const X=(P.SCN||{})[d.id]||(P.autoScene&&P.autoScene(d))||{};(X.steps||[]).forEach((f,i)=>{if(!f||!d.steps[i])return;if(typeof f==='function')d.steps[i].set=Object.assign({},d.steps[i].set,{scene:f});else{d.steps[i].set=Object.assign({},f.set||{},{scene:f.scene});}});
    Object.keys(X.rounds||{}).forEach(k=>{const r=d.rounds[+k];if(!r)return;const f=X.rounds[k];if(typeof f==='function')r.scene=f;else{r.scene=f.scene;if(f.set)r.set=f.set;if(f.o)r.o=f.o;if(f.ans!=null)r.ans=f.ans;if(f.q)r.q=f.q;}});}
   const sets=d.steps.map(s=>s.set);
   P.theory=P.theory||{};
-  P.theory[d.id]=d.steps.map((s,i)=>({say:s.say,speech:s.speech,demo:'s'+i,story3d:i===0&&!!(d.page&&d.page.story),cues:(s.cues||[]).map(c=>{const q={w:c[0]};if(c[1])q.p=r=>find(r,c[1]);if(c[2])q.l=c[2];if(c[3])q.demo='s'+i+c[3];if(c[4])q.keep=true;if(!q.p&&!q.l&&!q.demo)q.hl=c[0];return q;})}));
+  if(BKs.storyRight&&d.page&&d.page.story){const mk1=(s,i)=>({say:s.say,speech:s.speech,demo:'s'+i,cues:(s.cues||[]).map(c=>{const q={w:c[0]};if(c[1])q.p=r=>find(r,c[1]);if(c[2])q.l=c[2];if(c[3])q.demo='s'+i+c[3];if(c[4])q.keep=true;if(!q.p&&!q.l&&!q.demo)q.hl=c[0];return q;})});
+    const sy=d.page.story;STORY[d.id]=storyToks(sy);P.theory[d.id]=d.steps.slice(1).map((s,i)=>mk1(s,i+1)).concat([{say:'Story time: '+sy.title,speech:STORY[d.id].speech,demo:'s0',storyRead:true}]);}
+  else P.theory[d.id]=d.steps.map((s,i)=>({say:s.say,speech:s.speech,demo:'s'+i,story3d:i===0&&!!(d.page&&d.page.story),cues:(s.cues||[]).map(c=>{const q={w:c[0]};if(c[1])q.p=r=>find(r,c[1]);if(c[2])q.l=c[2];if(c[3])q.demo='s'+i+c[3];if(c[4])q.keep=true;if(!q.p&&!q.l&&!q.demo)q.hl=c[0];return q;})}));
   if(d.tries)TRIES[d.id]=d.tries;if(d.more)MORE[d.id]=d.more;
   const W=d.watch||[];
   P.lesson({id:d.id,title:d.title,strand:d.strand,codes:d.codes,guide:d.guide,
@@ -182,7 +217,9 @@ P.unit=function(d){(window.__UNITS=window.__UNITS||[]).push(d);
     left(p,S){return drawPage(p,S,d);},
     readout(p,S,y){const g=p.g,st=S.st;if(st.msg)wrap(g,st.msg,X0,y+44,TW,40,{font:FT.bodyB,bold:FT.bodyB,boldColor:acc()});return y+70;},
     build(S,grp,mode,game0){const game={solved:m=>{reg.hold=0;try{if(reg.scene&&reg.scene.win){const h=reg.scene.win(st.round);reg.hold=typeof h==='number'?h:(reg.scene.hold||2800);}else if(st.round&&st.round.o)reg.items.forEach((o,j)=>A.later(()=>live(o,true),j*150));}catch(e){console.error(e);}game0.solved(m);},get round(){return game0.round;}};
-      const bad=m=>{try{if(reg.scene&&reg.scene.miss)reg.scene.miss();}catch(e){}A.bad(m);};const st=S.st;const g2=K.stage(grp);let reg={items:[],opts:[]};const play=()=>mode==='play'&&!st.setup&&st.round;
+      const bad=m=>{try{if(reg.scene&&reg.scene.miss)reg.scene.miss();}catch(e){}A.bad(m);};const st=S.st;const SR=BKs.storyRight&&mode==='learn'&&STORY[d.id];const g2=K.stage(grp,SR?3.7:undefined);
+      let foldTok=0;const place=(story)=>{if(!SR)return;foldTok++;if(story){g2.position.set(0,0,3.7);g2.scale.setScalar(1.08);}else{g2.position.set(-P.W,0,2.05);const tk=foldTok;g2.scale.set(1.08,.02,1.08);tween(.55,k=>{if(tk===foldTok)g2.scale.y=.02+1.06*P.easeOut(k);});}};
+      const fold=()=>{if(!SR||st.storyOn)return;const tk=++foldTok;const y0=g2.scale.y;tween(.5,k=>{if(tk===foldTok)g2.scale.y=Math.max(.02,y0*(1-k));});};let reg={items:[],opts:[]};const play=()=>mode==='play'&&!st.setup&&st.round;
       function draw(){clearGroup(g2);reg=render(g2,st,H);A.redraw();}
       function useSet(set,state){st.set=set;st.colDone=st.lineDone=st.shareDone=st.unitsDone=st.balDone=false;st.place=set.bins?set.items.map(()=>null):[];st.ord=[];st.lit=[];st.built=[];st.filled=null;st.filledOk=false;st.sel=null;st.crossed=null;st.cellLit=null;
         st.ang=null;st.perm=set.build?(set.keep?set.build.map((w,i)=>i):shuffle(set.build.map((w,i)=>i))):null;if(state==='done')finish();draw();}
@@ -219,20 +256,25 @@ P.unit=function(d){(window.__UNITS=window.__UNITS||[]).push(d);
         if(set.order){A.seq(set.order.map(n=>[550,()=>{st.ord.push(set.row.indexOf(n));A.pop();draw();}]));return;}
         if(set.row){A.seq(set.row.map((n,i)=>[700,()=>{live(reg.items[i]);say((set.labels&&set.labels[i])||n);}]));}
         if(reg.custom&&reg.custom.play)reg.custom.play();if(reg.scene&&reg.scene.play)reg.scene.play();}
+      function storySync(dt){const SY=STORY[d.id];st.sy.t+=dt;const wi=wordAt(SY,st.sy);if(wi!==st.wi){st.wi=wi;if(P.redrawR)P.redrawR();}
+        const ons=reg.sc&&reg.sc.ons;if(!ons||wi<0)return;const N=SY.toks.map(t=>t.n);
+        ons.forEach(o=>{if(o.done)return;if(o.at==null){const ws=o.w.split(/\s+/).map(wnorm);let c=0;o.at=1e9;for(let i=0;i+ws.length<=N.length;i++){if(ws.every((x,j)=>N[i+j]===x||N[i+j]===x+'s'&&false)){c++;if(c===o.nth){o.at=i;break;}}}if(o.at===1e9)console.warn('story word not found',d.id,o.w);}
+          if(wi>=o.at){o.done=true;try{o.f();}catch(e){console.error(e);}}});}
       let rOff=0;
-      return {hold:()=>reg.hold||0,_win:()=>game.solved('Yes!'),_miss:()=>bad(''),taskAt(i){rOff=(i-1+d.rounds.length)%d.rounds.length;return this.task(1);},info:()=>(st.msg||'').replace(/\*/g,''),tick:(dt,t)=>{if(reg.sc)reg.sc._tick(dt,t);},
-        controls:()=>{const c=[{t:'Next',go:true,fn:()=>{st.ex=(st.ex+1)%sets.length;st.round=null;st.msg='';useSet(sets[st.ex]);}},{t:'Again',fn:()=>{useSet(st.set);}}];
+      return {hold:()=>reg.hold||0,_win:()=>game.solved('Yes!'),_miss:()=>bad(''),taskAt(i){rOff=(i-1+d.rounds.length)%d.rounds.length;return this.task(1);},info:()=>(st.msg||'').replace(/\*/g,''),tick:(dt,t)=>{if(reg.sc)reg.sc._tick(dt,t);if(st.storyOn)storySync(dt);},
+        controls:()=>{if(BKs.noLearnDock&&mode==='learn')return [];const c=[{t:'Next',go:true,fn:()=>{st.ex=(st.ex+1)%sets.length;st.round=null;st.msg='';useSet(sets[st.ex]);}},{t:'Again',fn:()=>{useSet(st.set);}}];
           if(reg.custom&&reg.custom.controls)c.unshift(...reg.custom.controls());
           if(mode!=='play')return c;const cc=reg.custom&&reg.custom.controls?reg.custom.controls():[];
           if(st.round&&st.round.o)return choices(st.setup?null:game,st.round.o,st.round.ans,st.round.ok||'Yes!',null,st.round.hint).concat(cc);return cc;},
-        demo(n){st.round=null;st.msg='';if(n==='play'){useSet(st.set);demoPlay();return;}const m=/^s(\d+)(.*)$/.exec(n);if(!m)return;const set=sets[+m[1]];if(!set)return;
+        stepEnd(s){if(s&&!s.storyRead)fold();},
+        demo(n){st.round=null;st.msg='';if(mode==='learn'&&STORY[d.id]){const was=st.storyOn;st.storyOn=n==='s0';if(BKs.storyRight&&(n==='s0'||/^s\d+$|^play$/.test(n)))place(n==='s0');st.wi=-1;st.sy={t:0,voiced:false};if(was||st.storyOn)A.later(()=>P.redrawR&&P.redrawR(),30);}if(n==='play'){useSet(st.set);demoPlay();return;}const m=/^s(\d+)(.*)$/.exec(n);if(!m)return;const set=sets[+m[1]];if(!set)return;
           if(m[2]==='done'){if(st.set!==set)useSet(set);finish();draw();}else if(m[2]==='play'){if(st.set!==set)useSet(set);demoPlay();}else if(m[2]==='x'){if(st.set!==set)useSet(set);st.crossed=set.cross;draw();}else useSet(set);},
         task(r){st.setup=true;if(r===0)rOff=rnd(0,d.rounds.length-1);const R=d.rounds[(r+rOff)%d.rounds.length];st.round=R;st.msg='';
           let set=R.set||{};if(set.row&&R.shuffle!==false&&!set.order&&!set.keep){const idx=shuffle(set.row.map((x,i)=>i));set=Object.assign({},set,{row:idx.map(i=>set.row[i]),labels:set.labels?idx.map(i=>set.labels[i]):set.labels});}
           if(set.order){const idx=shuffle(set.row.map((x,i)=>i));set=Object.assign({},set,{row:idx.map(i=>set.row[i]),labels:set.labels?idx.map(i=>set.labels[i]):undefined});}
           if(set.opts)set=Object.assign({},set,{opts:shuffle(set.opts)});
           if(set.bins)set=Object.assign({},set,{items:shuffle(set.items)});
-          if(R.scene)set=Object.assign({},set,{scene:R.scene});else if(P.STAGE&&!set.row&&!set.fill&&!set.build&&!set.bins&&!set.grid&&!set.custom)set=Object.assign({},set,{scene:(sc,st2,s2)=>P.STAGE.thinker(sc,st2,s2,{kid:r%6})});
+          if(R.scene)set=Object.assign({},set,{scene:R.scene});else if(!BKs.noThinker&&P.STAGE&&!set.row&&!set.fill&&!set.build&&!set.bins&&!set.grid&&!set.custom)set=Object.assign({},set,{scene:(sc,st2,s2)=>P.STAGE.thinker(sc,st2,s2,{kid:r%6})});
           if(R.o&&!set.fill&&!set.build&&!set.bins&&!set.grid&&!set.custom&&R.o.length<=4&&R.o.every(t=>String(t).length<=16))set=Object.assign({},set,{choices:shuffle(R.o.map(String))});
           st.chosen=null;useSet(set);st.setup=false;return R.q;}};}});
 };
@@ -278,4 +320,28 @@ K2.CUSTOM.graph=function(g2,st,h,set){const n=set.cats.length,sp=Math.min(1.05,4
     for(let k=0;k<set.v[i];k++){const d=mk(G('k2disc',()=>new THREE.CylinderGeometry(.17,.17,.06,24)),lam(cols[i%cols.length]),0);d.rotation.x=Math.PI/2;d.position.set(x,.2,-1.45-k*.21);g2.add(d);}
     const L=label(String(set.v[i]),{size:.22,bg:'#ffffff'});L.position.set(x,.45,-1.45-set.v[i]*.21-.05);g2.add(L);});
   return {};};
+})();
+/* Grade 2 English: more game types made from the lesson's own stories, mixed through the ten questions —
+   fill in the blank (word blocks into a gap), put the sentence in order, and the missing letter. */
+(function(){const P=window.PM;if(!P||!P.R)return;const R=P.R;
+const clean=t=>String(t||'').replace(/[“”"]/g,'').replace(/\s+/g,' ').trim();
+function sentences(text){const out=[];let cur=[];clean(text).split(' ').forEach((w,i,a)=>{cur.push(w);const nx=a[i+1]||'';if(/[.!?]$/.test(w)&&(!nx||/^[A-Z0-9]/.test(nx))&&!/^(Mr|Mrs|Dr|T|St)\.$/.test(w)){out.push(cur);cur=[];}});if(cur.length)out.push(cur);return out;}
+function bolds(text){const r=[];String(text||'').replace(/\*([^*]+)\*/g,(m,w)=>{w=w.trim();if(/^[A-Za-z’']+$/.test(w)&&w.length>=3)r.push(w);return m;});return r;}
+let seed=7;const rnd=n=>{seed=(seed*9301+49297)%233280;return Math.floor(seed/233280*n);};
+P.autoRounds=function(d){const pg=d.page||{};const texts=[pg.story,d.more].filter(Boolean);if(!texts.length||!d.rounds)return;seed=d.id.split('').reduce((a,c)=>a+c.charCodeAt(0),7);
+  const pool=[...new Set(texts.flatMap(t=>bolds(t.text)).concat((pg.words||[]).map(w=>w[0]).filter(w=>/^[A-Za-z]+$/.test(w))))];const made=[];const used=new Set();
+  /* fill in the blank */
+  texts.forEach(t=>{const bw=bolds(t.text);sentences(t.text.replace(/\*/g,'')).forEach(sw=>{if(made.length>=3||sw.length<4||sw.length>9)return;
+      const k=sw.findIndex(w=>{const c=w.replace(/[^A-Za-z’']/g,'');return bw.includes(c)&&!used.has(c.toLowerCase());});if(k<0)return;
+      const raw=sw[k],ans=raw.replace(/[^A-Za-z’']/g,''),tail=raw.slice(raw.indexOf(ans)+ans.length);const others=pool.filter(w=>w.toLowerCase()!==ans.toLowerCase());if(others.length<2)return;
+      const o1=others[rnd(others.length)];let o2=others[rnd(others.length)];if(o2===o1)o2=others.find(w=>w!==o1);
+      const parts=sw.slice(0,k).concat(['_'],tail?[tail]:[],sw.slice(k+1));used.add(ans.toLowerCase());
+      made.push(R.fillw('Fill in the blank. Which word finishes the sentence from *'+t.title+'*?',parts,[ans,o1,o2],ans,{ok:'Yes! '+parts.map(p=>p==='_'?ans:p).join(' ').replace(/ ([.?!,])/g,'$1'),hint:'Read the sentence out loud with each word. Which one makes sense?'}));});});
+  /* put the sentence in order */
+  const short=texts.flatMap(t=>sentences(t.text.replace(/\*/g,''))).filter(sw=>sw.length>=4&&sw.length<=6);if(short.length){const sw=short[rnd(short.length)];made.push(R.build('Put the words in order to make a sentence from the story.',sw,null,{ok:'Yes! '+sw.join(' ')}));}
+  /* the missing letter */
+  const lw=pool.filter(w=>/^[a-z]{4,8}$/i.test(w));if(lw.length){const w=lw[rnd(lw.length)].toLowerCase();const gap=1+rnd(w.length-1);const c=w[gap];const AB='aeiou'.includes(c)?'aeiou':'bcdfghlmnprstw';
+    const o=[c];while(o.length<3){const x=AB[rnd(AB.length)];if(!o.includes(x))o.push(x);}made.push(R.fill('Which letter is missing? Build the word *'+w+'*.',(window.PICS||{})[w]?w:null,w,gap,o,{ok:'Yes! '+w}));}
+  /* spread them through the questions so every game of ten gets several */
+  const step=Math.max(2,Math.floor((d.rounds.length+made.length)/Math.max(1,made.length)));made.forEach((r,i)=>d.rounds.splice(Math.min(d.rounds.length,1+i*step),0,r));};
 })();
