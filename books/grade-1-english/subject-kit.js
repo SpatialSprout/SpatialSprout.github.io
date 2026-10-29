@@ -149,6 +149,11 @@ function render(g2,st,h){const set=st.set||{};const reg={items:[],opts:[],built:
     if(st.lastKind!==kind){H.g.scale.y=.02;tween(.7,k=>{H.g.scale.y=.02+.98*easeOut(k);});st.lastKind=kind;}
     const heroAt=(n,x,z,sc)=>{if(P.HAB.AN[n]==='swim'&&H.water){x=H.water[0];z=H.water[1];}const hero=P.STAGE?P.STAGE.prop(n,{s:sc,label:false,bare:true,tap:false}):standee(n,{label:false});const fly=P.HAB.AN[n]==='fly';hero.position.set(x,fly?.5:0,z);hero.userData.name=n;hero.userData.kind=n;g2.add(hero);
       const an=P.HAB.animate(hero,n,{x,z,y:fly?.1:0,ry:-.5});reg.heroTick=an;return hero;};
+    const EMO={happy:'cheer',sad:'sad',angry:'no',scared:'cover',surprised:'jump',laughing:'cheer',yawning:'sleep',sleeping:'sleep',sick:'sad','hot face':'hot',clap:'clap',dancer:'dance',singer:'sing',runner:'run',swimmer:'swim',pray:'read',writing:'read'};
+    const PEO=P.PEOPLE||{};const isPerson=n=>!!(EMO[n]||PEO[n]||['child','family','people','nurse','farmer','chef','baker','pilot','judge','soldier','cashier','police officer','construction worker','mechanic','artist','walker','cyclist','skier'].includes(n));
+    if(set.row&&isPerson(set.row[Math.min(st.hero||0,set.row.length-1)])&&P.STAGE){const i=Math.min(st.hero||0,set.row.length-1),n=set.row[i];const sc=P.STAGE.makeScene(g2,st,0);reg.sc=sc;
+      const pr=PEO[n]||{c:TCOL[i%TCOL.length],h:'#3d2a1a',st:'short',s:1};const k=sc.kid(EMO[n]?((st.lidx||0)+i)%6:pr,0,-2.25,{s:EMO[n]?1.35:1.25*(pr.s||1),mode:EMO[n]||'wave',ry:0});k.userData.name=n;reg.items=[k];
+      const lab=(set.labels&&set.labels[i])||n;const tg=sticker(lab,acc(),.5);tg.position.set(0,.35,-.45);g2.add(tg);sc.say(k,lab+'!',4000);return reg;}
     if(set.row){const i=Math.min(st.hero||0,set.row.length-1),n=set.row[i];const hero=heroAt(n,0,-2.25,1.7);reg.items=[hero];const lab=(set.labels&&set.labels[i])||n;
       const tg=sticker(lab,acc(),.5);tg.position.set(0,.35,-.45);g2.add(tg);
       const dots=new THREE.Group();set.row.forEach((x,k)=>{const d=mk(G('exd',()=>new THREE.SphereGeometry(.05,10,8)),k===i?P.glow(acc(),1,.5):P.paper('#ced4da'),0);d.position.set((k-(set.row.length-1)/2)*.2,.05,.15);dots.add(d);});g2.add(dots);
