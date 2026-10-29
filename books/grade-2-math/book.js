@@ -1,7 +1,7 @@
-window.BOOK={grade:2,subject:'Math',tiles:['M','A','T','H'],key:'2m2',strands:'all five Ontario strands',world:'dino',rounds:10,
+window.BOOK={sketch:true,noLearnDock:true,noThinker:true,storyRight:true,autoRounds:true,grade:2,subject:'Math',tiles:['M','A','T','H'],key:'2m2',strands:'all five Ontario strands',world:'dino',rounds:10,
   goLines:["Now it's your turn to practice!","Let's practice!","Ready, set, practice!","Your turn! Ten questions are waiting.","Time to show what you know!","Let's put it into practice!","Practice time! You can do it.","Math muscles on! Let's practice.","Here come your questions. Let's go!","Grab your thinking cap. Let's practice!"],
   winLine:'Amazing! You answered all ten questions!',
   introLine:'A math book that stands up off the page. Every lesson has a *Learn* spread with a story, worked examples and a 3D model that shows the idea, and a *Practice* spread with warm-ups and ten questions.',
   about:'follows the Grade 2 Math topics of a complete Canadian curriculum workbook, in the same order, with all-new stories, numbers and questions. Each lesson is tagged with the matching expectations of the Ontario Mathematics curriculum (2020): B Number, C Algebra, D Data, E Spatial Sense and F Financial Literacy.',
   credits:'Picture icons: Twemoji by Twitter, Inc. and other contributors, licensed CC BY 4.0.',
-  files:['pics.js','kit.js','subject-kit.js','stage.js','math-kit2.js','m2.js','lessons-a.js','lessons-b.js','lessons-c.js','lessons-d.js','stories.js']};
+  files:['pics.js','sketch.js','props3d.js','kit.js','subject-kit.js','stage.js','math-kit2.js','m2.js','dioramas.js','lessons-a.js','lessons-b.js','lessons-c.js','lessons-d.js','stories.js','vtime.js']};
