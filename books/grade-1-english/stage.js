@@ -61,9 +61,14 @@ const PROPS={
  pot(){const g=new THREE.Group();const p=cyl(.32,.28,.34,'#90a4ae',24);p.position.y=.17;g.add(p);const w=cyl(.29,.29,.02,'#bbdefb',24);w.position.y=.32;g.add(w);return g;},
  rainbow(){const g=new THREE.Group();['#ef5350','#ffa726','#ffee58','#66bb6a','#42a5f5','#7e57c2'].forEach((c,i)=>{const t=mk(G('st_rb'+i,()=>new THREE.TorusGeometry(1.0-i*.07,.035,6,40,Math.PI)),new THREE.MeshLambertMaterial({color:c,emissive:c,emissiveIntensity:.2}),0);g.add(t);});return g;},
  note(){const g=new THREE.Group();const h=sph(.06,'#1b2236');h.scale.set(1.2,.9,.6);g.add(h);const st=box(.015,.22,.015,'#1b2236');st.position.set(.06,.11,0);g.add(st);return g;},
+ windmill(){const g=new THREE.Group();const t=cyl(.16,.3,1.1,'#eceff1',8);t.position.y=.55;g.add(t);const r=cone(.24,.3,'#e53935',8);r.position.y=1.25;g.add(r);const hub=new THREE.Group();hub.position.set(0,1.0,.24);g.add(hub);
+   for(let i=0;i<4;i++){const b=box(.09,.62,.02,'#8d6e63');b.position.y=.33;const arm=new THREE.Group();arm.rotation.z=i*Math.PI/2;arm.add(b);hub.add(arm);}const d=box(.14,.22,.02,'#5d4037');d.position.set(0,.11,.26);g.add(d);g.userData.spin=hub;return g;},
  heart(){const g=new THREE.Group();const s=new THREE.Shape();s.moveTo(0,-.15);s.bezierCurveTo(-.3,.05,-.12,.25,0,.1);s.bezierCurveTo(.12,.25,.3,.05,0,-.15);const h=mk(new THREE.ExtrudeGeometry(s,{depth:.06,bevelEnabled:false}),lam('#ec407a'),0);g.add(h);return g;}
 };
-function prop(n,o){o=o||{};let g;if(PROPS[n])g=PROPS[n]();else if(K.TOYS[n]&&!o.card)g=K.toy(n,{s:o.toyS||1.6});else g=K2.standee(n,{col:o.col||K2.COLS[(o.ci||0)%K2.COLS.length],label:o.label==null?false:o.label,s:o.s||.9});
+const P3FIRST=['moon','box','bread','cheese','heart'];
+function prop3(n,o){const raw=P.PROP3[n](o.p3||{});const w=new THREE.Group();w.add(raw);const b=new THREE.Box3().setFromObject(raw),sz=b.getSize(new THREE.Vector3());const k=.8*(o.s||.9)/Math.max(.05,sz.y,.85*Math.max(sz.x,sz.z));raw.scale.multiplyScalar(k);raw.position.y-=b.min.y*k;if(o.face!==false)raw.rotation.y=-.6;
+  if(raw.userData.tick)w.userData.tick=raw.userData.tick;return w;}
+function prop(n,o){o=o||{};let g;if(P.PROP3&&P.PROP3[n]&&(!PROPS[n]||P3FIRST.includes(n))&&!o.card){g=prop3(n,o);g.userData.name=o.name||n;g.userData.kind=n;return g;}if(PROPS[n])g=PROPS[n]();else if(K.TOYS[n]&&!o.card)g=K.toy(n,{s:o.toyS||1.6});else g=K2.standee(n,{col:o.col||K2.COLS[(o.ci||0)%K2.COLS.length],label:o.label==null?false:o.label,s:o.s||.9,bare:o.bare});
   g.userData.name=o.name||n;g.userData.kind=n;if(o.s&&(PROPS[n]||K.TOYS[n]))g.scale.multiplyScalar(o.s);return g;}
 
 /* ---------- how each thing comes alive ---------- */
@@ -89,7 +94,7 @@ function alive(o,big){if(!o||!o.parent)return Promise.resolve();const kind=o.use
   return tween(.8*B,k=>{o.position.y=p0.y+Math.sin(k*Math.PI)*.5;o.rotation.y=r0.y+k*Math.PI*2;}).then(done);}
 
 /* ---------- acting kids ---------- */
-function actor(i,o){o=o||{};const k=P.kid(P.CREW[i%P.CREW.length]);k.scale.setScalar(o.s||.8);const u=k.userData;u.mode=o.mode||'idle';u.t=Math.random()*3;u.ry=o.ry||0;k.rotation.y=u.ry;
+function actor(i,o){o=o||{};const k=P.kid(typeof i==='object'?i:P.CREW[i%P.CREW.length]);k.scale.setScalar(o.s||.8);const u=k.userData;u.mode=o.mode||'idle';u.t=Math.random()*3;u.ry=o.ry||0;k.rotation.y=u.ry;
   u.name=o.name||'kid';u.kind='child';u.actor=true;return k;}
 function headPos(k){const v=new THREE.Vector3(0,.94,0);k.userData.head.parent.localToWorld(v.copy(k.userData.head.position));return v;}
 function animActor(k,dt){const u=k.userData,a=u.arms,h=u.head,b=u.body;u.t+=dt;const t=u.t;let L=-.18,Rr=.18,Lx=0,Rx=0,hx=0,hz=Math.sin(t*1.3)*.05,hy=0,by=0,bx=0,brx=0,ry=u.ry;
@@ -118,7 +123,7 @@ function animActor(k,dt){const u=k.userData,a=u.arms,h=u.head,b=u.body;u.t+=dt;c
    case 'kick':by=.02;Lx=.4;Rx=-.4;brx=Math.sin(t*6)*.15;break;
    default:by=Math.sin(t*2)*.01;}
   a[0].rotation.z=lerp(a[0].rotation.z,L,.25);a[1].rotation.z=lerp(a[1].rotation.z,Rr,.25);a[0].rotation.x=lerp(a[0].rotation.x,Lx,.25);a[1].rotation.x=lerp(a[1].rotation.x,Rx,.25);
-  h.rotation.x=lerp(h.rotation.x,hx,.2);h.rotation.z=hz;h.rotation.y=lerp(h.rotation.y,hy,.3);b.position.y=by;b.position.x=bx;b.rotation.x=lerp(b.rotation.x,brx,.2);k.rotation.y=lerp(k.rotation.y,ry,.15);}
+  h.rotation.x=lerp(h.rotation.x,hx,.2);h.rotation.z=hz;h.rotation.y=lerp(h.rotation.y,hy,.3);b.position.y=by;b.position.x=bx;b.rotation.x=lerp(b.rotation.x,brx,.2);k.rotation.y=lerp(k.rotation.y,ry,.15);if(u.extra)u.extra(k,dt);}
 
 /* ---------- particles ---------- */
 function particles(g,kind,area){const grp=new THREE.Group();g.add(grp);const n=kind==='snow'?36:kind==='rain'?40:kind==='notes'?6:kind==='steam'?10:kind==='zzz'?3:kind==='sparkle'?14:12;const list=[];
@@ -130,12 +135,15 @@ function particles(g,kind,area){const grp=new THREE.Group();g.add(grp);const n=k
   return grp;}
 
 /* ---------- the scene object handed to a lesson ---------- */
-function makeScene(g0,st,off){const live=[],ticks=[];const g2=new THREE.Group();g2.position.z=off==null?.7:off;g0.add(g2);const timers=[];let clock=0;const sc={
+function makeScene(g0,st,off){const live=[],ticks=[];const g2=new THREE.Group();g2.position.z=off==null?.7:off;g0.add(g2);const timers=[];let clock=0;const ons=[];const sc={
+  /* story sync: run f when the narration reaches the nth time a word (or phrase) is read */
+  on(w,f,nth){ons.push({w:String(w).toLowerCase(),f,nth:nth||1,done:false});return sc;},
+  get ons(){return ons;},
   after(ms,f){timers.push({at:clock+ms/1000,f});},
   later(f,ms){timers.push({at:clock+(ms||0)/1000,f});},
   g:g2,
   kid(i,x,z,o){const k=actor(i,o);k.position.set(x,o&&o.y||0,z);g2.add(k);live.push(k);if(o&&o.say)sc.say(k,o.say);if(o&&o.tap!==false)A.drag(k,{tap:()=>{A.pop();if(o&&o.onTap)o.onTap(k);else{const m=k.userData.mode;k.userData.mode='jump';sc.later(()=>{k.userData.mode=m;},700);}}});return k;},
-  prop(n,x,z,o){o=o||{};const p=prop(n,o);p.position.set(x,o.y||0,z);if(o.ry!=null)p.rotation.y=o.ry;g2.add(p);if(PROPS[n]&&PROPS[n]&&p.userData.spin)ticks.push(dt=>{p.userData.spin.rotation.z+=dt*.8;});
+  prop(n,x,z,o){o=o||{};const p=prop(n,o);p.position.set(x,o.y||0,z);if(o.ry!=null)p.rotation.y=o.ry;g2.add(p);if(p.userData.tick)ticks.push((dt,t)=>p.userData.tick(t));if(PROPS[n]&&p.userData.spin)ticks.push(dt=>{p.userData.spin.rotation.z+=dt*(n==='windmill'?2.2:.8);});
     if(o.bob)ticks.push((dt,t)=>{p.position.y=(o.y||0)+Math.sin(t*2+x)*o.bob;});if(o.spinY)ticks.push(dt=>{p.rotation.y+=dt*o.spinY;});if(o.tap!==false)A.drag(p,{tap:()=>{A.pop();A.say(o.sayTap||(o.label||n));alive(p);}});return p;},
   say(o,text,ms){if(o.userData.bubble){o.remove(o.userData.bubble);o.userData.bubble=null;}if(!text)return;const s=1/(o.scale.x||1);const b=label(text,{size:.24*s,bg:'#ffffff',border:'#1b2236'});b.position.set(0,o.userData.actor?1.35:(o.position.y>.5?-.45:1.25)*s,0);{const wx=o.position.x,lim=1.05;if(Math.abs(wx)>lim)b.position.x=(Math.sign(wx)*lim-wx)*s;}b.renderOrder=20;b.material.depthTest=false;o.add(b);o.userData.bubble=b;if(ms)sc.later(()=>{if(o.userData.bubble===b)sc.say(o,null);},ms);return b;},
   mode(k,m,ms){const old=k.userData.mode;k.userData.mode=m;if(ms)sc.later(()=>{k.userData.mode=old;},ms);},

@@ -27,7 +27,9 @@ with sync_playwright() as p:
     pg.evaluate("async()=>{const D=PM.debug;D.TS=.05;D.openBook(0);for(let i=0;i<60;i++){D.sim(.5);await new Promise(r=>setTimeout(r,10));}}")
     import base64
     for name,t,st,mode,arg in json.loads(sys.argv[3]):
-        pg.evaluate(f"""async()=>{{const D=PM.debug;D.goSpread({t});for(let i=0;i<300&&D.busy;i++){{D.sim(.5);await new Promise(r=>setTimeout(r,15));}}D.setStep({st});for(let i=0;i<10;i++){{D.sim(.2);await new Promise(r=>setTimeout(r,30));}}}}""")
+        pg.evaluate(f"""async()=>{{const D=PM.debug;D.goSpread({t});for(let i=0;i<300&&D.busy;i++){{D.sim(.5);await new Promise(r=>setTimeout(r,15));}}D.setStep({st}<0?D.SP[{t}].steps.length+({st}):{st});for(let i=0;i<10;i++){{D.sim(.2);await new Promise(r=>setTimeout(r,30));}}}}""")
+        if mode=='js':
+            pg.evaluate(arg); pg.wait_for_timeout(300); pg.screenshot(path=f'{out}/{name}.png',timeout=180000)
         if mode=='taskat':
             pg.evaluate(f"""async()=>{{const D=PM.debug,S=D.S;S.game.phase='play';S.game.round=1;S.game.text=D.api.taskAt({arg});D.A.redraw();for(let i=0;i<40;i++){{D.sim(.1);await new Promise(r=>setTimeout(r,25));}}}}""")
             pg.wait_for_timeout(400); pg.screenshot(path=f'{out}/{name}.png',timeout=180000)

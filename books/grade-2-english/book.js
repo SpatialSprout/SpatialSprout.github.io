@@ -6,4 +6,4 @@ window.BOOK={grade:2,subject:'English',tiles:['A','B','C'],key:'2e',strands:'sou
   introLine:'An English book full of stories that stand up off the page. Every lesson has a *Learn* spread with a story, the idea and a model that shows it, and a *Practice* spread with a bonus story, warm-ups and ten questions.',
   about:'follows the Grade 2 English topics of a complete Canadian curriculum workbook, in the same order, with all-new stories, examples and questions. Each lesson is tagged with the matching expectations of the Ontario Language curriculum (2023): B Foundations of Language, C Comprehension and D Composition.',
   credits:'Picture icons: Twemoji by Twitter, Inc. and other contributors, licensed CC BY 4.0.',
-  files:['pics.js','sketch.js','kit.js','subject-kit.js','stage.js','g2.js','scenes.js','dioramas.js','lessons-a.js','lessons-b.js','lessons-c.js','lessons-d.js','stories.js','vtime.js']};
+  files:['pics.js','sketch.js','props3d.js','kit.js','subject-kit.js','stage.js','g2.js','scenes.js','dioramas.js','lessons-a.js','lessons-b.js','lessons-c.js','lessons-d.js','stories.js','vtime.js']};
