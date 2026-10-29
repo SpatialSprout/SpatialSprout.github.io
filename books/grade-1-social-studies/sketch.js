@@ -143,7 +143,7 @@ const S={
  /* a thick card base the whole scene stands on, with a tinted ground patch */
  /* the diorama plinth: a thick card board with a pencilled edge, a tinted ground and little details on it */
  base(w,d,ground){const g=new THREE.Group();const s=B(w,.16,d,'#efe7d4');s.position.y=-.08;g.add(s);const lip=B(w+.06,.03,d+.06,'#d9cdb2');lip.position.y=-.17;g.add(lip);
-   if(ground){const t=P.mk(G('skgr'+w+d,()=>new THREE.BoxGeometry(w*.97,.014,d*.95)),P.paper(ground,{mix:.42,amt:.4,dens:22}));t.position.y=.007;g.add(t);
+   if(ground){const t=P.mk(G('skgr'+w+d,()=>new THREE.BoxGeometry(w*.97,.014,d*.95)),P.paper(ground,{mix:.12,amt:.4,dens:22}));t.position.y=.007;g.add(t);
      const c=new THREE.Color(ground),hsl={};c.getHSL(hsl);let seed=Math.round(w*97+d*13);const R=()=>{seed=(seed*9301+49297)%233280;return seed/233280;};
      if(hsl.h>.18&&hsl.h<.45&&hsl.s>.2){/* grass tufts and tiny flowers */const geo=new THREE.ConeGeometry(.018,.07,4);const m=new THREE.InstancedMesh(geo,P.paper(mixHex(ground,'#3f7d36',.45),{mix:.1,amt:.3}),140);const o=new THREE.Object3D();
        for(let k=0;k<140;k++){o.position.set((R()-.5)*w*.94,.04,(R()-.5)*d*.92);o.rotation.set((R()-.5)*.5,R()*3,(R()-.5)*.5);o.scale.setScalar(.6+R()*.8);o.updateMatrix();m.setMatrixAt(k,o.matrix);}m.receiveShadow=true;g.add(m);
