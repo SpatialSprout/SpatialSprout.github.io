@@ -971,7 +971,8 @@ function ensure(sp){if(!sp.S){const st=Object.assign({flaps:{},won:sp.L?!!stamps
 function buildSpread(t){const sp=SP[t],S=ensure(sp);const grp=new THREE.Group();grp.scale.y=.02;grp.visible=false;popRoot.add(grp);clickables=[];draggables=[];
   const old=cur;building=true;cur=t;let api={};
   try{if(sp.kind==='intro')api=sp.build(S,grp)||{};else{const game={solved:(msg)=>gameSolved(S,msg),get round(){return S.game.round;}};S.gameObj=game;api=sp.L.build(S,grp,sp.kind,game)||{};
-    if(sp.kind==='play'&&!S.game.done){S.game.phase='howto';S.game.text='';}/* crew guide no longer stands on the book */}}catch(e){console.error(e);}
+    if(sp.kind==='play'&&!S.game.done){S.game.phase='howto';S.game.text='';}
+    if(BK.readTheory&&!BK.tokens&&PM.HAB&&sp.L){try{const H=PM.HAB.mini(PM.HAB.strandEnv(sp.L.strand,sp.L.n),sp.L.n*5+(sp.kind==='play'?1:0));H.g.position.z=1.0+(-1.95*1.08)+1.95*1.08-0.0;H.g.scale.setScalar(1.08);H.g.position.z=1.0;grp.add(H.g);}catch(e){console.error(e);}}/* crew guide no longer stands on the book */}}catch(e){console.error(e);}
   building=false;cur=old;popGrp=grp;S.api=api;return api;}
 function challenger(L,r){return CREW[((L&&L.n?L.n-1:0)+(r||0))%CREW.length].n;}
 function startGame(S){const g=S.game;if(g.phase==='play'||g.done)return;g.phase='play';g.miss=false;A.stopSeq();g.setup=true;try{g.text=S.api.task(g.round);}catch(e){console.error(e);g.text='';}g.setup=false;A.say('Round '+(g.round+1)+': '+g.text.replace(/\*/g,''));A.redraw();}
@@ -1200,7 +1201,7 @@ Promise.all([Promise.race([Promise.all([fl,imgs]),new Promise(r=>setTimeout(r,30
 <script src="props3d.js?v=4863df45"></script>
 <script src="habitats.js?v=0df9c173"></script>
 <script src="kit.js?v=06660d24"></script>
-<script src="subject-kit.js?v=3e022ff6"></script>
+<script src="subject-kit.js?v=f13df34f"></script>
 <script src="stage.js?v=13c96b31"></script>
 <script src="scenes.js?v=001c7820"></script>
 <script src="lessons-a.js?v=8258c65e"></script>

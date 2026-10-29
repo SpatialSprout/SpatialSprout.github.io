@@ -145,7 +145,7 @@ function render(g2,st,h){const set=st.set||{};const reg={items:[],opts:[],built:
   /* the 3D explanation page: the whole page becomes the world of the thing being explained */
   const EX=st.explain&&P.HAB&&!set.scene&&!set.grid;let heroDone=false;
   if(EX){const hn=set.row?set.row[Math.min(st.hero||0,set.row.length-1)]:(set.pic||(set.items&&set.items[0]&&set.items[0][0])||null);
-    const kind=st.devKind||(hn?P.HAB.kindFor(hn,P.HAB.strandEnv(st.strand,st.lidx)):P.HAB.strandEnv(st.strand,st.lidx));const H=P.HAB.make(kind,(st.lidx||1)*31+(st.hero||0)*7);g2.add(H.g);reg.envTick=H.tick;
+    const CUST=!!set.custom;const kind=st.devKind||(hn?P.HAB.kindFor(hn,P.HAB.strandEnv(st.strand,st.lidx)):P.HAB.strandEnv(st.strand,st.lidx));const H=CUST?P.HAB.mini(kind,(st.lidx||1)*31):P.HAB.make(kind,(st.lidx||1)*31+(st.hero||0)*7);g2.add(H.g);reg.envTick=H.tick;
     if(st.lastKind!==kind){H.g.scale.y=.02;tween(.7,k=>{H.g.scale.y=.02+.98*easeOut(k);});st.lastKind=kind;}
     const heroAt=(n,x,z,sc)=>{if(P.HAB.AN[n]==='swim'&&H.water){x=H.water[0];z=H.water[1];}const hero=P.STAGE?P.STAGE.prop(n,{s:sc,label:false,bare:true,tap:false}):standee(n,{label:false});const fly=P.HAB.AN[n]==='fly';hero.position.set(x,fly?.5:0,z);hero.userData.name=n;hero.userData.kind=n;g2.add(hero);
       const an=P.HAB.animate(hero,n,{x,z,y:fly?.1:0,ry:-.5});reg.heroTick=an;return hero;};
@@ -155,7 +155,7 @@ function render(g2,st,h){const set=st.set||{};const reg={items:[],opts:[],built:
       A.drag(hero,{tap:()=>{A.pop();live(hero,true);A.say(lab);}});
       if(P.STAGE){const sc=P.STAGE.makeScene(g2,st,0);reg.sc=sc;const k=sc.kid(((st.lidx||0)+i)%6,-1.35,-1.05,{mode:'point',ry:.75,s:.95});sc.say(k,lab+'!',3000);sc.later(()=>{sc.mode(k,'cheer');},1600);sc.later(()=>{sc.mode(k,'idle');},3200);}
       return reg;}
-    if(set.pic&&(set.fill||set.build)){heroAt(set.pic,0,-3.0,1.3);heroDone=true;}}
+    if(set.pic&&(set.fill||set.build)){heroAt(set.pic,1.2,-3.15,1.05);heroDone=true;}}
   const ZS0=EX?.55:0;
   if(!EX&&st.theme&&!st.explain&&P.HAB&&!set.grid&&!set.custom&&!set.scene&&st.mode==='play'){const H2=P.HAB.mini(P.HAB.strandEnv(st.strand,st.lidx),st.lidx+3);g2.add(H2.g);}
   if(set.scene&&P.STAGE){reg.sc=P.STAGE.makeScene(g2,st,set.row||set.fill||set.build||set.bins||set.grid?.3:.7);const fn=typeof set.scene==='function'?set.scene:(P.SCENES||{})[set.scene];try{reg.scene=fn?fn(reg.sc,st,set)||{}:{};}catch(e){console.error(e);reg.scene={};}}
@@ -176,10 +176,10 @@ function render(g2,st,h){const set=st.set||{};const reg={items:[],opts:[],built:
       g2.add(s);reg.items.push(s);
       A.drag(s,{tap:()=>h.sortTap(i),drop:pos=>{let best=null,bd=9;bins.forEach((b,j)=>{const d=Math.abs(pos.x-b.position.x)+Math.max(0,pos.z-(-1.45))*1.5;if(d<bd){bd=d;best=j;}});if(pos.z>-1.3)best=null;h.sortDrop(i,best);}});});}
   /* letters or words with one gap, and answer blocks to choose from */
-  if(set.fill){const parts=set.fill,ws0=parts.map(t=>t==='_'?bw(st.filled||set.ans||'a'):bw(t)),tot0=ws0.reduce((a,b)=>a+b,0)+.07*(parts.length-1),fsc=Math.min(1,(set.pic&&!set.row?3.2:3.9)/tot0),ws=ws0.map(w=>w*fsc),gap=.07*fsc,tot=tot0*fsc;
+  if(set.fill){const parts=set.fill,ws0=parts.map(t=>t==='_'?bw(st.filled||set.ans||'a'):bw(t)),tot0=ws0.reduce((a,b)=>a+b,0)+.07*(parts.length-1),fsc=Math.min(EX?1.5:1,(set.pic&&!set.row?3.2:3.9)/tot0),ws=ws0.map(w=>w*fsc),gap=.07*fsc,tot=tot0*fsc;
     const hasPic=!!set.pic&&!set.row&&!heroDone;let x=-tot/2+(hasPic?.55:0);if(hasPic){const s=standee(set.pic,{col:COLS[1],label:set.picLabel||false,s:.95});s.userData.kind=set.pic;s.position.set(Math.max(-2.05,x-.75),0,-1.95);g2.add(s);reg.items.push(s);reg.pic=s;x=Math.max(x,-1.4);}
     const z=set.row?-1.55:-1.9+ZS0;parts.forEach((t,i)=>{const w=ws[i];let b;if(t==='_'){b=st.filled?block(st.filled,{side:'#5fd38a'}):ghost(w/fsc);b.userData.gap=1;}else b=block(t,{side:set.side||'#ffd24a'});b.scale.setScalar(fsc);b.position.set(x+w/2,0,z);b.userData.part=String(i);g2.add(b);x+=w+gap;});
-    const opts=set.opts||[];const ow=opts.map(t=>bw(t)),otot=ow.reduce((a,b)=>a+b,0)+.3*(opts.length-1),osc=Math.min(1,3.9/Math.max(.01,otot));let ox=-otot*osc/2;const oxs=ow.map(w=>{const c=ox+w*osc/2;ox+=w*osc+.3*osc;return c;});
+    const opts=set.opts||[];const ow=opts.map(t=>bw(t)),otot=ow.reduce((a,b)=>a+b,0)+.3*(opts.length-1),osc=Math.min(EX?1.4:1,3.9/Math.max(.01,otot));let ox=-otot*osc/2;const oxs=ow.map(w=>{const c=ox+w*osc/2;ox+=w*osc+.3*osc;return c;});
     opts.forEach((t,i)=>{if(st.filled&&t===st.filled&&st.filledOk)return;const b=block(t,{side:'#8fd3ff'});b.scale.setScalar(osc);b.position.set(oxs[i],0,set.row?-.62:-.78+ZS0*.3);b.userData.opt=t;g2.add(b);reg.opts.push(b);A.drag(b,{tap:()=>h.opt(t,b)});});}
   /* build a sentence: tap the word blocks in order */
   if(set.build){const words=set.build,perm=st.perm||words.map((w,i)=>i);const built=st.built||[];const full=words.reduce((a,w)=>a+BW(w)+.06,0),sc=Math.min(1,3.9/full);const bw=t=>BW(t)*sc;const block=(t,o)=>{const b=BLOCK(t,o);b.scale.setScalar(sc);return b;};let x=-full*sc/2;

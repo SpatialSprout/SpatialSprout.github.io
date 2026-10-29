@@ -161,7 +161,7 @@ P.HAB={ENV,MAP,AN,
    g.traverse(o=>{if(o.isMesh&&!o.userData.ink){o.receiveShadow=true;}});return {g,tick:(dt,t)=>T.forEach(f=>{try{f(dt,t);}catch(e){}}),title,water:g.userData.water};},
  mini(kind,seed){SEED=seed||3;const g=new THREE.Group();const T=[];const tmp=new THREE.Group();try{(ENV[kind]||ENV.meadow)(tmp,T);}catch(e){}
    const gc=tmp.children[0]&&tmp.children[0].children[2]?tmp.children[0].children[2].material.color.getStyle():'#a7d08c';const b=S.base(4.2,2.5,'#'+new THREE.Color(gc).getHexString());b.position.z=-1.95;g.add(b);
-   const keep=tmp.children.slice(1).filter(o=>o.position.z<CZ-1.2&&o.position.y<1.2&&!o.isLight).slice(0,9);keep.forEach(o=>{o.position.z=-3.05+(o.position.z-(CZ-DZ/2))*.25;o.scale.multiplyScalar(.75);g.add(o);});return {g,tick:()=>{}};},
+   const keep=tmp.children.slice(1).filter(o=>o.position.z<CZ-1.2&&o.position.y<1.2&&!o.isLight&&Math.abs(o.position.x)>1.25).slice(0,8);keep.forEach(o=>{o.position.z=-3.05+(o.position.z-(CZ-DZ/2))*.25;o.scale.multiplyScalar(.75);g.add(o);});return {g,tick:()=>{}};},
  strandEnv(strand,i){return STRAND_ENV[strand]||ENVS[(i||0)%ENVS.length];},
  /* the hero lives in its habitat: walkers stroll a loop, swimmers swim, flyers circle, drivers drive */
  animate(hero,name,base){const how=AN[name]||'idle';const y0=base.y||0,x0=base.x||0,z0=base.z||CZ;let t=Math.random()*3;
