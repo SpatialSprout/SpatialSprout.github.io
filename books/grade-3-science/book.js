@@ -1,0 +1,9 @@
+window.BOOK={readTheory:true,stillCam:true,tokens:true,sketch:true,noLearnDock:true,noThinker:true,storyRight:true,autoRounds:true,grade:3,subject:'Science',tiles:['S','C','I'],key:'3s',strands:'plants, forces and motion, strong and stable structures, and soils',world:'forest',rounds:10,
+  strandColors:{'Plants':'#16a36f','Forces and Motion':'#e4572e','Strong Structures':'#8b5cf6','Soils':'#a0662b'},
+  theme:{c:['#b5e86b','#16a36f','#a0662b'],mat:'#a9d98f',bg:'#e5f2dc',paper:'#ecf7e6'},glyphs:'☀✿❄☁★♥',
+  goLines:["Now it's your turn to practice!","Let's practice, scientist!","Ready, set, practice!","Your turn! Ten questions are waiting.","Time to show what you know!","Let's put it into practice!","Lab time! Let's practice.","Here come your questions. Let's go!","Put on your thinking goggles. Let's practice!","Let's test what we learned!"],
+  winLine:'Amazing, scientist! You answered all ten questions!',
+  introLine:'A science book that stands up off the page. Every lesson reads the big idea with you word by word, then the 3D page turns into the world it talks about: a beaver pond, a windy campsite, a garden full of worms. Each *Practice* spread has ten questions.',
+  about:'follows the Ontario Science and Technology curriculum (2022) for Grade 3 and the Grade 3 Science topics of complete Canadian curriculum workbooks, with all-new stories, examples and questions. Lessons are tagged with Ontario strands: B Life Systems (growth and changes in plants), C Matter and Energy (forces and motion), D Structures and Mechanisms (strong and stable structures) and E Earth and Space Systems (soils in the environment).',
+  credits:'Picture icons: Twemoji by Twitter, Inc. and other contributors, licensed CC BY 4.0.',
+  files:['pics.js','sketch.js','props3d.js','habitats.js','kit.js','subject-kit.js','stage.js','acts.js','g3.js','lessons-a.js','lessons-b.js','lessons-c.js','vtime.js']};

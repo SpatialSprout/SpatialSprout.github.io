@@ -71,7 +71,7 @@ function token(txt,o){o=o||{};const role=o.side==='#5fd38a'?'ok':o.side==='#8fd3
   if(th==='paper'){const s=P.mk(G('tkp',()=>new THREE.CylinderGeometry(.2,.2,.02,24)),P.paper('#ffffff',{mix:0}),0);s.scale.set(Math.max(1,bw(txt)/.42),1,.75);add(s,.01);ty=.32;}
   else if(th==='balloon'){const b=add(P.mk(G('tkb',()=>new THREE.SphereGeometry(.2,20,14)),P.paper(col,{mix:.1}),0),.62);b.scale.set(1,1.15,1);add(P.mk(G('tks',()=>new THREE.CylinderGeometry(.004,.004,.45,4)),P.paper('#495057'),0),.22);ty=.62;}
   else if(th==='bubble'){add(P.mk(G('tkbu',()=>new THREE.SphereGeometry(.26,20,14)),P.glow('#d0ebff',.45,.35),0),.5);ty=.5;}
-  else if(th==='cloud'){const c=P.SET.cloud();c.scale.setScalar(.9);add(c,.45);ty=.48;}
+  else if(th==='cloud'){const c=P.SET.cloud();c.scale.setScalar(.7);add(c,.2);ty=.78;}
   else if(th==='word'){const sh=P.mk(G('tksh',()=>new THREE.CircleGeometry(.22,20)),new THREE.MeshBasicMaterial({color:'#1b2236',transparent:true,opacity:.12,depthWrite:false}),0);sh.rotation.x=-Math.PI/2;sh.position.y=.005;sh.scale.x=Math.max(1,bw(txt)/.4);g.add(sh);ty=.36;}
   else{const make={fish:()=>P3.fish&&P3.fish({c:col}),flower:()=>P.SET.flower('tulip',{c:col,h:.3}),leaf:()=>P3.leaf&&P3.leaf({c:col}),star:()=>P3.star&&P3.star(),apple:()=>P3.cherries?(K.TOYS&&K.toy?K.toy('apple',{s:1.6}):null):null,kite:()=>P3.kite&&P3.kite({c:col}),boat:()=>P.SET.boat({c:col,sail:true}),egg:()=>P3.egg&&P3.egg(),butterfly:()=>P3.butterfly&&P3.butterfly({c:col}),lantern:()=>P3['light bulb']&&P3['light bulb']()}[th];
     const m=make&&make();if(m){const w=new THREE.Group();w.add(m);const b=new THREE.Box3().setFromObject(m),sz=b.getSize(new THREE.Vector3());const k=.45/Math.max(.05,sz.y,sz.x*.8);m.scale.multiplyScalar(k);m.position.y-=b.min.y*k;add(w,th==='fish'||th==='butterfly'||th==='kite'?.25:0);ty=.25+.5+(th==='fish'||th==='butterfly'?.25:0);}}
@@ -145,7 +145,7 @@ function render(g2,st,h){const set=st.set||{};const reg={items:[],opts:[],built:
   /* the 3D explanation page: the whole page becomes the world of the thing being explained */
   const EX=st.explain&&P.HAB&&!set.scene&&!set.grid;let heroDone=false;
   if(EX){const hn=set.row?set.row[Math.min(st.hero||0,set.row.length-1)]:(set.pic||(set.items&&set.items[0]&&set.items[0][0])||null);
-    const CUST=!!set.custom;const kind=st.devKind||(hn?P.HAB.kindFor(hn,P.HAB.strandEnv(st.strand,st.lidx)):P.HAB.strandEnv(st.strand,st.lidx));const H=CUST?P.HAB.mini(kind,(st.lidx||1)*31):P.HAB.make(kind,(st.lidx||1)*31+(st.hero||0)*7);g2.add(H.g);reg.envTick=H.tick;
+    const CUST=!!(set.custom||set.fill||set.build);const kind=st.devKind||(hn?P.HAB.kindFor(hn,P.HAB.strandEnv(st.strand,st.lidx)):P.HAB.strandEnv(st.strand,st.lidx));const H=CUST?P.HAB.mini(kind,(st.lidx||1)*31):P.HAB.make(kind,(st.lidx||1)*31+(st.hero||0)*7);g2.add(H.g);reg.envTick=H.tick;
     if(st.lastKind!==kind){H.g.scale.y=.02;tween(.7,k=>{H.g.scale.y=.02+.98*easeOut(k);});st.lastKind=kind;}
     const heroAt=(n,x,z,sc)=>{if(P.HAB.AN[n]==='swim'&&H.water){x=H.water[0];z=H.water[1];}const hero=P.STAGE?P.STAGE.prop(n,{s:sc,label:false,bare:true,tap:false}):standee(n,{label:false});const fly=P.HAB.AN[n]==='fly';hero.position.set(x,fly?.5:0,z);hero.userData.name=n;hero.userData.kind=n;g2.add(hero);
       const an=P.HAB.animate(hero,n,{x,z,y:fly?.1:0,ry:-.5});reg.heroTick=an;return hero;};

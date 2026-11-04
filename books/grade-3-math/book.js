@@ -1,2 +1,7 @@
-window.BOOK={grade:3,subject:'Math',tiles:['M','A','T','H'],key:'3',strands:'all five Ontario strands',
-  files:['lessons-number.js','lessons-algebra-data.js','lessons-spatial-money.js','stories.js','theory.js']};
+window.BOOK={readTheory:true,stillCam:true,tokens:true,sketch:true,noLearnDock:true,noThinker:true,storyRight:true,autoRounds:true,grade:3,subject:'Math',tiles:['M','A','T','H'],key:'3m2',strands:'all five Ontario strands',world:'space',rounds:10,
+  goLines:["Now it's your turn to practice!","Let's practice, math explorer!","Ready, set, practice!","Your turn! Ten questions are waiting.","Time to show what you know!","Let's put it into practice!","Practice time! You can do it.","Math muscles on! Let's practice.","Here come your questions. Let's go!","Grab your thinking cap. Let's practice!"],
+  winLine:'Amazing, math explorer! You answered all ten questions!',
+  introLine:'A math book that stands up off the page. Every lesson has a *Learn* spread that reads the big idea with you word by word, a 3D model that acts it out and a story told in changing 3D worlds, and a *Practice* spread with ten questions.',
+  about:'follows the Ontario Grade 3 Mathematics curriculum (2020) and the Grade 3 topics of complete Canadian curriculum workbooks, with all-new stories, numbers and questions. Each lesson is tagged with its Ontario expectations: B Number, C Algebra, D Data, E Spatial Sense and F Financial Literacy.',
+  credits:'Picture icons: Twemoji by Twitter, Inc. and other contributors, licensed CC BY 4.0.',
+  files:['pics.js','sketch.js','props3d.js','habitats.js','kit.js','subject-kit.js','stage.js','acts.js','math-kit2.js','math-kit3.js','g3.js','m3.js','lessons-a.js','lessons-b.js','lessons-c.js','lessons-d.js','vtime.js']};

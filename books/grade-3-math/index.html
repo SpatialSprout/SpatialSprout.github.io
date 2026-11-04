@@ -151,9 +151,9 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 
 <div class="sheetwrap" id="sheet" hidden><div class="sheet" role="dialog" aria-modal="true" id="sheetBody"></div></div>
 
-<script src="book.js"></script>
-<script src="brand.js"></script>
-<script src="voice.js"></script>
+<script src="book.js?v=68298bd2"></script>
+<script src="brand.js?v=111ada48"></script>
+<script src="voice.js?v=f96f1639"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/SVGLoader.js"></script>
@@ -242,7 +242,7 @@ controls.addEventListener('start',()=>{autoCam=false;});
 Object.assign(controls,{enableDamping:true,dampingFactor:.08,maxPolarAngle:Math.PI*.44,minDistance:2.5,maxDistance:45,screenSpacePanning:true});
 const hemi=new THREE.HemisphereLight(0xffffff,0x9aa3b5,.62);scene.add(hemi);
 const sun=new THREE.DirectionalLight(0xfff4e2,.78);sun.position.set(-6,12,5);sun.castShadow=true;
-sun.shadow.mapSize.set(2048,2048);Object.assign(sun.shadow.camera,{left:-13,right:13,top:13,bottom:-13,near:1,far:40});sun.shadow.bias=-.0006;scene.add(sun);
+sun.shadow.mapSize.set(2048,2048);Object.assign(sun.shadow.camera,{left:-13,right:13,top:13,bottom:-13,near:1,far:40});sun.shadow.bias=-.0006;scene.add(sun);PM.lights={sun,hemi,scene,renderer};
 const lamp=new THREE.SpotLight(0xffd59a,0,30,.75,.55,1);lamp.position.set(6,8,-3);lamp.castShadow=true;lamp.shadow.mapSize.set(1024,1024);lamp.shadow.bias=-.0008;scene.add(lamp);scene.add(lamp.target);
 (function(){const m=new THREE.MeshBasicMaterial({colorWrite:false,depthWrite:false});
   [[-11,8,.3,.3,.3,7],[-12.8,8,.3,.3,.3,7],[-11.9,8,-3,2.2,.3,.25],[-11.9,8,3.4,2.2,.3,.25]].forEach(b=>{const o=new THREE.Mesh(new THREE.BoxGeometry(b[3],b[4],b[5]),m);o.position.set(b[0],b[1],b[2]);o.castShadow=true;scene.add(o);});})();
@@ -464,7 +464,7 @@ function pagePlane(p,x){const geo=new THREE.PlaneGeometry(W,D);geo.rotateX(-Math
 const leftMesh=pagePlane(leftP,-W/2),rightMesh=pagePlane(rightP,W/2);
 
 /* front cover */
-function T(g,t,x,y,font,col,align){g.font=font;g.textAlign=align||'left';g.textBaseline='alphabetic';
+function T(g,t,x,y,font,col,align){if(READ.g===g&&(READ.on||READ.collect))readT(g,t,x,y,font,align);g.font=font;g.textAlign=align||'left';g.textBaseline='alphabetic';
   if(HLon&&HL&&HL.phr&&String(t).length<=HL.phr.length+18&&hlNorm(t).includes(HL.phr)){const w=g.measureText(t).width,fs=parseInt(String(font).match(/(\d+)px/)?.[1]||'30',10),x0=align==='center'?x-w/2:align==='right'?x-w:x;g.save();rr(g,x0-10,y-fs*.92,w+20,fs*1.22,fs*.3);g.fillStyle='rgba(255,212,59,.78)';g.fill();g.restore();}
   g.fillStyle=col||INK;g.fillText(t,x,y);g.textAlign='left';}
 let _tl=null;function tintLogo(col){if(_tl)return _tl;if(!LOGO.complete||!LOGO.naturalWidth)return null;const c=document.createElement('canvas');c.width=LOGO.naturalWidth;c.height=LOGO.naturalHeight;const x=c.getContext('2d');x.drawImage(LOGO,0,0);x.globalCompositeOperation='source-in';x.fillStyle=col;x.fillRect(0,0,c.width,c.height);return _tl=c;}
@@ -557,12 +557,17 @@ function pose(v){
   /* close-ups: the story text, the story text with its scene, and the acted scene itself */
   if(v==='storyL'){const tg=V(-W/2,PY,-D/2+D*.27);const d=fitDist(W*1.0,D*.44);return {p:tg.clone().add(V(0,.95,.34).normalize().multiplyScalar(d)),t:tg};}
   if(v==='storyW'){const tg=V(0,PY+.2,-D/2+D*.32);const d=fitDist(2*W*1.04,D*.66);return {p:tg.clone().add(V(0,.9,.52).normalize().multiplyScalar(d)),t:tg};}
+  if(v==='readF'){const tg=V(-W/2,PY,.05);const d=fitDist(W*1.02,D*1.0);return {p:tg.clone().add(V(0,1,.2).normalize().multiplyScalar(d)),t:tg};}
+  if(v==='pageF'){const tg=V(W/2,PY+.45,.35);const d=fitDist(W*1.0,D*.86);return {p:tg.clone().add(V(0,.68,.74).normalize().multiplyScalar(d)),t:tg};}
+  if(v==='readM'){const tg=V(-W/2,PY+.25,.15);const d=fitDist(W*1.02,D*.98);return {p:tg.clone().add(V(0,.88,.47).normalize().multiplyScalar(d)),t:tg};}
+  if(v==='pageR'){const tg=V(W/2,PY+.3,.2);const d=fitDist(W*1.04,D*1.0);return {p:tg.clone().add(V(0,.86,.52).normalize().multiplyScalar(d)),t:tg};}
+  if(v==='stage'&&BK.storyRight){const tg=V(W/2,PY+.45,1.7);const d=fitDist(W*.98,D*.58);return {p:tg.clone().add(V(0,.8,.66).normalize().multiplyScalar(d)),t:tg};}
   if(v==='stage'){const tg=V(W/2,PY+.4,-D/2+D*.36);const d=fitDist(W*.96,D*.56);return {p:tg.clone().add(V(0,.78,.72).normalize().multiplyScalar(d)),t:tg};}
   const tg=V(0,PY,.1);const d=fitDist(2*W*1.0,D*1.0);return {p:tg.clone().add(V(0,1,.6).normalize().multiplyScalar(d)),t:tg};}
 /* camera director: close and simple for small hands. Stories: the camera goes to the text, then to the
    scene that acts it out; on a phone held upright one page at a time, the 3D side while things happen. */
 let camDir=0;const wideStage=()=>(stage.clientWidth/(stage.clientHeight||1))>1.15;
-function autoView(sp,s){if(s.story3d)return wideStage()?'storyW':'storyL';if(wideStage())return 'book';
+function autoView(sp,s){if(s.storyRead)return 'pageR';if(BK.readTheory){const pf=BK.tokens?'pageF':'model';if(sp.kind==='learn')return s.readTheory?'readF':pf;if(sp.kind==='play')return pf;}if(BK.storyRight&&sp.kind==='learn')return 'readM';if(s.story3d)return wideStage()?'storyW':'storyL';if(wideStage())return 'book';
   if(sp.kind==='play')return 'model';if(sp.kind==='learn'&&(s.view==='theory'||s.view==='model')&&(s.demo||s.cues))return PM.STAGE?'stage':'model';return s.view==='read'||s.story?'read':'book';}
 function setView(v,instant){const orig=v;if(v==='theory')v=(stage.clientWidth/(stage.clientHeight||1))>1.15?'book':'read';if(!bookOpen)v='cover';view=v;{const lb=document.getElementById('bLeftPg'),rb=document.getElementById('bRightPg');if(lb){lb.classList.toggle('on',v==='read');rb.classList.toggle('on',v==='model');}}document.querySelectorAll('.views button').forEach(b=>b.classList.toggle('on',b.dataset.view===v));
   refreshDock(true);applyCam();const q=pose(orig==='theory'&&v==='book'?'tbook':v);basePose=q;if(instant){camera.position.copy(q.p);controls.target.copy(q.t);camTween=null;return;}
@@ -576,8 +581,33 @@ function wrap(g,text,x,y,maxW,lh,o){
   for(const t of toks){g.font=t.b?fB:fR;if(/^\s+$/.test(t.w)){if(lw>0){const tw=g.measureText(' ').width;lines[lines.length-1].push({w:' ',b:t.b,tw});lw+=tw;}continue;}
     const tw=g.measureText(t.w).width;if(lw+tw>maxW&&lw>0){const L=lines[lines.length-1];while(L.length&&L[L.length-1].w===' ')L.pop();lines.push([]);lw=0;}
     lines[lines.length-1].push({w:t.w,b:t.b,tw});lw+=tw;}
-  let cy=y;for(const L of lines){if(!o.dry){let lx=x;if(o.center){lx=x+(maxW-L.reduce((a,t)=>a+t.tw,0))/2;}for(const t of L){g.font=t.b?fB:fR;if(HLon&&HL&&t.w!==' '&&HL.words.has(hlNorm(t.w))){g.save();rr(g,lx-5,cy-lh*.78,t.tw+10,lh*.98,10);g.fillStyle='rgba(255,212,59,.78)';g.fill();g.restore();}g.fillStyle=t.b?bcol:col;g.textAlign='left';g.textBaseline='alphabetic';g.fillText(t.w,lx,cy);lx+=t.tw;}}cy+=lh;}
-  return cy;}
+  const RD=READ.g===g&&!o.dry&&(READ.on||READ.collect);
+  let cy=y;for(const L of lines){if(!o.dry){let lx=x;if(o.center){lx=x+(maxW-L.reduce((a,t)=>a+t.tw,0))/2;}const wi=RD?readWords(L.map(t=>t.w)):null;for(let ti=0;ti<L.length;ti++){const t=L[ti];g.font=t.b?fB:fR;
+      if(RD&&wi[ti]>=0&&READ.on&&wi[ti]===READ.cur){g.save();rr(g,lx-4,cy-lh*.8,t.tw+8,lh*1.0,9);g.fillStyle='rgba(255,212,59,.92)';g.fill();g.restore();}if(HLon&&HL&&t.w!==' '&&HL.words.has(hlNorm(t.w))){g.save();rr(g,lx-5,cy-lh*.78,t.tw+10,lh*.98,10);g.fillStyle='rgba(255,212,59,.78)';g.fill();g.restore();}g.fillStyle=t.b?bcol:col;g.textAlign='left';g.textBaseline='alphabetic';g.fillText(t.w,lx,cy);lx+=t.tw;}}cy+=lh;}
+  if(RD)readEnd();return cy;}
+/* ---- reading the theory page aloud, word by word: every word drawn on the page gets a number, in reading order ---- */
+const READ={on:false,collect:null,g:null,n:0,cur:-1};PM.READ=READ;
+let readPage=null;
+function theoryText(sp){if(sp._theory)return sp._theory;if(!readPage){const c=document.createElement('canvas');c.width=CW*PS;c.height=CH*PS;readPage={c,g:c.getContext('2d'),t:{},hot:[],flaps:[]};}
+  const p=readPage;p.hot=[];p.flaps=[];const S=ensure(sp);READ.collect=[];READ.n=0;READ.g=p.g;const hl=HLon;HLon=false;ACC=sp.color;paperBase(p);try{sp.left(p,S);}catch(e){console.error(e);}HLon=hl;
+  const words=READ.collect;READ.collect=null;READ.g=null;sp._theory={words,speech:words.join(' ')};return sp._theory;}
+PM.theoryText=i=>theoryText(SP[i]);
+function readTick(dt){if(!READ.on||!READ.sp)return;const T0=READ.sp._theory;if(!T0)return;const n=T0.words.length;READ.t+=dt;let wi=-1;const vc=voClock&&voClock.tok===voTok?voClock:null;
+  const VT=(window.VTIME||{})[vhash(T0.speech)];
+  if(vc&&!vc.dev){READ.voiced=true;const t=VO.currentTime;if(VT){wi=n;for(let i=0;i<n;i++)if(t<VT[i]){wi=i;break;}}else wi=Math.min(n,Math.floor(t/Math.max(1,vc.dur)*n));}
+  else if(vc&&vc.dev){READ.voiced=true;let off=0,k=0;const ch=vc.ch;for(let i=0;i<n;i++){const j=T0.speech.indexOf(T0.words[i],off);if(j<0)break;if(j<=ch)k=i;off=j+T0.words[i].length;}wi=k;}
+  else if(READ.voiced)wi=n;else wi=READ.t<1.0?-1:Math.min(n,Math.floor((READ.t-1.0)/.38));
+  if(wi!==READ.cur){READ.cur=wi;if(cur>=0&&SP[cur]===READ.sp)drawPage(leftP,SP[cur],'L');}}
+function readStop(){if(READ.on){READ.on=false;READ.cur=-1;const sp=READ.sp;READ.sp=null;if(cur>=0&&SP[cur]===sp)drawPage(leftP,sp,'L');}}
+function readWords(ws){/* ws: tokens of one line (' ' = space). Returns the word number for each token, or -1 */const out=ws.map(()=>-1);let i=0;
+  while(i<ws.length){if(ws[i]===' '){i++;continue;}let j=i;let txt='';while(j<ws.length&&ws[j]!==' '){txt+=ws[j];j++;}
+    if(/[A-Za-z0-9]/.test(txt)){const k=READ.n++;for(let q=i;q<j;q++)out[q]=k;if(READ.collect)READ.collect.push(txt);}
+    else if(READ.collect&&READ.collect.length&&/^[—–:\-]+$/.test(txt)&&!/[.!?,:;…]["”')]*$/.test(READ.collect[READ.collect.length-1]))READ.collect[READ.collect.length-1]+=',';i=j;}
+  return out;}
+function readEnd(){const C=READ.collect;if(C&&C.length&&!/[.!?,:;…]["”')]*$/.test(C[C.length-1]))C[C.length-1]+='.';}
+function readT(g,t,x,y,font,align){/* single-line text: number its words and highlight the one being read */const ws=String(t).split(/(\s+)/).filter(w=>w!=='').map(w=>/^\s+$/.test(w)?' ':w);const wi=readWords(ws);if(READ.collect)readEnd();if(!READ.on)return;
+  g.font=font;const full=g.measureText(t).width;let lx=align==='center'?x-full/2:align==='right'?x-full:x;const fs=parseInt(String(font).match(/(\d+)px/)?.[1]||'30',10);
+  ws.forEach((w,i)=>{const tw=g.measureText(w===' '?' ':w).width;if(wi[i]>=0&&wi[i]===READ.cur){g.save();rr(g,lx-4,y-fs*.9,tw+8,fs*1.15,8);g.fillStyle='rgba(255,212,59,.92)';g.fill();g.restore();}lx+=tw;});}
 function spaced(g,t,x,y,sp){for(const ch of t){g.fillText(ch,x,y);x+=g.measureText(ch).width+sp;}return x;}
 function para(p,y,text,o){return wrap(p.g,text,X0,y,TW,42,Object.assign({font:FT.body,bold:FT.bodyB,boldColor:INK},o||{}));}
 function header(p,S){const g=p.g,sp=S.sp;const th=wrap(g,sp.title,0,0,TW-120,64,{font:FT.title,dry:true});const bh=th+112;
@@ -614,6 +644,8 @@ function finishPage(p,side,sp){const g=p.g,L=side==='L';
   if(L){g.textAlign='left';g.fillText(String(num),X0,1358);g.fillText(TITLE+' · '+SUB,X0+60,1358);}
   else{g.textAlign='left';if(sp.codes&&sp.codes.length)g.fillText('Ontario '+sp.codes.map(c=>GR+'.'+c).join(' · '),X0,1358);g.textAlign='right';g.fillText(String(num),X0+TW,1358);g.fillStyle=TEAL;g.fillText(BRANDNAME,X0+TW-60,1358);}g.textAlign='left';}
 const cxOf=x=>(x+W/2)*PX,cyOf=z=>(z+D/2)*PX;
+const NR=()=>(window.BOOK&&BOOK.rounds)||5;const NRW=()=>['zero','one','two','three','four','five','six','seven','eight','nine','ten'][NR()]||String(NR());
+function goLine(L){const gl=(BOOK.goLines&&BOOK.goLines.length)?BOOK.goLines:null;if(!gl)return {say:"It's your turn! Let's play!",speech:LINES.go};const k=((L.n||1)*7+3)%gl.length;const x=gl[k];return typeof x==='string'?{say:x,speech:x}:x;}
 function starsRow(g,x,y,n,of,size){for(let i=0;i<of;i++)T(g,'★',x+i*size*1.1,y,ZS(size),i<n?'#f2a400':'#d7dbe3');}
 
 /* ================= sounds ================= */
@@ -666,7 +698,7 @@ function stampDrop(){const c=document.createElement('canvas');c.width=c.height=2
   const m=new THREE.Mesh(geo,new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(c),transparent:true,depthWrite:false}));
   const rs=rightP.stampAt||{x:820,y:1200};const target=V(rs.x/PX,PY+.01,rs.y/PX-D/2);m.position.copy(target).add(V(0,1.4,0));m.scale.setScalar(1.8);scene.add(m);
   tween(.45,k=>{m.position.y=target.y+1.4*(1-k);m.scale.setScalar(1.8-.8*k);},x=>x*x).then(()=>{burst(target.clone().add(V(0,.2,0)));A.redraw();scene.remove(m);disposeObj(m);});}
-function drawPage(p,sp,side){ACC=sp.color;HLon=false;p.hot=[];p.flaps=[];p.stampAt=null;paperBase(p);try{(side==='L'?sp.left:sp.right)(p,sp.S);}catch(e){console.error(e);}HLon=false;finishPage(p,side,sp);p.t.needsUpdate=true;}
+function drawPage(p,sp,side){ACC=sp.color;HLon=false;p.hot=[];p.flaps=[];p.stampAt=null;paperBase(p);READ.n=0;READ.g=(side==='L'&&READ.on&&READ.sp===sp)?p.g:null;try{(side==='L'?sp.left:sp.right)(p,sp.S);}catch(e){console.error(e);}HLon=false;READ.g=null;finishPage(p,side,sp);p.t.needsUpdate=true;}
 
 function flapMesh(f){const c=document.createElement('canvas');c.width=Math.round(f.w);c.height=Math.round(f.h);drawFlap(c.getContext('2d'),0,0,f.w-6,f.h-10);
   const w=f.w/PX,h=f.h/PX;const geo=new THREE.PlaneGeometry(w,h);geo.rotateX(-Math.PI/2);geo.translate(0,0,h/2);
@@ -863,9 +895,13 @@ function tickCues(){const cr=cueRun;if(!cr||busy)return;if(cr.tok!==playTok){cue
   else ch=(now-cr.t0)/1000*13;
   while(cr.k<cr.list.length&&cr.list[cr.k].i<=ch){const q=cr.list[cr.k++];try{if(q.demo&&q.demo!=='hold'&&curApi.demo)curApi.demo(q.demo);}catch(e){console.error(e);}if(q.p||q.l)spotOn(q);else if(q.hl){setHL(q.hl);A.redraw();}}
   if(cr.k>=cr.list.length)cueRun=null;}
+PM.voNow=()=>{const vc=voClock;if(!vc||vc.tok!==voTok)return null;if(vc.dev)return {dev:true,ch:vc.ch,el:(performance.now()-vc.t0)/1000};return {t:VO.currentTime,dur:vc.dur};};
+PM.vhash=vhash;
+PM.redrawR=()=>{if(cur<0||building||busy)return;drawPage(rightP,SP[cur],'R');};
+PM.curStep=()=>cur>=0&&SP[cur]?SP[cur].steps[stepI]:null;
 PM.spot={on:spotOn,off:spotOff,pick:pickObjs,stop(){cueRun=null;},get run(){return cueRun;},get list(){return spots;}};
 /* ================= exports for lesson files ================= */
-Object.assign(PM,{kid,CREW,THREE,V,W,D,PY,PX,CW,CH,X0,TW,INK,RED,BLUE,GREY,TEAL,VIBE,FT,ZS,G,M,lam,mk,ink,unitBox,cellMat,label,starGeo,wedgeGeo,clearGroup,disposeObj,rr,T,wrap,para,header,keyWords,predict,
+Object.assign(PM,{paperBase,kid,CREW,THREE,V,W,D,PY,PX,CW,CH,X0,TW,INK,RED,BLUE,GREY,TEAL,VIBE,FT,ZS,G,M,lam,mk,ink,unitBox,cellMat,label,starGeo,wedgeGeo,clearGroup,disposeObj,rr,T,wrap,para,header,keyWords,predict,
   flapBox,tryIt,box,caption,hot,starsRow,cxOf,cyOf,tint,moveTo,hop,tween,burst,easeOut,easeIO,easeBack,A,movers,get ACC(){return ACC;}});
 
 /* ================= spreads ================= */
@@ -880,7 +916,7 @@ const INTRO={id:'intro',kind:'intro',title:'Welcome',strand:'',color:TEAL,num:''
   const tc=['#ffd24a','#ff8a5b','#7fe0c8'];let x=X0;['Grade',GR,SUBJ].forEach((w,i)=>{g.font=ZS(52);const tw=g.measureText(w).width+36;rr(g,x,330,tw,74,18);g.fillStyle=tc[i];g.fill();T(g,w,x+18,385,ZS(52),INK);x+=tw+14;});
   let y=wrap(g,BK.introLine||'A math book that stands up off the page. Every lesson has a *Learn* spread with the idea and a model that shows it, and a *Practice* spread with questions and a 3D game.',X0,600,TW,42,{font:FT.body,bold:FT.bodyB});
   y+=24;T(g,'How to use this book',X0,y,FT.h3);y+=52;
-  ['Read the idea on the left page.','Press play: the model shows you how it works.','Touch, drag and build with the model.','Then play the game and win 5 rounds.','Earn points, stars and stamps, and grow your rank!'].forEach((s,i)=>{
+  ['Read the idea on the left page.','Press play: the model shows you how it works.','Touch, drag and build with the model.','Then practise and win '+NR()+' rounds.','Earn points, stars and stamps, and grow your rank!'].forEach((s,i)=>{
     g.beginPath();g.arc(X0+20,y-9,20,0,Math.PI*2);g.fillStyle=VIBE[i];g.fill();T(g,String(i+1),X0+20,y,FT.smallB,'#fff','center');T(g,s,X0+56,y,FT.body);y+=50;});
   y=Math.max(y+10,1000);g.fillStyle=tint(TEAL,.25);g.fillRect(X0,y,TW,2);y+=58;
   T(g,'What is inside',X0,y,FT.h3);y+=30;const sts=[...new Set(LESSONS.map(L=>L.strand))];const cw2=TW/Math.max(1,sts.length);
@@ -894,33 +930,40 @@ const INTRO={id:'intro',kind:'intro',title:'Welcome',strand:'',color:TEAL,num:''
     if(stamps[L.id])drawStamp(g,x+colW-40,y+36,24);hot(p,x,y,colW-10,rowH-6,()=>goSpread(SP.indexOf(L.learnSp)));});},
  build(S,grp){return {};}};
 
-function learnRight(p,S,L){const g=p.g;let y=cyOf(L.rz==null?.55:L.rz);if(L.readout)y=L.readout(p,S,y)||y;
-  y=caption(p,y+26,'Fig. '+L.n+'a',L.fig||'')+12;const tips=L.explore||[];const h=74+tips.length*44;box(p,y,h,'Explore');
+function learnRight(p,S,L){if(PM.learnRight&&PM.learnRight(p,S,L))return;const g=p.g;if(BK.readTheory){if(L.fig){g.font=FT.cap;g.fillStyle=GREY;g.textAlign='center';g.fillText(L.fig,CW/2,CH-80);g.textAlign='left';}if(L.readout)L.readout(p,S,CH-200);return;}let y=cyOf(L.rz==null?.55:L.rz);if(L.readout)y=L.readout(p,S,y)||y;
+  y=caption(p,y+26,'Fig. '+L.n+'a',L.fig||'')+12;const tips=(L.explore||[]).filter(t=>!(BK.noLearnDock&&/(\bNext\b|Press \*?New\b)/.test(t)));const h=74+tips.length*44;box(p,y,h,'Explore');
   tips.forEach((t,i)=>{g.beginPath();g.arc(X0+42,y+80+i*44,9,0,Math.PI*2);g.fillStyle=VIBE[i%6];g.fill();wrap(g,t,X0+64,y+88+i*44,TW-90,30,{font:FT.small,bold:FT.smallB});});}
-function practiceLeft(p,S,L){const g=p.g;let y=header(p,S);y=para(p,y,'Your crew has *5 challenges* for you. Every right answer earns *points*: more for a first try and for a streak!')+18;
+function practiceLeft(p,S,L){const g=p.g;let y=header(p,S);
+  if(PM.practiceStory){const y2=PM.practiceStory(L,p,S,y);if(y2){y=y2;const i=rankIdx(PTS);rr(g,X0,y,TW,96,22);g.fillStyle=tint(TH.c[0],.16);g.fill();T(g,'YOUR POINTS',X0+26,y+38,FT.eyebrow,ACC);T(g,String(PTS),X0+26,y+80,ZS(40),INK);T(g,RANKS[i][1],X0+200,y+76,ZS(36),'#16a36f');
+      starsRow(g,X0+TW-NR()*24-20,y+62,S.game.stars,NR(),22);if(S.st.won)drawStamp(g,X0+TW-60,y-36,40);y+=118;if(PM.practiceMore)try{PM.practiceMore(L,p,S,y);}catch(e){console.error(e);}return;}}
+  y=para(p,y,'Your crew has *'+NR()+' challenges* for you. Every right answer earns *points*: more for a first try and for a streak!')+18;
   const ht=wrap(g,L.howTo||'',0,0,TW-56,36,{font:FT.body,dry:true});box(p,y,ht+96,'How to play');wrap(g,L.howTo||'',X0+28,y+90,TW-56,36,{font:FT.body,bold:FT.bodyB});y+=ht+126;
   const i=rankIdx(PTS),nx=RANKS[i+1];rr(g,X0,y,TW,180,22);const gr=g.createLinearGradient(X0,0,X0+TW,0);gr.addColorStop(0,tint(TH.c[0],.22));gr.addColorStop(1,tint(TH.c[2],.18));g.fillStyle=gr;g.fill();
   T(g,'YOUR POINTS',X0+28,y+44,FT.eyebrow,ACC);T(g,String(PTS),X0+28,y+118,ZS(72),INK);T(g,RANKS[i][1],X0+330,y+82,ZS(44),'#16a36f');
   if(nx){rr(g,X0+330,y+106,TW-360,18,9);g.fillStyle='rgba(27,34,54,.1)';g.fill();const f=(PTS-RANKS[i][0])/(nx[0]-RANKS[i][0]);rr(g,X0+330,y+106,Math.max(18,(TW-360)*f),18,9);g.fillStyle='#16a36f';g.fill();
     T(g,(nx[0]-PTS)+' points to '+nx[1],X0+330,y+154,FT.small,GREY);}y+=212;
-  T(g,'This lesson',X0,y+10,FT.smallB,GREY);starsRow(g,X0+190,y+16,S.game.stars,5,40);if(S.st.won)drawStamp(g,X0+TW-70,y,52);y+=60;
-  const tips=L.explore||[];if(tips.length){T(g,'Tips',X0,y+20,FT.h3);y+=40;tips.forEach((t,k)=>{g.beginPath();g.arc(X0+12,y+12,8,0,Math.PI*2);g.fillStyle=VIBE[k%6];g.fill();y=wrap(g,t,X0+34,y+22,TW-40,32,{font:FT.small,bold:FT.smallB})+8;});}
+  T(g,'This lesson',X0,y+10,FT.smallB,GREY);starsRow(g,X0+190,y+16,S.game.stars,NR(),NR()>5?22:40);if(S.st.won)drawStamp(g,X0+TW-70,y,52);y+=60;
+  const tips=(L.explore||[]).filter(t=>!(BK.noLearnDock&&/(\bNext\b|Press \*?New\b)/.test(t)));if(tips.length){T(g,'Tips',X0,y+20,FT.h3);y+=40;tips.forEach((t,k)=>{g.beginPath();g.arc(X0+12,y+12,8,0,Math.PI*2);g.fillStyle=VIBE[k%6];g.fill();y=wrap(g,t,X0+34,y+22,TW-40,32,{font:FT.small,bold:FT.smallB})+8;});}
   if(PM.practiceMore)try{PM.practiceMore(L,p,S,y);}catch(e){console.error(e);}}
 function practiceRight(p,S,L){const g=p.g;let y=cyOf(L.rz==null?.55:L.rz);if(L.readout)y=L.readout(p,S,y)||y;y+=24;const Gm=S.game;
-  const tt=Gm.done?'You won all 5 rounds! Press Play again for new puzzles.':Gm.phase==='howto'?'Get ready. The first question is coming!':(Gm.text||'');const th=wrap(g,tt,0,0,TW-60,38,{font:FT.bodyB,dry:true});const h=Math.max(150,th+110);
-  box(p,y,h,'Round '+Math.min(Gm.round+1,5)+' of 5');starsRow(g,X0+TW-210,y+44,Gm.stars,5,34);wrap(g,tt,X0+30,y+96,TW-60,38,{font:FT.bodyB,boldColor:ACC});
+  const tt=Gm.done?'You won all '+NR()+' rounds! Press Play again for new puzzles.':Gm.phase==='howto'?'Get ready. The first question is coming!':(Gm.text||'');const th=wrap(g,tt,0,0,TW-60,38,{font:FT.bodyB,dry:true});const h=Math.max(150,th+110);
+  box(p,y,h,(NR()>5?'Question ':'Round ')+Math.min(Gm.round+1,NR())+' of '+NR());starsRow(g,X0+TW-(NR()>5?300:210),y+44,Gm.stars,NR(),NR()>5?26:34);wrap(g,tt,X0+30,y+96,TW-60,38,{font:FT.bodyB,boldColor:ACC});
   p.stampAt={x:X0+TW-90,y:y+h-60};if(S.st.won)drawStamp(g,X0+TW-90,y+h-50,56);
   caption(p,y+h+44,'Fig. '+L.n+'b',L.fig||'');}
 
-function learnSteps(L){const why=(PM.why||{})[L.id]||'';
+function learnSteps(L){if(BK.readTheory)return learnSteps2(L);const why=(PM.why||{})[L.id]||'';
   const core=(L.learn||[]).filter(s=>!/^predict/i.test((s.speech||s.say||'').trim())&&!/^your turn/i.test((s.say||'').trim()));
   const TH2=(PM.theory||{})[L.id];const theory=TH2?TH2.map(s=>Object.assign({view:'read'},s)):core.filter(s=>s.view==='read'),demos=core.filter(s=>s.view!=='read');const firstDemo=(demos.find(d=>d.demo)||{}).demo;
   return [{say:'Lesson '+L.n+': '+L.title,speech:'Lesson '+L.n+'. '+L.title+'.'+(why?' '+why:''),view:'read',story:true}]
-    .concat(theory.map(s=>Object.assign({},s,{view:'theory',demo:s.demo||firstDemo,quietDemo:!s.demo&&!s.cues})),demos);}
+    .concat(theory.filter(s=>!s.storyRead).map(s=>Object.assign({},s,{view:'theory',demo:s.demo||firstDemo,quietDemo:!s.demo&&!s.cues})),demos,theory.filter(s=>s.storyRead));}
+function learnSteps2(L){const core=(L.learn||[]).filter(s=>!/^predict/i.test((s.speech||s.say||'').trim())&&!/^your turn/i.test((s.say||'').trim())&&!s.howto);
+  const TH2=(PM.theory||{})[L.id];let three;if(TH2){const dm=core.filter(s=>s.view!=='read'&&s.demo);const fd=(dm[0]||{}).demo;const own=TH2.some(s=>s.demo);three=TH2.filter(s=>!s.storyRead).map(s=>Object.assign({},s,{demo:s.demo||fd,quietDemo:!s.demo&&!s.cues}));if(!own)three=three.concat(dm);}else{const th=core.filter(s=>s.view==='read'),dm=core.filter(s=>s.view!=='read');const fd=(dm.find(d=>d.demo)||{}).demo;three=th.map(s=>Object.assign({},s,{demo:s.demo||fd})).concat(dm);}
+  const story=TH2?TH2.filter(s=>s.storyRead):[];
+  return [{say:'Read with me: '+L.title,readTheory:true,view:'readF'}].concat(three.map(s=>Object.assign({},s,{view:'pageF',explain:true})),story);}
 function makeSpreads(){SP=[INTRO];LESSONS.forEach((L,i)=>{L.n=i+1;L.color=STRAND[L.strand]||TEAL;
   const base={L,title:L.title,strand:L.strand,codes:L.codes||[],color:L.color};
   const ls=Object.assign({},base,{kind:'learn',id:L.id,num:'Lesson '+L.n,steps:learnSteps(L),left:(p,S)=>L.left(p,S),right:(p,S)=>learnRight(p,S,L)});
-  const ps=Object.assign({},base,{kind:'play',id:L.id+'-p',num:'Lesson '+L.n+' · Practice',steps:[{say:"It's your turn! Let's play!",speech:LINES.go,view:'model',go:true}],left:(p,S)=>practiceLeft(p,S,L),right:(p,S)=>practiceRight(p,S,L)});
+  const ps=Object.assign({},base,{kind:'play',id:L.id+'-p',num:'Lesson '+L.n+' · Practice',steps:[Object.assign(goLine(L),{view:'model',go:true})],left:(p,S)=>practiceLeft(p,S,L),right:(p,S)=>practiceRight(p,S,L)});
   L.learnSp=ls;SP.push(ls,ps);});
   SP.forEach((s,i)=>{s.page=1+2*i;});}
 let LESSONS=[];
@@ -928,30 +971,34 @@ function ensure(sp){if(!sp.S){const st=Object.assign({flaps:{},won:sp.L?!!stamps
 function buildSpread(t){const sp=SP[t],S=ensure(sp);const grp=new THREE.Group();grp.scale.y=.02;grp.visible=false;popRoot.add(grp);clickables=[];draggables=[];
   const old=cur;building=true;cur=t;let api={};
   try{if(sp.kind==='intro')api=sp.build(S,grp)||{};else{const game={solved:(msg)=>gameSolved(S,msg),get round(){return S.game.round;}};S.gameObj=game;api=sp.L.build(S,grp,sp.kind,game)||{};
-    if(sp.kind==='play'&&!S.game.done){S.game.phase='howto';S.game.text='';}/* crew guide no longer stands on the book */}}catch(e){console.error(e);}
+    if(sp.kind==='play'&&!S.game.done){S.game.phase='howto';S.game.text='';}
+    if(BK.readTheory&&!BK.tokens&&PM.HAB&&sp.L){try{const H=PM.HAB.mini(PM.HAB.strandEnv(sp.L.strand,sp.L.n),sp.L.n*5+(sp.kind==='play'?1:0));H.g.position.z=1.0+(-1.95*1.08)+1.95*1.08-0.0;H.g.scale.setScalar(1.08);H.g.position.z=1.0;grp.add(H.g);}catch(e){console.error(e);}}/* crew guide no longer stands on the book */}}catch(e){console.error(e);}
   building=false;cur=old;popGrp=grp;S.api=api;return api;}
 function challenger(L,r){return CREW[((L&&L.n?L.n-1:0)+(r||0))%CREW.length].n;}
 function startGame(S){const g=S.game;if(g.phase==='play'||g.done)return;g.phase='play';g.miss=false;A.stopSeq();g.setup=true;try{g.text=S.api.task(g.round);}catch(e){console.error(e);g.text='';}g.setup=false;A.say('Round '+(g.round+1)+': '+g.text.replace(/\*/g,''));A.redraw();}
 let nextTok=0;
 function gameSolved(S,msg){const g=S.game;if(g.lock||g.done||g.setup||g.phase!=='play'||SP[cur].S!==S)return;g.lock=true;g.stars++;const pts=(g.miss?10:15)+(!g.miss&&g.streak>=2?5:0);g.streak=g.miss?0:g.streak+1;
   A.good(msg||'Correct!');cheerVoice(true);mascotCheer(false);guideCheer(false);addPts(pts);A.redraw();
-  A.later(()=>{g.lock=false;g.round++;g.miss=false;if(g.round>=5){g.done=true;A.win();addPts(25);mascotCheer(true);guideCheer(true);speak(PLAY?LINES.winKid:LINES.winOld);A.say('You won all 5 rounds! +25 bonus points. Next lesson coming up…');A.redraw();
+  A.later(()=>{g.lock=false;g.round++;g.miss=false;if(g.round>=NR()){g.done=true;A.win();addPts(25);mascotCheer(true);guideCheer(true);speak(NR()!==5?(BOOK.winLine||'Amazing! You finished all '+NRW()+' questions!'):(PLAY?LINES.winKid:LINES.winOld));A.say('You won all '+NR()+' rounds! +25 bonus points. Next lesson coming up…');A.redraw();
       const tk=++nextTok,here=cur;setTimeout(()=>{if(tk===nextTok&&cur===here&&!busy&&cur<SP.length-1&&S.game.done)goSpread(cur+1,0,true);},6500);}
     else{g.setup=true;try{g.text=S.api.task(g.round);}finally{g.setup=false;}A.say('Round '+(g.round+1)+': '+g.text.replace(/\*/g,''));}A.redraw();},Math.max(1600,+((S.api&&S.api.hold&&S.api.hold())||0)));}
 function replay(S){nextTok++;S.game={round:0,stars:0,done:false,text:'',phase:'play',miss:false,streak:0};S.game.setup=true;try{S.game.text=S.api.task(0);}finally{S.game.setup=false;}A.say('New game! '+S.game.text.replace(/\*/g,''));A.redraw();}
 
 /* ================= activity dock ================= */
 let dockSig='';
+const NXA=/^\s*(▶\s*)?(Next|Again|New|↻)/i;
+function learnCtl(){if(!BK.noLearnDock)return null;let c=[];try{c=curApi&&curApi.controls?curApi.controls():[];}catch(e){}return c.filter(x=>!NXA.test(x.t||''));}
 function refreshDock(noCam){const dock=$('#dock');const sp=SP[cur];
-  const show=bookOpen&&!busy&&cur>=0&&sp&&sp.kind!=='intro'&&view!=='read'&&!(sp.steps[stepI]&&sp.steps[stepI].view==='theory'&&view==='book');
+  const show=bookOpen&&!busy&&cur>=0&&sp&&sp.kind!=='intro'&&!(BK.noLearnDock&&sp.kind==='learn'&&(!(learnCtl()||[]).length||(sp.steps[stepI]&&sp.steps[stepI].readTheory)))&&view!=='read'&&!(sp.steps[stepI]&&sp.steps[stepI].view==='theory'&&view==='book');
   if(!show){if(!dock.hidden){dock.hidden=true;if(!noCam){applyCam();if(!camTween)setView(view);}}return;}
   const S=sp.S,api=curApi||{};const dS=$('#dStars'),dI=$('#dInfo'),dB=$('#dBtns');
-  if(sp.kind==='play'){const g=S.game;dS.innerHTML=[0,1,2,3,4].map(i=>i<g.stars?'★':'<i>★</i>').join('');dI.textContent=g.done?'You won! Next lesson is coming up.':g.phase==='howto'?'Get ready…':'Round '+(g.round+1)+' · '+challenger(sp.L,g.round)+'’s challenge: '+(g.text||'').replace(/\*/g,'');}
+  if(sp.kind==='play'){const g=S.game;dS.innerHTML=Array.from({length:NR()},(_,i)=>i).map(i=>i<g.stars?'★':'<i>★</i>').join('');dI.textContent=g.done?'You won! Next lesson is coming up.':g.phase==='howto'?'Get ready…':'Round '+(g.round+1)+' · '+challenger(sp.L,g.round)+'’s challenge: '+(g.text||'').replace(/\*/g,'');}
   else{dS.textContent='';dI.textContent=(api.info?api.info():'')||'';}
   let ctl=[];try{ctl=api.controls?api.controls():[];}catch(e){console.error(e);}
   if(sp.kind==='play'&&S.game.phase==='howto'&&!S.game.done)ctl=[{t:"▶ Let's play!",go:true,big:true,fn:()=>{startGame(S);}}];
   if(sp.kind==='play'&&S.game.done)ctl=[{t:'Next lesson ▶',go:true,big:true,fn:()=>{nextTok++;goSpread(cur+1,0,true);}},{t:'↻ Play again',fn:()=>replay(S)}].concat(ctl);
-  if(sp.kind==='learn'&&stepI===sp.steps.length-1)ctl=ctl.concat([{t:'Practice ▶',go:true,fn:()=>goSpread(cur+1,0,true)}]);
+  if(BK.noLearnDock&&sp.kind==='learn'){ctl=ctl.filter(x=>!NXA.test(x.t||''));dI.textContent='';}
+  else if(sp.kind==='learn'&&stepI===sp.steps.length-1)ctl=ctl.concat([{t:'Practice ▶',go:true,fn:()=>goSpread(cur+1,0,true)}]);
   dB.innerHTML='';ctl.forEach(c=>{const b=document.createElement('button');b.type='button';b.textContent=c.t;if(c.on)b.classList.add('on');if(c.go)b.classList.add('go');if(c.big)b.classList.add('big');if(c.dis)b.disabled=true;
     b.addEventListener('click',()=>{if(busy)return;pop();c.fn();});dB.append(b);});
   const was=dock.hidden;dock.hidden=false;if(was&&!noCam){applyCam();setView(view);}}
@@ -969,15 +1016,17 @@ let lineBusy=false,lineCut=false;
 function setPlay(on){playing=on;if(!on){if(lineBusy)lineCut=true;lineBusy=false;}$('#icPlay').innerHTML=on?'<path d="M5 3.5h3.5v13H5zM11.5 3.5H15v13h-3.5z"/>':'<path d="M5 3.5v13l11-6.5z"/>';$('#bPlay').setAttribute('aria-label',on?'Pause':'Play lesson');$('#bPlay').classList.toggle('on',on);if(!on){playTok++;stopSpeak();}}
 function setStep(i){lineCut=false;const sp=SP[cur];stepI=Math.max(0,Math.min(sp.steps.length-1,i));const s=sp.steps[stepI];
   document.documentElement.style.setProperty('--lesson',sp.color);$('#capNum').textContent=sp.L?String(sp.L.n)+(sp.kind==='play'?'P':''):'';setCaption(s.say);drawDots();spotOff();cueRun=null;setView(s.view==='cover'?s.view:(pagePick||autoView(sp,s)));const dirTok=++camDir;if(!pagePick&&s.story3d&&!wideStage())setTimeout(()=>{if(dirTok===camDir&&!pagePick)setView('stage');},4200);
-  autoCam=sp.kind==='intro'||((s.view==='model'||s.view==='theory')&&(!!s.demo||!!s.howto));autoT=0;
+  readStop();if(s.readTheory&&!pagePick){READ.sp=sp;theoryText(sp);READ.on=true;READ.cur=-1;READ.t=0;READ.voiced=false;drawPage(leftP,sp,'L');}
+  autoCam=!BK.stillCam&&(sp.kind==='intro'||((s.view==='model'||s.view==='theory')&&(!!s.demo||!!s.howto)));autoT=0;
   if(s.demo&&s.demo!=='hold'&&curApi.demo){try{curApi.demo(s.demo);}catch(e){console.error(e);}}
   const S=sp.S;let holdMs=0;
   if(s.howto&&S&&!S.game.done){S.game.phase='howto';const d=(sp.L.learn.find(x=>x.demo)||{}).demo;if(d&&curApi.demo){try{curApi.demo(d);}catch(e){console.error(e);}}holdMs=7000;refreshDock();}
   if(s.go&&S&&!S.game.done){A.stopSeq();A.later(()=>startGame(S),250);}
-  showStory(s.story?sp:null);if(s.story){guideMode='hello';guideT=0;if(PLAY)A.later(()=>mascotCheer(false,true),700);}
+  showStory(s.story&&!BK.readTheory?sp:null);if(s.story){guideMode='hello';guideT=0;if(PLAY)A.later(()=>mascotCheer(false,true),700);}
   const tk=++playTok;const adv=()=>{if(tk!==playTok||!playing)return;if(stepI<sp.steps.length-1)setStep(stepI+1);else if((sp.kind==='intro'||sp.kind==='learn')&&cur<SP.length-1)goSpread(cur+1,0,true);else setPlay(false);};
-  const txt=s.speech||s.say;const t0=Date.now();lineBusy=true;const spoke=speak(txt,()=>{if(tk===playTok)lineBusy=false;setTimeout(adv,Math.max((s.demo&&!s.quietDemo?2400:s.story?1400:(s.cues?1700:1100))*(BK.grade>=6?.6:1),holdMs-(Date.now()-t0)));});if(!spoke)lineBusy=false;
+  const txt=s.readTheory?theoryText(sp).speech:(s.speech||s.say);const t0=Date.now();lineBusy=true;const spoke=speak(txt,()=>{if(tk===playTok)lineBusy=false;if(tk===playTok&&curApi.stepEnd)try{curApi.stepEnd(s);}catch(e){console.error(e);}setTimeout(adv,Math.max((s.demo&&!s.quietDemo?2400:s.story?1400:(s.cues?1700:1100))*(BK.grade>=6?.6:1),holdMs-(Date.now()-t0)));});if(!spoke)lineBusy=false;
   if(s.cues&&s.cues.length)startCues(s,txt,spoke);
+  if(!spoke&&curApi.stepEnd){const tk3=playTok;setTimeout(()=>{if(tk3===playTok)try{curApi.stepEnd(s);}catch(e){}},Math.max(3000,txt.split(' ').length*380));}
   if(playing&&!spoke)setTimeout(adv,Math.max(holdMs,s.demo?6000:3800,txt.split(' ').length*380));
   if(s.howto&&!playing){const tk2=playTok;setTimeout(()=>{if(tk2===playTok&&SP[cur]===sp&&stepI===i&&S&&S.game.phase==='howto')setStep(stepI+1);},holdMs+2500);}
   if(s.go){playing=false;playTok++;$('#icPlay').innerHTML='<path d="M5 3.5v13l11-6.5z"/>';$('#bPlay').classList.remove('on');}}
@@ -992,7 +1041,7 @@ async function popUp(){const g=popGrp;if(!g)return;g.scale.y=.02;
   await Promise.all(all);}
 function flip(fwd){setLeaf(fwd?0:Math.PI,fwd?1:-1);leafF.visible=leafBk.visible=true;paperSound(.45);return tween(1.35,k=>setLeaf(fwd?Math.PI*k:Math.PI*(1-k),fwd?1:-1),easeSine).then(()=>{leafF.visible=leafBk.visible=false;});}
 function copyCanvas(dst,src){dst.g.setTransform(1,0,0,1,0,0);dst.g.drawImage(src.c,0,0);dst.t.needsUpdate=true;}
-async function goSpread(t,stepTo,keepPlay){if(busy||t===cur||t<0||t>=SP.length)return;if(!bookOpen){openBook(t);return;}const resume=keepPlay||playing;busy=true;guide=null;spotOff();cueRun=null;setPlay(false);nextTok++;mTok++;mascot.visible=false;emblemObj=null;logoObj=null;A.stopSeq();token++;$('#sheet').hidden=true;refreshDock(true);
+async function goSpread(t,stepTo,keepPlay){if(busy||t===cur||t<0||t>=SP.length)return;readStop();if(!bookOpen){openBook(t);return;}const resume=keepPlay||playing;busy=true;guide=null;spotOff();cueRun=null;setPlay(false);nextTok++;mTok++;mascot.visible=false;emblemObj=null;logoObj=null;A.stopSeq();token++;$('#sheet').hidden=true;refreshDock(true);
   const fwd=t>cur,sp=SP[t];const autoRun=resume||sp.kind==='learn';showStory(null);setWorld(worldFor(sp),STRANDI[sp.strand]||0);clearFlaps();clickables=[];draggables=[];curApi={};setView('book');await foldDown();
   if(fwd)copyCanvas(flipF,rightP);else copyCanvas(flipB,leftP);
   const api=buildSpread(t);
@@ -1129,6 +1178,7 @@ function simStep(dt,t){try{spotsUndo();}catch(e){}
   for(let i=parts.length-1;i>=0;i--){const p=parts[i],u=p.userData;u.v.y-=9*dt;p.position.addScaledVector(u.v,dt);p.rotation.y+=6*dt;p.rotation.x+=3*dt;u.life-=dt;if(u.life<.4)p.scale.setScalar(.35*Math.max(0,u.life/.4));if(u.life<=0){scene.remove(p);parts.splice(i,1);}}
   
   try{animWorld(t,dt);}catch(e){}try{tickCues();animSpots(dt);}catch(e){console.warn('spot',e);}try{animGuide(dt);}catch(e){}try{animDust(dt,t);}catch(e){}
+  if(!busy)readTick(dt);
   if(curApi.tick&&!busy){try{curApi.tick(dt,t);}catch(e){console.error(e);curApi.tick=null;}}
   
   if(autoCam&&!camTween&&basePose&&!drag&&bookOpen){autoT+=dt;const off=basePose.p.clone().sub(basePose.t);const amp=view==='book'?.07:(view==='stage'||view==='storyL'||view==='storyW')?.035:.3;const a=Math.sin(autoT*.32)*amp,e=1+Math.sin(autoT*.21)*.04;off.applyAxisAngle(V(0,1,0),a).multiplyScalar(e);camera.position.copy(basePose.t).add(off);controls.target.copy(basePose.t);}
@@ -1146,11 +1196,23 @@ const loaded=new Promise(r=>{if(document.readyState==='complete')r();else window
 Promise.all([Promise.race([Promise.all([fl,imgs]),new Promise(r=>setTimeout(r,3000))]).catch(()=>{}),loaded]).then(start);
 })();
 </script>
-<script src="lessons-number.js"></script>
-<script src="lessons-algebra-data.js"></script>
-<script src="lessons-spatial-money.js"></script>
-<script src="stories.js"></script>
-<script src="theory.js"></script>
+<script src="pics.js?v=23048a95"></script>
+<script src="sketch.js?v=61dfab03"></script>
+<script src="props3d.js?v=ac8d7c53"></script>
+<script src="habitats.js?v=23d2029c"></script>
+<script src="kit.js?v=06660d24"></script>
+<script src="subject-kit.js?v=a5c86366"></script>
+<script src="stage.js?v=13c96b31"></script>
+<script src="acts.js?v=b97a7468"></script>
+<script src="math-kit2.js?v=8d5d1b30"></script>
+<script src="math-kit3.js?v=f5333b7a"></script>
+<script src="g3.js?v=10335227"></script>
+<script src="m3.js?v=30a2f94c"></script>
+<script src="lessons-a.js?v=ae4ad7f5"></script>
+<script src="lessons-b.js?v=f1ccfb17"></script>
+<script src="lessons-c.js?v=186e4580"></script>
+<script src="lessons-d.js?v=86cfb727"></script>
+<script src="vtime.js?v=c8baf33f"></script>
 
 </body>
 </html>

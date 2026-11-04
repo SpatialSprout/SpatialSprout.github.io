@@ -47,6 +47,37 @@ const planet=(r,c,ring)=>{const g=new THREE.Group();const s=P.mk(G('hpl'+r,()=>n
 const desk=()=>{const g=new THREE.Group();g.add(at(S.table({w:.5,d:.35,h:.3}),0,0,0));g.add(at(S.chair({c:'#74c0fc'}),0,0,.25,.9,Math.PI));return g;};
 /* ---------------- the habitats ---------------- */
 const ENV={
+ /* ---- Grade 3 worlds ---- */
+ village(g,T){ground(g,'#b5d68c');g.add(at(P3('log cabin'),-1.25,0,CZ-1.9,1.25,.3));g.add(at(P3('log cabin'),.9,0,CZ-2.15,1.0,-.25));g.add(at(P3('well'),1.65,0,CZ-.9,1.1));
+   const f=S.fence(3.9);f.position.set(0,0,CZ-2.55);g.add(f);g.add(at(P3('ox'),-1.6,0,CZ+.9,.85,.8));g.add(at(P3('wagon'),1.55,0,CZ+.85,.9,-.5));
+   for(let r=0;r<3;r++)for(let k=0;k<5;k++){const c=P3('corn');c.scale.setScalar(.45);c.position.set(-1.9+k*.18,0,CZ-.6+r*.25);g.add(c);}
+   back(g,6,()=>S.pine({s:.8+R()*.4}),CZ-2.45+-.05);
+   const sm=[];for(let i=0;i<6;i++){const p=P.mk(G('hvsm',()=>new THREE.SphereGeometry(.06,8,6)),P.glow('#dee2e6',.7,.2),0);g.add(p);sm.push(p);}
+   T.push((dt,t)=>sm.forEach((p,i)=>{const k=(t*.25+i/6)%1;p.position.set(-1.0+k*.2,1.0+k*.9,CZ-1.95);p.scale.setScalar(.6+k*1.4);}));return 'A pioneer village';},
+ nation(g,T){ground(g,'#a9cf86');g.add(at(P3('longhouse'),-1.1,0,CZ-2.0,1.5,.15));g.add(at(P3('wigwam'),1.25,0,CZ-2.0,1.1));
+   const rv=P.ribbon([[-2.2,.02,CZ+1.9],[-.6,.02,CZ+1.5],[.8,.02,CZ+1.9],[2.2,.02,CZ+1.6]],'#4dabf7',{w:.7,up:V(0,1,0)});rv.userData.full();g.add(rv);g.userData.water=[0,CZ+1.6];
+   const cn=P3('canoe');cn.scale.setScalar(.9);g.add(cn);T.push((dt,t)=>{cn.position.set(Math.sin(t*.2)*1.4,.03,CZ+1.65);cn.rotation.y=Math.cos(t*.2)>0?0:Math.PI;});
+   const fire=S.campfire();fire.position.set(.1,0,CZ-.6);g.add(fire);if(fire.userData.tick)T.push((dt,t)=>fire.userData.tick(t));
+   for(let k=0;k<4;k++)g.add(at(P3('three sisters'),1.0+(k%2)*.45,0,CZ-.6+Math.floor(k/2)*.45,.8));
+   back(g,7,()=>S.pine({s:.8+R()*.5}),CZ-2.5);edge(g,5,()=>S.tree({s:.6+R()*.3}));return 'A First Nations village';},
+ mine(g,T){ground(g,'#c9b79c');back(g,4,()=>S.mountain({s:1+R()*.5}),CZ-2.3);g.add(at(P3('mine cart'),-.9,0,CZ+.9,1.2,.3));
+   for(let i=0;i<2;i++){const r=box(4.0,.02,.04,'#495057');r.position.set(0,.01,CZ+.75+i*.3);g.add(r);}
+   g.add(at(P3('bulldozer'),1.3,0,CZ-1.2,1.1,-.5));g.add(at(P3('truck'),-1.5,0,CZ-1.4,1.1,.4));edge(g,9,()=>{const r=S.rock({s:.8+R()*1.2});return r;});
+   edge(g,5,()=>at(P3('ore'),0,0,0,1.4));g.add(at(P3('pickaxe'),.6,0,CZ+1.4,1.1,.6));T.push(fx(g,'dust',{h:1.2}));return 'A mine in the north';},
+ lab(g,T){ground(g,'#e9e4dc');const ct=S.counter(3.4);ct.position.set(0,0,CZ-2.25);g.add(ct);
+   ['#69db7c','#4dabf7','#ff8787','#ffd43b'].forEach((c,i)=>g.add(at(P3('beaker',{c}),-1.3+i*.4,.36,CZ-2.25,.9)));g.add(at(P3('magnet'),.6,.36,CZ-2.25,.9));g.add(at(P3('plant'),1.2,.36,CZ-2.25,.8));
+   g.add(at(P3('globe'),1.6,.36,CZ-2.25,.8));g.add(at(P3('thermometer'),-1.75,0,CZ-1.2,1.1));g.add(at(desk(),1.6,0,CZ+.6,1.1,-.4));g.add(at(desk(),-1.6,0,CZ+.7,1.1,.4));
+   const bd=box(2.0,.7,.04,'#ffffff');bd.position.set(0,1.0,CZ-2.6);g.add(bd);T.push(fx(g,'bubbles',{w:.4,d:.2,z:CZ-2.25,h:1.2}));return 'The science lab';},
+ construction(g,T){ground(g,'#d8c9a8');const cr=P3('crane');cr.position.set(-1.3,0,CZ-1.9);cr.scale.setScalar(1.4);g.add(cr);
+   g.add(at(P3('skyscraper',{c:'#ced4da'}),1.1,0,CZ-2.1,.9));g.add(at(P3('truss'),.4,0,CZ-1.4,1.2));g.add(at(P3('bulldozer'),-1.6,0,CZ+1.0,1.0,.6));
+   for(let i=0;i<5;i++)g.add(at(P3('traffic cone'),-1.9+i*.95,0,CZ+2.3,.9));edge(g,6,()=>at(P3('brick'),0,0,0,1.3));const bm=box(1.0,.05,.08,'#e8590c');bm.position.set(-1.0,1.5,CZ-1.9);g.add(bm);
+   T.push((dt,t)=>{bm.position.x=-1.0+Math.sin(t*.4)*.5;bm.position.y=1.3+Math.sin(t*.7)*.15;});return 'A building site';},
+ lake(g,T){ground(g,'#9cbf7a');const w=P.mk(G('hlk',()=>new THREE.CylinderGeometry(1.8,1.8,.02,40)),P.glow('#3d8fd6',.88,.22));w.scale.set(1.15,1,.8);w.position.set(0,.015,CZ-.6);g.add(w);g.userData.water=[.2,CZ-.4];
+   back(g,8,()=>S.pine({s:.8+R()*.5}),CZ-2.5);edge(g,6,()=>S.rock({s:.7+R()}));const cn=P3('canoe');cn.scale.setScalar(.9);g.add(cn);T.push((dt,t)=>{cn.position.set(Math.sin(t*.25)*1.0,.03,CZ-.4+Math.cos(t*.25)*.5);cn.rotation.y=-t*.25;});
+   g.add(at(P3('lighthouse'),1.8,0,CZ+1.2,.9));return 'A Great Lake';},
+ shield(g,T){ground(g,'#a3b18a');for(let i=0;i<9;i++){const r=S.rock({s:1.3+R()*1.6});r.position.set((R()-.5)*3.8,0,CZ+(R()-.5)*4.6);if(Math.abs(r.position.x)<1&&Math.abs(r.position.z-CZ)<1.2)r.position.x+=1.6*Math.sign(r.position.x||1);g.add(r);}
+   const p=P.mk(G('hshp',()=>new THREE.CylinderGeometry(.7,.7,.02,30)),P.glow('#3d8fd6',.88,.22));p.position.set(-1.2,.015,CZ+1.4);p.scale.set(1,1,.6);g.add(p);
+   back(g,9,()=>S.pine({s:.7+R()*.6}),CZ-2.45);edge(g,8,()=>S.pine({s:.5+R()*.4}));g.add(at(P3('moose'),1.5,0,CZ+1.2,.8,-.6));return 'The Canadian Shield';},
  arctic(g,T){ground(g,'#f1f6fb');const sea=P.mk(G('hasea',()=>new THREE.BoxGeometry(2.3,.014,3.2)),P.glow('#3d8fd6',.88,.2));sea.position.set(-.95,.015,CZ+.6);g.add(sea);g.userData.water=[-.95,CZ+.7];
    for(let i=0;i<6;i++){const f=P.mk(G('hafl'+i,()=>new THREE.CylinderGeometry(.14+i*.03,.16+i*.03,.06,7)),pp('#ffffff',{mix:0}));f.position.set(-1.8+(i%3)*.7,.03,CZ-.6+Math.floor(i/3)*2.2+(i%2)*.3);g.add(f);T.push((dt,t)=>{f.position.y=.03+Math.sin(t+i)*.012;f.rotation.y=t*.05+i;});}
    for(let i=0;i<4;i++){const r=P.ribbon([[-2.05,.04,CZ-.3+i*.6],[-1.2,.04,CZ-.35+i*.6],[-.2,.04,CZ-.3+i*.6]],'#d0ebff',{w:.02,up:V(0,1,0)});r.userData.full();g.add(r);T.push((dt,t)=>{r.position.x=Math.sin(t*.6+i)*.1;});}
@@ -142,6 +173,16 @@ put('orchard','apple tree,orchard,basket');
 put('store','store,shopping cart,cart,cashier,coin,money,wallet,price,shopping,gift,present,bag');
 put('home','family,people,man,woman,boy,girl,child,baby,grandma,grandpa,mom,dad,home,house,cat,kitten,phone,telephone,tv,radio,chair,table,door,key,lock,vacuum,broom,washing machine,fan,plug,light bulb,sofa,window,piano,guitar,drum,violin,trumpet,music,singer,dancer,party,heart,hug');
 put('sky','cloud,rain,rainbow,wind,airplane,helicopter,balloon2,weather,storm,lightning,umbrella2,windmill,kite2');
+put('village','log cabin,well,anvil,spinning wheel,butter churn,settler,pioneer,blacksmith,schoolhouse,mill,quilt,candle,wagon,oxcart,flour,sap bucket');
+put('nation','longhouse,wigwam,three sisters,pelt,bow,moccasin,drum,squash,beans,fur');
+put('mine','mine cart,pickaxe,ore,gold,silver,miner,nickel,rock');
+put('river','beaver dam,lodge');
+put('lab','magnet,beaker,scientist,microscope,spring,ramp,experiment');
+put('construction','crane,bulldozer,brick,skyscraper,truss,traffic cone,builder,construction,hammer,saw');
+put('lake','great lake,loon,canoe,lake');
+put('garden','compost bin,shovel,bean plant,plant parts,soil layers,worm,earthworm,seedling,seed,sunflower,beehive,bee');
+put('city','cn tower,parliament,factory,office');
+put('forest','logging truck,pine,maple,sap');
 const ANIM={fly:'bird,parrot,owl,eagle,bee,butterfly,dragonfly,ladybug,bat,airplane,helicopter,rocket,kite,toucan,duck2,fly,mosquito,balloon,alien',
  swim:'fish,tropical fish,shark,whale,dolphin,octopus,seal,turtle,swan,goose,duck,canoe,kayak,sailboat,ship,boat,beaver,salmon,penguin2,raft,surfboard',
  walk:'bear,polar bear,wolf,fox,deer,moose,caribou,raccoon,lion,tiger,elephant,giraffe,zebra,camel,cow,ox,pig,sheep,lamb,goat,horse,foal,mule,dog,puppy,cat,kitten,penguin,chicken,hen,rooster,turkey,monkey,panda,sloth,mouse,squirrel,snail,crab,ant,caterpillar,worm,snake,dinosaur,dragon',
@@ -151,7 +192,7 @@ const ANIM={fly:'bird,parrot,owl,eagle,bee,butterfly,dragonfly,ladybug,bat,airpl
 const AN={};Object.keys(ANIM).forEach(k=>ANIM[k].split(',').forEach(n=>AN[n]=k));
 /* when a lesson is about letters, numbers or ideas (not a thing with a home), pick a habitat from its strand */
 const STRAND_ENV={'Sounds and Letters':'garden','Sounds and Spelling':'meadow','Words':'park','Naming Words':'town','Sentences':'classroom','Action Words':'park','Describing and Joining':'meadow','Writing':'classroom',
- 'Life Systems':'forest','Matter and Energy':'kitchen','Structures and Mechanisms':'city','Earth and Space Systems':'sky','Heritage and Identity':'home','People and Environments':'town',
+ 'Life Systems':'forest','Matter and Energy':'kitchen','Structures and Mechanisms':'city','Earth and Space Systems':'sky','Heritage and Identity':'home','People and Environments':'town','Plants':'garden','Forces and Motion':'park','Strong Structures':'construction','Soils':'farm','Early Communities':'village','Living in Ontario':'shield','Word Study':'garden','Grammar':'park','Reading and Writing':'classroom',
  'Number':'store','Algebra':'garden','Data':'park','Spatial Sense':'city','Financial Literacy':'store'};
 const ENVS=Object.keys(ENV);
 P.HAB={ENV,MAP,AN,
@@ -162,6 +203,24 @@ P.HAB={ENV,MAP,AN,
  mini(kind,seed){SEED=seed||3;const g=new THREE.Group();const T=[];const tmp=new THREE.Group();try{(ENV[kind]||ENV.meadow)(tmp,T);}catch(e){}
    const gc=tmp.children[0]&&tmp.children[0].children[2]?tmp.children[0].children[2].material.color.getStyle():'#a7d08c';const b=S.base(4.2,2.5,'#'+new THREE.Color(gc).getHexString());b.position.z=-1.95;g.add(b);
    const keep=tmp.children.slice(1).filter(o=>o.position.z<CZ-1.2&&o.position.y<1.2&&!o.isLight&&Math.abs(o.position.x)>1.25).slice(0,8);keep.forEach(o=>{o.position.z=-3.05+(o.position.z-(CZ-DZ/2))*.25;o.scale.multiplyScalar(.75);g.add(o);});return {g,tick:()=>{}};},
+
+ /* a shallow strip of a habitat for the story half of the page: everything keeps its look and motion,
+    its positions are squeezed into the band behind the story's actors, and the middle front stays clear */
+ strip(kind,seed){SEED=seed||5;const tmp=new THREE.Group();const T=[];try{(ENV[kind]||ENV.meadow)(tmp,T);}catch(e){console.error('strip',kind,e);}
+   const g=new THREE.Group();const g0=tmp.children[0];let gc='#a7d08c';try{gc='#'+g0.children[2].material.color.getHexString();}catch(e){}
+   const IN={home:['#d4a373','#fdebd0'],kitchen:['#e9d5b0','#e7f5ff'],classroom:['#d8c3a0','#fff3bf'],bedroom:['#c8b6e2','#f3e8ff'],lab:['#dfe6ec','#f8f9fa'],store:['#e3e8ee','#fff4e6']}[kind];if(IN)gc=IN[0];
+   const b=S.base(4.15,2.35,gc);b.position.z=-2.5;b.traverse(m=>{if(m.isMesh)m.castShadow=false;});g.add(b);
+   if(IN){const wl=box(4.15,.95,.06,IN[1]);wl.position.set(0,.475,-3.66);g.add(wl);const tr=box(4.15,.06,.08,gc);tr.position.set(0,.03,-3.62);g.add(tr);
+     const wn=box(.7,.45,.02,'#a5d8ff',{mix:.05});wn.position.set(-1.2,.55,-3.62);g.add(wn);const fr=box(.78,.06,.03,'#ffffff');fr.position.set(-1.2,.32,-3.61);g.add(fr);
+     const pic=box(.45,.32,.02,['#ffc9c9','#d3f9d8','#ffec99'][(seed||0)%3]);pic.position.set(1.15,.55,-3.62);g.add(pic);}
+   const ZC=-2.5,KZ=.44,items=[],save=new Map();
+   tmp.children.slice(1).forEach(o=>{if(o.isLight)return;const bb=new THREE.Box3().setFromObject(o);const sx=bb.max.x-bb.min.x,sz=bb.max.z-bb.min.z;const q=o.position.clone();const zz=ZC+(q.z-CZ)*KZ;
+     const tiny=sx<.12&&sz<.12,big=sx>2.3||sz>2.3;if(!tiny&&!big&&Math.abs(q.x)<1.15&&zz>-2.95)return;
+     if(big){o.scale.x*=Math.min(1,4.0/Math.max(sx,.01));o.scale.z*=KZ;o.userData.flat=1;}else if(!tiny)o.scale.multiplyScalar(.8);items.push(o);save.set(o,q);});
+   items.forEach(o=>g.add(o));
+   const apply=()=>items.forEach(o=>{const q=save.get(o);o.position.set(q.x*.97,o.userData.flat?q.y:q.y*.75,ZC+(q.z-CZ)*KZ);});apply();
+   const w=tmp.userData.water;return {g,water:w?[w[0]*.97,ZC+(w[1]-CZ)*KZ]:null,
+     tick:(dt,t)=>{items.forEach(o=>o.position.copy(save.get(o)));T.forEach(f=>{try{f(dt,t);}catch(e){}});items.forEach(o=>save.get(o).copy(o.position));apply();}};},
  strandEnv(strand,i){return STRAND_ENV[strand]||ENVS[(i||0)%ENVS.length];},
  /* the hero lives in its habitat: walkers stroll a loop, swimmers swim, flyers circle, drivers drive */
  animate(hero,name,base){const how=AN[name]||'idle';const y0=base.y||0,x0=base.x||0,z0=base.z||CZ;let t=Math.random()*3;
