@@ -53,15 +53,15 @@ function diceToy(n,c){const g=new THREE.Group();const s=.5;const T=tex((ctx,w,h)
   const mat=new THREE.MeshLambertMaterial({map:T});const m=new THREE.Mesh(G('pk_die',()=>new THREE.BoxGeometry(s,s,s)),mat);m.position.y=s/2;m.castShadow=true;g.add(m);return g;}
 function paintToy(c){const g=new THREE.Group();const pot=mk(G('pk_pot',()=>new THREE.CylinderGeometry(.24,.2,.26,24)),lam('#f1f3f5'),20);pot.position.y=.13;g.add(pot);
   const p=mk(G('pk_paint',()=>new THREE.CylinderGeometry(.22,.22,.03,24)),lam(c),0);p.position.y=.255;g.add(p);const drip=mk(G('pk_drip',()=>new THREE.SphereGeometry(.05,10,8)),lam(c),0);drip.position.set(.2,.2,.08);drip.scale.set(.7,1.4,.7);g.add(drip);g.userData.paint=p;return g;}
-function make(spec,s){let k=String(spec);const ok=k[0]==='*';if(ok)k=k.slice(1);let sz=1;const mm=k.match(/^(.*)@([\d.]+)$/);if(mm){k=mm[1];sz=+mm[2];}const parts=k.split(':');let o,name=k,lab=null;
-  if(parts[0]==='shape'){o=shapeToy(parts[1],parts[2]||COL[(parts[1].length)%8]);name=parts[1];lab=parts[1];}
+function make(spec,s){let k=String(spec);const ok=k[0]==='*';if(ok)k=k.slice(1);let sz=1;const mm=k.match(/^(.*)@([\d.]+)$/);if(mm){k=mm[1];sz=+mm[2];}const parts=k.split(':');const solo=parts.length<2;let o,name=k,lab=null;if(parts.length<2)parts.length=1;
+  if(solo){}else if(parts[0]==='shape'){o=shapeToy(parts[1],parts[2]||COL[(parts[1].length)%8]);name=parts[1];lab=parts[1];}
   else if(parts[0]==='solid'){o=solidToy(parts[1],parts[2]||COL[(parts[1].length+3)%8]);name=parts[1];lab=parts[1];}
   else if(parts[0]==='balloon'){o=balloonToy(parts[1],parts[2]||COL[(parts[1].charCodeAt(0)||0)%8]);name=parts[1];lab=parts[1];}
   else if(parts[0]==='block'||parts[0]==='num'){o=blockToy(parts[1],parts[2]||(parts[0]==='num'?'#bfe3ff':'#ffe08a'));name=parts[1];lab=parts[1];}
   else if(parts[0]==='dots'){o=diceToy(+parts[1],parts[2]);name=parts[1];lab=parts[1];}
   else if(parts[0]==='paint'){o=paintToy(parts[1]);name=parts[2]||parts[1];lab=parts[2]||'';}
   else if(parts[0]==='blank'){o=new THREE.Group();name='';}
-  else{o=P.STAGE&&P.STAGE.prop?P.STAGE.prop(k,{s:.62*(s||1),label:false,bare:true,tap:false}):K2.standee(k,{label:false,s:.7*(s||1)});name=k;lab=k;}
+  if(!o){o=P.STAGE&&P.STAGE.prop?P.STAGE.prop(k,{s:.62*(s||1),label:false,bare:true,tap:false}):K2.standee(k,{label:false,s:.7*(s||1)});name=k;lab=k;}
   if(s&&parts.length>1)o.scale.multiplyScalar(s);
   if(sz!==1)o.scale.multiplyScalar(sz);o.userData.pk={ok,name,lab:parts[3]!=null?parts[3]:lab};return o;}
 const mat=(g2,w,d,z,c)=>{const m=mk(G('pk_mat'+w+'_'+d,()=>new THREE.BoxGeometry(w,.03,d)),lam(c||'#fff4d6'),0);at(m,0,.015,z);g2.add(m);
