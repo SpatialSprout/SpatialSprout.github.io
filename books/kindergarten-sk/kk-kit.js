@@ -159,3 +159,186 @@ C.spots=function(g2,st,h,set){mat(g2,4.4,2.3,-2.3,'#ebfbee');const n=set.n||3;co
   return {};};
 C.spots.bare=1;
 })();
+/* ===== Letter lessons, part 2: a slow little 3D show for every letter, and the hidden alphabet ===== */
+(function(){
+"use strict";
+const P=window.PM;if(!P||P.failed||!P.K2||!P.PKX)return;
+const {THREE,V,G,mk,lam,A,tween}=P;const C=P.K2.CUSTOM;const X=P.PKX;const {make,txt3,boom,mat,tag,COL,at}=X;
+const ease=k=>1-Math.pow(1-k,3),back=k=>{const c=1.9;return 1+(c+1)*Math.pow(k-1,3)+c*Math.pow(k-1,2);};
+const sq=(o,d)=>{const s=o.scale.x;return tween(d||.35,k=>{const f=Math.sin(k*Math.PI);o.scale.set(s*(1+f*.18),s*(1-f*.22),s*(1+f*.18));}).then(()=>o.scale.setScalar(s));};
+const hop=(o,to,ht,d)=>{const p0=o.position.clone();return tween(d||.6,k=>{o.position.set(p0.x+(to.x-p0.x)*k,p0.y+(to.y-p0.y)*k+Math.sin(k*Math.PI)*(ht||.5),p0.z+(to.z-p0.z)*k);});};
+const grow=(o,s,d,e)=>{o.visible=true;o.scale.setScalar(.001);return tween(d||.7,k=>o.scale.setScalar(Math.max(.001,s*(e||back)(k))));};
+const growS=(o,d)=>{const v=o.userData.s0v||(o.userData.s0v=o.scale.clone());o.visible=true;o.scale.set(.001,.001,.001);return tween(d||.5,k=>{const f=Math.max(.001,back(k));o.scale.set(v.x*f,v.y*f,v.z*f);});};
+const bob=(o,ht)=>{const y=o.position.y;return tween(.5,k=>{o.position.y=y+Math.sin(k*Math.PI)*(ht||.3);});};
+function runner(st){const tok=(st._showTok=(st._showTok||0)+1);const ok=()=>st._showTok===tok;return {at:(ms,fn)=>A.later(()=>{if(ok())try{fn();}catch(e){console.error(e);}},ms),ok};}
+function balloonOn(g2,o,c,dx){const b=make('balloon::'+c,1.0);b.position.set(dx,.55,0);o.add(b);return b;}
+function giftBox(c,s){const g=new THREE.Group();s=s||1;const body=mk(G('kk_gb',()=>new THREE.BoxGeometry(.5,.42,.5)),lam(c),20);body.position.y=.21;g.add(body);
+  const rb=mk(G('kk_gbr',()=>new THREE.BoxGeometry(.1,.425,.505)),lam('#ffffff'),0);rb.position.y=.21;g.add(rb);const rb2=mk(G('kk_gbr2',()=>new THREE.BoxGeometry(.505,.425,.1)),lam('#ffffff'),0);rb2.position.y=.21;g.add(rb2);
+  const lid=new THREE.Group();const l=mk(G('kk_gbl',()=>new THREE.BoxGeometry(.56,.1,.56)),lam(c),20);lid.add(l);const bow=mk(G('kk_gbb',()=>new THREE.TorusGeometry(.08,.03,8,20)),lam('#ffffff'),0);bow.position.y=.1;lid.add(bow);lid.position.y=.47;g.add(lid);
+  g.userData.lid=lid;g.scale.setScalar(s);return g;}
+
+/* ---------- SHOW: the letter makes a grand entrance, then its friend, then three more friends. Nothing to tap; just watch. ---------- */
+const LIN=['drop','gift','balloons','spin','roll','grow','rocket','flip'];
+const IIN=['hop','fall','ground','bubble','zoom','twirl','peek'];
+C.show=function(g2,st,h,set){mat(g2,4.4,2.3,-2.3,set.mat||'#fff8e8');const R=runner(st);const col=set.col||'#ff6b6b';const i=set.i||0;
+  const ls=set.lin||LIN[i%LIN.length],is=set.iin||IIN[(i*3+1)%IIN.length];
+  const LB=new THREE.Group();at(LB,-1.0,0,-2.75);g2.add(LB);const L=txt3(set.big,col,{size:set.big.length>1?1.05:1.3,depth:.34});LB.add(L);L.visible=false;
+  const IB=new THREE.Group();at(IB,1.2,0,-2.6);g2.add(IB);const I=make(set.item,1.5);IB.add(I);I.visible=false;const is0=I.scale.x;
+  const ws=(set.words||[]).slice(0,3);const WS=ws.map((w,j)=>{const g=new THREE.Group();at(g,(j-1)*1.45,0,-1.45);g2.add(g);const o=make(w,1.05);g.add(o);o.visible=false;const t=tag(w,{size:.24,bg:'#ffffff',border:COL[j%8]});t.position.set(0,1.15,0);t.visible=false;g.add(t);return {g,o,t,s:o.scale.x};});
+  const T1=tag(set.line||set.big,{size:.36,bg:'#ffffff',border:col,color:'#1b2236'});T1.position.set(0,2.0,-3.1);T1.visible=false;g2.add(T1);
+  const ext=[];const clean=()=>{ext.splice(0).forEach(o=>{o.parent&&o.parent.remove(o);});};
+  const letterIn=()=>{L.visible=true;L.position.set(0,0,0);L.rotation.set(0,0,0);L.scale.setScalar(1);
+    if(ls==='drop'){L.position.y=3.2;tween(1.1,k=>{L.position.y=3.2*(1-k*k);}).then(()=>{sq(L,.45);boom(L);});}
+    else if(ls==='gift'){L.visible=false;const b=giftBox(col,1.5);LB.add(b);ext.push(b);grow(b,1.5,.6);R.at(900,()=>{const lid=b.userData.lid;tween(.6,k=>{lid.position.y=.47+k*1.4;lid.rotation.z=k*2.5;lid.position.x=k*.8;});});
+      R.at(1100,()=>{L.visible=true;L.position.y=.2;L.scale.setScalar(.2);tween(.9,k=>{L.scale.setScalar(.2+.8*back(k));L.position.y=.2+Math.sin(k*Math.PI)*1.2+(.62-.2)*k;}).then(()=>boom(L));});
+      R.at(2300,()=>{tween(.6,k=>{b.scale.setScalar(1.5*(1-k)+.001);}).then(()=>{b.visible=false;tween(.5,k=>{L.position.y=.62*(1-ease(k));});});});}
+    else if(ls==='balloons'){L.position.y=3.0;const bs=[['#ff6b6b',-.35],['#4fb3ff',0],['#ffd43b',.35]].map(([c,dx])=>balloonOn(g2,L,c,dx));bs.forEach(b=>{b.position.y=1.1;});
+      tween(2.0,k=>{L.position.y=3.0*(1-ease(k));L.rotation.z=Math.sin(k*Math.PI*3)*.12*(1-k);}).then(()=>{sq(L,.4);bs.forEach((b,j)=>{const p=b.position.clone();tween(1.4,k=>{b.position.set(p.x+(j-1)*k*.8,p.y+k*3,p.z);}).then(()=>{L.remove(b);});});});}
+    else if(ls==='spin'){L.position.y=-1.2;tween(1.4,k=>{L.position.y=-1.2*(1-ease(k));L.rotation.y=(1-ease(k))*Math.PI*4;}).then(()=>boom(L));}
+    else if(ls==='roll'){L.position.x=-2.5;tween(1.5,k=>{const e=ease(k);L.position.x=-2.5*(1-e);L.rotation.z=(1-e)*Math.PI*2;L.position.y=Math.abs(Math.sin(e*Math.PI*2))*.25*(1-e);}).then(()=>sq(L));}
+    else if(ls==='grow'){L.scale.setScalar(.001);tween(1.3,k=>{const e=k<1?1+Math.sin(k*Math.PI*3.2)*(1-k)*.35:1;L.scale.setScalar(Math.max(.001,Math.min(1,k*2.2)*e));}).then(()=>boom(L));}
+    else if(ls==='rocket'){const p0=V(2.6,2.6,-.8);tween(1.5,k=>{const e=ease(k);L.position.set(p0.x*(1-e),p0.y*(1-e)+Math.sin(e*Math.PI)*.8,p0.z*(1-e));L.rotation.z=(1-e)*-1.2;if(Math.random()<.35){const s=mk(G('kk_spk',()=>new THREE.SphereGeometry(.05,8,6)),lam(COL[Math.floor(Math.random()*8)]),0);s.position.copy(L.position);LB.add(s);ext.push(s);tween(.8,q=>{s.scale.setScalar(Math.max(.01,1-q));s.position.y-=.004;});}}).then(()=>{sq(L);boom(L);});}
+    else{L.position.z=-1.5;L.position.y=.0;tween(1.6,k=>{const e=ease(k);L.position.z=-1.5*(1-e);L.position.y=Math.abs(Math.sin(e*Math.PI*2))*.7;L.rotation.x=e*Math.PI*4;}).then(()=>{L.rotation.x=0;sq(L);boom(L);});}};
+  const itemIn=()=>{I.visible=true;I.position.set(0,0,0);I.rotation.set(0,0,0);I.scale.setScalar(is0);
+    if(is==='hop'){I.position.x=2.0;let k0=Promise.resolve();[1.35,.7,0].forEach((x,j)=>{k0=k0.then(()=>hop(I,V(x,0,0),.45,.5));});k0.then(()=>sq(I));}
+    else if(is==='fall'){I.position.y=3;tween(.9,k=>{I.position.y=3*(1-k*k);}).then(()=>{bob(I,.35).then(()=>bob(I,.12));});}
+    else if(is==='ground'){I.position.y=-1;tween(1.0,k=>{I.position.y=-1*(1-back(k));}).then(()=>boom(I));}
+    else if(is==='bubble'){I.position.y=1.6;const b=mk(G('kk_bub2',()=>new THREE.SphereGeometry(.6,28,20)),new THREE.MeshPhongMaterial({color:'#a5d8ff',transparent:true,opacity:.3,shininess:120,depthWrite:false}),0);b.castShadow=false;b.userData.bub=1;b.position.y=.5;I.add(b);
+      tween(1.6,k=>{I.position.y=1.6*(1-ease(k))+Math.sin(k*Math.PI*2)*.1;I.position.x=Math.sin(k*Math.PI*2)*.25;}).then(()=>{boom(I);I.remove(b);sq(I);});}
+    else if(is==='zoom'){I.position.z=-1.3;I.scale.setScalar(.001);tween(1.2,k=>{const e=ease(k);I.position.z=-1.3*(1-e);I.scale.setScalar(Math.max(.001,is0*back(k)));});}
+    else if(is==='twirl'){I.scale.setScalar(.001);tween(1.3,k=>{I.scale.setScalar(Math.max(.001,is0*back(k)));I.rotation.y=(1-ease(k))*Math.PI*4;}).then(()=>boom(I));}
+    else{I.position.set(-2.0,0,-.35);I.scale.setScalar(is0*.6);tween(.7,k=>{I.position.y=Math.sin(k*Math.PI)*.35;});R.at(900,()=>{const p0=I.position.clone();tween(1.0,k=>{I.position.set(p0.x*(1-k),Math.sin(k*Math.PI)*1.1,p0.z*(1-k));I.scale.setScalar(is0*(.6+.4*k));I.rotation.y=k*Math.PI*2;}).then(()=>{sq(I);boom(I);});});}};
+  const run=()=>{const R2=runner(st);clean();L.children.slice().forEach(c=>{if(c!==L.userData.face)L.remove(c);});I.children.slice().forEach(c=>{if(c.userData.bub)I.remove(c);});L.visible=false;I.visible=false;T1.visible=false;WS.forEach(w=>{w.o.visible=false;w.t.visible=false;});
+    R2.at(400,letterIn);R2.at(3000,itemIn);
+    R2.at(5000,()=>{growS(T1,.6);});
+    WS.forEach((w,j)=>R2.at(6200+j*1500,()=>{w.o.visible=true;w.o.position.set(0,1.4,0);w.o.scale.setScalar(.001);tween(.8,k=>{w.o.scale.setScalar(Math.max(.001,w.s*back(k)));w.o.position.y=1.4*(1-k*k);}).then(()=>{sq(w.o);growS(w.t,.4);});}));
+    R2.at(6200+WS.length*1500+600,()=>{[L,I].concat(WS.map(w=>w.o)).forEach((o,j)=>R2.at(j*260,()=>bob(o,.35)));});
+    R2.at(6200+WS.length*1500+2600,()=>{tween(1.2,k=>{L.rotation.y=ease(k)*Math.PI*2;});boom(L);});};
+  /* labels: tag() makes sprites at their natural scale; remember it */
+  [T1].concat(WS.map(w=>w.t)).forEach(t=>{t.userData.s0v=t.scale.clone();});
+  run();let t0=0;
+  return {tick:(dt,t)=>{t0+=dt;if(L.visible)LB.rotation.y=Math.sin(t*.7)*.12;},play:run,controls:()=>st.round?[]:[{t:'Again!',go:true,fn:run}]};};
+C.show.bare=1;
+
+/* ---------- ABC: the whole alphabet hides in little gift boxes. Letters we know are already out;
+   today's letter comes out in a funny way, grows big, and the row says the order out loud. ---------- */
+C.abc=function(g2,st,h,set){mat(g2,4.4,2.3,-2.3,'#f3f0ff');const R=runner(st);const idx=set.idx||0;const low=!!set.low;const AZ='ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').map(c=>low?c.toLowerCase():c);
+  const rows=[9,9,8];const spots=[];let n=0;rows.forEach((cnt,r)=>{for(let c=0;c<cnt;c++){spots.push([(c-(cnt-1)/2)*.46,-3.1+r*.62]);n++;}});
+  const boxes=AZ.map((ch,j)=>{const g=giftBox(['#ffadad','#ffd6a5','#fdffb6','#caffbf','#9bf6ff','#a0c4ff','#bdb2ff','#ffc6ff'][j%8],.62);at(g,spots[j][0],0,spots[j][1]);g2.add(g);
+    const L=txt3(ch,COL[j%8],{size:.3,depth:.12});L.position.set(spots[j][0],.3,spots[j][1]);L.visible=j<idx;g2.add(L);
+    if(j<idx){g.userData.lid.visible=false;g.scale.y=.4;}return {g,L,j};});
+  const me=boxes[idx];const big=txt3(AZ[idx],set.col||'#ff6b6b',{size:1.05,depth:.3});big.visible=false;g2.add(big);
+  const say=tag(set.line||AZ[idx]+'!',{size:.32,bg:'#ffffff',border:set.col||'#ff6b6b'});say.position.set(0,1.95,-2.6);say.visible=false;g2.add(say);
+  const style=set.style!=null?set.style:idx%4;
+  const run=()=>{const R2=runner(st);const b=me.g,lid=b.userData.lid;lid.visible=true;lid.position.set(0,.47,0);lid.rotation.set(0,0,0);b.visible=true;b.scale.setScalar(.62);me.L.visible=false;big.visible=false;say.visible=false;
+    boxes.forEach(x=>{if(x.j<idx){x.L.visible=true;x.L.position.y=.3;}});
+    /* 1: the closed box wiggles, getting excited */
+    R2.at(500,()=>{tween(1.4,k=>{b.rotation.z=Math.sin(k*Math.PI*8)*.18*(1-k*.3);b.position.y=Math.abs(Math.sin(k*Math.PI*6))*.06;}).then(()=>{b.rotation.z=0;b.position.y=0;});});
+    /* 2: out it comes! */
+    R2.at(2100,()=>{const p=me.L.position;me.L.visible=true;me.L.scale.setScalar(1);
+      if(style===0){tween(.7,k=>{lid.position.y=.47+k*2.2;lid.rotation.x=k*6;});me.L.position.y=.1;tween(1.2,k=>{me.L.position.y=.1+Math.abs(Math.sin(k*Math.PI*3))*.8*(1-k)+.2*k;}).then(()=>boom(me.L));}
+      else if(style===1){tween(.35,k=>b.scale.setScalar(.62*(1+k*.5))).then(()=>{boom(b);b.visible=false;me.L.position.y=.3;tween(1.2,k=>{me.L.rotation.z=Math.sin(k*Math.PI*6)*.35*(1-k);});});}
+      else if(style===2){tween(.4,k=>{lid.position.y=.47+k*.25;});me.L.position.y=.05;tween(.4,k=>{me.L.position.y=.05+k*.25;});
+        R2.at(800,()=>{tween(.3,k=>{lid.position.y=.72-k*.25;me.L.position.y=.3-k*.25;});});
+        R2.at(1500,()=>{tween(.6,k=>{lid.position.y=.47+k*2;lid.position.x=k*1.2;lid.rotation.z=-k*4;});tween(1.0,k=>{me.L.position.y=.05+Math.sin(k*Math.PI)*1.3+k*.25;me.L.rotation.x=k*Math.PI*2;}).then(()=>{me.L.rotation.x=0;boom(me.L);});});}
+      else{tween(.5,k=>{lid.position.y=.47+k*.6;lid.rotation.z=k*.6;});me.L.position.y=.1;tween(1.6,k=>{me.L.position.y=.1+Math.sin(k*Math.PI)*2.2+k*.2;me.L.rotation.y=k*Math.PI*4;}).then(()=>{me.L.rotation.y=0;boom(me.L);});}});
+    /* 3: it grows big at the front and we say where it lives in the alphabet */
+    R2.at(4300,()=>{big.visible=true;big.position.copy(me.L.position);big.scale.setScalar(.3);const p0=big.position.clone(),to=V(0,.15,-1.55);me.L.visible=false;
+      tween(1.2,k=>{const e=ease(k);big.position.set(p0.x+(to.x-p0.x)*e,p0.y+(to.y-p0.y)*e+Math.sin(k*Math.PI)*.6,p0.z+(to.z-p0.z)*e);big.scale.setScalar(.3+.7*e);}).then(()=>{boom(big);growS(say,.5);});});
+    /* 4: everyone we know hops in order, A, B, C… up to today's letter */
+    R2.at(6600,()=>{boxes.slice(0,idx).forEach((x,j)=>R2.at(j*Math.max(160,700-idx*25),()=>bob(x.L,.3)));});
+    R2.at(6800+idx*Math.max(160,700-idx*25),()=>{const p0=big.position.clone(),to=me.L.position.clone();tween(1.2,k=>{const e=ease(k);big.position.set(p0.x+(to.x-p0.x)*e,p0.y+(to.y-p0.y)*e+Math.sin(k*Math.PI)*.8,p0.z+(to.z-p0.z)*e);big.scale.setScalar(1-.7*e);}).then(()=>{big.visible=false;me.L.visible=true;me.L.position.y=.3;bob(me.L,.4);if(style!==1){tween(.4,k=>b.scale.y=.62*(1-.6*k));lid.visible=false;}});});};
+  say.userData.s0v=say.scale.clone();run();
+  return {tick:(dt,t)=>{if(big.visible)big.rotation.y=Math.sin(t*.9)*.2;},play:run,controls:()=>st.round?[]:[{t:'Again!',go:true,fn:run}]};};
+C.abc.bare=1;
+
+/* PATH, letter version: the duck may only step on stones with today's letter */
+const oldPath=C.path;
+C.path=function(g2,st,h,set){if(!set.only)return oldPath(g2,st,h,set);mat(g2,4.4,2.3,-2.3,'#d0ebff');
+  const cols=set.cols||5,rows=3,stones=[];const right=[];for(let c=0;c<cols;c++)right.push(Math.floor(Math.random()*rows));
+  const others=set.extra||[];let oi=0;const isPlay=()=>h.isPlay?h.isPlay():false;
+  for(let c=0;c<cols;c++)for(let r=0;r<rows;r++){const ok=right[c]===r;const t=ok?set.only:others[(oi++)%Math.max(1,others.length)];const s=new THREE.Group();
+    const d=mk(G('kk_stone',()=>new THREE.CylinderGeometry(.33,.37,.12,28)),lam(['#ffd8a8','#d3f9d8','#ffe3e3','#e5dbff'][(c+r)%4]),20);d.position.y=.06;s.add(d);
+    const L=make('txt:'+t+':'+COL[(c*3+r)%8],.62);L.position.y=.12;s.add(L);s.userData={t,ok,c};at(s,-1.45+c*(2.9/(cols-1)),0,-3.0+r*.72);g2.add(s);stones.push(s);}
+  const hero=make(set.who||'duck',1.0);at(hero,-2.15,0,-2.28);g2.add(hero);const goal=make(set.goal||'house',1.0);at(goal,2.15,0,-2.28);g2.add(goal);
+  let k=0;let busy=false;
+  stones.forEach(s=>A.drag(s,{tap:()=>{const u=s.userData;if(busy)return;if(u.ok&&u.c===k){busy=true;k++;A.pop&&A.pop();P.hop(hero,V(s.position.x,.12,s.position.z),.6,.5);s.children[0].material=lam('#ffd43b');A.later(()=>{busy=false;},520);
+      if(k===cols){A.later(()=>{P.hop(hero,V(goal.position.x-.3,0,goal.position.z),.8,.6).then(()=>{boom(goal);if(isPlay())A.later(()=>h.win(set.ok),400);});},650);}}
+    else if(u.ok&&u.c<k){}
+    else if(u.ok){X.wobble(s);if(isPlay())h.miss(set.hint||'Hop to the closest '+set.only+' first!');}
+    else{X.wobble(s);if(isPlay())h.miss(set.hint||'Only hop on '+set.only+'!');}}}));
+  return {};};
+C.path.bare=1;
+})();
+/* ===== Kindergarten games, part 3: join the dots, the cup trick, shadow match and hide-and-seek ===== */
+(function(){
+"use strict";
+const P=window.PM;if(!P||P.failed||!P.K2||!P.PKX)return;
+const {THREE,V,G,mk,lam,A,tween}=P;const C=P.K2.CUSTOM;const X=P.PKX;const {make,boom,mat,tag,COL,at,wobble}=X;
+const ease=k=>1-Math.pow(1-k,3),back=k=>{const c=1.9;return 1+(c+1)*Math.pow(k-1,3)+c*Math.pow(k-1,2);};
+const isPlay=h=>h.isPlay?h.isPlay():false;const win=(h,set,ms)=>{if(isPlay(h))A.later(()=>h.win(set.ok),ms||600);};
+const bob=(o,ht,d)=>{const y=o.position.y;return tween(d||.45,k=>{o.position.y=y+Math.sin(k*Math.PI)*(ht||.3);}).then(()=>{o.position.y=y;});};
+const lbl=(t,i,s)=>make(/^[*]?(txt|shape|solid|balloon|paint|dots|num|block):/.test(t)?t:(String(t).length<=2?'txt:'+t+':'+COL[(i||0)%8]:t),s||.62);
+const tube=(g2,a,b,c,r)=>{const d=b.clone().sub(a);const m=mk(G('kk_tb'+(r||.045),()=>new THREE.CylinderGeometry(r||.045,r||.045,1,10)),lam(c),0);m.scale.y=Math.max(.01,d.length());m.position.copy(a).add(b).multiplyScalar(.5);m.quaternion.setFromUnitVectors(V(0,1,0),d.normalize());g2.add(m);return m;};
+
+/* ---------- DOTS: join the dots in order (A, B, C… or 1, 2, 3…) and a picture pops out of the middle ---------- */
+const OUT={star:t=>{const a=Math.PI/2+t*Math.PI*2,r=(Math.round(t*10)%2)?.55:1;return [Math.cos(a)*r,Math.sin(a)*r];},
+  circle:t=>[Math.cos(Math.PI/2+t*Math.PI*2),Math.sin(Math.PI/2+t*Math.PI*2)],
+  heart:t=>{const a=t*Math.PI*2;return [Math.pow(Math.sin(a),3)*1.05,(13*Math.cos(a)-5*Math.cos(2*a)-2*Math.cos(3*a)-Math.cos(4*a))/16];},
+  house:t=>{const P2=[[0,1],[.9,.25],[.9,-.9],[-.9,-.9],[-.9,.25]];const f=t*5,i=Math.floor(f)%5,k=f-Math.floor(f);const a=P2[i],b=P2[(i+1)%5];return [a[0]+(b[0]-a[0])*k,a[1]+(b[1]-a[1])*k];}};
+C.dots=function(g2,st,h,set){mat(g2,4.4,2.3,-2.3,'#fffbe6');const seq=(set.seq||['A','B','C','D','E']).map(String);const n=seq.length;const sh=OUT[set.shape]||OUT[['star','circle','heart','house'][(set.seed||0)%4]];
+  const cx=0,cz=-2.3,rx=1.25,rz=.95;const pts=seq.map((t,i)=>{const [x,y]=set.shape==='star'?OUT.star(i/n):sh(i/n);return V(cx+x*rx,.1,cz-y*rz);});
+  const dots=seq.map((t,i)=>{const g=new THREE.Group();g.position.copy(pts[i]);g.position.y=0;g2.add(g);const d=mk(G('kk_dd',()=>new THREE.CylinderGeometry(.2,.22,.08,26)),lam('#ffffff'),20);d.position.y=.04;g.add(d);
+    const ring=mk(G('kk_ddr',()=>new THREE.TorusGeometry(.21,.025,8,30)),lam('#1b2236'),0);ring.rotation.x=Math.PI/2;ring.position.y=.08;g.add(ring);const L=lbl(t,i,.5);L.position.y=.08;g.add(L);g.userData={i,d,L};return g;});
+  const hid=make(set.item||'star',1.3);at(hid,cx,-1.0,cz);hid.visible=false;g2.add(hid);let nx=0;const col=set.col||'#ff6b6b';
+  const finish=()=>{tube(g2,pts[n-1],pts[0],col);dots.forEach((d,j)=>A.later(()=>bob(d.userData.L,.3),j*90));A.later(()=>{hid.visible=true;tween(1.0,k=>{hid.position.y=-1+back(k);}).then(()=>{boom(hid);win(h,set,700);});},n*90+200);};
+  dots.forEach((g,i)=>A.drag(g,{tap:()=>{if(nx>=n)return;if(i===nx){A.pop&&A.pop();g.userData.d.material=lam('#ffd43b');bob(g.userData.L,.35);if(i>0)tube(g2,pts[i-1],pts[i],col);nx++;if(nx===n)finish();}
+    else if(i>nx){wobble(g);if(isPlay(h))h.miss(set.hint||('Find '+seq[nx]+' next!'));}}}));
+  return {tick:(dt,t)=>{dots.forEach((g,i)=>{const s=i===nx?1.12+Math.sin(t*6)*.12:1;g.scale.setScalar(s);});}};};
+C.dots.bare=1;
+
+/* ---------- CUPS: watch the cup! The letter hides under a cup, the cups slide around slowly, then find it ---------- */
+C.cups=function(g2,st,h,set){mat(g2,4.4,2.3,-2.3,'#e6fcf5');const items=[set.target].concat(set.others||[]).slice(0,3);const N=items.length;const xs=[-1.3,0,1.3].slice(0,N);const z=-2.3;
+  const cupCol=set.cupCol||'#ff8787';const things=items.map((it,i)=>{const o=lbl(it,i,.7);at(o,xs[i],0,z);g2.add(o);return o;});
+  const cups=items.map((it,i)=>{const g=new THREE.Group();const c=mk(G('kk_cup',()=>new THREE.CylinderGeometry(.34,.46,.8,30,1,true)),new THREE.MeshPhongMaterial({color:cupCol,side:THREE.DoubleSide,shininess:60}),20);c.position.y=.4;g.add(c);
+    const top=mk(G('kk_cupt',()=>new THREE.CircleGeometry(.34,30)),lam(cupCol),0);top.rotation.x=-Math.PI/2;top.position.y=.8;g.add(top);const kn=mk(G('kk_cupk',()=>new THREE.SphereGeometry(.09,14,10)),lam('#ffd43b'),0);kn.position.y=.86;g.add(kn);
+    const band=mk(G('kk_cupb',()=>new THREE.TorusGeometry(.4,.025,6,30)),lam('#ffffff'),0);band.rotation.x=Math.PI/2;band.position.y=.2;g.add(band);at(g,xs[i],1.6,z);g.userData={slot:i,item:i};g2.add(g);return g;});
+  let ready=false,done=false;const slotOf=[0,1,2].slice(0,N);/* slotOf[item]=slot */
+  const lift=(c,up)=>tween(.45,k=>{c.position.y=(up?k:1-k)*1.0;});
+  const swap=(a,b,d)=>{const ca=cups.find(c=>c.userData.slot===a),cb=cups.find(c=>c.userData.slot===b);const xa=xs[a],xb=xs[b];
+    return tween(d,k=>{const e=ease(k);ca.position.x=xa+(xb-xa)*e;ca.position.z=z+Math.sin(k*Math.PI)*.55;cb.position.x=xb+(xa-xb)*e;cb.position.z=z-Math.sin(k*Math.PI)*.55;}).then(()=>{ca.userData.slot=b;cb.userData.slot=a;ca.position.z=cb.position.z=z;});};
+  /* 1: show the toys, 2: cups come down, 3: slow shuffles */
+  A.later(()=>{things.forEach((o,i)=>A.later(()=>bob(o,.3),i*250));},300);
+  A.later(()=>{Promise.all(cups.map(c=>tween(.7,k=>{c.position.y=1.6*(1-ease(k));}))).then(()=>{things.forEach(o=>o.visible=false);
+    const moves=set.moves||(N<3?2:3+(set.level||0));let p=Promise.resolve();for(let m=0;m<moves;m++){const pair=N<3?[0,1]:[[0,1],[1,2],[0,2]][Math.floor(Math.random()*3)];p=p.then(()=>swap(pair[0],pair[1],set.speed||1.1));}
+    p.then(()=>{ready=true;cups.forEach(c=>{const it=c.userData.item;things[it].position.x=xs[c.userData.slot];});});});},1600);
+  cups.forEach(c=>A.drag(c,{tap:()=>{if(!ready||done||c.userData.open)return;const it=c.userData.item;const o=things[it];o.position.x=xs[c.userData.slot];o.visible=true;A.pop&&A.pop();
+    if(it===0){done=true;c.userData.open=true;lift(c,true).then(()=>{bob(o,.5);boom(o);win(h,set,500);});}
+    else{c.userData.open=true;lift(c,true).then(()=>{wobble(o);A.later(()=>{lift(c,false).then(()=>{o.visible=false;c.userData.open=false;});},900);});if(isPlay(h))h.miss(set.hint||'Not this one. Try another cup!');}}}));
+  return {tick:(dt,t)=>{if(ready&&!done)cups.forEach((c,i)=>{c.rotation.z=Math.sin(t*3+i)*.03;});}};};
+C.cups.bare=1;
+
+/* ---------- SHADOW: which one fits the shadow? Tap it and it flies into its shadow and lights up ---------- */
+C.shadow=function(g2,st,h,set){mat(g2,4.4,2.3,-2.3,'#f8f9fa');const choices=set.choices||[];const tgt=String(choices.find(c=>String(c)[0]==='*')||choices[0]).replace('*','');
+  const wall=mk(G('kk_wall',()=>new THREE.BoxGeometry(2.0,1.7,.08)),lam('#fff3bf'),20);at(wall,0,.85,-3.25);g2.add(wall);const fr=mk(G('kk_wallf',()=>new THREE.BoxGeometry(2.12,1.82,.06)),lam('#e67700'),0);at(fr,0,.85,-3.3);g2.add(fr);
+  const sh=lbl(tgt,0,set.big||1.15);sh.traverse(o=>{if(o.isMesh){o.material=new THREE.MeshBasicMaterial({color:'#343a40'});o.castShadow=false;}});sh.scale.z*=.15;at(sh,0,.2,-3.15);g2.add(sh);
+  const shp=sh.position.clone(),shs=sh.scale.clone();const n=choices.length;let done=false;
+  choices.forEach((c,i)=>{const o=lbl(String(c),i+1,set.big?set.big*.62:.72);const x=(i-(n-1)/2)*1.25;at(o,x,0,-1.55);g2.add(o);const ok=String(c)[0]==='*';const p0=o.position.clone(),s0=o.scale.clone();
+    A.drag(o,{tap:()=>{if(done)return;A.pop&&A.pop();
+      if(ok){done=true;tween(1.0,k=>{const e=ease(k);o.position.set(p0.x+(shp.x-p0.x)*e,p0.y+(shp.y+.02-p0.y)*e+Math.sin(k*Math.PI)*.9,p0.z+(shp.z+.12-p0.z)*e);const f=1+(shs.x/s0.x-1)*e;o.scale.set(s0.x*f,s0.y*f,s0.z*f);}).then(()=>{sh.visible=false;boom(o);bob(o,.25);win(h,set,700);});}
+      else{tween(.7,k=>{o.position.set(p0.x+(shp.x-p0.x)*Math.sin(k*Math.PI)*.45,p0.y+Math.sin(k*Math.PI)*.6,p0.z+(shp.z-p0.z)*Math.sin(k*Math.PI)*.45);}).then(()=>{o.position.copy(p0);wobble(o);});if(isPlay(h))h.miss(set.hint||'That one does not fit the shadow. Try again!');}}});});
+  return {};};
+C.shadow.bare=1;
+
+/* ---------- PEEK: hide-and-seek. Letters peek out from behind things; find every one that is today's letter ---------- */
+C.peek=function(g2,st,h,set){mat(g2,4.4,2.3,-2.3,'#ebfbee');const spots=[[-1.55,-2.95],[-.5,-3.05],[.55,-2.95],[1.6,-3.05],[-1.05,-1.95],[1.05,-1.95]];const hide=set.hide||['tree','house','tent','tree','mushroom','rock'];
+  const who=(set.items||[]).slice(0,6);const need=who.filter(x=>String(x)[0]==='*').length;let got=0;
+  const H=spots.map(([x,z],i)=>{const cover=make(hide[i%hide.length],i<4?1.35:1.05);at(cover,x,0,z);g2.add(cover);const it=who[i];if(it==null)return null;
+    const o=lbl(String(it).replace('*',''),i,.62);at(o,x+.05,0,z-.32);o.userData.ok=String(it)[0]==='*';o.userData.base=o.position.clone();o.userData.ph=i*1.7;g2.add(o);
+    const tap=()=>{if(o.userData.out)return;A.pop&&A.pop();const b=o.userData.base;
+      if(o.userData.ok){o.userData.out=true;got++;tween(.8,k=>{o.position.set(b.x+.0,Math.sin(k*Math.PI)*1.0,b.z+.75*ease(k));}).then(()=>{boom(o);if(got>=need)win(h,set,600);});}
+      else{o.userData.busy=1;tween(.5,k=>{o.position.x=b.x+.45*Math.sin(k*Math.PI);o.position.y=.25*Math.sin(k*Math.PI);}).then(()=>{wobble(o);o.userData.busy=0;});if(isPlay(h))h.miss(set.hint);}};
+    A.drag(cover,{tap});A.drag(o,{tap});return o;});
+  return {tick:(dt,t)=>{H.forEach((o,i)=>{if(!o||o.userData.out||o.userData.busy)return;const b=o.userData.base;const s=Math.max(0,Math.sin(t*.9+o.userData.ph));const pk=Math.pow(s,6);o.position.x=b.x+(i%2?-1:1)*pk*.5;o.position.y=pk*.25;});}};};
+C.peek.bare=1;
+})();

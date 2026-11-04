@@ -23,7 +23,9 @@ SH.forEach((s,i)=>{const others=['circle','square','triangle','rectangle','star'
       R.mem('Find the pairs: a shape and a thing shaped like it.',[[sh('circle','red'),'ball'],[sh('triangle','green'),'pizza'],[sh('square','blue'),'gift']]),
       R.dig('Dig in the sand! Find the *'+s.k+'s*.',[sh(s.k,s.c,1),sh(s.k,'pink',1),sh(others[0],oc[0]),sh(others[1],oc[1]),sh(others[2],oc[2]),sh(others[3],oc[3])]),
       R.gap('What comes next?',[sh(s.k,s.c),sh(others[0],oc[0]),sh(s.k,s.c),sh(others[0],oc[0]),'?'],[sh(s.k,s.c,1),sh(others[1],oc[1]),sh(others[2],oc[2])],{s:.8}),
-      R.one('Which one is shaped like a *'+s.k+'*?',s.things[0],s.not.slice(0,2))],
+      R.one('Which one is shaped like a *'+s.k+'*?',s.things[0],s.not.slice(0,2)),
+      R.cups('Watch the cups! Where is the *'+s.k+'* hiding?',sh(s.k,s.c),[sh(others[0],oc[0]),sh(others[1],oc[1])],{level:i%2}),
+      R.shadow('Which shape fits the shadow?',[sh(s.k,s.c,1),sh(others[0],oc[0]),sh(others[1],oc[1])],{big:1.5})],
     tries:[['Draw a '+s.k+' in the air with your finger.','slowly!'],['Find 3 '+s.k+'s at home.','e.g. '+s.things.join(', ')]]});});
 
 /* Colours */

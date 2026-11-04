@@ -130,7 +130,44 @@ function drawCards(p,y,cards){const g=p.g;const hh=cards.some(c=>(c.q||'').repla
 let CMP=0;/* compact level while fitting a page: 1 tighter example rows, 2 no cards, 3 no key words or story pictures, 4 smallest */
 function drawPage(p,S,d){let y=0;for(let lv=0;lv<=5;lv++){if(lv>0&&P.paperBase){P.paperBase(p);p.hot=[];p.flaps=[];}if(P.READ)P.READ.n=0;CMP=lv;y=drawPage1(p,S,d);if(y<=1300||(P.READ&&P.READ.collect))break;}CMP=0;return y;}
 /* Kindergarten page: one giant letter or number, its picture friend and a short line, like a first workbook */
-function drawKid(p,y,k){const g=p.g;const c=acc();const top=y+6,h=Math.min(1290-top,700);
+/* ---------- the colouring page: a crayon box, a letter and its picture friends to colour in ---------- */
+const KCOL=P.KCOL||(P.KCOL={});const CPC={};
+const CRAY=[['#ff4d4d','red'],['#ff9f1c','orange'],['#ffd60a','yellow'],['#38b000','green'],['#3a86ff','blue'],['#8338ec','purple'],['#ff70a6','pink'],['#8b5a2b','brown'],['#222222','black'],['#ffffff','white']];
+function colorPic(g,n,x,y,s,fill){const o=img(n);if(!o||!o.ok){pic(g,n,x,y,s);return;}const R2=2,S=Math.round(s*R2),PD=Math.round(10*R2),W2=S+PD*2;const key=n+'|'+S+'|'+(fill||'');let c=CPC[key];
+  if(!c){const mkc=()=>{const q=document.createElement('canvas');q.width=q.height=W2;return q;};c=mkc();const q=c.getContext('2d');
+    const m=mkc(),mq=m.getContext('2d');mq.drawImage(o.im,PD,PD,S,S);mq.globalCompositeOperation='source-in';mq.fillStyle='#1b2236';mq.fillRect(0,0,W2,W2);
+    for(let a=0;a<20;a++){const r=4.5*R2;q.drawImage(m,Math.cos(a/20*Math.PI*2)*r,Math.sin(a/20*Math.PI*2)*r);}
+    const f2=mkc(),fq=f2.getContext('2d');fq.drawImage(o.im,PD,PD,S,S);fq.globalCompositeOperation='source-in';fq.fillStyle=fill||'#ffffff';fq.fillRect(0,0,W2,W2);q.drawImage(f2,0,0);
+    const d=mkc(),dq=d.getContext('2d');const hasF='filter' in dq;if(hasF)dq.filter='grayscale(1) contrast(1.5) brightness(1.18)';dq.drawImage(o.im,PD,PD,S,S);
+    q.save();q.globalCompositeOperation='multiply';q.globalAlpha=fill?(hasF?.62:.3):(hasF?.2:.1);q.drawImage(d,0,0);q.restore();CPC[key]=c;}
+  g.drawImage(c,x-W2/R2/2,y-W2/R2/2,W2/R2,W2/R2);}
+function crayon(g,x,y,w,h,c,sel){g.save();if(sel){g.beginPath();g.ellipse(x,y+h*.08,w*.95,h*.62,0,0,Math.PI*2);g.fillStyle='rgba(255,212,59,.45)';g.fill();}
+  const ink=c==='#ffffff'?'#adb5bd':'rgba(0,0,0,.28)';const top=y-h/2,tip=h*.24;
+  g.beginPath();g.moveTo(x-w*.32,top+tip);g.lineTo(x-w*.1,top+3);g.quadraticCurveTo(x,top-3,x+w*.1,top+3);g.lineTo(x+w*.32,top+tip);g.closePath();g.fillStyle=c;g.fill();g.lineWidth=3;g.strokeStyle=ink;g.stroke();
+  rr(g,x-w/2,top+tip,w,h-tip,w*.22);g.fillStyle=c;g.fill();g.lineWidth=3;g.strokeStyle=ink;g.stroke();
+  g.fillStyle=c==='#ffffff'?'#e9ecef':'rgba(0,0,0,.18)';g.fillRect(x-w/2+2,top+tip+h*.14,w-4,h*.1);g.fillRect(x-w/2+2,y+h*.3,w-4,h*.08);
+  g.fillStyle='rgba(255,255,255,.35)';rr(g,x-w*.32,top+tip+h*.28,w*.16,h*.3,4);g.fill();g.restore();}
+function drawColor(p,y,k){const g=p.g;const c=acc();const id=k.id||'x';const S=KCOL[id]||(KCOL[id]={sel:'#ff4d4d',f:{}});const top=y+4,h=560;
+  const tap=(x,yy,w,hh,fn)=>P.hot(p,x,yy,w,hh,()=>{try{A.pop();}catch(e){}fn();A.redraw();});const paint=key=>()=>{S.f[key]=S.sel;};
+  rr(g,X0,top,TW,h,36);g.fillStyle=tint(c,.08);g.fill();g.lineWidth=5;g.strokeStyle=tint(c,.4);g.stroke();
+  g.save();let fs0=330;const FN=fs=>'700 '+fs+'px "Patrick Hand", "Comic Sans MS", cursive';g.font=FN(fs0);const mw=TW*.5;while(g.measureText(k.big).width>mw&&fs0>90){fs0-=20;g.font=FN(fs0);}
+  const BX=X0+TW*.29,BY=top+250+fs0*.36;g.textAlign='center';g.textBaseline='alphabetic';g.lineJoin='round';g.lineWidth=16;g.strokeStyle='#1b2236';g.strokeText(k.big,BX,BY);g.fillStyle=S.f.big||'#ffffff';g.fillText(k.big,BX,BY);
+  if(!S.f.big){g.globalAlpha=.25;g.setLineDash([6,10]);g.lineWidth=3;g.strokeStyle=c;g.strokeText(k.big,BX,BY);}g.globalAlpha=1;g.setLineDash([]);const bw=Math.max(240,g.measureText(k.big).width+40);g.restore();
+  tap(BX-bw/2,top+40,bw,420,paint('big'));
+  const PX=X0+TW*.74,PY=top+235;g.save();g.beginPath();g.arc(PX,PY,178,0,Math.PI*2);g.fillStyle='#ffffff';g.fill();g.lineWidth=6;g.strokeStyle=tint(c,.5);g.stroke();g.restore();
+  colorPic(g,k.pic,PX,PY,250,S.f.pic);tap(PX-170,PY-170,340,340,paint('pic'));
+  wrap(g,k.line,X0+50,top+478,TW-100,64,{font:'700 54px "Atkinson Hyperlegible", Verdana, sans-serif',bold:'700 54px "Atkinson Hyperlegible", Verdana, sans-serif',boldColor:c,center:true});
+  y=top+h+16;const ws=(k.words||[]).slice(0,3),n=ws.length,sp=TW/Math.max(1,n);
+  ws.forEach((w,i)=>{const x=X0+sp*(i+.5);g.save();g.beginPath();g.arc(x,y+88,96,0,Math.PI*2);g.fillStyle='#ffffff';g.fill();g.lineWidth=4;g.strokeStyle=tint(COLS[i%COLS.length],.5);g.stroke();g.restore();
+    colorPic(g,w[0],x,y+88,140,S.f['w'+i]);T(g,w[1],x,y+218,FT.bodyB,INK,'center');tap(x-100,y-12,200,210,paint('w'+i));});
+  y+=244;const cw=56,ch=118,slot=TW/(CRAY.length+1.25);
+  rr(g,X0,y,TW,ch+44,28);g.fillStyle='#fff7e0';g.fill();g.lineWidth=4;g.strokeStyle='#ffd8a8';g.stroke();
+  CRAY.forEach(([col,name],i)=>{const x=X0+slot*(i+.6),sel=S.sel===col;crayon(g,x,y+22+ch/2-(sel?16:0),cw,ch,col,sel);tap(x-slot/2,y,slot,ch+44,()=>{S.sel=col;});});
+  const rx=X0+TW-slot*.62,ry=y+22+ch/2;g.save();g.beginPath();g.arc(rx,ry,42,0,Math.PI*2);g.fillStyle='#ffffff';g.fill();g.lineWidth=5;g.strokeStyle='#5cc46a';g.stroke();
+  g.beginPath();g.arc(rx,ry,22,-.4,Math.PI*1.45);g.lineWidth=8;g.lineCap='round';g.strokeStyle='#2b8a3e';g.stroke();g.beginPath();g.moveTo(rx+24,ry-26);g.lineTo(rx+24,ry-4);g.lineTo(rx+4,ry-10);g.closePath();g.fillStyle='#2b8a3e';g.fill();g.restore();
+  tap(rx-50,ry-60,100,120,()=>{S.f={};});
+  return y+ch+50;}
+function drawKid(p,y,k){if(k.color)return drawColor(p,y,k);const g=p.g;const c=acc();const top=y+6,h=Math.min(1290-top,700);
   rr(g,X0,top,TW,h,36);g.fillStyle=tint(c,.1);g.fill();g.lineWidth=5;g.strokeStyle=tint(c,.45);g.stroke();
   g.save();let fs0=330;g.font=fs0+'px "Patrick Hand", "Comic Sans MS", cursive';const mw=(k.pic?TW*.5:TW*.9);while(g.measureText(k.big).width>mw&&fs0>90){fs0-=20;g.font=fs0+'px "Patrick Hand", "Comic Sans MS", cursive';}g.textAlign='center';g.textBaseline='alphabetic';g.lineWidth=14;g.strokeStyle='#ffffff';g.lineJoin='round';
   const BX=k.pic?X0+TW*.3:X0+TW/2;g.strokeText(k.big,BX,top+250+fs0*.36);g.fillStyle=c;g.fillText(k.big,BX,top+250+fs0*.36);g.restore();

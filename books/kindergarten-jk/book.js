@@ -1,5 +1,5 @@
-window.BOOK={readTheory:true,stillCam:true,tokens:true,sketch:true,noLearnDock:true,noThinker:true,storyRight:true,autoRounds:false,playful:true,
-  grade:0,gradeName:'JK',badge:'JUNIOR',subject:'Kindergarten',subTitle:'Junior Kindergarten',codePrefix:'K ',tiles:['J','K'],key:'kj',strands:'numbers, shapes and patterns, letters and sounds, stories, my world, me and my community, and art and music',world:'meadow',rounds:8,
+window.BOOK={noDeviceVoice:true,readTheory:true,stillCam:true,tokens:true,sketch:true,noLearnDock:true,noThinker:true,storyRight:true,autoRounds:false,playful:true,
+  grade:0,gradeName:'JK',badge:'JUNIOR',subject:'Kindergarten',subTitle:'Junior Kindergarten',codePrefix:'K ',tiles:['J','K'],key:'kj',strands:'numbers, shapes and patterns, letters and sounds, stories, my world, me and my community, and art and music',world:'meadow',rounds:10,
   strandColors:{'Letters':'#ff6b6b','Numbers':'#4fb3ff','Shapes and Colours':'#ffb347','Words':'#5cc46a','Shapes and More':'#ffb347','Story Time':'#b07cff'},
   theme:{c:['#ffd166','#ff8fab','#7fd8f0'],mat:'#ffe6f0',bg:'#fff4e6',paper:'#fffaf2'},glyphs:'☀✿♥★☁♪',
   goLines:["Let's play!","Your turn to play!","Ready? Let's play!","Time to play, superstar!","Tap, tap, tap! Let's play!","Let's go, little explorer!","Play time!","Let's have some fun!"],

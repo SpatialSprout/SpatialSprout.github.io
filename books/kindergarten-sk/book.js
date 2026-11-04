@@ -1,5 +1,5 @@
-window.BOOK={readTheory:true,stillCam:true,tokens:true,sketch:true,noLearnDock:true,noThinker:true,storyRight:true,autoRounds:false,playful:true,
-  grade:0,gradeName:'SK',badge:'SENIOR',subject:'Kindergarten',subTitle:'Senior Kindergarten',codePrefix:'K ',tiles:['S','K'],key:'ks',strands:'numbers, shapes and patterns, letters and sounds, stories, my world, me and my community, and art and music',world:'beach',rounds:8,
+window.BOOK={noDeviceVoice:true,readTheory:true,stillCam:true,tokens:true,sketch:true,noLearnDock:true,noThinker:true,storyRight:true,autoRounds:false,playful:true,
+  grade:0,gradeName:'SK',badge:'SENIOR',subject:'Kindergarten',subTitle:'Senior Kindergarten',codePrefix:'K ',tiles:['S','K'],key:'ks',strands:'numbers, shapes and patterns, letters and sounds, stories, my world, me and my community, and art and music',world:'beach',rounds:10,
   strandColors:{'Letters':'#ff6b6b','Numbers':'#4fb3ff','Shapes and Colours':'#ffb347','Words':'#5cc46a','Shapes and More':'#ffb347','Story Time':'#b07cff'},
   theme:{c:['#7fd8f0','#ffd166','#5cc46a'],mat:'#e3f6ff',bg:'#eef9ff',paper:'#f7fcff'},glyphs:'☀✿♥★☁♪',
   goLines:["Let's play!","Your turn to play!","Ready? Let's play!","Time to play, superstar!","Tap, tap, tap! Let's play!","Let's go, big kid!","Play time!","You can do it! Let's play!"],
