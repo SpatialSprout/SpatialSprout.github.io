@@ -32,7 +32,7 @@ C.blocks=function(g2,st,h,set){const u=set.u||.105;const H=set.h||0,Tn=set.t||0,
 /* ---------- column addition / subtraction with carrying and trading ---------- */
 C.col=function(g2,st,h,set){const a=set.a,b=set.b,op=set.op||'+';const ans=op==='+'?a+b:op==='-'?a-b:a*b;const W=Math.max(String(a).length,String(b).length,String(ans).length);
   const cw=.62,x0=.35+(W-1)*cw/2;const xs=i=>x0-i*cw;/* i = place from the right */const z=[-3.0,-2.3,-1.45];const done=st.colDone||set.done;
-  const lab=['ones','tens','hundreds'];for(let i=0;i<W;i++){const L=tag(lab[i][0].toUpperCase(),{size:.2,color:'#7a8094'});L.position.set(xs(i),.12,-3.12);g2.add(L);
+  const lab=['ones','tens','hundreds','thousands','ten thousands'],SL=['O','T','H','Th','TTh'];for(let i=0;i<W;i++){const L=tag(SL[i],{size:.2,color:'#7a8094'});L.position.set(xs(i),.12,-3.12);g2.add(L);
     const lane=mk(G('mk_lane',()=>new THREE.BoxGeometry(cw*.92,.02,1.95)),new THREE.MeshLambertMaterial({color:i%2?'#eaf4ff':'#fff6e0'}),0);at(lane,xs(i),.01,-2.15);name(lane,lab[i]+' column',lab[i]);g2.add(lane);}
   const put=(n,row,part)=>{String(n).split('').reverse().forEach((d,i)=>{const bl=num(d,{side:row===2?'#5fd38a':'#ffd24a'});bl.scale.setScalar(.95);at(bl,xs(i),.02,z[row]);bl.userData.part=part+i;g2.add(bl);});};
   put(a,0,'a');put(b,1,'b');const s=num(op==='*'?'×':op,{side:'#ff8a5b'});s.scale.setScalar(.8);at(s,xs(W-1)-cw-.05,.02,z[1]);g2.add(s);

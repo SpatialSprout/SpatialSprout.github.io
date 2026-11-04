@@ -47,6 +47,28 @@ const planet=(r,c,ring)=>{const g=new THREE.Group();const s=P.mk(G('hpl'+r,()=>n
 const desk=()=>{const g=new THREE.Group();g.add(at(S.table({w:.5,d:.35,h:.3}),0,0,0));g.add(at(S.chair({c:'#74c0fc'}),0,0,.25,.9,Math.PI));return g;};
 /* ---------------- the habitats ---------------- */
 const ENV={
+ /* ---- Grade 4 worlds ---- */
+ egypt(g,T){ground(g,'#ecd08c');const rv=P.ribbon([[-2.2,.02,CZ+1.5],[-.7,.02,CZ+1.8],[.7,.02,CZ+1.4],[2.2,.02,CZ+1.75]],'#4dabf7',{w:.75,up:V(0,1,0)});rv.userData.full();g.add(rv);g.userData.water=[0,CZ+1.6];
+   g.add(at(P3('pyramid'),-1.15,0,CZ-2.0,2.6));g.add(at(P3('pyramid'),.25,0,CZ-2.3,1.8));g.add(at(P3('sphinx'),1.35,0,CZ-1.5,1.3,-.4));g.add(at(P3('obelisk'),-1.85,0,CZ-.6,1.0));
+   for(let i=0;i<6;i++)g.add(at(P3('papyrus'),-1.9+i*.75,0,CZ+1.05+(i%2)*.12,.8));g.add(at(P3('palm tree'),1.8,0,CZ+.4,.9));g.add(at(P3('camel'),-1.6,0,CZ+.3,.8,.6));
+   const bt=P3('sailboat');bt.scale.setScalar(.7);g.add(bt);T.push((dt,t)=>{bt.position.set(Math.sin(t*.18)*1.5,.03,CZ+1.6);bt.rotation.y=Math.cos(t*.18)>0?0:Math.PI;});T.push(fx(g,'dust',{h:1.0}));return 'Ancient Egypt by the Nile';},
+ castle(g,T){ground(g,'#9fcf7c');g.add(at(P3('castle'),0,0,CZ-2.05,2.3));const fl=P3('flag');g.add(at(fl,1.55,0,CZ-1.6,.9));
+   for(let i=0;i<3;i++)g.add(at(P3('hut'),-1.7+i*.45,0,CZ-.7+(i%2)*.25,.8,R()));g.add(at(P3('knight'),1.4,0,CZ+.5,1.0,-.5));g.add(at(P3('horse'),1.75,0,CZ+.9,.85,-.8));g.add(at(P3('well'),-1.5,0,CZ+.9,.9));
+   for(let r=0;r<3;r++)for(let k=0;k<5;k++){const c=P3('corn');c.scale.setScalar(.4);c.position.set(.9+k*.17,0,CZ-.6+r*.22);g.add(c);}g.add(at(P3('cart'),-.9,0,CZ+1.5,.9,.4));back(g,6,()=>S.tree({s:.7+R()*.3}),CZ-2.5);return 'A medieval castle and village';},
+ cave(g,T){ground(g,'#8d7b68');for(let i=0;i<7;i++){const r=S.rock({s:2.2+R()*1.6,c:'#7a6a5a'});r.position.set(-2+i*.66,0,CZ-2.35+(R()-.5)*.3);g.add(r);}
+   for(let i=0;i<9;i++){const s=P.mk(G('hstal'+i%3,()=>new THREE.ConeGeometry(.07+(i%3)*.02,.4+(i%3)*.15,7)),pp('#c9b79c',{mix:.2}));s.position.set((R()-.5)*3.8,.2+(i%3)*.07,CZ-1.8+R()*1.0);if(Math.abs(s.position.x)<1)s.position.x+=1.3*Math.sign(s.position.x||1);g.add(s);}
+   ['#b197fc','#74c0fc','#ffd43b'].forEach((c,i)=>g.add(at(P3('crystal',{c}),-1.7+i*1.6+(i==1?1.5:0),0,CZ+.9-(i%2)*.4,1.1)));g.add(at(P3('geode'),1.7,0,CZ-.3,1.1));g.add(at(P3('fossil'),-1.6,0,CZ-.2,1.2));g.add(at(P3('lamp'),-1.85,0,CZ+1.6,.8));
+   const p=P.mk(G('hcvp',()=>new THREE.CylinderGeometry(.6,.6,.02,28)),P.glow('#3d8fd6',.8,.3));p.position.set(.9,.015,CZ+1.5);p.scale.set(1,1,.5);g.add(p);T.push(fx(g,'sparkle',{h:1.2}));return 'Inside a cave';},
+ workshop(g,T){ground(g,'#d9c4a1');const ct=S.counter(3.4);ct.position.set(0,0,CZ-2.25);g.add(ct);g.add(at(P3('gears'),-1.2,.36,CZ-2.25,1.1));g.add(at(P3('pulley'),1.4,0,CZ-1.7,1.2));g.add(at(P3('screw'),-.4,.36,CZ-2.25,1.1));
+   g.add(at(P3('hammer'),.2,.36,CZ-2.25,1.0));g.add(at(P3('saw'),.8,.36,CZ-2.25,.9));g.add(at(P3('lever'),-1.4,0,CZ+.6,1.1,.3));g.add(at(P3('wheelbarrow'),1.5,0,CZ+.8,1.0,-.5));g.add(at(P3('wedge'),-1.7,0,CZ-1.0,1.1));
+   const sp=g.children.find(o=>o.position.x===-1.2&&o.position.z===CZ-2.25);const ws=[];if(sp)sp.traverse(o=>{if(o.isMesh&&o.geometry.type==='CylinderGeometry')ws.push(o);});return 'The machine workshop';},
+ prairie(g,T){ground(g,'#e3cf7a');for(let r=0;r<5;r++){const b=box(4.1,.04,.32,['#e9c46a','#d4b04c'][r%2]);b.position.set(0,.02,CZ+.4+r*.42);g.add(b);}g.add(at(P3('grain elevator'),-1.3,0,CZ-2.0,1.4));g.add(at(P3('barn'),.9,0,CZ-2.2,1.2));
+   g.add(at(P3('combine'),1.3,0,CZ+.5,1.0,-.3));g.add(at(P3('bison'),-1.6,0,CZ-.6,.9,.5));g.add(at(P3('oil pump'),1.6,0,CZ-1.0,1.0));const tr=P3('train');tr.scale.setScalar(.8);g.add(tr);T.push((dt,t)=>{tr.position.set(-2+((t*.15)%1)*4,0,CZ-1.45);tr.rotation.y=Math.PI/2;});return 'The prairie (Interior Plains)';},
+ coast(g,T){ground(g,'#c8b78f');const w=P.mk(G('hcst',()=>new THREE.BoxGeometry(4.2,.02,2.3)),P.glow('#2f7dc0',.9,.25));w.position.set(0,.015,CZ+1.4);g.add(w);g.userData.water=[0,CZ+1.4];
+   g.add(at(P3('lighthouse'),-1.5,0,CZ-1.8,1.2));for(let i=0;i<3;i++)g.add(at(P3('house',{c:['#e03131','#fab005','#1c7ed6'][i]}),.2+i*.6,0,CZ-2.0,.6));g.add(at(P3('lobster trap'),-.6,0,CZ-.4,1.0));
+   const b=P3('fishing boat');g.add(b);T.push((dt,t)=>{b.position.set(Math.sin(t*.2)*1.4,.03+Math.sin(t*1.5)*.02,CZ+1.3);b.rotation.y=Math.cos(t*.2)>0?0:Math.PI;});back(g,5,()=>S.pine({s:.7+R()*.4}),CZ-2.55);edge(g,4,()=>S.rock({s:.8+R()}));return 'The Atlantic coast';},
+ tundra(g,T){return ENV.arctic(g,T);},
+ rainforest(g,T){return ENV.jungle(g,T);},
  /* ---- Grade 3 worlds ---- */
  village(g,T){ground(g,'#b5d68c');g.add(at(P3('log cabin'),-1.25,0,CZ-1.9,1.25,.3));g.add(at(P3('log cabin'),.9,0,CZ-2.15,1.0,-.25));g.add(at(P3('well'),1.65,0,CZ-.9,1.1));
    const f=S.fence(3.9);f.position.set(0,0,CZ-2.55);g.add(f);g.add(at(P3('ox'),-1.6,0,CZ+.9,.85,.8));g.add(at(P3('wagon'),1.55,0,CZ+.85,.9,-.5));
@@ -177,6 +199,13 @@ put('village','log cabin,well,anvil,spinning wheel,butter churn,settler,pioneer,
 put('nation','longhouse,wigwam,three sisters,pelt,bow,moccasin,drum,squash,beans,fur');
 put('mine','mine cart,pickaxe,ore,gold,silver,miner,nickel,rock');
 put('river','beaver dam,lodge');
+put('egypt','pyramid,sphinx,obelisk,papyrus,scroll,pharaoh,nile,egypt,mummy');
+put('castle','castle,knight,helmet,shield,medieval,king,queen,lord,peasant,jester');
+put('cave','crystal,geode,fossil,ammonite,trilobite,stalactite,cave,gem,quartz,granite,marble,pumice,sandstone,rock layers');
+put('workshop','pulley,gears,gear,lever,wedge,screw,axe,machine,mechanism');
+put('prairie','grain elevator,combine,bison,wheat,oil pump,prairie');
+put('coast','fishing boat,lobster trap,lobster,cod,atlantic');
+put('arctic','qulliq,oil lamp,harpoon,dog sled,inukshuk,inuit');
 put('lab','magnet,beaker,scientist,microscope,spring,ramp,experiment');
 put('construction','crane,bulldozer,brick,skyscraper,truss,traffic cone,builder,construction,hammer,saw');
 put('lake','great lake,loon,canoe,lake');
@@ -193,6 +222,7 @@ const AN={};Object.keys(ANIM).forEach(k=>ANIM[k].split(',').forEach(n=>AN[n]=k))
 /* when a lesson is about letters, numbers or ideas (not a thing with a home), pick a habitat from its strand */
 const STRAND_ENV={'Sounds and Letters':'garden','Sounds and Spelling':'meadow','Words':'park','Naming Words':'town','Sentences':'classroom','Action Words':'park','Describing and Joining':'meadow','Writing':'classroom',
  'Life Systems':'forest','Matter and Energy':'kitchen','Structures and Mechanisms':'city','Earth and Space Systems':'sky','Heritage and Identity':'home','People and Environments':'town','Plants':'garden','Forces and Motion':'park','Strong Structures':'construction','Soils':'farm','Early Communities':'village','Living in Ontario':'shield','Word Study':'garden','Grammar':'park','Reading and Writing':'classroom',
+ 'Habitats and Communities':'forest','Light and Sound':'night','Machines':'workshop','Rocks and Minerals':'cave','Early Societies':'castle','Regions of Canada':'prairie','Reading':'classroom','Writing':'classroom','Media':'city',
  'Number':'store','Algebra':'garden','Data':'park','Spatial Sense':'city','Financial Literacy':'store'};
 const ENVS=Object.keys(ENV);
 P.HAB={ENV,MAP,AN,
