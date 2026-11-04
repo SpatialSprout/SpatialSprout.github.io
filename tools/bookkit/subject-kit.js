@@ -145,7 +145,7 @@ function render(g2,st,h){const set=st.set||{};const reg={items:[],opts:[],built:
   /* the 3D explanation page: the whole page becomes the world of the thing being explained */
   const EX=st.explain&&P.HAB&&!set.scene&&!set.grid;let heroDone=false;
   if(EX){const hn=set.row?set.row[Math.min(st.hero||0,set.row.length-1)]:(set.pic||(set.items&&set.items[0]&&set.items[0][0])||null);
-    const CUST=!!(set.custom||set.fill||set.build);const kind=st.devKind||(hn?P.HAB.kindFor(hn,P.HAB.strandEnv(st.strand,st.lidx)):P.HAB.strandEnv(st.strand,st.lidx));const H=CUST?P.HAB.mini(kind,(st.lidx||1)*31,!!(set.custom&&{pv:1,coord:1,angle:1,stem:1,pline:1,bars2:1,dline:1,gears:1,lever:1,pulley:1,rays:1,col:1}[set.custom])):P.HAB.make(kind,(st.lidx||1)*31+(st.hero||0)*7);g2.add(H.g);reg.envTick=H.tick;
+    const CUST=!!(set.custom||set.fill||set.build);const kind=st.devKind||(hn?P.HAB.kindFor(hn,P.HAB.strandEnv(st.strand,st.lidx)):P.HAB.strandEnv(st.strand,st.lidx));const H=CUST?P.HAB.mini(kind,(st.lidx||1)*31,!!(set.custom&&(CUSTOM[set.custom]&&CUSTOM[set.custom].bare||{pv:1,coord:1,angle:1,stem:1,pline:1,bars2:1,dline:1,gears:1,lever:1,pulley:1,rays:1,col:1}[set.custom]))):P.HAB.make(kind,(st.lidx||1)*31+(st.hero||0)*7);g2.add(H.g);reg.envTick=H.tick;
     if(st.lastKind!==kind){H.g.scale.y=.02;tween(.7,k=>{H.g.scale.y=.02+.98*easeOut(k);});st.lastKind=kind;}
     const heroAt=(n,x,z,sc)=>{if(P.HAB.AN[n]==='swim'&&H.water){x=H.water[0];z=H.water[1];}const hero=P.STAGE?P.STAGE.prop(n,{s:sc,label:false,bare:true,tap:false}):standee(n,{label:false});const fly=P.HAB.AN[n]==='fly';hero.position.set(x,fly?.5:0,z);hero.userData.name=n;hero.userData.kind=n;g2.add(hero);
       const an=P.HAB.animate(hero,n,{x,z,y:fly?.1:0,ry:-.5});reg.heroTick=an;return hero;};
@@ -292,6 +292,7 @@ P.unit=function(d){(window.__UNITS=window.__UNITS||[]).push(d);if(BKs.autoRounds
         word(i){A.pop();const set=st.set;st.built.push(i);draw();if(st.built.length===set.build.length){const ok=st.built.every((k,j)=>set.build[k]===set.build[j]);
           if(ok){act(set.build.join(' '));A.good();st.msg=set.build.join(' ');A.redraw();if(play())game.solved(st.round.ok||'Yes! That sentence makes sense.');}else{if(play())bad(st.round.hint||'Hmm, that does not make sense. Try again!');else say('Try again!');st.built=[];A.later(draw,800);}}},
         redrawCustom(){draw();},
+        win(m){if(play())game.solved(m||st.round.ok||'Yes!');else A.good(m||'');},miss(m){if(play())bad(m||st.round.hint||'Try again!');else A.say(m||'Try again!');},isPlay(){return !!play();},
         choice(t,b){A.pop();if(!play())return;if(String(t)===String(st.round.ans)){st.chosen=t;draw();const o=reg.opts.find(x=>x.userData.opt===t);if(o)live(o,true);game.solved(st.round.ok||'Yes!');}else{shake(b);bad(st.round.hint||'Not that one. Try again!');}},
         cell(id){A.pop();st.cellLit=id;draw();const it=((st.set.grid||{}).items||{})[id];say(id+(it?': '+it:''));if(play()&&st.round.cell){if(id===st.round.cell)game.solved(st.round.ok||'Yes! '+id+'.');else bad(st.round.hint||'Find the row letter first, then the column number.');}}
       };

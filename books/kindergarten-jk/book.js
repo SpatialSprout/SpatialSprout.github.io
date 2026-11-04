@@ -1,0 +1,10 @@
+window.BOOK={readTheory:true,stillCam:true,tokens:true,sketch:true,noLearnDock:true,noThinker:true,storyRight:true,autoRounds:false,playful:true,
+  grade:0,gradeName:'JK',badge:'JUNIOR',subject:'Kindergarten',subTitle:'Junior Kindergarten',codePrefix:'K ',tiles:['J','K'],key:'kj',strands:'numbers, shapes and patterns, letters and sounds, stories, my world, me and my community, and art and music',world:'meadow',rounds:8,
+  strandColors:{'Numbers':'#ff6b6b','Shapes and Patterns':'#ffb347','Letters and Sounds':'#16a36f','Words and Stories':'#2f7de1','My World':'#26a69a','Me and My Community':'#8b5cf6','Art and Music':'#ff6bb5'},
+  theme:{c:['#ffd166','#ff8fab','#7fd8f0'],mat:'#ffe6f0',bg:'#fff4e6',paper:'#fffaf2'},glyphs:'☀✿♥★☁♪',
+  goLines:["Let's play!","Your turn to play!","Ready? Let's play!","Time to play, superstar!","Tap, tap, tap! Let's play!","Let's go, little explorer!","Play time!","Let's have some fun!"],
+  winLine:'Hooray! You did it, superstar!',
+  introLine:'A Junior Kindergarten book that comes alive. Every story is read to you, every toy can be tapped, and every page turns into a little 3D world: a farm, a garden, a playroom and a busy town. Tap, count, pop balloons and feed hungry animals!',
+  about:'follows the Ontario Kindergarten Program (2016), Year 1, through its four frames (Belonging and Contributing, Self-Regulation and Well-Being, Demonstrating Literacy and Mathematics Behaviours, and Problem Solving and Innovating), and the preschool topics of complete Canadian curriculum workbooks: sorting, counting, shapes, patterns, the alphabet, sounds, rhymes, my body, animals, plants, weather, me and my family, safety, my community, colours and music. All stories, games and questions are new.',
+  credits:'Picture icons: Twemoji by Twitter, Inc. and other contributors, licensed CC BY 4.0.',
+  files:['pics.js','sketch.js','props3d.js','habitats.js','kit.js','subject-kit.js','stage.js','acts.js','math-kit2.js','math-kit3.js','pk-kit.js','g4.js','pk.js','lessons-a.js','lessons-b.js','lessons-c.js','vtime.js']};

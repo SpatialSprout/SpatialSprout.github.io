@@ -47,6 +47,14 @@ const planet=(r,c,ring)=>{const g=new THREE.Group();const s=P.mk(G('hpl'+r,()=>n
 const desk=()=>{const g=new THREE.Group();g.add(at(S.table({w:.5,d:.35,h:.3}),0,0,0));g.add(at(S.chair({c:'#74c0fc'}),0,0,.25,.9,Math.PI));return g;};
 /* ---------------- the habitats ---------------- */
 const ENV={
+ /* ---- Kindergarten worlds ---- */
+ playroom(g,T){ground(g,'#f3d9b1');const rug=P.mk(G('hpr',()=>new THREE.CylinderGeometry(1.5,1.5,.02,40)),pp('#a5d8ff',{mix:.2}));rug.scale.set(1.2,1,.8);rug.position.set(0,.012,CZ+.2);g.add(rug);
+   const rug2=P.mk(G('hpr2',()=>new THREE.CylinderGeometry(1.0,1.0,.022,40)),pp('#ffd8a8',{mix:.2}));rug2.scale.set(1.2,1,.8);rug2.position.set(0,.014,CZ+.2);g.add(rug2);
+   const wl=box(4.2,1.4,.06,'#fff0f6');wl.position.set(0,.7,CZ-2.6);g.add(wl);const wn=box(.9,.6,.03,'#a5d8ff',{mix:.05});wn.position.set(-1.1,.85,CZ-2.55);g.add(wn);
+   g.add(at(P3('teddy'),-1.6,0,CZ-1.9,1.1,.4));g.add(at(P3('train'),1.2,0,CZ-1.8,.8,-.3));g.add(at(P3('ball'),1.7,0,CZ+.9,1.0));g.add(at(P3('drum'),-1.7,0,CZ+1.0,.9));
+   ['#ff6b6b','#ffd43b','#4dabf7','#69db7c','#b197fc'].forEach((c,i)=>{const b=box(.22,.22,.22,c);b.position.set(.2+(i%3)*.25,.11+Math.floor(i/3)*.22,CZ-2.1+(i>2?.0:0));g.add(b);});
+   g.add(at(P3('kite'),-.5,1.2,CZ-2.5,.8));g.add(at(P3('book'),-1.2,0,CZ-2.1,1.1));const bl=P3('balloon');bl.position.set(1.8,0,CZ-2.2);g.add(bl);T.push((dt,t)=>{bl.position.y=Math.sin(t*1.3)*.08;});
+   T.push(fx(g,'sparkle',{h:1.4}));return 'The playroom';},
  /* ---- Grade 4 worlds ---- */
  egypt(g,T){ground(g,'#ecd08c');const rv=P.ribbon([[-2.2,.02,CZ+1.5],[-.7,.02,CZ+1.8],[.7,.02,CZ+1.4],[2.2,.02,CZ+1.75]],'#4dabf7',{w:.75,up:V(0,1,0)});rv.userData.full();g.add(rv);g.userData.water=[0,CZ+1.6];
    g.add(at(P3('pyramid'),-1.15,0,CZ-2.0,2.6));g.add(at(P3('pyramid'),.25,0,CZ-2.3,1.8));g.add(at(P3('sphinx'),1.35,0,CZ-1.5,1.3,-.4));g.add(at(P3('obelisk'),-1.85,0,CZ-.6,1.0));
@@ -223,6 +231,7 @@ const AN={};Object.keys(ANIM).forEach(k=>ANIM[k].split(',').forEach(n=>AN[n]=k))
 const STRAND_ENV={'Sounds and Letters':'garden','Sounds and Spelling':'meadow','Words':'park','Naming Words':'town','Sentences':'classroom','Action Words':'park','Describing and Joining':'meadow','Writing':'classroom',
  'Life Systems':'forest','Matter and Energy':'kitchen','Structures and Mechanisms':'city','Earth and Space Systems':'sky','Heritage and Identity':'home','People and Environments':'town','Plants':'garden','Forces and Motion':'park','Strong Structures':'construction','Soils':'farm','Early Communities':'village','Living in Ontario':'shield','Word Study':'garden','Grammar':'park','Reading and Writing':'classroom',
  'Habitats and Communities':'forest','Light and Sound':'night','Machines':'workshop','Rocks and Minerals':'cave','Early Societies':'castle','Regions of Canada':'prairie','Reading':'classroom','Writing':'classroom','Media':'city',
+ 'Numbers':'farm','Shapes and Patterns':'park','Letters and Sounds':'garden','Words and Stories':'playroom','My World':'meadow','Me and My Community':'town','Art and Music':'playroom',
  'Number':'store','Algebra':'garden','Data':'park','Spatial Sense':'city','Financial Literacy':'store'};
 const ENVS=Object.keys(ENV);
 P.HAB={ENV,MAP,AN,
@@ -238,7 +247,7 @@ P.HAB={ENV,MAP,AN,
     its positions are squeezed into the band behind the story's actors, and the middle front stays clear */
  strip(kind,seed){SEED=seed||5;const tmp=new THREE.Group();const T=[];try{(ENV[kind]||ENV.meadow)(tmp,T);}catch(e){console.error('strip',kind,e);}
    const g=new THREE.Group();const g0=tmp.children[0];let gc='#a7d08c';try{gc='#'+g0.children[2].material.color.getHexString();}catch(e){}
-   const IN={home:['#d4a373','#fdebd0'],kitchen:['#e9d5b0','#e7f5ff'],classroom:['#d8c3a0','#fff3bf'],bedroom:['#c8b6e2','#f3e8ff'],lab:['#dfe6ec','#f8f9fa'],store:['#e3e8ee','#fff4e6']}[kind];if(IN)gc=IN[0];
+   const IN={home:['#d4a373','#fdebd0'],kitchen:['#e9d5b0','#e7f5ff'],classroom:['#d8c3a0','#fff3bf'],bedroom:['#c8b6e2','#f3e8ff'],lab:['#dfe6ec','#f8f9fa'],playroom:['#f3d9b1','#fff0f6'],store:['#e3e8ee','#fff4e6']}[kind];if(IN)gc=IN[0];
    const b=S.base(4.15,2.35,gc);b.position.z=-2.5;b.traverse(m=>{if(m.isMesh)m.castShadow=false;});g.add(b);
    if(IN){const wl=box(4.15,.95,.06,IN[1]);wl.position.set(0,.475,-3.66);g.add(wl);const tr=box(4.15,.06,.08,gc);tr.position.set(0,.03,-3.62);g.add(tr);
      const wn=box(.7,.45,.02,'#a5d8ff',{mix:.05});wn.position.set(-1.2,.55,-3.62);g.add(wn);const fr=box(.78,.06,.03,'#ffffff');fr.position.set(-1.2,.32,-3.61);g.add(fr);
