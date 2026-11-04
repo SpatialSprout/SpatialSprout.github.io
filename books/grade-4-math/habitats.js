@@ -230,9 +230,9 @@ P.HAB={ENV,MAP,AN,
  /* build a habitat: returns {g, tick, title} */
  make(kind,seed){SEED=seed||7;const g=new THREE.Group();const T=[];let title='';try{title=(ENV[kind]||ENV.meadow)(g,T);}catch(e){console.error('habitat',kind,e);}
    g.traverse(o=>{if(o.isMesh&&!o.userData.ink){o.receiveShadow=true;}});return {g,tick:(dt,t)=>T.forEach(f=>{try{f(dt,t);}catch(e){}}),title,water:g.userData.water};},
- mini(kind,seed){SEED=seed||3;const g=new THREE.Group();const T=[];const tmp=new THREE.Group();try{(ENV[kind]||ENV.meadow)(tmp,T);}catch(e){}
+ mini(kind,seed,bare){SEED=seed||3;const g=new THREE.Group();const T=[];const tmp=new THREE.Group();try{(ENV[kind]||ENV.meadow)(tmp,T);}catch(e){}
    const gc=tmp.children[0]&&tmp.children[0].children[2]?tmp.children[0].children[2].material.color.getStyle():'#a7d08c';const b=S.base(4.2,2.5,'#'+new THREE.Color(gc).getHexString());b.position.z=-1.95;g.add(b);
-   const keep=tmp.children.slice(1).filter(o=>o.position.z<CZ-1.2&&o.position.y<1.2&&!o.isLight&&Math.abs(o.position.x)>1.25).slice(0,8);keep.forEach(o=>{o.position.z=-3.05+(o.position.z-(CZ-DZ/2))*.25;o.scale.multiplyScalar(.75);g.add(o);});return {g,tick:()=>{}};},
+   const keep=bare?[]:tmp.children.slice(1).filter(o=>o.position.z<CZ-1.2&&o.position.y<1.2&&!o.isLight&&Math.abs(o.position.x)>1.25).slice(0,8);keep.forEach(o=>{o.position.z=-3.05+(o.position.z-(CZ-DZ/2))*.25;o.scale.multiplyScalar(.75);g.add(o);});return {g,tick:()=>{}};},
 
  /* a shallow strip of a habitat for the story half of the page: everything keeps its look and motion,
     its positions are squeezed into the band behind the story's actors, and the middle front stays clear */

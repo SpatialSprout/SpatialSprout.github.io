@@ -39,7 +39,7 @@ C.coord=function(g2,st,h,set){const N=set.size||8,c=Math.min(.36,2.5/N),x0=-N*c/
 /* ---------- angle maker: two arms and an arc; names the angle ---------- */
 const kindOf=d=>d===90?'right':d===180?'straight':d<90?'acute':'obtuse';
 C.angle=function(g2,st,h,set){const list=set.list||[set.deg];const n=list.length,sp=Math.min(1.5,4.2/n);const arms=[];
-  list.forEach((deg,i)=>{const g=new THREE.Group();at(g,(i-(n-1)/2)*sp-(n===1?.4:0)-sp*.15,0,-1.9);g2.add(g);const L=n===1?1.2:Math.min(.75,sp*.6);
+  list.forEach((deg,i)=>{const g=new THREE.Group();at(g,(i-(n-1)/2)*sp-(n===1?.3:0),0,-1.9);g2.add(g);const L=n===1?1.2:Math.min(.75,sp*.42);
     const base=box(L,.04,.05,'#1b2236',0);at(base,L/2,.04,0);g.add(base);const pv=sph(.06,'#e4572e');at(pv,0,.05,0);g.add(pv);
     const arm=new THREE.Group();arm.position.y=.06;const a=box(L,.04,.05,'#2f7de1',0);a.position.x=L/2;arm.add(a);g.add(arm);name(arm,'arm','arm');
     const arcG=new THREE.Group();arcG.position.y=.05;g.add(arcG);

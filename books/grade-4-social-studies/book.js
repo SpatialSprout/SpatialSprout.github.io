@@ -1,0 +1,9 @@
+window.BOOK={readTheory:true,stillCam:true,tokens:true,sketch:true,noLearnDock:true,noThinker:true,storyRight:true,autoRounds:true,grade:4,subject:'Social Studies',tiles:['S','O','C'],key:'4o',strands:'early societies and the regions of Canada',world:'meadow',rounds:10,
+  strandColors:{'Early Societies':'#c27c00','Regions of Canada':'#2f7de1'},
+  theme:{c:['#ffd166','#2f7de1','#c27c00'],mat:'#d9c9a3',bg:'#f3ecdc',paper:'#faf5e8'},glyphs:'☀✿❄☁★♥',
+  goLines:["Now it's your turn to practice!","Let's practice, explorer!","Ready, set, practice!","Your turn! Ten questions are waiting.","Time to show what you know!","Let's put it into practice!","Map out your answers. Let's practice!","Here come your questions. Let's go!","Time travellers, let's practice!","Let's test what we learned!"],
+  winLine:'Amazing, explorer! You answered all ten questions!',
+  introLine:'A social studies book that stands up off the page. Every lesson reads the big idea with you word by word, then the 3D page travels: to the Nile in ancient Egypt, a medieval castle, a Haudenosaunee longhouse, an Inuit camp, and every region of Canada. Each *Practice* spread has ten questions.',
+  about:'follows the Ontario Social Studies curriculum (2018) for Grade 4 and the Grade 4 Social Studies topics of complete Canadian curriculum workbooks, with all-new stories, examples and questions. Lessons are tagged with Ontario strands: A Heritage and Identity (early societies to 1500 CE) and B People and Environments (political and physical regions of Canada).',
+  credits:'Picture icons: Twemoji by Twitter, Inc. and other contributors, licensed CC BY 4.0.',
+  files:['pics.js','sketch.js','props3d.js','habitats.js','kit.js','subject-kit.js','stage.js','acts.js','math-kit2.js','math-kit3.js','math-kit4.js','g4.js','lessons-a.js','lessons-b.js','lessons-c.js','vtime.js']};

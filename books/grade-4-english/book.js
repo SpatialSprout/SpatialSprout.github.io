@@ -1,0 +1,9 @@
+window.BOOK={readTheory:true,stillCam:true,tokens:true,sketch:true,noLearnDock:true,noThinker:true,storyRight:true,autoRounds:true,grade:4,subject:'English',tiles:['E','N','G'],key:'4e',strands:'word study, grammar, reading and writing',world:'space',rounds:10,
+  strandColors:{'Word Study':'#16a36f','Grammar':'#2f7de1','Reading':'#8b5cf6','Writing':'#e4572e'},
+  theme:{c:['#ffd166','#2f7de1','#8b5cf6'],mat:'#b8c4ee',bg:'#e9ecfb',paper:'#f3f5ff'},glyphs:'☀✿❄☁★♥',
+  goLines:["Now it's your turn to practice!","Let's practice, word wizard!","Ready, set, practice!","Your turn! Ten questions are waiting.","Time to show what you know!","Let's put it into practice!","Word power on! Let's practice.","Here come your questions. Let's go!","Grab your pencil. Let's practice!","Let's test what we learned!"],
+  winLine:'Amazing, word wizard! You answered all ten questions!',
+  introLine:'An English book that stands up off the page. Every lesson reads the big idea with you word by word, then acts out a true story about the world: Tim Horton on the ice, a beetle stronger than an elephant, cheese racing down a hill, and the highest tides on Earth. Each *Practice* spread has ten questions.',
+  about:'follows the Ontario Language curriculum (2023) for Grade 4 and the Grade 4 English topics of complete Canadian curriculum workbooks, with all-new stories, examples and questions. Lessons are tagged with Ontario strands: A Literacy Connections, B Foundations of Language (word study, grammar, conventions), C Comprehension and D Composition.',
+  credits:'Picture icons: Twemoji by Twitter, Inc. and other contributors, licensed CC BY 4.0.',
+  files:['pics.js','sketch.js','props3d.js','habitats.js','kit.js','subject-kit.js','stage.js','acts.js','math-kit2.js','math-kit3.js','math-kit4.js','g4.js','lessons-a.js','lessons-b.js','lessons-c.js','lessons-d.js','vtime.js']};

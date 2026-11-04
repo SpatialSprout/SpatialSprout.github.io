@@ -1,0 +1,173 @@
+/* The Interactive Classroom: Grade 4 Social Studies — Heritage and Identity: early societies, 3000 BCE to 1500 CE */
+(function(){
+"use strict";
+const P=window.PM;if(!P||!P.unit)return;const U=P.unit,R=P.R,S=P.S;
+
+/* 1 ─ What is an early society? */
+U({id:'t01',title:'Early societies and timelines',strand:'Early Societies',codes:['A3.1','A2.3'],
+ guide:{goal:'Understand what a society is, read a timeline from 3000 BCE to 1500 CE, and locate some early societies on a globe and maps.',words:'society, early society, BCE, CE, timeline, century, globe',ask:['What does BCE mean?','Which came first: 2500 BCE or 500 CE?','Name three early societies and where they were.'],home:'Make a timeline of your family with 5 important dates.'},
+ watch:['Travel back in time!','BCE counts down to year 1. CE counts up from year 1. 3000 BCE is about 5 000 years ago.'],
+ fig:'A timeline with early societies placed on it.',
+ page:{story:{title:'The Time-Travel Map',text:'In Ms. Osei’s class, a giant *timeline* stretched across the wall. "We are going to visit *early societies*," she said. "A *society* is a group of people who share a way of life, rules and a place." On the timeline, *Ancient Egypt* began around *3000 BCE*. *Ancient China* built the *Great Wall* over many centuries. In *Europe*, the *Middle Ages* had castles and knights around *1000 CE*. In North America, the *Haudenosaunee* farmed the Three Sisters, and the *Thule* people, ancestors of the *Inuit*, hunted in the Arctic. Kwame spun the *globe*. "Let’s go!"',pics:['globe','map','teacher','boy'],
+   acts:[[null,'classroom',['globe','teacher','boy'],'Let’s time travel!'],['Ancient Egypt','egypt',['pyramid','camel'],'3000 BCE!'],['Middle Ages','castle',['castle','knight'],'Castles and knights!'],['Inuit','arctic',['igloo','kayak'],'The Arctic!']]},
+  boxes:[{title:'Reading the timeline',lines:['*BCE* = Before the Common Era (counts down)','*CE* = Common Era (counts up)','3000 BCE → 1 BCE → 1 CE → 1500 CE','a *century* = 100 years']},
+   {title:'Societies we will visit',lines:['*Ancient Egypt* (Africa)','*Ancient China* (Asia)','*Medieval Europe*','*Haudenosaunee* (First Nation, eastern Great Lakes)','*Thule / Inuit* (Arctic)']}],
+  cards:[{q:'Which is older: 1200 BCE or 800 BCE?',a:'*1200 BCE*'},{q:'How many years in 3 centuries?',a:'*300*'}],
+  words:[['society','a group of people who share a way of life, a place and rules'],['BCE','Before the Common Era: years before year 1']]},
+ steps:[
+  {say:'Read the story',speech:'A timeline stretched across the wall. Ancient Egypt began around three thousand BCE. Medieval Europe had castles around one thousand CE. The Haudenosaunee and the Thule lived in North America.',set:S.row(['globe','map','teacher','boy'])},
+  {say:'The timeline',speech:'BCE years count down toward year one. CE years count up from year one. The bigger the BCE number, the longer ago it was.',set:{custom:'line',min:-3000,max:1500,step:500,every:1500,mark:[-3000,1000]},
+   cues:[['count down','mark','3000 BCE'],['count up','mark','1000 CE']]},
+  {say:'Around the world',speech:'Egypt grew along the Nile in Africa. China grew along the Yellow River in Asia. The Haudenosaunee lived near the Great Lakes, and the Thule lived in the Arctic.',set:S.row(['pyramid','great wall','longhouse','igloo'],{labels:['Egypt','China','Haudenosaunee','Thule']}),
+   cues:[['Egypt','pyramid','Africa'],['China','great wall','Asia'],['Haudenosaunee','longhouse','Great Lakes'],['Thule','igloo','Arctic']]}],
+ more:{title:'Did you know?',text:'The *pyramids* of Egypt were already very old when the *Middle Ages* began. Cleopatra lived closer in time to us than to the building of the Great Pyramid!',pics:['pyramid']},
+ rounds:[R.q('A society is…',['a group sharing a way of life, a place and rules','one person','a kind of food'],'a group sharing a way of life, a place and rules'),R.q('Which is older?',['2500 BCE','500 CE'],'2500 BCE'),
+  R.q('A century is…',['100 years','10 years','1 000 years'],'100 years'),R.q('Around when did Ancient Egypt begin?',['3000 BCE','1500 CE','1000 CE'],'3000 BCE'),
+  R.q('Who were the ancestors of the Inuit?',['the Thule','the Romans','the Egyptians'],'the Thule'),R.q('Castles and knights were part of…',['Medieval Europe','Ancient Egypt','the Thule'],'Medieval Europe'),
+  R.q('*CE* years…',['count up from year 1','count down to year 1','are made up'],'count up from year 1'),R.tf('The Haudenosaunee lived near the Great Lakes.',true)],
+ tries:[['Put in order: 1000 CE, 3000 BCE, 500 BCE.','*3000 BCE, 500 BCE, 1000 CE*'],['Find Egypt and China on a globe.','Africa and Asia']]});
+
+/* 2 ─ Ancient Egypt and the Nile */
+U({id:'t02',title:'Ancient Egypt: gift of the Nile',strand:'Early Societies',codes:['A3.4','A3.5','A1.4'],
+ guide:{goal:'Describe how the Nile River’s yearly flood made farming possible in Ancient Egypt, and how the environment shaped food, homes and work.',words:'Nile, flood, silt, irrigation, papyrus, desert',ask:['Why was the Nile flood important?','What did Egyptians make from papyrus?','How did the desert protect Egypt?'],home:'Plant two seeds: one in sandy soil, one in rich soil. Which grows better?'},
+ watch:['No Nile, no Egypt!','Every year the Nile flooded and left rich black mud called silt, perfect for crops.'],
+ fig:'The Nile with pyramids and green fields.',
+ page:{story:{title:'The Flood Is Coming',text:'In Ancient *Egypt*, about *4 000* years ago, a girl named *Nefer* watched the *Nile River* rise. Every summer the river *flooded* the fields. When the water went down, it left thick black *silt*. "The silt makes the soil rich," said her father, a farmer. They planted *wheat*, *barley* and *flax*. Workers dug *canals* to carry water to dry fields: *irrigation*. Along the riverbank grew tall *papyrus* reeds. Nefer’s brother cut them to make *paper*, *boats* and *baskets*. Beyond the green strip lay the hot *desert*, which kept enemies away.',pics:['river','papyrus','girl','camel'],
+   acts:[[null,'egypt',['girl','papyrus'],'The river is rising!'],['silt','egypt',['corn','man'],'Rich black soil!'],['canals','egypt',['droplet','shovel'],'Irrigation!'],['desert','desert',['camel','pyramid'],'The desert protects us.']]},
+  boxes:[{title:'The gift of the Nile',lines:['*flood* each summer','*silt*: rich soil for crops','*irrigation canals* water dry fields','*fish*, *papyrus* and *transport* by boat']},
+   {title:'The environment shaped life',lines:['crops: wheat, barley, flax (for linen)','homes of *mud brick*','the *desert* was a natural wall','the river was a *highway*']}],
+  cards:[{q:'What did the flood leave behind?',a:'rich black *silt*'},{q:'What was papyrus used for?',a:'*paper*, boats, baskets, sandals'}],
+  words:[['silt','fine, rich soil carried and left by water'],['irrigation','bringing water to crops with canals or ditches']]},
+ steps:[
+  {say:'Read the story',speech:'Every summer the Nile flooded and left rich silt. Farmers grew wheat and barley and dug canals to water dry fields. Papyrus became paper, boats and baskets.',set:S.row(['river','papyrus','girl','camel'])},
+  {say:'Flood, then farm',speech:'The river floods. The water goes down and leaves silt. Farmers plant seeds. Crops grow, and people harvest them.',set:S.order(['droplet','seedling','corn']),
+   cues:[['floods','droplet','flood'],['plant seeds','seedling','plant'],['harvest','corn','harvest']]},
+  {say:'Papyrus',speech:'Papyrus reeds grew along the river. Egyptians pressed the stems into sheets of paper and wrote on scrolls.',set:S.row(['papyrus','scroll'],{labels:['reeds','paper scroll']}),
+   cues:[['Papyrus reeds','papyrus','plant'],['scrolls','scroll','paper']]}],
+ more:{title:'Did you know?',text:'Our word *paper* comes from *papyrus*! Egyptians also invented a *365-day calendar*, based on the Nile’s yearly flood.',pics:['scroll','calendar']},
+ rounds:[R.q('Why was the Nile flood important?',['it left rich silt for farming','it washed away homes','it made the desert bigger'],'it left rich silt for farming'),R.q('Bringing water to fields with canals is…',['irrigation','pollution','erosion'],'irrigation'),
+  R.q('What was papyrus used for?',['paper and boats','bricks','metal tools'],'paper and boats'),R.q('How did the desert help Egypt?',['it kept enemies away','it gave rich soil','it had lots of rain'],'it kept enemies away'),
+  R.q('What crops did Nefer’s family grow?',['wheat, barley and flax','rice and tea','corn and potatoes'],'wheat, barley and flax'),R.order('Put the farming year in order.',['droplet','seedling','corn']),
+  R.q('Egyptian homes were made of…',['mud brick','ice','logs'],'mud brick'),R.tf('Our word “paper” comes from papyrus.',true)],
+ tries:[['How is the Nile like a highway?','boats carried people and goods'],['Compare: how do Canadian farmers water crops today?','sprinklers, pipes, rain']]});
+
+/* 3 ─ Egypt: pyramids, pharaohs and social classes */
+U({id:'t03',title:'Ancient Egypt: pharaohs and pyramids',strand:'Early Societies',codes:['A3.7','A3.8','A3.6'],
+ guide:{goal:'Describe how Ancient Egypt was governed by pharaohs, its social pyramid (pharaoh, priests and nobles, scribes, craftspeople, farmers, slaves), and its achievements such as pyramids and hieroglyphics.',words:'pharaoh, social pyramid, scribe, hieroglyphics, noble, artisan',ask:['Who ruled Ancient Egypt?','Why were scribes important?','Who actually built the pyramids?'],home:'Write your name in hieroglyph-style pictures.'},
+ watch:['A society shaped like a pyramid!','The pharaoh at the top, many farmers at the bottom.'],
+ fig:'Pyramids, a sphinx and an obelisk by the Nile.',
+ page:{story:{title:'Scribe School',text:'*Ahmose* was a lucky boy: he went to *scribe school* in *Thebes*. Most children worked in the fields. "Scribes are important," said his teacher. "We write *hieroglyphics*: picture-writing. We count the *pharaoh’s* grain and record the *taxes*." The *pharaoh* ruled all of Egypt and was seen as a god-king. Below him were *priests* and *nobles*, then *scribes*, then *artisans* like painters and builders, then *farmers*, who were most of the people. Ahmose visited *Giza*, where thousands of skilled workers had built the *Great Pyramid* as a tomb for a pharaoh.',pics:['scroll','pyramid','boy','sphinx'],
+   acts:[[null,'egypt',['scroll','boy'],'Scribe school!'],['pharaoh','egypt',['sphinx','obelisk'],'The god-king!'],['farmers','egypt',['corn','man'],'Most people farmed.'],['Great Pyramid','egypt',['pyramid:big','boy'],'Built by thousands!']]},
+  boxes:[{title:'The social pyramid',lines:['*pharaoh* (ruler)','*priests* and *nobles*','*scribes*','*artisans*: builders, painters, jewellers','*farmers* (the most people)','*slaves*']},
+   {title:'Achievements',lines:['*pyramids* and the *Sphinx*','*hieroglyphics* writing','*calendar* of 365 days','early *medicine* and *math*']}],
+  cards:[{q:'Who was at the top of Egyptian society?',a:'the *pharaoh*'},{q:'Who were most of the people?',a:'*farmers*'}],
+  words:[['pharaoh','the king or queen of Ancient Egypt'],['hieroglyphics','Ancient Egyptian writing that used pictures and symbols']]},
+ steps:[
+  {say:'Read the story',speech:'Ahmose trained to be a scribe and wrote hieroglyphics. The pharaoh ruled Egypt. Most people were farmers. Thousands of workers built the Great Pyramid.',set:S.row(['scroll','pyramid','boy','sphinx'])},
+  {say:'Who was who',speech:'At the top, the pharaoh. Then priests and nobles. Then scribes. Then artisans. At the bottom, the many farmers.',set:S.order(['crown','scroll','paintbrush','corn']),
+   cues:[['the pharaoh','crown','ruler'],['scribes','scroll','writers'],['artisans','paintbrush','makers'],['farmers','corn','most people']]},
+  {say:'Wonders',speech:'The Great Pyramid, the Sphinx and tall obelisks still stand today, more than four thousand years later.',set:S.row(['pyramid','sphinx','obelisk']),
+   cues:[['The Great Pyramid','pyramid','tomb'],['the Sphinx','sphinx','guardian'],['obelisks','obelisk','monument']]}],
+ more:{title:'Did you know?',text:'Hieroglyphics were a mystery for hundreds of years until the *Rosetta Stone* was found in *1799*. It had the same message in three scripts, which helped people decode it!',pics:['rock','scroll']},
+ rounds:[R.q('Who ruled Ancient Egypt?',['the pharaoh','the scribe','the farmer'],'the pharaoh'),R.q('Picture-writing in Egypt is called…',['hieroglyphics','papyrus','pyramids'],'hieroglyphics'),
+  R.q('What did scribes do?',['wrote and kept records','built boats','fought wars'],'wrote and kept records'),R.q('Who made up most of Egyptian society?',['farmers','priests','pharaohs'],'farmers'),
+  R.q('The Great Pyramid was built as…',['a tomb for a pharaoh','a school','a market'],'a tomb for a pharaoh'),R.q('Where did Ahmose go to school?',['Thebes','Giza','Rome'],'Thebes'),
+  R.q('Painters and builders were called…',['artisans','nobles','scribes'],'artisans'),R.tf('Most Egyptian children went to scribe school.',false)],
+ tries:[['Draw Egypt’s social pyramid with 5 levels.','pharaoh → priests/nobles → scribes → artisans → farmers'],['How is our government different from a pharaoh?','we *vote* for leaders']]});
+
+/* 4 ─ Ancient China */
+U({id:'t04',title:'Ancient China: inventions and the Great Wall',strand:'Early Societies',codes:['A3.6','A3.4','A3.7'],
+ guide:{goal:'Describe Ancient China’s environment (Yellow River, rice and millet farming), its emperors and dynasties, and major inventions such as paper, silk, the compass and the Great Wall.',words:'dynasty, emperor, silk, invention, Great Wall, Silk Road',ask:['Name three Chinese inventions we still use.','Why was the Great Wall built?','What was the Silk Road?'],home:'Look for things at home that were first invented in China: paper, kites, umbrellas, compasses.'},
+ watch:['Inventions that changed the world!','Paper, silk, the compass, kites and printing all came from Ancient China.'],
+ fig:'The Great Wall winding over hills.',
+ page:{story:{title:'The Silk Weaver’s Daughter',text:'Long ago in *Ancient China*, *Mei Lin* helped her mother feed *silkworms* mulberry leaves. Each worm spun a cocoon of shiny thread. "We weave it into *silk*," said her mother. "Traders carry it west on the *Silk Road*, all the way to Persia and Rome!" China was ruled by an *emperor*, and families of rulers called *dynasties*. To keep out raiders from the north, emperors built the *Great Wall*. Mei Lin’s uncle, a scholar, wrote on *paper*, another Chinese *invention*. "And sailors use our *compass* to find north," he said.',pics:['great wall','scroll','girl','compass'],
+   acts:[[null,'garden',['worm','leaf','girl'],'Feeding silkworms!'],['Silk Road','desert',['camel','camel'],'All the way to Rome!'],['Great Wall','mountain',['great wall:big','flag'],'Keep out raiders!'],['compass','beach',['compass','sailboat'],'Find north!']]},
+  boxes:[{title:'Chinese inventions',ex:[['scroll','*paper*'],['compass','*compass*'],['kite','*kites*'],['firework','*fireworks*'],['umbrella','*umbrella*']],cols:5},
+   {title:'Life and land',lines:['*Yellow River*: floods and rich soil','*rice* in the wet south, *millet* in the dry north','ruled by *emperors* in *dynasties*','*Silk Road*: trade with the west']}],
+  cards:[{q:'What did silkworms eat?',a:'*mulberry leaves*'},{q:'Why was the Great Wall built?',a:'to keep out *raiders* from the north'}],
+  words:[['dynasty','a family of rulers who rule for a long time'],['invention','a new tool or idea that someone creates']]},
+ steps:[
+  {say:'Read the story',speech:'Mei Lin fed silkworms to make silk, which traders carried along the Silk Road. Emperors built the Great Wall. China also invented paper and the compass.',set:S.row(['great wall','scroll','girl','compass'])},
+  {say:'Inventions',speech:'Paper, the compass, kites and fireworks were all invented in Ancient China. We still use them today.',set:S.row(['scroll','compass','kite','firework']),
+   cues:[['Paper','scroll','paper'],['the compass','compass','compass'],['kites','kite','kites'],['fireworks','firework','fireworks']]},
+  {say:'The Great Wall',speech:'The Great Wall winds for thousands of kilometres over mountains. Soldiers watched from towers and lit fires to send warnings.',set:S.row(['great wall','fire'],{labels:['the wall','signal fire']}),
+   cues:[['thousands of kilometres','great wall','very long!'],['lit fires','fire','warning']]}],
+ more:{title:'Did you know?',text:'The Great Wall is about *21 000 kilometres* long, counting all its parts. That is longer than driving across Canada *three times*!',pics:['great wall']},
+ rounds:[R.pick('Tap the inventions from Ancient China.',['compass','kite','tv'],['compass','kite']),R.q('Why was the Great Wall built?',['to keep out raiders','to hold water','for races'],'to keep out raiders'),
+  R.q('What did silkworms eat?',['mulberry leaves','rice','grass'],'mulberry leaves'),R.q('A family of rulers is a…',['dynasty','pyramid','scribe'],'dynasty'),
+  R.q('The Silk Road was…',['a trade route to the west','a river','a wall'],'a trade route to the west'),R.q('Who ruled Ancient China?',['an emperor','a pharaoh','a chief only'],'an emperor'),
+  R.q('Which crop grew in China’s wet south?',['rice','wheat','maple'],'rice'),R.tf('Paper was invented in Ancient China.',true)],
+ tries:[['Which Chinese invention do you use most? Why?','e.g. *paper* for school'],['Compare the Great Wall and the Egyptian desert.','both protected the society']]});
+
+/* 5 ─ Medieval Europe */
+U({id:'t05',title:'Medieval Europe: castles and villages',strand:'Early Societies',codes:['A3.8','A3.9','A3.7'],
+ guide:{goal:'Describe life in Medieval Europe (about 500 to 1500 CE): the feudal system of kings, lords, knights and peasants; castles and manors; and how daily life differed for each group.',words:'medieval, feudal system, lord, knight, peasant, manor, castle',ask:['What did peasants give the lord?','Why were castles built on hills?','What did a page do to become a knight?'],home:'Design your own castle with a moat, towers and a drawbridge.'},
+ watch:['Everyone had a place and a duty!','The king gave land to lords. Lords had knights. Peasants farmed and gave crops to the lord.'],
+ fig:'A medieval castle with a village and fields.',
+ page:{story:{title:'A Day at Castle Hill',text:'In *1250 CE*, *Tom* lived in a *peasant* village below *Castle Hill* in *England*. He woke before sunrise to help his family plough the *lord’s* fields. Peasants gave the lord part of their crops. In return, the lord and his *knights* protected the village. Tom’s cousin *Will* was a *page* in the castle, learning to ride, read and serve. "One day I will be a *squire*, then a *knight*!" Will said. The *king* gave land to lords, lords gave land to knights, and peasants worked it. This was the *feudal system*.',pics:['castle','knight','boy','horse'],
+   acts:[[null,'castle',['hut','boy'],'Up before sunrise!'],['lord’s','castle',['corn','tractor'],'Crops for the lord.'],['knights','castle',['knight','horse'],'We protect the village!'],['page','castle',['castle','boy'],'One day, a knight!']]},
+  boxes:[{title:'The feudal system',lines:['*king*: owns all the land','*lords* (nobles): get land, give soldiers','*knights*: fight and protect','*peasants*: farm, give crops and work']},
+   {title:'Daily life',lines:['peasants: farming, small huts, simple food','lords and ladies: castles, feasts','children worked from a young age','few people could *read*']}],
+  cards:[{q:'What was a young boy training to be a knight called first?',a:'a *page*, then a *squire*'},{q:'Why did castles have moats?',a:'to keep *attackers* out'}],
+  words:[['feudal system','a way of ruling where land was traded for loyalty and work'],['peasant','a poor farm worker in the Middle Ages']]},
+ steps:[
+  {say:'Read the story',speech:'Tom was a peasant who farmed the lord’s fields. The lord and his knights protected the village. Tom’s cousin Will was a page training to become a knight.',set:S.row(['castle','knight','boy','horse'])},
+  {say:'The feudal system',speech:'The king gave land to lords. Lords gave land to knights. Knights protected everyone, and peasants farmed the land.',set:S.order(['crown','castle','knight','corn']),
+   cues:[['The king','crown','king'],['lords','castle','lords'],['knights','knight','knights'],['peasants','corn','peasants']]},
+  {say:'Castle defences',speech:'Castles stood on hills with thick stone walls, tall towers and a water-filled moat. The drawbridge lifted up to keep enemies out.',set:S.row(['castle','shield','helmet'],{labels:['walls & moat','shield','helmet']}),
+   cues:[['thick stone walls','castle','defence'],['drawbridge','castle','lift it up!']]}],
+ more:{title:'Did you know?',text:'Knights’ armour could weigh *25 kilograms*, about as much as a Grade 4 student! Knights trained for years to move and ride in it.',pics:['knight','helmet']},
+ rounds:[R.q('In the feudal system, who owned all the land?',['the king','the peasants','the knights'],'the king'),R.q('Peasants gave the lord…',['crops and work','castles','armour'],'crops and work'),
+  R.q('What did knights do?',['fought and protected','wrote books','farmed'],'fought and protected'),R.q('Before becoming a knight, a boy was a page, then a…',['squire','king','scribe'],'squire'),
+  R.q('Where did Tom live?',['in a peasant village','in the castle','in Egypt'],'in a peasant village'),R.q('Why did castles have moats?',['to keep attackers out','for swimming','for fishing only'],'to keep attackers out'),
+  R.order('Put the feudal system in order, top to bottom.',['crown','castle','knight','corn']),R.tf('Most peasants could read and write.',false)],
+ tries:[['Would you rather be a peasant or a page? Why?','give two reasons'],['How is a castle like a modern fire station or police station?','both protect people']]});
+
+/* 6 ─ Haudenosaunee */
+U({id:'t06',title:'The Haudenosaunee Confederacy',strand:'Early Societies',codes:['A1.1','A3.7','A3.8','A3.5'],
+ guide:{goal:'Describe Haudenosaunee society: longhouses, clans led by Clan Mothers, the Three Sisters, and the Great Law of Peace that united five (later six) Nations.',words:'Haudenosaunee, longhouse, clan, Clan Mother, Three Sisters, Great Law of Peace, confederacy',ask:['What are the Three Sisters?','What did Clan Mothers do?','Which Nations joined the Confederacy?'],home:'Look for corn, beans and squash at the grocery store. How are they used today?'},
+ watch:['Peace, clans and the Three Sisters!','Corn, beans and squash grow together and help each other, like the Nations of the Confederacy.'],
+ fig:'Longhouses and Three Sisters gardens in a village.',
+ page:{story:{title:'The Longhouse',text:'About *800* years ago, near what is now *Lake Ontario*, a girl named *Kahente* lived in a *longhouse* with her *clan*: the *Turtle Clan*. Many families shared the long building, each with its own space and fire. Her grandmother was the *Clan Mother*. "Clan Mothers choose the *chiefs*," she told Kahente, "and we can remove them if they do not listen." Outside, women grew the *Three Sisters*: *corn*, *beans* and *squash*. Long ago, the *Peacemaker* united five Nations, the *Mohawk*, *Oneida*, *Onondaga*, *Cayuga* and *Seneca*, with the *Great Law of Peace*. Later the *Tuscarora* joined, making *six*.',pics:['longhouse','corn','girl','turtle'],
+   acts:[[null,'nation',['longhouse','girl'],'Our longhouse!'],['Clan Mother','nation',['grandma','fire'],'We choose the chiefs.'],['Three Sisters','nation',['three sisters','squash','corn'],'Corn, beans, squash!'],['Great Law of Peace','nation',['tree:big','feather'],'Five Nations united!']]},
+  boxes:[{title:'Social organization',lines:['*clans* (Turtle, Wolf, Bear…) passed through the *mother*','*Clan Mothers* chose and could remove chiefs','*chiefs* met in the Grand Council','decisions made by *agreement* (consensus)']},
+   {title:'The Three Sisters',lines:['*corn* grows tall: a pole for beans','*beans* climb and feed the soil','*squash* leaves shade the ground and stop weeds','grown together, eaten together']}],
+  cards:[{q:'Who chose the chiefs?',a:'the *Clan Mothers*'},{q:'What symbol stands for the Great Law of Peace?',a:'the *Tree of Peace* (white pine)'}],
+  words:[['confederacy','a group of nations that join together'],['clan','a large family group related through the mother']]},
+ steps:[
+  {say:'Read the story',speech:'Kahente lived in a longhouse with the Turtle Clan. Her grandmother, the Clan Mother, helped choose the chiefs. The Great Law of Peace united the Nations.',set:S.row(['longhouse','corn','girl','turtle'])},
+  {say:'The Three Sisters',speech:'Corn grows tall. Beans climb the corn and feed the soil. Squash spreads big leaves to keep the soil moist. They help each other.',set:S.row(['corn','bean plant','squash'],{labels:['corn','beans','squash']}),
+   cues:[['Corn grows tall','corn','pole'],['Beans climb','bean plant','feeds soil'],['Squash','squash','shade']]},
+  {say:'Five, then six Nations',speech:'The Mohawk, Oneida, Onondaga, Cayuga and Seneca joined under the Tree of Peace. Later the Tuscarora joined, making six.',set:S.row(['tree','feather'],{labels:['Tree of Peace','Great Law']}),
+   cues:[['Tree of Peace','tree','white pine'],['six','feather','Six Nations']]}],
+ more:{title:'Did you know?',text:'The Haudenosaunee *Great Law of Peace* is one of the oldest constitutions in the world. Some historians think it inspired ideas in the *United States* government.',pics:['feather','scroll']},
+ rounds:[R.q('What are the Three Sisters?',['corn, beans and squash','three Clan Mothers','three rivers'],'corn, beans and squash'),R.q('Who chose the chiefs?',['Clan Mothers','the king','the eldest son'],'Clan Mothers'),
+  R.q('Haudenosaunee families lived in…',['longhouses','castles','pyramids'],'longhouses'),R.q('What united the Nations?',['the Great Law of Peace','a war','the Silk Road'],'the Great Law of Peace'),
+  R.q('Which clan was Kahente’s?',['Turtle','Wolf','Bear'],'Turtle'),R.q('How many Nations after the Tuscarora joined?',['six','five','three'],'six'),
+  R.q('How do beans help corn and squash?',['they feed the soil','they shade the ground','they scare birds'],'they feed the soil'),R.tf('Clans were passed down through the mother.',true)],
+ tries:[['Compare how the Haudenosaunee and Egyptians chose leaders.','Clan Mothers chose vs pharaoh inherited'],['Why might the Three Sisters be called a good team?','each helps the others grow']]});
+
+/* 7 ─ Inuit and Thule */
+U({id:'t07',title:'The Thule and Inuit of the Arctic',strand:'Early Societies',codes:['A1.2','A3.5','A3.6','A3.8'],
+ guide:{goal:'Describe how the Thule, ancestors of the Inuit, adapted to the Arctic: hunting seals and whales, travelling by qajaq and dogsled, building igloos and sod houses, and using every part of an animal.',words:'Thule, Inuit, qajaq, umiaq, qulliq, igloo, harpoon, adaptation',ask:['How did the Thule hunt whales?','Why did they use every part of an animal?','What was a qulliq used for?'],home:'Make a list of everything you would need to survive one winter day in the Arctic.'},
+ watch:['Experts of the Arctic!','The Thule hunted whales from boats, travelled by dogsled and built snow houses in winter.'],
+ fig:'An Arctic camp with an igloo, qajaq and dogsled.',
+ page:{story:{title:'The Whale Hunt',text:'About *1000 CE*, the *Thule* people moved east across the Arctic from Alaska. They were the *ancestors* of today’s *Inuit*. A boy named *Pitu* watched his father and uncles paddle out in a big skin boat called an *umiaq*. With *harpoons* tipped with bone, they hunted a *bowhead whale*. "The whale will feed our camp all winter," said his mother. Nothing was wasted: *meat* for food, *blubber* for the *qulliq* lamp, *bones* for house frames, *baleen* for sleds. In winter they built *igloos* of snow. Their *dogs* pulled *sleds* across the ice.',pics:['whale','igloo','boy','dog sled'],
+   acts:[[null,'arctic',['igloo','boy'],'Watching the hunters!'],['umiaq','ocean',['kayak','whale'],'Bowhead whale!'],['qulliq','arctic',['qulliq','woman'],'Warm light!'],['sleds','arctic',['dog sled','boy'],'Mush!']]},
+  boxes:[{title:'Using every part',lines:['*meat*: food','*blubber* (fat): fuel for the *qulliq* lamp','*bones*: house frames and tools','*skins*: clothing, boats, tents','*baleen*: sled runners and baskets']},
+   {title:'Arctic adaptations',lines:['*igloos* in winter, skin tents in summer','*qajaq* (kayak) for hunting seals','*dogsleds* for travel on ice','*snow goggles* against glare']}],
+  cards:[{q:'What was blubber used for?',a:'fuel for the *qulliq* lamp'},{q:'Who are the Thule’s descendants?',a:'the *Inuit*'}],
+  words:[['qulliq','a stone oil lamp that burned seal or whale fat for light and heat'],['ancestor','a family member who lived long before you']]},
+ steps:[
+  {say:'Read the story',speech:'The Thule hunted a bowhead whale from an umiaq. Meat fed the camp, blubber fuelled the qulliq lamp and bones framed their houses. Dogs pulled the sleds.',set:S.row(['whale','igloo','boy','dog sled'])},
+  {say:'Nothing wasted',speech:'Meat for food, blubber for the lamp, bones for houses and skins for clothing. Every part of the animal was used.',set:S.row(['whale','qulliq','bone','pelt'],{labels:['meat','blubber','bones','skins']}),
+   cues:[['Meat','whale','food'],['blubber','qulliq','fuel'],['bones','bone','frames'],['skins','pelt','clothes']]},
+  {say:'Travel and shelter',speech:'The qajaq glided silently to hunt seals. Dogsleds raced over the ice. Igloos of snow kept families warm in winter.',set:S.row(['kayak','dog sled','igloo']),
+   cues:[['qajaq','kayak','hunt'],['Dogsleds','dog sled','travel'],['Igloos','igloo','shelter']]}],
+ more:{title:'Did you know?',text:'The English word *kayak* comes from the Inuktitut word *qajaq*. Snow goggles carved from bone or wood, with thin slits, protected eyes from the bright sun on snow.',pics:['kayak','snowflake']},
+ rounds:[R.q('Who were the ancestors of the Inuit?',['the Thule','the Egyptians','the Haudenosaunee'],'the Thule'),R.q('What was a qulliq?',['an oil lamp','a boat','a harpoon'],'an oil lamp'),
+  R.q('What did blubber fuel?',['the qulliq lamp','the dogsled','the umiaq'],'the qulliq lamp'),R.q('What did the hunters hunt in the story?',['a bowhead whale','a caribou','a polar bear'],'a bowhead whale'),
+  R.pick('Tap the ways the Thule travelled.',['kayak','dog sled','train'],['kayak','dog sled']),R.q('Why use every part of an animal?',['nothing was wasted in a harsh land','it was a game','to sell it'],'nothing was wasted in a harsh land'),
+  R.q('Where did the Thule come from?',['Alaska, moving east','Egypt','Europe'],'Alaska, moving east'),R.tf('Igloos were built from snow.',true)],
+ tries:[['Compare a Thule home and a Haudenosaunee home.','igloo of snow vs longhouse of bark'],['What modern things do the same jobs as a qulliq?','lamps, stoves, heaters']]});
+})();
