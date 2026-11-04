@@ -135,7 +135,7 @@ C.pv=function(g2,st,h,set){const n=set.n||0;const ds=String(n).padStart(4,'0').s
   if(set.label!==false&&!set.hide){const T=tag(set.label||(n.toLocaleString('en-CA')),{size:.26,bg:'#fff3c4'});T.position.set(0,1.0,-1.6);name(T,'number');g2.add(T);}
   return {play(){items.forEach((o,i)=>A.later(()=>{const y0=o.position.y;tween(.3,k=>{o.position.y=y0+Math.sin(k*Math.PI)*.2;});},i*90));}};};
 /* ---------- multiple-bar graph: two (or more) series side by side, with a scale and a legend ---------- */
-C.bars2=function(g2,st,h,set){const cats=set.cats,ser=set.series,n=cats.length,k=ser.length,sp=Math.min(1.2,3.8/n),bw=Math.min(.32,sp*.8/k);const mx=Math.max(...ser.map(s=>Math.max(...s.v)));const H=1.7,u=H/mx;const SC=['#4fb3ff','#ff8a5b','#5cc46a','#b07cff'];const bars=[];
+C.bars2=function(g2,st,h,set){const cats=set.cats,ser=set.series,n=cats.length,k=ser.length,sp=Math.min(1.2,3.8/n),bw=Math.min(.32,sp*.8/k);const mx=Math.max(...ser.map(s=>Math.max(...s.v)));const H=1.15,u=H/mx;const SC=['#4fb3ff','#ff8a5b','#5cc46a','#b07cff'];const bars=[];
   const axis=box(.03,H+.2,.03,'#1b2236',0);at(axis,-sp*n/2-.15+.0,(H+.2)/2,-2.75);g2.add(axis);const step=set.step||Math.max(1,Math.ceil(mx/5));
   for(let v=0;v<=mx;v+=step){const L=label(String(v),{size:.12,color:'#5b6478'});L.position.set(-sp*n/2-.35,v*u+.02,-2.75);g2.add(L);const gl=box(sp*n+.1,.008,.008,'#d0d5e4',0);at(gl,0,v*u+.01,-2.8);g2.add(gl);}
   cats.forEach((c,i)=>{const x=(i-(n-1)/2)*sp;ser.forEach((s,j)=>{const v=s.v[i];const b=box(bw*.9,1,bw*.9,SC[j%4]);b.scale.y=Math.max(.001,v*u);at(b,x+(j-(k-1)/2)*bw,v*u/2,-2.6);name(b,s.name,'s'+j);g2.add(b);bars.push([b,v*u]);
