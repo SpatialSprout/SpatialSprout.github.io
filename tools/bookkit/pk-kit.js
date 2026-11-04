@@ -53,8 +53,16 @@ function diceToy(n,c){const g=new THREE.Group();const s=.5;const T=tex((ctx,w,h)
   const mat=new THREE.MeshLambertMaterial({map:T});const m=new THREE.Mesh(G('pk_die',()=>new THREE.BoxGeometry(s,s,s)),mat);m.position.y=s/2;m.castShadow=true;g.add(m);return g;}
 function paintToy(c){const g=new THREE.Group();const pot=mk(G('pk_pot',()=>new THREE.CylinderGeometry(.24,.2,.26,24)),lam('#f1f3f5'),20);pot.position.y=.13;g.add(pot);
   const p=mk(G('pk_paint',()=>new THREE.CylinderGeometry(.22,.22,.03,24)),lam(c),0);p.position.y=.255;g.add(p);const drip=mk(G('pk_drip',()=>new THREE.SphereGeometry(.05,10,8)),lam(c),0);drip.position.set(.2,.2,.08);drip.scale.set(.7,1.4,.7);g.add(drip);g.userData.paint=p;return g;}
+/* chunky glossy 3D letters and numbers (Andika Bold) */
+let KF=null;const TGC={};
+function txt3(str,c,o){o=o||{};if(!KF&&window.KFONT&&THREE.Font)KF=new THREE.Font(window.KFONT);const g=new THREE.Group();str=String(str);
+  if(!KF){const b=blockToy(str,c);g.add(b);return g;}
+  const key=str+'|'+(o.size||1)+'|'+(o.depth||.28);let geo=TGC[key];
+  if(!geo){geo=new THREE.TextGeometry(str,{font:KF,size:o.size||1,height:o.depth||.28,curveSegments:10,bevelEnabled:true,bevelThickness:.05,bevelSize:.035,bevelSegments:4});geo.computeBoundingBox();const bb=geo.boundingBox;geo.translate(-(bb.min.x+bb.max.x)/2,-bb.min.y,-(o.depth||.28)/2);geo.computeVertexNormals();TGC[key]=geo;}
+  const m=new THREE.Mesh(geo,new THREE.MeshPhongMaterial({color:c||'#ff6b6b',shininess:70,specular:new THREE.Color('#ffffff').multiplyScalar(.35)}));m.castShadow=true;g.add(m);g.userData.face=m;g.userData.txt=str;return g;}
 function make(spec,s){let k=String(spec);const ok=k[0]==='*';if(ok)k=k.slice(1);let sz=1;const mm=k.match(/^(.*)@([\d.]+)$/);if(mm){k=mm[1];sz=+mm[2];}const parts=k.split(':');const solo=parts.length<2;let o,name=k,lab=null;if(parts.length<2)parts.length=1;
-  if(solo){}else if(parts[0]==='shape'){o=shapeToy(parts[1],parts[2]||COL[(parts[1].length)%8]);name=parts[1];lab=parts[1];}
+  if(solo){}else if(parts[0]==='txt'){o=txt3(parts[1],parts[2]||COL[(parts[1].charCodeAt(0)||0)%8],{size:parts[1].length>1?.42:.55});name=parts[1];lab=parts[1];}
+  else if(parts[0]==='shape'){o=shapeToy(parts[1],parts[2]||COL[(parts[1].length)%8]);name=parts[1];lab=parts[1];}
   else if(parts[0]==='solid'){o=solidToy(parts[1],parts[2]||COL[(parts[1].length+3)%8]);name=parts[1];lab=parts[1];}
   else if(parts[0]==='balloon'){o=balloonToy(parts[1],parts[2]||COL[(parts[1].charCodeAt(0)||0)%8]);name=parts[1];lab=parts[1];}
   else if(parts[0]==='block'||parts[0]==='num'){o=blockToy(parts[1],parts[2]||(parts[0]==='num'?'#bfe3ff':'#ffe08a'));name=parts[1];lab=parts[1];}
@@ -138,4 +146,5 @@ C.mix=function(g2,st,h,set){mat(g2,4.3,1.6,-2.3);const a=make('paint:'+set.a+':'
     A.later(()=>{fill.material=lam(set.a);tween(1.2,k=>{const c=ca.clone().lerp(cr,k);fill.material.color.copy(c);fill.position.y=.3+k*.08;fill.rotation.y=k*8;}).then(()=>{R.visible=true;boom(fill);SAY(set.say||set.label);});},500);};
   return {play,controls:()=>st.round?[]:[{t:'Mix the paint!',go:true,fn:play}]};};
 C.mix.bare=1;
+P.PKX={make,txt3,jump,wobble,boom,sticker,SAY,mat,tag,layout,catcher,WORDS,COL,at};
 })();

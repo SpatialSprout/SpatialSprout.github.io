@@ -129,7 +129,21 @@ function drawCards(p,y,cards){const g=p.g;const hh=cards.some(c=>(c.q||'').repla
   if(c.a)wrap(g,c.a,x+30,(n?py+60:ty+24),w-50,30,{font:FT.hand,bold:FT.hand,color:acc(),boldColor:'#e4572e'});});}
 let CMP=0;/* compact level while fitting a page: 1 tighter example rows, 2 no cards, 3 no key words or story pictures, 4 smallest */
 function drawPage(p,S,d){let y=0;for(let lv=0;lv<=5;lv++){if(lv>0&&P.paperBase){P.paperBase(p);p.hot=[];p.flaps=[];}if(P.READ)P.READ.n=0;CMP=lv;y=drawPage1(p,S,d);if(y<=1300||(P.READ&&P.READ.collect))break;}CMP=0;return y;}
+/* Kindergarten page: one giant letter or number, its picture friend and a short line, like a first workbook */
+function drawKid(p,y,k){const g=p.g;const c=acc();const top=y+6,h=Math.min(1290-top,700);
+  rr(g,X0,top,TW,h,36);g.fillStyle=tint(c,.1);g.fill();g.lineWidth=5;g.strokeStyle=tint(c,.45);g.stroke();
+  g.save();let fs0=330;g.font=fs0+'px "Patrick Hand", "Comic Sans MS", cursive';const mw=(k.pic?TW*.5:TW*.9);while(g.measureText(k.big).width>mw&&fs0>90){fs0-=20;g.font=fs0+'px "Patrick Hand", "Comic Sans MS", cursive';}g.textAlign='center';g.textBaseline='alphabetic';g.lineWidth=14;g.strokeStyle='#ffffff';g.lineJoin='round';
+  const BX=k.pic?X0+TW*.3:X0+TW/2;g.strokeText(k.big,BX,top+250+fs0*.36);g.fillStyle=c;g.fillText(k.big,BX,top+250+fs0*.36);g.restore();
+  const PX=k.big?X0+TW*.73:X0+TW/2;if(k.pic){g.save();g.beginPath();g.arc(PX,top+225,k.big?175:200,0,Math.PI*2);g.fillStyle='#ffffff';g.fill();g.lineWidth=6;g.strokeStyle=tint(c,.5);g.stroke();g.restore();
+    const n=k.n||1;if(n===1)pic(g,k.pic,PX,top+225,k.big?250:290);else{const cols=n>4?Math.ceil(n/2):n,rows=Math.ceil(n/cols),s=Math.min(110,300/cols);for(let i=0;i<n;i++){const r=Math.floor(i/cols),cc=i%cols,nc=Math.min(cols,n-r*cols);pic(g,k.pic,PX+(cc-(nc-1)/2)*s*1.05,top+225+(r-(rows-1)/2)*s*1.05,s*.95);}}}
+  let yy=wrap(g,k.line,X0+50,top+470,TW-100,64,{font:'700 54px "Atkinson Hyperlegible", Verdana, sans-serif',bold:'700 54px "Atkinson Hyperlegible", Verdana, sans-serif',boldColor:c,center:true});
+  if(k.trace){g.save();g.font='400 150px "Patrick Hand", "Comic Sans MS", cursive';g.textAlign='center';g.setLineDash([10,12]);g.lineWidth=4;g.strokeStyle=tint(c,.75);const tr=String(k.trace);const n=Math.max(2,Math.min(4,Math.floor((TW-80)/(g.measureText(tr).width+60))));
+    for(let i=0;i<n;i++)g.strokeText(tr,X0+TW*(i+.5)/n,top+h-60);g.setLineDash([]);g.strokeStyle=tint(c,.35);g.lineWidth=3;g.beginPath();g.moveTo(X0+40,top+h-58);g.lineTo(X0+TW-40,top+h-58);g.stroke();g.restore();}
+  y=top+h+20;
+  if(k.words&&k.words.length){const n=k.words.length,sp=Math.min(240,TW/n);k.words.forEach((w,i)=>{const x=X0+TW/2+(i-(n-1)/2)*sp;picTile(g,w[0],x,y+60,92,COLS[i%COLS.length]);T(g,w[1],x,y+150,FT.bodyB,INK,'center');});y+=180;}
+  return y;}
 function drawPage1(p,S,d){let y=header(p,S);const pg=d.page||{};
+  if(d.kid)return drawKid(p,y,d.kid);
   if(pg.intro)y=P.para(p,y+6,pg.intro)+16;
   if(pg.story&&!(window.BOOK||{}).storyRight)y=drawStory(p,y-6,pg.story);
   (pg.boxes||[]).forEach(b=>{y=drawBox(p,y-4,b);});

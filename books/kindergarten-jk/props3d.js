@@ -491,6 +491,12 @@ const B={
  'great wall':mk((g,o)=>{for(let i=0;i<6;i++){Bx(g,.22,.2+Math.sin(i*.8)*.05,.14,'#b8a07e',-.55+i*.22,.11,0);for(let k=0;k<2;k++)Bx(g,.06,.06,.14,'#a08a68',-.6+i*.22+k*.11,.24,0);}Bx(g,.2,.38,.2,'#a08a68',-.66,.19,0);}),
  'water clock':mk((g,o)=>{Cy(g,.12,.08,.2,'#d4a373',0,.4,0,14);Cy(g,.01,.01,.12,P.glow('#4dabf7',.8,.4),0,.24,0,4);Cy(g,.1,.1,.18,P.glow('#d0ebff',.5,.3),0,.09,0,14);Cy(g,.095,.095,.09,P.glow('#4dabf7',.8,.4),0,.05,0,14);}),
  tipi:mk((g,o)=>{Co(g,.38,.75,'#e9d8a6',0,.375,0,10);for(let i=0;i<5;i++){const p=Cy(g,.008,.008,.25,'#8b5a2b',Math.cos(i*1.3)*.04,.8,Math.sin(i*1.3)*.04,4);p.rotation.z=(i-2)*.2;}Bx(g,.14,.2,.02,'#7f5539',0,.1,.33);[0,1].forEach(i=>{const r=To(g,.3-i*.12,.012,['#e03131','#1c7ed6'][i],0,.2+i*.2,0);r.rotation.x=Math.PI/2;});}),
+ sun:mk((g,o)=>{const c=E(g,.26,.26,.26,P.glow('#ffd43b',1,.6),0,.55,0);for(let i=0;i<10;i++){const a=i*Math.PI/5;const r=Co(g,.05,.16,'#ffa94d',Math.cos(a)*.38,.55+Math.sin(a)*.38,0,6);r.rotation.z=a-Math.PI/2;}[-1,1].forEach(s=>E(g,.03,.04,.02,'#1b2236',s*.08,.6,.24));const m=To(g,.08,.015,'#e8590c',0,.5,.24,Math.PI);m.rotation.z=Math.PI;Cy(g,.012,.012,.3,'#adb5bd',0,.15,0,5);}),
+ 'yo-yo':mk((g,o)=>{[-1,1].forEach(s=>{const d=Cy(g,.16,.16,.07,s<0?'#e03131':'#1c7ed6',s*.05,.3,0,22);d.rotation.z=Math.PI/2;});const ax=Cy(g,.04,.04,.06,'#fab005',0,.3,0,10);ax.rotation.z=Math.PI/2;Cy(g,.005,.005,.5,'#495057',0,.7,0,4);}),
+ yoyo:o=>B['yo-yo'](o),
+ violin:mk((g,o)=>{E(g,.15,.12,.05,'#a0522d',0,.18,0);E(g,.12,.1,.05,'#a0522d',0,.38,0);Bx(g,.04,.42,.02,'#343a40',0,.55,.04);Bx(g,.05,.08,.03,'#5c3d2e',0,.8,0);for(let i=0;i<4;i++)Bx(g,.004,.55,.004,'#f1f3f5',-.015+i*.01,.42,.06);}),
+ vase:mk((g,o)=>{E(g,.16,.2,.16,o.c||'#4dabf7',0,.2,0);Cy(g,.07,.1,.18,o.c||'#4dabf7',0,.45,0,16);const f=B.flower?B.flower({}):new THREE.Group();f.position.y=.45;f.scale.setScalar(.8);g.add(f);}),
+ van:mk((g,o)=>{const c=o.c||'#ffd43b';Bx(g,.9,.42,.42,c,0,.3,0);Bx(g,.25,.18,.4,'#a5d8ff',.32,.38,0,{mix:0});[-1,1].forEach(sx=>[-1,1].forEach(sz=>{const w=Cy(g,.09,.09,.06,'#343a40',sx*.28,.09,sz*.2,14);w.rotation.x=Math.PI/2;}));}),
 /* ---------------- people stand in as mannequins ---------------- */
 };
 function D_(g){}
