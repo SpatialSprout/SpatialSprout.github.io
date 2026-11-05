@@ -11,8 +11,10 @@ const AZ='ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 const ph=(c,s)=>new THREE.MeshPhongMaterial({color:c,shininess:s||30});
 const B=(geo,key,c)=>mk(G('kjw_'+key,geo),ph(c),0);
 const BUILD={
-  appletree:r=>{const g=new THREE.Group();const t=B(()=>new THREE.CylinderGeometry(.12,.16,.9,10),'trunk','#8d5a3b');t.position.y=.45;g.add(t);const c=B(()=>new THREE.SphereGeometry(.62,16,12),'crown','#5cb85c');c.position.y=1.2;g.add(c);
-    for(let i=0;i<7;i++){const a=i*0.9+(r?r():0),y=.95+((i*37)%5)*.12;const ap=B(()=>new THREE.SphereGeometry(.09,10,8),'apple','#e03131');ap.position.set(Math.cos(a)*.55,y,Math.sin(a)*.55);g.add(ap);}return g;},
+  appletree:r=>{/* a soft, chubby orchard tree with shiny apples */const g=new THREE.Group();const SP=(c,ro)=>new THREE.MeshPhysicalMaterial({color:c,roughness:ro||.55,clearcoat:.35,clearcoatRoughness:.4});
+    const t=mk(G('kjw_trunk2',()=>new THREE.CylinderGeometry(.11,.17,.9,20)),SP('#a8734f'),0);t.position.y=.45;g.add(t);
+    [[0,1.25,0,.6],[-.32,1.08,.08,.42],[.33,1.1,-.05,.44],[.05,1.48,-.05,.42]].forEach(([x,y,z,rr])=>{const c=mk(G('kjw_cr'+rr,()=>new THREE.SphereGeometry(rr,28,20)),SP('#6fcf63',.6),0);c.position.set(x,y,z);g.add(c);});
+    for(let i=0;i<8;i++){const a=i*0.8+(r?r():0),y=.98+((i*37)%5)*.11;const ap=mk(G('kjw_ap2',()=>new THREE.SphereGeometry(.085,20,14)),SP('#ff5c6c',.35),0);ap.position.set(Math.cos(a)*.6,y,Math.sin(a)*.6);g.add(ap);}return g;},
   castle:()=>{const g=new THREE.Group();const w=B(()=>new THREE.BoxGeometry(1.2,.8,.5),'cwall','#dee2e6');w.position.y=.4;g.add(w);[-.6,.6].forEach(x=>{const t=B(()=>new THREE.CylinderGeometry(.22,.24,1.3,12),'ctow','#ced4da');t.position.set(x,.65,0);g.add(t);const r=B(()=>new THREE.ConeGeometry(.28,.45,12),'croof','#845ef7');r.position.set(x,1.52,0);g.add(r);});
     const d=B(()=>new THREE.BoxGeometry(.3,.42,.05),'cdoor','#8d5a3b');d.position.set(0,.21,.26);g.add(d);const f=B(()=>new THREE.BoxGeometry(.2,.13,.01),'cflag','#ff6b6b');f.position.set(.7,1.9,0);g.add(f);return g;},
   barn:()=>{const g=new THREE.Group();const b=B(()=>new THREE.BoxGeometry(1.0,.75,.8),'barn','#c92a2a');b.position.y=.38;g.add(b);const r=B(()=>new THREE.CylinderGeometry(.01,.62,.5,4,1),'barnr','#495057');r.rotation.y=Math.PI/4;r.scale.set(1.15,1,.92);r.position.y=1.0;g.add(r);

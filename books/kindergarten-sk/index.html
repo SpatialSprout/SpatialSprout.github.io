@@ -907,7 +907,7 @@ PM.redrawR=()=>{if(cur<0||building||busy)return;drawPage(rightP,SP[cur],'R');};
 PM.curStep=()=>cur>=0&&SP[cur]?SP[cur].steps[stepI]:null;
 PM.spot={on:spotOn,off:spotOff,pick:pickObjs,stop(){cueRun=null;},get run(){return cueRun;},get list(){return spots;}};
 /* ================= exports for lesson files ================= */
-Object.assign(PM,{WORLDS,WKEYS,kSp,paperBase,kid,CREW,THREE,V,W,D,PY,PX,CW,CH,X0,TW,INK,RED,BLUE,GREY,TEAL,VIBE,FT,ZS,G,M,lam,mk,ink,unitBox,cellMat,label,starGeo,wedgeGeo,clearGroup,disposeObj,rr,T,wrap,para,header,keyWords,predict,
+Object.assign(PM,{WORLDS,WKEYS,kSp,applyLight,paperBase,kid,CREW,THREE,V,W,D,PY,PX,CW,CH,X0,TW,INK,RED,BLUE,GREY,TEAL,VIBE,FT,ZS,G,M,lam,mk,ink,unitBox,cellMat,label,starGeo,wedgeGeo,clearGroup,disposeObj,rr,T,wrap,para,header,keyWords,predict,
   flapBox,tryIt,box,caption,hot,starsRow,cxOf,cyOf,tint,moveTo,hop,tween,burst,easeOut,easeIO,easeBack,A,movers,speak:(t,f)=>speak(t,f),get ACC(){return ACC;}});
 
 /* ================= spreads ================= */
@@ -1050,14 +1050,14 @@ async function popUp(){const g=popGrp;if(!g)return;g.scale.y=.02;
 function flip(fwd){setLeaf(fwd?0:Math.PI,fwd?1:-1);leafF.visible=leafBk.visible=true;paperSound(.45);return tween(1.35,k=>setLeaf(fwd?Math.PI*k:Math.PI*(1-k),fwd?1:-1),easeSine).then(()=>{leafF.visible=leafBk.visible=false;});}
 function copyCanvas(dst,src){dst.g.setTransform(1,0,0,1,0,0);dst.g.drawImage(src.c,0,0);dst.t.needsUpdate=true;}
 async function goSpread(t,stepTo,keepPlay){if(busy||t===cur||t<0||t>=SP.length)return;readStop();if(!bookOpen){openBook(t);return;}const resume=keepPlay||playing;busy=true;guide=null;spotOff();cueRun=null;setPlay(false);nextTok++;mTok++;mascot.visible=false;emblemObj=null;logoObj=null;A.stopSeq();token++;$('#sheet').hidden=true;refreshDock(true);
-  const fwd=t>cur,sp=SP[t];const autoRun=resume||sp.kind==='learn';showStory(null);setWorld(worldFor(sp),STRANDI[sp.strand]||0);clearFlaps();clickables=[];draggables=[];curApi={};setView('book');await foldDown();
+  const fwd=t>cur,sp=SP[t];const autoRun=resume||sp.kind==='learn';showStory(null);setWorld(worldFor(sp),STRANDI[sp.strand]||0);if(PM.onSpread)try{PM.onSpread(sp);}catch(e){}clearFlaps();clickables=[];draggables=[];curApi={};setView('book');await foldDown();
   if(fwd)copyCanvas(flipF,rightP);else copyCanvas(flipB,leftP);
   const api=buildSpread(t);
   if(fwd){drawPage(flipB,sp,'L');drawPage(rightP,sp,'R');await flip(true);drawPage(leftP,sp,'L');}else{drawPage(flipF,sp,'R');drawPage(leftP,sp,'L');await flip(false);drawPage(rightP,sp,'R');}
   cur=t;curApi=api;popGrp.visible=true;restoreFlaps();await popUp();busy=false;try{localStorage.setItem(SKEY+'at',String(t));}catch(e){}pagePick=null;if(autoRun&&sp.kind!=='play')setPlay(true);setStep(stepTo||0);refreshDock();}
 async function openBook(t){if(busy||bookOpen)return;busy=true;token++;setPlay(false);$('#sheet').hidden=true;const sp=SP[t];if(!userMuted)setSound(true);
   if(coverDeco){const d=coverDeco;coverDeco=null;tween(.35,k=>d.scale.setScalar(Math.max(.01,1-k))).then(()=>{scene.remove(d);disposeObj(d);});}
-  const api=buildSpread(t);setWorld(worldFor(sp),STRANDI[sp.strand]||0);drawPage(leftP,sp,'L');drawPage(rightP,sp,'R');paperSound(.5);bookOpen=true;setView('book');
+  const api=buildSpread(t);setWorld(worldFor(sp),STRANDI[sp.strand]||0);if(PM.onSpread)try{PM.onSpread(sp);}catch(e){}drawPage(leftP,sp,'L');drawPage(rightP,sp,'R');paperSound(.5);bookOpen=true;setView('book');
   await tween(1.8,k=>{coverPivot.rotation.z=Math.PI*k;},easeSine);leftBlock.visible=leftMesh.visible=true;
   await tween(.35,k=>{const s=Math.max(.02,k);leftBlock.scale.y=s;leftBlock.position.y=MAT_Y+COVER_T+BLOCK_T*s/2;leftMesh.position.y=MAT_Y+COVER_T+BLOCK_T*s+.004;},easeOut);
   cur=t;curApi=api;popGrp.visible=true;restoreFlaps();await popUp();busy=false;try{localStorage.setItem(SKEY+'at',String(t));}catch(e){}setPlay(true);setStep(0);refreshDock();}
@@ -1144,7 +1144,7 @@ $('#bSound').onclick=()=>{setSound(!soundOn);userMuted=!soundOn;if(soundOn&&cur>
 $('#rankPill').onclick=openRanks;
 let night=false;
 function applyLight(){const sky=night?moodNow.sky.clone().lerp(new THREE.Color('#0d1020'),.84):moodNow.sky;
-  hemi.intensity=night?.22:(WD.dark?.78:.64);if(night)hemi.color.set(0x8090c0);else hemi.color.copy(moodNow.hm);sun.intensity=night?0:(WD.dark?.62:.78);lamp.intensity=night?1.25:0;
+  hemi.intensity=(night?.22:(WD.dark?.78:.64))*(PM.kHemiK||1);if(night)hemi.color.set(0x8090c0);else hemi.color.copy(moodNow.hm);sun.intensity=(night?0:(WD.dark?.62:.78))*(PM.kSunK||1);lamp.intensity=night?1.25:0;
   if(!(scene.background&&scene.background.isColor))scene.background=new THREE.Color();scene.background.copy(sky);
   if(!scene.fog)scene.fog=new THREE.Fog(0xffffff,26,78);scene.fog.color.copy(sky);
   groundMat.color.copy(moodNow.gr);if(night)groundMat.color.multiplyScalar(.45);
@@ -1209,14 +1209,14 @@ Promise.all([Promise.race([Promise.all([fl,imgs]),new Promise(r=>setTimeout(r,30
 <script src="props3d.js?v=701fe60a"></script>
 <script src="habitats.js?v=b242204f"></script>
 <script src="kit.js?v=06660d24"></script>
-<script src="subject-kit.js?v=6dff9883"></script>
+<script src="subject-kit.js?v=ad41faed"></script>
 <script src="stage.js?v=13c96b31"></script>
 <script src="acts.js?v=b97a7468"></script>
 <script src="math-kit2.js?v=dd586727"></script>
 <script src="math-kit3.js?v=f5333b7a"></script>
 <script src="kfont.js?v=3e6d5d1e"></script>
-<script src="pk-kit.js?v=0b133b97"></script>
-<script src="kk-kit.js?v=ea1e5a64"></script>
+<script src="pk-kit.js?v=6a5c656e"></script>
+<script src="kk-kit.js?v=fb9934a4"></script>
 <script src="g4.js?v=f49ac7f6"></script>
 <script src="pk.js?v=a9c418ce"></script>
 <script src="kk-gen.js?v=bc604c63"></script>

@@ -88,7 +88,7 @@ C.path.bare=1;
 function spider(){const g=new THREE.Group();const b=mk(G('kk_spb',()=>new THREE.SphereGeometry(.28,20,16)),lam('#495057'),20);b.position.y=.42;g.add(b);const hd=mk(G('kk_sph',()=>new THREE.SphereGeometry(.18,18,14)),lam('#343a40'),20);hd.position.set(0,.4,.3);g.add(hd);
   [-1,1].forEach(s=>{const e=mk(G('kk_spe',()=>new THREE.SphereGeometry(.06,12,10)),lam('#ffffff'),0);e.position.set(s*.07,.47,.45);g.add(e);const p2=mk(G('kk_spp',()=>new THREE.SphereGeometry(.03,8,6)),lam('#1b2236'),0);p2.position.set(s*.07,.47,.5);g.add(p2);
     for(let i=0;i<4;i++){const l=mk(G('kk_spl',()=>new THREE.CylinderGeometry(.02,.02,.5,6)),lam('#343a40'),0);l.position.set(s*.28,.25,-.15+i*.12);l.rotation.z=s*1.0;l.rotation.x=(i-1.5)*.25;g.add(l);}});return g;}
-C.web=function(g2,st,h,set){const on=tickers(st);mat(g2,4.4,2.3,-2.3,'#f8f0fc');const sp=spider();at(sp,0,0,-2.3);g2.add(sp);
+C.web=function(g2,st,h,set){const on=tickers(st);mat(g2,4.4,2.3,-2.3,'#f8f0fc');const sp=(P.kLuxNow&&P.LUXM&&P.LUXM.spider)?P.LUXM.spider():spider();at(sp,0,0,-2.3);g2.add(sp);
   const ring=mk(G('kk_web',()=>new THREE.TorusGeometry(.6,.008,4,40)),lam('#dee2e6'),0);ring.rotation.x=Math.PI/2;at(ring,0,.02,-2.3);g2.add(ring);
   const items=set.items||[];const n=items.length;const need=items.filter(x=>String(x)[0]==='*').length;let got=0;
   items.forEach((it,i)=>{const a=Math.PI*(0.15+0.7*i/Math.max(1,n-1));const o=make(it,1.0);at(o,-Math.cos(a)*1.75,0,-2.3-Math.sin(a)*.85+.55);g2.add(o);

@@ -57,8 +57,8 @@ function paintToy(c){const g=new THREE.Group();const pot=mk(G('pk_pot',()=>new T
 let KF=null;const TGC={};
 function txt3(str,c,o){o=o||{};if(!KF&&window.KFONT&&THREE.Font)KF=new THREE.Font(window.KFONT);const g=new THREE.Group();str=String(str);
   if(!KF){const b=blockToy(str,c);g.add(b);return g;}
-  const key=str+'|'+(o.size||1)+'|'+(o.depth||.28);let geo=TGC[key];
-  if(!geo){geo=new THREE.TextGeometry(str,{font:KF,size:o.size||1,height:o.depth||.28,curveSegments:10,bevelEnabled:true,bevelThickness:.05,bevelSize:.035,bevelSegments:4});geo.computeBoundingBox();const bb=geo.boundingBox;geo.translate(-(bb.min.x+bb.max.x)/2,-bb.min.y,-(o.depth||.28)/2);geo.computeVertexNormals();TGC[key]=geo;}
+  const LX=!!P.kLuxNow;const key=str+'|'+(o.size||1)+'|'+(o.depth||.28)+(LX?'|lux':'');let geo=TGC[key];
+  if(!geo){const sz=o.size||1;geo=new THREE.TextGeometry(str,LX?{font:KF,size:sz,height:(o.depth||.28)*.75,curveSegments:16,bevelEnabled:true,bevelThickness:sz*.09,bevelSize:sz*.05,bevelSegments:8}:{font:KF,size:o.size||1,height:o.depth||.28,curveSegments:10,bevelEnabled:true,bevelThickness:.05,bevelSize:.035,bevelSegments:4});geo.computeBoundingBox();const bb=geo.boundingBox;geo.translate(-(bb.min.x+bb.max.x)/2,-bb.min.y,-(o.depth||.28)/2);geo.computeVertexNormals();TGC[key]=geo;}
   const fc=new THREE.Color(c||'#ff6b6b'),sc=fc.clone().lerp(new THREE.Color('#1b2236'),.38);const m=new THREE.Mesh(geo,[new THREE.MeshPhongMaterial({color:fc,shininess:60,specular:new THREE.Color('#ffffff').multiplyScalar(.25)}),new THREE.MeshPhongMaterial({color:sc,shininess:30})]);m.castShadow=true;g.add(m);g.userData.face=m;g.userData.txt=str;return g;}
 function make(spec,s){let k=String(spec);const ok=k[0]==='*';if(ok)k=k.slice(1);let sz=1;const mm=k.match(/^(.*)@([\d.]+)$/);if(mm){k=mm[1];sz=+mm[2];}const parts=k.split(':');const solo=parts.length<2;let o,name=k,lab=null;if(parts.length<2)parts.length=1;
   if(solo){}else if(parts[0]==='txt'){o=txt3(parts[1],parts[2]||COL[(parts[1].charCodeAt(0)||0)%8],{size:parts[1].length>1?.42:.55});name=parts[1];lab=parts[1];}
@@ -69,6 +69,7 @@ function make(spec,s){let k=String(spec);const ok=k[0]==='*';if(ok)k=k.slice(1);
   else if(parts[0]==='dots'){o=diceToy(+parts[1],parts[2]);name=parts[1];lab=parts[1];}
   else if(parts[0]==='paint'){o=paintToy(parts[1]);name=parts[2]||parts[1];lab=parts[2]||'';}
   else if(parts[0]==='blank'){o=new THREE.Group();name='';}
+  if(!o&&P.kLuxNow&&P.LUXM&&P.LUXM[k]){o=P.LUXM[k](s||1);}
   if(!o){o=P.STAGE&&P.STAGE.prop?P.STAGE.prop(k,{s:.62*(s||1),label:false,bare:true,tap:false}):K2.standee(k,{label:false,s:.7*(s||1)});name=k;lab=k;}
   if(s&&parts.length>1)o.scale.multiplyScalar(s);
   if(sz!==1)o.scale.multiplyScalar(sz);o.userData.pk={ok,name,lab:parts[3]!=null?parts[3]:lab};return o;}
@@ -82,6 +83,7 @@ function layout(n,kind,o){o=o||{};const pts=[];
 /* a basket (or a hungry animal) that collects toys */
 function catcher(g2,kind,x,z){const g=new THREE.Group();at(g,x,0,z);g2.add(g);let o;
   if(!kind||kind==='basket'){o=P.STAGE&&P.PROP3&&P.PROP3.basket?P.STAGE.prop('basket',{s:1.0,label:false,bare:true,tap:false}):K2.standee('basket',{label:false,s:.8});}
+  else if(P.kLuxNow&&P.LUXM&&P.LUXM[kind])o=P.LUXM[kind](1.5);
   else o=P.STAGE&&P.STAGE.prop?P.STAGE.prop(kind,{s:1.05,label:false,bare:true,tap:false}):K2.standee(kind,{label:false,s:.9});
   g.add(o);g.userData.o=o;return g;}
 const jump=(o,h)=>{const y0=o.userData.y0==null?(o.userData.y0=o.position.y):o.userData.y0;return tween(.42,k=>{o.position.y=y0+Math.sin(k*Math.PI)*(h||.35);o.rotation.y=(o.userData.ry||0)+Math.sin(k*Math.PI*2)*.25;});};
