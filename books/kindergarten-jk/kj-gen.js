@@ -74,7 +74,8 @@ const cl=c=>COL[(c.charCodeAt(0)*3)%8];
 const g=(custom,o)=>Object.assign({custom},o||{});
 const sr=seed=>{let s=seed*9301+49297;return ()=>{s=(s*9301+49297)%233280;return s/233280;};};
 const sshuf=(a,rnd)=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(rnd()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
-const R2={rocket:(q,items,o)=>({q,set:g('rocket',Object.assign({items:shuffle(items)},o||{}))}),bowl:(q,items,o)=>({q,set:g('bowl',Object.assign({items:shuffle(items)},o||{}))}),train:(q,items,o)=>({q,set:g('train',Object.assign({items:shuffle(items)},o||{}))})};
+const NMS={ufo:'UFO','x-ray':'X-ray'};
+const R2={line:(q,items,o)=>({q,set:g('line',Object.assign({items},o||{}))}),rocket:(q,items,o)=>({q,set:g('rocket',Object.assign({items:shuffle(items)},o||{}))}),bowl:(q,items,o)=>({q,set:g('bowl',Object.assign({items:shuffle(items)},o||{}))}),train:(q,items,o)=>({q,set:g('train',Object.assign({items:shuffle(items)},o||{}))})};
 Object.assign(R,R2);
 /* no balloons in this book: balloon and bubble games become bowling */
 const unBal=t=>String(t).replace(/^(\*?)balloon::([^:]+):(.*)$/,'$1paint:$2:$3').replace(/^(\*?)balloon:([^:]+):(.*)$/,'$1txt:$2:$3');
@@ -93,8 +94,8 @@ P.KLETTERJ=function(L,i){const ch=L.ch,ex=(L.words||[]).slice(0,3),more=EX[ch]||
   const feeder=FEED[i%FEED.length],hop=HOP[i%HOP.length];
   const pool={
     path:()=>R.path('Help the '+hop[0]+' get to the '+hop[1]+'! Hop only on *'+ch+'*.',[],oth(10),{only:ch,who:hop[0],goal:hop[1],cols:5}),
-    feed:()=>R.feed('Feed the hungry '+feeder+' the things that '+SW+' *'+ch+'*: '+NM(more[0])+' and '+NM(more[1])+'!',feeder,['*'+more[0],'*'+more[1]].concat(nots(3))),
-    web:()=>R.web('Help the spider catch the things that '+SW+' *'+ch+'*!',['*'+more[0],'*'+more[2]].concat(nots(3)),{spiderSay:ch+'!'}),
+    feed:()=>R.line('Feed the hungry '+feeder+' the things that '+SW+' *'+ch+'*!',sshuf(['*'+more[0],'*'+more[1]].concat(nots(3)),rnd),{kind:'feed',who:feeder,c1:cl(ch),letter:ch,names:NMS,hint:'Only things that '+SW+' '+ch+'!'}),
+    web:()=>R.line('Help the spider catch the things that '+SW+' *'+ch+'*!',sshuf(['*'+more[0],'*'+more[2]].concat(nots(3)),rnd),{kind:'web',who:'spider',c1:cl(ch),letter:ch,names:NMS,hint:'Only things that '+SW+' '+ch+'!'}),
     dots:()=>{const st0=Math.max(0,Math.min(i-4,21));const sq=AZ.slice(i<5?0:st0,(i<5?0:st0)+5);return R.dots('Join the dots in ABC order: *'+sq.join(', ')+'*. What will appear?',sq,more[1],{seed:i,col:cl(ch)});},
     fish:()=>R.fishing('Go fishing! Catch the fish with *'+ch+'*.',[ch,ch,ch].map(x=>'*'+x).concat(oth(3,10))),
     mem:()=>R.mem('Flip the cards. Find the matching letters!',[ch,others[13],others[14]].map((x,j)=>['txt:'+x+':'+COL[(j*3)%8],'txt:'+x+':'+COL[(j*3+4)%8]])),
@@ -112,9 +113,11 @@ P.KLETTERJ=function(L,i){const ch=L.ch,ex=(L.words||[]).slice(0,3),more=EX[ch]||
     guide:{goal:'Know the letter '+ch+' by name and shape, and link it to '+[L.item].concat(ex).join(', ')+'.',words:[L.item].concat(ex,more).join(', '),ask:['What letter is this?','What starts with '+ch+'?','Where did the magic book take us?'],home:'Hunt for '+ch+' at home: on cereal boxes, books and signs. Find something that starts with '+ch+'!'},
     watch:[ch+' for '+L.item+'!',say+'!'],fig:'A big 3D letter '+ch+' and '+L.item+'.',
     kid:{color:true,id:'c'+id,big:ch+ch.toLowerCase(),pic:L.item,line,words:ex.map(x=>[x,NM(x)])},page:{},
-    steps:[{say:'Meet '+ch,hold:17000,speech:'Whoosh! The magic book took us to '+w.say+'! '+w.is+' And here comes the letter '+ch+'! '+say+'! What else '+SW.replace(/^(\w+)/,'$1s')+' '+ch+'? '+ex.map(NM).join(', ')+'!',
-        set:g('show',{i,big:ch,item:L.item,words:ex,col:cl(ch),line:ch+' is for '+L.item,intro,face:true})},
-      {say:'Where is '+ch+'?',hold:10000,speech:'All the letters are hiding in little boxes! '+(i?('We already found '+AZ.slice(0,i).join(', ')+'. '):'')+'Which one is next? Out comes '+ch+'! '+seqLine,set:g('abc',{idx:i,col:cl(ch),line:seqLine})},
+    steps:[{say:'Meet '+ch,hold:17000,speech:'Here comes the letter '+ch+'! '+say+'! What else '+SW.replace(/^(\w+)/,'$1s')+' '+ch+'? '+ex.map(NM).join(', ')+'!',
+        set:g('show',{i,big:ch,item:L.item,words:ex,col:cl(ch),line:ch+' is for '+L.item,face:true})},
+      (()=>{const sp='All the letters are hiding! '+(i?('We already found '+AZ.slice(0,i).join(', ')+'. What’s next?'):'Which one comes first?')+' Say it out loud! Yay! It is '+ch+'!';
+        const pre=sp.split('Yay!')[0].trim().split(/\s+/).length;const est=Math.round(250+pre*480+3*550+2800);
+        return {say:'Where is '+ch+'?',hold:Math.max(12000,est+7000),speech:sp,set:g('abc',{idx:i,col:cl(ch),line:seqLine,cue:sp,revealAt:est})};})(),
       {say:'Colour time!',kc:true,speech:'Colour time! Pick a crayon, then tap the letter '+ch+', the '+L.item+' and the pictures to colour them in.',set:g('show',{i,big:ch,item:L.item,words:ex,col:cl(ch),line:ch+' is for '+L.item,still:true})}],
     rounds,tries:[['Say it: '+ch+' is for '+L.item+'.','Can you think of another '+ch+' word?'],['Draw '+L.item+'.','Write a big '+ch+' beside it!']]});};
 /* shapes and colours lessons get the colouring page too (with time to colour) */

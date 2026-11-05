@@ -233,12 +233,14 @@ C.abc=function(g2,st,h,set){mat(g2,4.4,2.3,-2.3,'#f3f0ff');const R=runner(st);co
   const me=boxes[idx];const big=txt3(AZ[idx],set.col||'#ff6b6b',{size:1.05,depth:.3});big.visible=false;g2.add(big);
   const say=tag(set.line||AZ[idx]+'!',{size:.32,bg:'#ffffff',border:set.col||'#ff6b6b'});say.position.set(0,1.95,-2.6);say.visible=false;g2.add(say);
   const style=set.style!=null?set.style:idx%4;
-  const run=()=>{const R2=runner(st);const b=me.g,lid=b.userData.lid;lid.visible=true;lid.position.set(0,.47,0);lid.rotation.set(0,0,0);b.visible=true;b.scale.setScalar(.62);me.L.visible=false;big.visible=false;say.visible=false;
+  const fnv=t=>{let h=0x811c9dc5;for(let i=0;i<t.length;i++){h^=t.charCodeAt(i);h=Math.imul(h,0x01000193)>>>0;}return ('0000000'+h.toString(16)).slice(-8);};
+  const cue=set.cue&&window.KCUE&&window.VOICE&&window.VOICE[fnv(set.cue)]?window.KCUE[fnv(set.cue)]:null;const T=cue!=null?Math.round(cue*1000)+150:(set.revealAt||2100);let waiting=true;
+  const run=()=>{const R2=runner(st);waiting=true;const b=me.g,lid=b.userData.lid;lid.visible=true;lid.position.set(0,.47,0);lid.rotation.set(0,0,0);b.visible=true;b.scale.setScalar(.62);me.L.visible=false;big.visible=false;say.visible=false;
     boxes.forEach(x=>{if(x.j<idx){x.L.visible=true;x.L.position.y=.3;}});
     /* 1: the closed box wiggles, getting excited */
-    R2.at(500,()=>{tween(1.4,k=>{b.rotation.z=Math.sin(k*Math.PI*8)*.18*(1-k*.3);b.position.y=Math.abs(Math.sin(k*Math.PI*6))*.06;}).then(()=>{b.rotation.z=0;b.position.y=0;});});
+    R2.at(Math.max(300,T-1700),()=>{waiting=false;boxes.forEach(x=>{if(x.j>=idx)x.g.position.y=0;});tween(1.6,k=>{b.rotation.z=Math.sin(k*Math.PI*8)*.18*(1-k*.3);b.position.y=Math.abs(Math.sin(k*Math.PI*6))*.06;}).then(()=>{b.rotation.z=0;b.position.y=0;});});
     /* 2: out it comes! */
-    R2.at(2100,()=>{const p=me.L.position;me.L.visible=true;me.L.scale.setScalar(1);
+    R2.at(T,()=>{const p=me.L.position;me.L.visible=true;me.L.scale.setScalar(1);
       if(style===0){tween(.7,k=>{lid.position.y=.47+k*2.2;lid.rotation.x=k*6;});me.L.position.y=.1;tween(1.2,k=>{me.L.position.y=.1+Math.abs(Math.sin(k*Math.PI*3))*.8*(1-k)+.2*k;}).then(()=>boom(me.L));}
       else if(style===1){tween(.35,k=>b.scale.setScalar(.62*(1+k*.5))).then(()=>{boom(b);b.visible=false;me.L.position.y=.3;tween(1.2,k=>{me.L.rotation.z=Math.sin(k*Math.PI*6)*.35*(1-k);});});}
       else if(style===2){tween(.4,k=>{lid.position.y=.47+k*.25;});me.L.position.y=.05;tween(.4,k=>{me.L.position.y=.05+k*.25;});
@@ -246,13 +248,13 @@ C.abc=function(g2,st,h,set){mat(g2,4.4,2.3,-2.3,'#f3f0ff');const R=runner(st);co
         R2.at(1500,()=>{tween(.6,k=>{lid.position.y=.47+k*2;lid.position.x=k*1.2;lid.rotation.z=-k*4;});tween(1.0,k=>{me.L.position.y=.05+Math.sin(k*Math.PI)*1.3+k*.25;me.L.rotation.x=k*Math.PI*2;}).then(()=>{me.L.rotation.x=0;boom(me.L);});});}
       else{tween(.5,k=>{lid.position.y=.47+k*.6;lid.rotation.z=k*.6;});me.L.position.y=.1;tween(1.6,k=>{me.L.position.y=.1+Math.sin(k*Math.PI)*2.2+k*.2;me.L.rotation.y=k*Math.PI*4;}).then(()=>{me.L.rotation.y=0;boom(me.L);});}});
     /* 3: it grows big at the front and we say where it lives in the alphabet */
-    R2.at(4300,()=>{big.visible=true;big.position.copy(me.L.position);big.scale.setScalar(.3);const p0=big.position.clone(),to=V(0,.15,-1.55);me.L.visible=false;
+    R2.at(T+2200,()=>{big.visible=true;big.position.copy(me.L.position);big.scale.setScalar(.3);const p0=big.position.clone(),to=V(0,.15,-1.55);me.L.visible=false;
       tween(1.2,k=>{const e=ease(k);big.position.set(p0.x+(to.x-p0.x)*e,p0.y+(to.y-p0.y)*e+Math.sin(k*Math.PI)*.6,p0.z+(to.z-p0.z)*e);big.scale.setScalar(.3+.7*e);}).then(()=>{boom(big);growS(say,.5);});});
     /* 4: everyone we know hops in order, A, B, C… up to today's letter */
-    R2.at(6600,()=>{boxes.slice(0,idx).forEach((x,j)=>R2.at(j*Math.max(160,700-idx*25),()=>bob(x.L,.3)));});
-    R2.at(6800+idx*Math.max(160,700-idx*25),()=>{const p0=big.position.clone(),to=me.L.position.clone();tween(1.2,k=>{const e=ease(k);big.position.set(p0.x+(to.x-p0.x)*e,p0.y+(to.y-p0.y)*e+Math.sin(k*Math.PI)*.8,p0.z+(to.z-p0.z)*e);big.scale.setScalar(1-.7*e);}).then(()=>{big.visible=false;me.L.visible=true;me.L.position.y=.3;bob(me.L,.4);if(style!==1){tween(.4,k=>b.scale.y=.62*(1-.6*k));lid.visible=false;}});});};
+    R2.at(T+4500,()=>{boxes.slice(0,idx).forEach((x,j)=>R2.at(j*Math.max(160,700-idx*25),()=>bob(x.L,.3)));});
+    R2.at(T+4700+idx*Math.max(160,700-idx*25),()=>{const p0=big.position.clone(),to=me.L.position.clone();tween(1.2,k=>{const e=ease(k);big.position.set(p0.x+(to.x-p0.x)*e,p0.y+(to.y-p0.y)*e+Math.sin(k*Math.PI)*.8,p0.z+(to.z-p0.z)*e);big.scale.setScalar(1-.7*e);}).then(()=>{big.visible=false;me.L.visible=true;me.L.position.y=.3;bob(me.L,.4);if(style!==1){tween(.4,k=>b.scale.y=.62*(1-.6*k));lid.visible=false;}});});};
   say.userData.s0v=say.scale.clone();run();
-  return {tick:(dt,t)=>{if(big.visible)big.rotation.y=Math.sin(t*.9)*.2;},play:run,controls:()=>st.round?[]:[{t:'Again!',go:true,fn:run}]};};
+  return {tick:(dt,t)=>{if(big.visible)big.rotation.y=Math.sin(t*.9)*.2;if(waiting)boxes.forEach((x,j)=>{if(j>=idx&&x.g.visible)x.g.position.y=Math.max(0,Math.sin(t*3+j*1.7))*.05;});},play:run,controls:()=>st.round?[]:[{t:'Again!',go:true,fn:run}]};};
 C.abc.bare=1;
 
 /* PATH, letter version: the duck may only step on stones with today's letter */
@@ -415,4 +417,39 @@ C.train=function(g2,st,h,set){mat(g2,4.4,2.3,-2.3,'#f4fce3');const T=new THREE.G
     else{wobble(c);if(isPlay(h))h.miss(set.hint||'That crate does not go on this train!');}}}));
   return {tick:(dt,t)=>{if(!done)E.userData.chimney.scale.y=1+Math.sin(t*6)*.08;}};};
 C.train.bare=1;
+})();
+/* ===== LINE: a hungry friend on one side, a tidy line of pictures with their names on the other.
+   Tap the pictures that start with the letter: they fly over (into the mouth, or onto the spider's web). ===== */
+(function(){
+"use strict";
+const P=window.PM;if(!P||P.failed||!P.K2||!P.PKX)return;
+const {THREE,V,G,mk,lam,A,tween}=P;const C=P.K2.CUSTOM;const X=P.PKX;const {make,boom,mat,COL,at,wobble}=X;
+const isPlay=h=>h.isPlay?h.isPlay():false;
+/* a name card: the first letter in its own colour, the rest in dark ink */
+const NT={};
+function nameTag(word,c1){const key=word+'|'+c1;let tex=NT[key];const fs=96,font='700 '+fs+'px "Andika", "Patrick Hand", "Comic Sans MS", sans-serif';
+  const cv=document.createElement('canvas');const g0=cv.getContext('2d');g0.font=font;const w0=g0.measureText(word.slice(0,1)).width,w1=g0.measureText(word.slice(1)).width;const W=Math.ceil(w0+w1+70),H=150;
+  if(!tex){cv.width=W;cv.height=H;const g=cv.getContext('2d');g.font=font;const r=40;g.beginPath();g.moveTo(r,6);g.arcTo(W-6,6,W-6,H-6,r);g.arcTo(W-6,H-6,6,H-6,r);g.arcTo(6,H-6,6,6,r);g.arcTo(6,6,W-6,6,r);g.closePath();g.fillStyle='#ffffff';g.fill();g.lineWidth=8;g.strokeStyle=c1;g.stroke();
+    g.textBaseline='middle';g.fillStyle=c1;g.fillText(word.slice(0,1),35,H/2+6);g.fillStyle='#1b2236';g.fillText(word.slice(1),35+w0,H/2+6);tex=NT[key]=new THREE.CanvasTexture(cv);tex.userData={w:W,h:H};}
+  const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:tex,depthWrite:false,transparent:true}));const hh=.3;sp.scale.set(hh*tex.userData.w/tex.userData.h,hh,1);sp.renderOrder=5;return sp;}
+X.nameTag=nameTag;
+function web(){const g=new THREE.Group();const m=lam('#ced4da');for(let i=1;i<=4;i++){const t=mk(G('kl_wr'+i,()=>new THREE.TorusGeometry(i*.17,.007,6,48)),m,0);g.add(t);}
+  for(let i=0;i<8;i++){const a=i/8*Math.PI*2;const s=mk(G('kl_ws',()=>new THREE.CylinderGeometry(.006,.006,.72,4)),m,0);s.position.set(Math.cos(a)*.36,Math.sin(a)*.36,0);s.rotation.z=a+Math.PI/2;g.add(s);}return g;}
+C.line=function(g2,st,h,set){mat(g2,4.4,2.3,-2.3,'#fff8e8');const items=(set.items||[]).slice(0,5);const n=items.length;const need=items.filter(t=>String(t)[0]==='*').length;let got=0,busy=false;
+  const isWeb=set.kind==='web';const who=set.who||(isWeb?'spider':'bear');const c1=set.c1||'#e03131';
+  const hero=(P.kLuxNow&&P.LUXM&&P.LUXM[who])?P.LUXM[who](isWeb?1:1.6):make(who,1.5);at(hero,-1.35,0,-2.3);hero.rotation.y=.5;g2.add(hero);
+  let W=null;if(isWeb){W=web();W.scale.setScalar(1.25);W.position.set(-1.35,.95,-3.1);g2.add(W);hero.position.z=-2.55;}
+  const mouth=()=>V(hero.position.x+.12,isWeb?.9:.95,hero.position.z+.25);
+  const zs=[...Array(n)].map((_,i)=>-3.25+i*(2.0/Math.max(1,n-1)));const ys=[...Array(n)].map((_,i)=>(n-1-i)*.3);
+  ys.forEach((y,i)=>{const st0=mk(G('kl_step'+i,()=>new THREE.BoxGeometry(2.2,y+.08,.5)),lam(['#ffe3e3','#fff3bf','#d3f9d8','#d0ebff','#e5dbff'][i%5]),20);at(st0,1.0,(y+.08)/2,zs[i]);g2.add(st0);});
+  items.forEach((t,i)=>{const ok=String(t)[0]==='*';const nm=String(t).replace(/^\*/,'');const o=make(nm,.82);at(o,.4,ys[i]+.08,zs[i]);o.rotation.y=-.2;g2.add(o);
+    const lab=nameTag(set.names&&set.names[nm]||nm,c1);lab.position.set(1.45,ys[i]+.36,zs[i]+.05);g2.add(lab);o.userData={ok,lab,y0:0};
+    A.drag(o,{tap:()=>{if(busy||o.userData.gone)return;A.pop&&A.pop();
+      if(ok){busy=true;o.userData.gone=1;got++;const p0=o.position.clone();const to=isWeb?V(W.position.x+(Math.random()-.5)*.6,W.position.y+(Math.random()-.5)*.6,W.position.z+.08):mouth();const s0=o.scale.x;
+        tween(.9,k=>{o.position.set(p0.x+(to.x-p0.x)*k,p0.y+(to.y-p0.y)*k+Math.sin(k*Math.PI)*1.0,p0.z+(to.z-p0.z)*k);o.scale.setScalar(s0*(isWeb?1-.45*k:1-.95*k));}).then(()=>{
+          if(!isWeb){o.visible=false;const s=hero.scale.x;tween(.4,k=>{const f=Math.sin(k*Math.PI);hero.scale.set(s*(1+f*.12),s*(1-f*.1),s*(1+f*.12));}).then(()=>hero.scale.setScalar(s));}
+          boom(isWeb?o:hero);tween(.3,k=>{lab.material.opacity=1-k;});busy=false;if(got>=need&&isPlay(h))A.later(()=>h.win(set.ok),700);});}
+      else{wobble(o);if(isPlay(h))h.miss(set.hint||nm+' does not start with '+(set.letter||'that letter')+'. Try another!');}}});});
+  return {tick:(dt,t)=>{if(!busy)hero.rotation.y=.5+Math.sin(t*1.5)*.08;}};};
+C.line.bare=1;
 })();
