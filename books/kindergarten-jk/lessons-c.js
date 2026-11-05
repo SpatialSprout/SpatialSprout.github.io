@@ -37,12 +37,14 @@ U({id:'scolours',title:'Colours',strand:'Shapes and Colours',codes:['Problem Sol
     {say:'Yellow and blue',speech:'Pour yellow and blue together and stir. Swish, swish… green!',set:S.mix('#ffd43b','yellow','#4dabf7','blue','#40c057','green','Yellow and blue make green!')},
     {say:'Red and yellow',speech:'Now red and yellow. Swish, swish… orange!',set:S.mix('#ff6b6b','red','#ffd43b','yellow','#ff922b','orange','Red and yellow make orange!')}],
   rounds:[R.bub('Pop the *red* bubbles!',['*balloon::#ff6b6b:red','*balloon::#ff6b6b:red','*apple','balloon::#4fb3ff:blue','balloon::#ffd43b:yellow','leaf']),
-    R.pop('Pop the *blue* balloons!',['*balloon::#4fb3ff:blue','*balloon::#4fb3ff:blue','balloon::#ff6b6b:red','balloon::#5cc46a:green','balloon::#ffd43b:yellow']),
+    (R.rocket?R.rocket('Which rocket carries the *blue* paint? Tap it for blast off!',['*paint:#4fb3ff:blue','paint:#ff6b6b:red','paint:#ffd43b:yellow']):R.pop('Pop the *blue* balloons!',['*balloon::#4fb3ff:blue','*balloon::#4fb3ff:blue','balloon::#ff6b6b:red','balloon::#5cc46a:green','balloon::#ffd43b:yellow'])),
     R.feed('Put the *yellow* things in the basket.','basket',['*banana','*sun','*star','apple','leaf','whale']),
     R.one('What colour is a *leaf*? Tap the green paint.','paint:#40c057:green',['paint:#ff6b6b:red','paint:#4dabf7:blue']),
     R.tap('Red and yellow make… tap the paint!',['*paint:#ff922b:orange','paint:#40c057:green','paint:#845ef7:purple']),
     R.tap('Yellow and blue make… tap the paint!',['*paint:#40c057:green','paint:#ff922b:orange','paint:#ff6b6b:red']),
     R.mem('Find the pairs: a colour and a thing that colour.',[['paint:#ff6b6b:red','apple'],['paint:#ffd43b:yellow','banana'],['paint:#40c057:green','leaf']]),
-    R.web('Help the spider catch the *red* things!',['*apple','*strawberry','*cherries','banana','leaf','whale'])],
+    R.web('Help the spider catch the *red* things!',['*apple','*strawberry','*cherries','banana','leaf','whale']),
+    R.cups('Watch the cups! Where is the *purple* paint?','paint:#845ef7:purple',['paint:#ff6b6b:red','paint:#4fb3ff:blue']),
+    R.peek('Hide and seek! Find all the *green* animals.',['*frog','*turtle','*snake','pig','penguin','flamingo'])],
   tries:[['Find something red, yellow and blue.','look around!'],['Mix two crayons on paper.','what new colour?']]});
 })();

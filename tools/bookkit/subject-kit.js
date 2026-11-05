@@ -128,7 +128,7 @@ function drawCards(p,y,cards){const g=p.g;const hh=cards.some(c=>(c.q||'').repla
     if(c.o&&c.o.includes(j)){g.beginPath();g.arc(cx,py,Math.min(36,sp/2),0,Math.PI*2);g.strokeStyle='#e4572e';g.lineWidth=4;g.stroke();}if(c.x&&c.x.includes(j))xMark(g,cx,py,Math.min(50,sp-10));});
   if(c.a)wrap(g,c.a,x+30,(n?py+60:ty+24),w-50,30,{font:FT.hand,bold:FT.hand,color:acc(),boldColor:'#e4572e'});});}
 let CMP=0;/* compact level while fitting a page: 1 tighter example rows, 2 no cards, 3 no key words or story pictures, 4 smallest */
-function drawPage(p,S,d){let y=0;for(let lv=0;lv<=5;lv++){if(lv>0&&P.paperBase){P.paperBase(p);p.hot=[];p.flaps=[];}if(P.READ)P.READ.n=0;CMP=lv;y=drawPage1(p,S,d);if(y<=1300||(P.READ&&P.READ.collect))break;}CMP=0;return y;}
+function drawPage(p,S,d){if(P.kSp&&P.kSp(S.sp)&&S.sp.kind==='learn'){header(p,S);return 1300;}let y=0;for(let lv=0;lv<=5;lv++){if(lv>0&&P.paperBase){P.paperBase(p);p.hot=[];p.flaps=[];}if(P.READ)P.READ.n=0;CMP=lv;y=drawPage1(p,S,d);if(y<=1300||(P.READ&&P.READ.collect))break;}CMP=0;return y;}
 /* Kindergarten page: one giant letter or number, its picture friend and a short line, like a first workbook */
 /* ---------- the colouring page: a crayon box, a letter and its picture friends to colour in ---------- */
 const KCOL=P.KCOL||(P.KCOL={});const CPC={};
@@ -139,7 +139,7 @@ function colorPic(g,n,x,y,s,fill){const o=img(n);if(!o||!o.ok){pic(g,n,x,y,s);re
     for(let a=0;a<20;a++){const r=4.5*R2;q.drawImage(m,Math.cos(a/20*Math.PI*2)*r,Math.sin(a/20*Math.PI*2)*r);}
     const f2=mkc(),fq=f2.getContext('2d');fq.drawImage(o.im,PD,PD,S,S);fq.globalCompositeOperation='source-in';fq.fillStyle=fill||'#ffffff';fq.fillRect(0,0,W2,W2);q.drawImage(f2,0,0);
     const d=mkc(),dq=d.getContext('2d');const hasF='filter' in dq;if(hasF)dq.filter='grayscale(1) contrast(1.5) brightness(1.18)';dq.drawImage(o.im,PD,PD,S,S);
-    q.save();q.globalCompositeOperation='multiply';q.globalAlpha=fill?(hasF?.62:.3):(hasF?.2:.1);q.drawImage(d,0,0);q.restore();CPC[key]=c;}
+    q.save();q.globalCompositeOperation='multiply';q.globalAlpha=fill?(hasF?.38:.2):(hasF?.2:.1);q.drawImage(d,0,0);q.restore();CPC[key]=c;}
   g.drawImage(c,x-W2/R2/2,y-W2/R2/2,W2/R2,W2/R2);}
 function crayon(g,x,y,w,h,c,sel){g.save();if(sel){g.beginPath();g.ellipse(x,y+h*.08,w*.95,h*.62,0,0,Math.PI*2);g.fillStyle='rgba(255,212,59,.45)';g.fill();}
   const ink=c==='#ffffff'?'#adb5bd':'rgba(0,0,0,.28)';const top=y-h/2,tip=h*.24;
@@ -167,6 +167,10 @@ function drawColor(p,y,k){const g=p.g;const c=acc();const id=k.id||'x';const S=K
   g.beginPath();g.arc(rx,ry,22,-.4,Math.PI*1.45);g.lineWidth=8;g.lineCap='round';g.strokeStyle='#2b8a3e';g.stroke();g.beginPath();g.moveTo(rx+24,ry-26);g.lineTo(rx+24,ry-4);g.lineTo(rx+4,ry-10);g.closePath();g.fillStyle='#2b8a3e';g.fill();g.restore();
   tap(rx-50,ry-60,100,120,()=>{S.f={};});
   return y+ch+50;}
+/* Junior K: the 3D show sits on the left page; the right page is the colouring (or picture) page */
+P.kLearnRight=(p,S,L)=>{if(!(P.kSp&&P.kSp(S.sp)))return false;const d=(window.__UNITS||[]).find(u=>u.id===L.id);if(!d||!d.kid)return false;try{drawKid(p,70,d.kid);}catch(e){console.error(e);}return true;};
+P.kPage=(p,S,L,side)=>{const g=p.g;const w=(P.kWorldOf&&P.kWorldOf(L.id))||{};const c1=w.page||'#fff8e8';const gr=g.createLinearGradient(0,0,0,P.CH);gr.addColorStop(0,c1);gr.addColorStop(1,'#ffffff');g.fillStyle=gr;g.fillRect(0,0,P.CW,P.CH);
+  g.globalAlpha=.18;for(let i=0;i<46;i++){const x=(i*197+(side==='L'?40:90))%P.CW,y=(i*331+70)%P.CH;g.fillStyle=['#ffd43b','#ff8787','#74c0fc','#8ce99a'][i%4];g.beginPath();g.arc(x,y,10+(i%5)*5,0,Math.PI*2);g.fill();}g.globalAlpha=1;};
 function drawKid(p,y,k){if(k.color)return drawColor(p,y,k);const g=p.g;const c=acc();const top=y+6,h=Math.min(1290-top,700);
   rr(g,X0,top,TW,h,36);g.fillStyle=tint(c,.1);g.fill();g.lineWidth=5;g.strokeStyle=tint(c,.45);g.stroke();
   g.save();let fs0=330;g.font=fs0+'px "Patrick Hand", "Comic Sans MS", cursive';const mw=(k.pic?TW*.5:TW*.9);while(g.measureText(k.big).width>mw&&fs0>90){fs0-=20;g.font=fs0+'px "Patrick Hand", "Comic Sans MS", cursive';}g.textAlign='center';g.textBaseline='alphabetic';g.lineWidth=14;g.strokeStyle='#ffffff';g.lineJoin='round';
@@ -271,7 +275,7 @@ function wordAt(SY,S0){const n=SY.toks.length;const vn=P.voNow&&P.voNow();const 
   if(vn&&!vn.dev){S0.voiced=true;if(VT){for(let i=0;i<n;i++)if(vn.t<VT[i])return i;return n;}const dur=vn.dur||n*.38;return Math.min(n,Math.floor(vn.t/dur*n*1.02));}
   if(vn&&vn.dev){S0.voiced=true;let k=-1;SY.toks.forEach((t,i)=>{if(t.at<=vn.ch)k=i;});return Math.max(k,Math.min(n,Math.floor(vn.el*2.5)));}
   if(S0.voiced)return n;if(S0.t<1.2)return -1;return Math.min(n,Math.floor((S0.t-1.2)/.38));}
-P.learnRight=function(p,S,L){const SY=STORY[L.id];const g=p.g,st=S.st;if(BKs.readTheory&&(!SY||!st.storyOn)){if(L.fig){g.font=FT.cap;g.fillStyle=GREY;g.textAlign='center';g.fillText(L.fig,P.CW/2,P.CH-80);g.textAlign='left';}return true;}if(!SY)return false;const wi=st.storyOn?st.wi:-2;
+P.learnRight=function(p,S,L){if(P.kLearnRight&&P.kLearnRight(p,S,L))return true;const SY=STORY[L.id];const g=p.g,st=S.st;if(BKs.readTheory&&(!SY||!st.storyOn)){if(L.fig){g.font=FT.cap;g.fillStyle=GREY;g.textAlign='center';g.fillText(L.fig,P.CW/2,P.CH-80);g.textAlign='left';}return true;}if(!SY)return false;const wi=st.storyOn?st.wi:-2;
   const x0=X0-16,w0=TW+32,top=34,bottom=650;let fs=38,lh=54,tl=0,lines=null;
   const lay=()=>{g.font='400 '+fs+'px "Atkinson Hyperlegible", sans-serif';const sp=g.measureText(' ').width;lines=[[]];let lw=0;const maxW=w0-64;
     SY.toks.forEach((t,i)=>{if(t.title)return;g.font=(t.b?'700 ':'400 ')+fs+'px "Atkinson Hyperlegible", sans-serif';const tw=g.measureText(t.w).width;if(lw+tw>maxW&&lw>0){lines.push([]);lw=0;}lines[lines.length-1].push({t,i,x:lw,tw});lw+=tw+sp;});
@@ -303,7 +307,7 @@ P.unit=function(d){(window.__UNITS=window.__UNITS||[]).push(d);if(BKs.autoRounds
   if(BKs.readTheory)d.steps.forEach((s0,i)=>{const set=s0.set||{};if(!set.row)return;(s0.cues||[]).forEach(c=>{if(!c[1]||c[3])return;const nm=String(c[1]).split('|')[0];if(set.row.includes(nm))c[3]='@'+nm;});});
   if(BKs.storyRight&&d.page&&d.page.story){const mk1=(s,i)=>({say:s.say,speech:s.speech,demo:'s'+i,cues:(s.cues||[]).map(c=>{const q={w:c[0]};if(c[1])q.p=r=>find(r,c[1]);if(c[2])q.l=c[2];if(c[3])q.demo='s'+i+c[3];if(c[4])q.keep=true;if(!q.p&&!q.l&&!q.demo)q.hl=c[0];return q;})});
     const sy=d.page.story;STORY[d.id]=storyToks(sy);P.theory[d.id]=d.steps.slice(1).map((s,i)=>mk1(s,i+1)).concat([{say:'Story time: '+sy.title,speech:STORY[d.id].speech,demo:'s0',storyRead:true}]);}
-  else P.theory[d.id]=d.steps.map((s,i)=>({say:s.say,speech:s.speech,demo:'s'+i,story3d:i===0&&!!(d.page&&d.page.story),cues:(s.cues||[]).map(c=>{const q={w:c[0]};if(c[1])q.p=r=>find(r,c[1]);if(c[2])q.l=c[2];if(c[3])q.demo='s'+i+c[3];if(c[4])q.keep=true;if(!q.p&&!q.l&&!q.demo)q.hl=c[0];return q;})}));
+  else P.theory[d.id]=d.steps.map((s,i)=>({say:s.say,speech:s.speech,demo:'s'+i,kc:s.kc,hold:s.hold,story3d:i===0&&!!(d.page&&d.page.story),cues:(s.cues||[]).map(c=>{const q={w:c[0]};if(c[1])q.p=r=>find(r,c[1]);if(c[2])q.l=c[2];if(c[3])q.demo='s'+i+c[3];if(c[4])q.keep=true;if(!q.p&&!q.l&&!q.demo)q.hl=c[0];return q;})}));
   if(d.tries)TRIES[d.id]=d.tries;if(d.more)MORE[d.id]=d.more;
   const W=d.watch||[];
   P.lesson({id:d.id,title:d.title,strand:d.strand,codes:d.codes,guide:d.guide,
@@ -318,9 +322,10 @@ P.unit=function(d){(window.__UNITS=window.__UNITS||[]).push(d);if(BKs.autoRounds
       const RT=BKs.readTheory&&mode==='learn';if(RT){st.theme=THEMES[d.id.split('').reduce((a,c)=>a+c.charCodeAt(0),0)%THEMES.length];}
       st.strand=d.strand;st.lidx=(window.__UNITS||[]).indexOf(d);st.mode=mode;if(mode==='play')st.theme=THEMES[(d.id.split('').reduce((a,c)=>a*7+c.charCodeAt(0),3))%THEMES.length];
       if(RT){g2.position.set(0,0,SR?3.7:2.0);st.explain=!SR;}
+      const KS=P.kSp&&P.kSp(S.sp);if(KS){st.explain=false;st.kMat=(P.kWorldOf&&P.kWorldOf(d.id)||{}).mat||null;if(mode==='learn'){g2.position.set(-P.W,0,2.3);g2.scale.setScalar(1.0);}else{g2.position.set(-P.W/2,0,3.72);g2.scale.setScalar(1.62);}}
       let foldTok=0;const place=(story)=>{if(RT){g2.position.set(0,0,story?3.7:2.0);g2.scale.setScalar(1.08);st.explain=!story;return;}if(!SR)return;foldTok++;if(story){g2.position.set(0,0,3.7);g2.scale.setScalar(1.08);}else{g2.position.set(-P.W,0,2.05);const tk=foldTok;g2.scale.set(1.08,.02,1.08);tween(.55,k=>{if(tk===foldTok)g2.scale.y=.02+1.06*P.easeOut(k);});}};
       const fold=()=>{if(!SR||st.storyOn)return;const tk=++foldTok;const y0=g2.scale.y;tween(.5,k=>{if(tk===foldTok)g2.scale.y=Math.max(.02,y0*(1-k));});};let reg={items:[],opts:[]};const play=()=>mode==='play'&&!st.setup&&st.round;
-      function draw(){clearGroup(g2);reg=render(g2,st,H);A.redraw();}
+      function draw(){clearGroup(g2);P.kMatCol=st.kMat||null;reg=render(g2,st,H);P.kMatCol=null;A.redraw();}
       function useSet(set,state){st.set=set;st.hero=0;st.heroCued=false;st.heroT=0;st.colDone=st.lineDone=st.shareDone=st.unitsDone=st.balDone=false;st.place=set.bins?set.items.map(()=>null):[];st.ord=[];st.lit=[];st.built=[];st.filled=null;st.filledOk=false;st.sel=null;st.crossed=null;st.cellLit=null;
         st.ang=null;st.perm=set.build?(set.keep?set.build.map((w,i)=>i):shuffle(set.build.map((w,i)=>i))):null;if(state==='done')finish();draw();}
       function finish(){const set=st.set;if(set.bins)st.place=set.items.map(it=>it[1]);if(set.fill){st.filled=set.ans;st.filledOk=true;}if(set.build)st.built=set.build.map((w,i)=>i);if(set.order)st.ord=set.order.map(n=>set.row.indexOf(n));if(set.ans&&set.row&&!set.fill){[].concat(set.ans).forEach(a=>{const i=set.row.indexOf(a);if(i>=0)st.lit.push(i);});}if(set.cell)st.cellLit=set.cell;if(set.cross!=null)st.crossed=set.cross;st.msg=set.doneMsg||st.msg;}
@@ -369,7 +374,7 @@ P.unit=function(d){(window.__UNITS=window.__UNITS||[]).push(d);if(BKs.autoRounds
           if(mode!=='play')return c;const cc=reg.custom&&reg.custom.controls?reg.custom.controls():[];
           if(st.round&&st.round.o)return choices(st.setup?null:game,st.round.o,st.round.ans,st.round.ok||'Yes!',null,st.round.hint).concat(cc);return cc;},
         stepEnd(s){if(s&&!s.storyRead&&!BKs.readTheory)fold();},
-        demo(n){st.round=null;st.msg='';if(RT){const story=!!STORY[d.id]&&/^s0(\D|$)/.test(n);if(/^s\d+$/.test(n)||n==='play')place(story);if(!STORY[d.id])st.explain=true;}
+        demo(n){st.round=null;st.msg='';if(RT&&!KS){const story=!!STORY[d.id]&&/^s0(\D|$)/.test(n);if(/^s\d+$/.test(n)||n==='play')place(story);if(!STORY[d.id])st.explain=true;}
           {const mh=/^s(\d+)@(.+)$/.exec(n);if(mh){const set=sets[+mh[1]];if(!set||!set.row)return;if(st.set!==set)useSet(set);st.hero=Math.max(0,set.row.indexOf(mh[2]));st.heroCued=true;draw();return;}}
           if(mode==='learn'&&STORY[d.id]){const was=st.storyOn;st.storyOn=n==='s0';if(BKs.storyRight&&(n==='s0'||/^s\d+$|^play$/.test(n)))place(n==='s0');st.wi=-1;st.sy={t:0,voiced:false};if(was||st.storyOn)A.later(()=>P.redrawR&&P.redrawR(),30);}if(n==='play'){useSet(st.set);demoPlay();return;}const m=/^s(\d+)(.*)$/.exec(n);if(!m)return;const set=sets[+m[1]];if(!set)return;
           if(m[2]==='done'){if(st.set!==set)useSet(set);finish();draw();}else if(m[2]==='play'){if(st.set!==set)useSet(set);demoPlay();}else if(m[2]==='x'){if(st.set!==set)useSet(set);st.crossed=set.cross;draw();}else useSet(set);},

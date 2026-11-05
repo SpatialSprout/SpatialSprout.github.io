@@ -59,7 +59,7 @@ function txt3(str,c,o){o=o||{};if(!KF&&window.KFONT&&THREE.Font)KF=new THREE.Fon
   if(!KF){const b=blockToy(str,c);g.add(b);return g;}
   const key=str+'|'+(o.size||1)+'|'+(o.depth||.28);let geo=TGC[key];
   if(!geo){geo=new THREE.TextGeometry(str,{font:KF,size:o.size||1,height:o.depth||.28,curveSegments:10,bevelEnabled:true,bevelThickness:.05,bevelSize:.035,bevelSegments:4});geo.computeBoundingBox();const bb=geo.boundingBox;geo.translate(-(bb.min.x+bb.max.x)/2,-bb.min.y,-(o.depth||.28)/2);geo.computeVertexNormals();TGC[key]=geo;}
-  const m=new THREE.Mesh(geo,new THREE.MeshPhongMaterial({color:c||'#ff6b6b',shininess:70,specular:new THREE.Color('#ffffff').multiplyScalar(.35)}));m.castShadow=true;g.add(m);g.userData.face=m;g.userData.txt=str;return g;}
+  const fc=new THREE.Color(c||'#ff6b6b'),sc=fc.clone().lerp(new THREE.Color('#1b2236'),.38);const m=new THREE.Mesh(geo,[new THREE.MeshPhongMaterial({color:fc,shininess:60,specular:new THREE.Color('#ffffff').multiplyScalar(.25)}),new THREE.MeshPhongMaterial({color:sc,shininess:30})]);m.castShadow=true;g.add(m);g.userData.face=m;g.userData.txt=str;return g;}
 function make(spec,s){let k=String(spec);const ok=k[0]==='*';if(ok)k=k.slice(1);let sz=1;const mm=k.match(/^(.*)@([\d.]+)$/);if(mm){k=mm[1];sz=+mm[2];}const parts=k.split(':');const solo=parts.length<2;let o,name=k,lab=null;if(parts.length<2)parts.length=1;
   if(solo){}else if(parts[0]==='txt'){o=txt3(parts[1],parts[2]||COL[(parts[1].charCodeAt(0)||0)%8],{size:parts[1].length>1?.42:.55});name=parts[1];lab=parts[1];}
   else if(parts[0]==='shape'){o=shapeToy(parts[1],parts[2]||COL[(parts[1].length)%8]);name=parts[1];lab=parts[1];}
@@ -72,7 +72,7 @@ function make(spec,s){let k=String(spec);const ok=k[0]==='*';if(ok)k=k.slice(1);
   if(!o){o=P.STAGE&&P.STAGE.prop?P.STAGE.prop(k,{s:.62*(s||1),label:false,bare:true,tap:false}):K2.standee(k,{label:false,s:.7*(s||1)});name=k;lab=k;}
   if(s&&parts.length>1)o.scale.multiplyScalar(s);
   if(sz!==1)o.scale.multiplyScalar(sz);o.userData.pk={ok,name,lab:parts[3]!=null?parts[3]:lab};return o;}
-const mat=(g2,w,d,z,c)=>{const m=mk(G('pk_mat'+w+'_'+d,()=>new THREE.BoxGeometry(w,.03,d)),lam(c||'#fff4d6'),0);at(m,0,.015,z);g2.add(m);
+const mat=(g2,w,d,z,c)=>{if(P.kMatCol)c=P.kMatCol;const m=mk(G('pk_mat'+w+'_'+d,()=>new THREE.BoxGeometry(w,.03,d)),lam(c||'#fff4d6'),0);at(m,0,.015,z);g2.add(m);
   const rim=mk(G('pk_rim'+w+'_'+d,()=>new THREE.BoxGeometry(w+.08,.02,d+.08)),lam('#ffd6a5'),0);at(rim,0,.005,z);g2.add(rim);return m;};
 function layout(n,kind,o){o=o||{};const pts=[];
   if(kind==='float'){const cols=Math.min(n,5),rows=Math.ceil(n/cols);for(let i=0;i<n;i++){const r=Math.floor(i/cols),c=i%cols,nc=Math.min(cols,n-r*cols);pts.push([(c-(nc-1)/2)*Math.min(.85,4/cols)+(r%2)*.2,(r%2)*.25,-2.75+r*.65]);}}
