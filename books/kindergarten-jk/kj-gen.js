@@ -112,7 +112,7 @@ P.KLETTERJ=function(L,i){const ch=L.ch,ex=(L.words||[]).slice(0,3),more=EX[ch]||
     guide:{goal:'Know the letter '+ch+' by name and shape, and link it to '+[L.item].concat(ex).join(', ')+'.',words:[L.item].concat(ex,more).join(', '),ask:['What letter is this?','What starts with '+ch+'?','Where did the magic book take us?'],home:'Hunt for '+ch+' at home: on cereal boxes, books and signs. Find something that starts with '+ch+'!'},
     watch:[ch+' for '+L.item+'!',say+'!'],fig:'A big 3D letter '+ch+' and '+L.item+'.',
     kid:{color:true,id:'c'+id,big:ch+ch.toLowerCase(),pic:L.item,line,words:ex.map(x=>[x,NM(x)])},page:{},
-    steps:[{say:'Meet '+ch,hold:17000,speech:'Whoosh! The magic book took us to '+w.say+'! '+w.is+' And here comes the letter '+ch+'! '+say+'! Who else '+SW+' '+ch+'? '+ex.map(NM).join(', ')+'!',
+    steps:[{say:'Meet '+ch,hold:17000,speech:'Whoosh! The magic book took us to '+w.say+'! '+w.is+' And here comes the letter '+ch+'! '+say+'! What else '+SW.replace(/^(\w+)/,'$1s')+' '+ch+'? '+ex.map(NM).join(', ')+'!',
         set:g('show',{i,big:ch,item:L.item,words:ex,col:cl(ch),line:ch+' is for '+L.item,intro,face:true})},
       {say:'Where is '+ch+'?',hold:10000,speech:'All the letters are hiding in little boxes! '+(i?('We already found '+AZ.slice(0,i).join(', ')+'. '):'')+'Which one is next? Out comes '+ch+'! '+seqLine,set:g('abc',{idx:i,col:cl(ch),line:seqLine})},
       {say:'Colour time!',kc:true,speech:'Colour time! Pick a crayon, then tap the letter '+ch+', the '+L.item+' and the pictures to colour them in.',set:g('show',{i,big:ch,item:L.item,words:ex,col:cl(ch),line:ch+' is for '+L.item,still:true})}],

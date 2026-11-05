@@ -378,7 +378,7 @@ P.unit=function(d){(window.__UNITS=window.__UNITS||[]).push(d);if(BKs.autoRounds
           {const mh=/^s(\d+)@(.+)$/.exec(n);if(mh){const set=sets[+mh[1]];if(!set||!set.row)return;if(st.set!==set)useSet(set);st.hero=Math.max(0,set.row.indexOf(mh[2]));st.heroCued=true;draw();return;}}
           if(mode==='learn'&&STORY[d.id]){const was=st.storyOn;st.storyOn=n==='s0';if(BKs.storyRight&&(n==='s0'||/^s\d+$|^play$/.test(n)))place(n==='s0');st.wi=-1;st.sy={t:0,voiced:false};if(was||st.storyOn)A.later(()=>P.redrawR&&P.redrawR(),30);}if(n==='play'){useSet(st.set);demoPlay();return;}const m=/^s(\d+)(.*)$/.exec(n);if(!m)return;const set=sets[+m[1]];if(!set)return;
           if(m[2]==='done'){if(st.set!==set)useSet(set);finish();draw();}else if(m[2]==='play'){if(st.set!==set)useSet(set);demoPlay();}else if(m[2]==='x'){if(st.set!==set)useSet(set);st.crossed=set.cross;draw();}else useSet(set);},
-        task(r){st.setup=true;if(r===0)rOff=rnd(0,d.rounds.length-1);const R=d.rounds[(r+rOff)%d.rounds.length];st.round=R;st.msg='';
+        task(r){st.setup=true;if(r===0)rOff=rnd(0,d.rounds.length-1);const R=d.rounds[(r+rOff)%d.rounds.length];st.round=R;st.msg='';if(KS&&P.speak&&R.q){const q=String(R.q).replace(/\*/g,'');setTimeout(()=>{if(st.round===R)P.speak(q);},900);}
           let set=R.set||{};if(set.row&&R.shuffle!==false&&!set.order&&!set.keep){const idx=shuffle(set.row.map((x,i)=>i));set=Object.assign({},set,{row:idx.map(i=>set.row[i]),labels:set.labels?idx.map(i=>set.labels[i]):set.labels});}
           if(set.order){const idx=shuffle(set.row.map((x,i)=>i));set=Object.assign({},set,{row:idx.map(i=>set.row[i]),labels:set.labels?idx.map(i=>set.labels[i]):undefined});}
           if(set.opts)set=Object.assign({},set,{opts:shuffle(set.opts)});
