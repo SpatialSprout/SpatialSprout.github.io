@@ -119,10 +119,10 @@ C.count=function(g2,st,h,set){st._pkt=[];const n=set.n||5,item=set.item||'apple'
   else{const pts=layout(n,n>5?'scatter':'row',{z:-2.25});mat(g2,4.3,n>5?2.1:1.2,n>5?-2.35:-2.25);for(let i=0;i<n;i++){const o=make(item);at(o,pts[i][0],0,pts[i][2]);g2.add(o);objs.push(o);}}
   let c=0;const seen=new Set();const away=set.away||0,keep=n-away;
   objs.forEach((o,i)=>{if(i>=keep){const X=tag('✗',{size:.42,bg:'#ffe3e3',border:'#e4572e',color:'#e4572e'});X.position.set(0,.55,.1);o.add(X);o.rotation.z=.5;o.position.y+=.02;o.userData.gone=1;}});
-  objs.forEach((o,i)=>A.drag(o,{tap:()=>{A.pop&&A.pop();if(o.userData.gone){wobble(o);SAY(set.goneSay||'gone!');return;}if(seen.has(i)){jump(o,.2);return;}seen.add(i);c++;jump(o,.45);sticker(o,c);SAY(WORDS[c]||c);
+  objs.forEach((o,i)=>A.drag(o,{tap:()=>{A.pop&&A.pop();if(o.userData.gone){wobble(o);SAY(set.goneSay||'gone!');return;}if(seen.has(i)){jump(o,.2);return;}seen.add(i);c++;jump(o,.45);if(!set.noSticker)sticker(o,c);else{try{boom(o);}catch(e){}}SAY(WORDS[c]||c);
     if(c===keep){A.later(()=>{SAY(set.done||(keep+'! '+(set.say||'')));objs.forEach((q,j)=>A.later(()=>jump(q,.3),j*80));},700);}}}));
   if(set.show){const T=tag(set.show,{size:.32,bg:'#fff3c4'});T.position.set(0,1.25,-3.1);g2.add(T);}
-  const play=()=>{if(c)return;objs.forEach((o,j)=>{if(o.userData.gone)return;A.later(()=>{c++;seen.add(j);jump(o,.45);sticker(o,c);SAY(WORDS[c]||c);},j*600);});};
+  const play=()=>{if(c)return;objs.forEach((o,j)=>{if(o.userData.gone)return;A.later(()=>{c++;seen.add(j);jump(o,.45);if(!set.noSticker)sticker(o,c);SAY(WORDS[c]||c);},j*600);});};
   return {play,controls:()=>st.round?[]:[{t:'Count with me!',go:true,fn:play}]};};
 C.count.bare=1;
 

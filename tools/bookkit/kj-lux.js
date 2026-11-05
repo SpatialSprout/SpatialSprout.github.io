@@ -333,3 +333,5 @@ M.cherries=S(s=>{const g=G0();[-1,1].forEach(k=>{ball(g,.14,'#e03131',k*.14,.15,
 M.basket=S(s=>{const g=G0();const b=mesh(lathe([[0,0],[.3,0],[.36,.28],[.33,.3],[.27,.04],[0,.04]]),soft('#d9a066',{r:.8,cc:0}));g.add(b);const h=tor(g,.3,.03,'#c08552',0,.28,0,Math.PI);h.rotation.y=Math.PI/2;return fin(g,s*1.1);});
 M.pond=S(s=>{const g=G0();const w=cyl(g,.6,.6,.05,'#74c0fc',0,.03,0,{r:.1,cc:1});ball(g,.6,'#a9e34b',0,0,0,1.06,.06,1.06);const l=cyl(g,.14,.14,.03,'#51cf66',.25,.07,.15);ball(g,.05,'#ff8fc7',.25,.1,.15);return fin(g,s);});
 })();
+(function(){const P=window.PM;if(!P||!P.LUXM||!P.LUXH)return;const {THREE}=P;const {cyl,ball,cap,V3,fin}=P.LUXH;
+P.LUXM.candle=s=>{const g=new THREE.Group();const c=['#ff8fc7','#74c0fc','#ffd43b','#69db7c'][Math.floor(Math.random()*4)];cyl(g,.05,.05,.32,c,0,.16,0);for(let i=0;i<3;i++){const t=cyl(g,.052,.052,.03,'#ffffff',0,.07+i*.09,0);}cap(g,V3(0,.32,0),V3(0,.37,0),.008,'#495057');return fin(g,(s||1)*1.0);};})();

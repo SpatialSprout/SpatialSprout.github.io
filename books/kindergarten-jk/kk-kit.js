@@ -52,7 +52,7 @@ C.trace=function(g2,st,h,set){const on=tickers(st);mat(g2,4.4,2.3,-2.3,'#fff8e8'
     if(d.start){const T=tag(String(d.si+1),{size:.18,bg:'#5cc46a',border:'#2b8a3e',color:'#ffffff'});T.position.set(-.18,.18,0);b.add(T);}
     A.drag(b,{tap:()=>tapDot(i)});return b;});
   const line=[];const seg=(a,b)=>{const d=b.clone().sub(a);const m=mk(G('kk_tube',()=>new THREE.CylinderGeometry(.055,.055,1,10)),lam(col),0);m.scale.y=d.length();m.position.copy(a).add(b).multiplyScalar(.5);m.quaternion.setFromUnitVectors(V(0,1,0),d.normalize());g2.add(m);line.push(m);};
-  const finish=()=>{L.userData.face&&(L.userData.face.material=new THREE.MeshPhongMaterial({color:'#ffd43b',shininess:90}));boom(L);jump(L,.3);SAY(set.say||ch);if(set.item){const o=make(set.item,1.2);at(o,1.75,0,-2.2);g2.add(o);pop(o);}done(g2,h,set,900);};
+  const finish=()=>{P.kStepDone=true;L.userData.face&&(L.userData.face.material=new THREE.MeshPhongMaterial({color:'#ffd43b',shininess:90}));boom(L);jump(L,.3);SAY(set.say||ch);if(set.item){const o=make(set.item,1.2);at(o,1.75,0,-2.2);g2.add(o);pop(o);}done(g2,h,set,900);};
   const tapDot=i=>{if(i!==nxt){if(i<nxt)return;wobble(balls[i]);if(isPlay(h)&&i>nxt+1)SAY('Find the glowing dot!');return;}A.pop&&A.pop();const d=dots[i];if(i>0&&!d.start)seg(dots[i-1].p,d.p);balls[i].material=lam(col);jump(balls[i],.15);nxt++;if(nxt>=dots.length)finish();};
   on((dt,t)=>{balls.forEach((b,i)=>{const s=i===nxt?1.25+Math.sin(t*6)*.25:1;b.scale.setScalar(s);});});
   const auto=()=>{if(nxt>=dots.length)return;let k=0;const step=()=>{if(nxt>=dots.length)return;tapDot(nxt);k++;A.later(step,170);};step();};
@@ -452,4 +452,47 @@ C.line=function(g2,st,h,set){mat(g2,4.4,2.3,-2.3,'#fff8e8');const items=(set.ite
       else{wobble(o);if(isPlay(h))h.miss(set.hint||nm+' does not start with '+(set.letter||'that letter')+'. Try another!');}}});});
   return {tick:(dt,t)=>{if(!busy)hero.rotation.y=.5+Math.sin(t*1.5)*.08;}};};
 C.line.bare=1;
+})();
+/* ===== Numbers (Junior K): the number show, put-N-on (candles on the cake), and find-the-group ===== */
+(function(){
+"use strict";
+const P=window.PM;if(!P||P.failed||!P.K2||!P.PKX)return;
+const {THREE,V,G,mk,lam,A,tween}=P;const C=P.K2.CUSTOM;const X=P.PKX;const {make,boom,mat,tag,COL,at,wobble}=X;
+const isPlay=h=>h.isPlay?h.isPlay():false;const ease=k=>1-Math.pow(1-k,3),back=k=>{const c=1.9;return 1+(c+1)*Math.pow(k-1,3)+c*Math.pow(k-1,2);};
+const fnv=t=>{let h=0x811c9dc5;for(let i=0;i<t.length;i++){h^=t.charCodeAt(i);h=Math.imul(h,0x01000193)>>>0;}return ('0000000'+h.toString(16)).slice(-8);};
+const sq=(o,d)=>{const s=o.scale.x;return tween(d||.35,k=>{const f=Math.sin(k*Math.PI);o.scale.set(s*(1+f*.18),s*(1-f*.22),s*(1+f*.18));}).then(()=>o.scale.setScalar(s));};
+const runner=st=>{const tok=(st._nTok=(st._nTok||0)+1);return {at:(ms,fn)=>A.later(()=>{if(st._nTok===tok)try{fn();}catch(e){console.error(e);}},ms)};};
+/* NSHOW: the big number drops in, then the friends pop in one by one, in time with the counting voice. Nothing to tap. */
+C.nshow=function(g2,st,h,set){mat(g2,4.4,2.3,-2.3,'#fff8e8');const n=set.n||1,col=set.col||'#ff6b6b';
+  const NB=new THREE.Group();at(NB,-1.45,0,-2.55);g2.add(NB);const N=X.txt3(String(n),col,{size:1.15,depth:.4});NB.add(N);
+  const PR=4,rows=Math.ceil(n/PR),sc=n<=4?.85:.62,dx=n<=4?.68:.6,dz=.62;const items=[...Array(n)].map((_,k)=>{const r=Math.floor(k/PR),c=k%PR,cn=Math.min(PR,n-r*PR);const o=make(set.item,sc);at(o,.75+(c-(cn-1)/2)*dx,0,-2.3+(r-(rows-1)/2)*dz);o.visible=false;g2.add(o);o.userData.s0=o.scale.x;return o;});
+  const cue=set.cue&&window.KCUE&&window.VOICE&&window.VOICE[fnv(set.cue)]?window.KCUE[fnv(set.cue)]:null;const t0=Array.isArray(cue)?cue[0]*1000:2600,dur=Array.isArray(cue)?cue[1]*1000:n*800;
+  const run=()=>{const R=runner(st);N.visible=true;N.position.set(0,3,0);items.forEach(o=>o.visible=false);
+    tween(1.0,k=>{N.position.y=3*(1-k*k);}).then(()=>{sq(N,.45);boom(N);});
+    if(set.still){N.position.y=0;items.forEach(o=>{o.visible=true;o.scale.setScalar(o.userData.s0);});return;}
+    items.forEach((o,k)=>R.at(t0+dur*(k/n)+80,()=>{o.visible=true;o.scale.setScalar(.001);o.position.y=.8;tween(.55,q=>{o.scale.setScalar(Math.max(.001,o.userData.s0*back(q)));o.position.y=.8*(1-q*q);}).then(()=>sq(o,.3));boom(o);}));
+    R.at(t0+dur+700,()=>{items.forEach((o,k)=>R.at(k*110,()=>{const y=o.position.y;tween(.45,q=>{o.position.y=y+Math.sin(q*Math.PI)*.35;});}));tween(1.2,k=>{N.rotation.y=ease(k)*Math.PI*2;});});};
+  run();return {tick:(dt,t)=>{N.rotation.z=Math.sin(t*1.1)*.04;},play:run,controls:()=>st.round?[]:[{t:'Again!',go:true,fn:run}]};};
+C.nshow.bare=1;
+/* PUTN: put exactly N things on the cake (candles) or in the basket. Every candle works; it is done at N. */
+C.putn=function(g2,st,h,set){mat(g2,4.4,2.3,-2.3,'#fff4e6');const n=set.n||3,extra=set.extra==null?2:set.extra;const cake=set.on==='cake';
+  const T=make(cake?'cake':'basket',cake?1.9:1.6);at(T,-1.0,0,-2.6);g2.add(T);let got=0,busy=false;
+  const tot=n+extra,cols=Math.min(tot,6),rows=Math.ceil(tot/6);const spots=[...Array(n)].map((_,k)=>{const a=k/Math.max(1,n)*Math.PI*2;const r=n===1?0:(n<=6?.28:.34);return V(T.position.x+Math.cos(a)*r,cake?1.02:.5,T.position.z+Math.sin(a)*r*.8);});
+  const pile=[...Array(tot)].map((_,k)=>{const o=make(set.item||'candle',set.s||.62);at(o,.5+(k%3)*.55,0,-3.0+Math.floor(k/3)*.62);g2.add(o);return o;});
+  const flame=p=>{const f=mk(G('kn_fl',()=>new THREE.SphereGeometry(.05,12,10)),new THREE.MeshBasicMaterial({color:'#ffd43b'}),0);f.scale.set(1,1.7,1);f.position.copy(p).add(V(0,.32,0));g2.add(f);f.userData.noLux=1;return f;};
+  const fl=[];pile.forEach(o=>A.drag(o,{tap:()=>{if(busy||o.userData.used||got>=n)return;busy=true;o.userData.used=1;A.pop&&A.pop();const to=spots[got];got++;const p0=o.position.clone();const s0=o.scale.x;
+    tween(.7,k=>{o.position.set(p0.x+(to.x-p0.x)*k,p0.y+(to.y-p0.y)*k+Math.sin(k*Math.PI)*.9,p0.z+(to.z-p0.z)*k);if(!cake)o.scale.setScalar(s0*(1-.35*k));}).then(()=>{if(cake)fl.push(flame(o.position));boom(o);busy=false;
+      if(got>=n){const c=tag(String(n)+'!',{size:.45,bg:'#ffffff',border:'#ff6b6b'});c.position.set(T.position.x,1.9,T.position.z);g2.add(c);if(isPlay(h))A.later(()=>h.win(set.ok),900);}});}}));
+  return {tick:(dt,t)=>{fl.forEach((f,i)=>{f.scale.y=1.6+Math.sin(t*12+i)*.3;});}};};
+C.putn.bare=1;
+/* GROUPS: the number on one side; little groups of things on shelves on the other side. Tap the group with that many. */
+C.groups=function(g2,st,h,set){mat(g2,4.4,2.3,-2.3,'#f8f0fc');const n=set.n||3,col=set.col||'#ff6b6b';const counts=set.counts||[n,n+1,Math.max(1,n-1)];let done=false;
+  const N=X.txt3(String(n),col,{size:1.3,depth:.4});at(N,-1.45,0,-2.4);g2.add(N);
+  const zs=[-3.15,-2.35,-1.55];counts.forEach((c,i)=>{const y=(counts.length-1-i)*.32;const shelf=mk(G('kn_sh'+i,()=>new THREE.BoxGeometry(2.6,y+.08,.62)),lam(['#ffe3e3','#fff3bf','#d3f9d8'][i%3]),20);at(shelf,.85,(y+.08)/2,zs[i]);g2.add(shelf);
+    const grp=new THREE.Group();at(grp,.85,y+.08,zs[i]);g2.add(grp);const sp=Math.min(.36,2.3/Math.max(1,c));for(let k=0;k<c;k++){const o=make(set.item||'apple',set.s||.42);o.position.set((k-(c-1)/2)*sp,0,0);grp.add(o);}
+    const hit=mk(G('kn_hit',()=>new THREE.BoxGeometry(2.6,.5,.6)),new THREE.MeshBasicMaterial({visible:false}),0);hit.position.y=.25;hit.userData.noLux=1;grp.add(hit);
+    A.drag(grp,{tap:()=>{if(done)return;A.pop&&A.pop();if(c===n){done=true;boom(grp);grp.children.forEach((o,k)=>{if(o===hit)return;A.later(()=>{const y0=o.position.y;tween(.4,q=>{o.position.y=y0+Math.sin(q*Math.PI)*.3;});},k*90);});tween(.8,k=>{N.rotation.y=k*Math.PI*2;});if(isPlay(h))A.later(()=>h.win(set.ok),900);}
+      else{wobble(grp);if(isPlay(h))h.miss(set.hint||'Count again! We need '+n+'.');}}});});
+  return {};};
+C.groups.bare=1;
 })();

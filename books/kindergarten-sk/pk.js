@@ -14,7 +14,7 @@ R.pop=(q,items,o)=>R.tap(q,items,Object.assign({mode:'pop',layout:'float'},o||{}
 /* feed an animal or fill a basket: tap the right things and they jump in */
 R.feed=(q,who,items,o)=>R.tap(q,items,Object.assign({mode:'collect',basket:who},o||{}));
 /* tap to count, then press the number */
-R.count=(q,item,n,o)=>{o=o||{};const keep=n-(o.away||0);return Object.assign({q,set:{custom:'count',item,n,frame:o.frame,away:o.away,show:o.show},o:near(keep,0,30),ans:String(keep)},o);};
+R.count=(q,item,n,o)=>{o=o||{};const keep=n-(o.away||0);return Object.assign({q,set:{custom:'count',item,n,frame:o.frame,away:o.away,show:o.show,noSticker:o.noSticker,small:o.small},o:near(keep,0,30),ans:String(keep)},o);};
 S.count=(item,n,o)=>Object.assign({custom:'count',item,n},o||{});
 /* a row with a missing piece */
 R.gap=(q,seq,choices,o)=>({q,set:Object.assign({custom:'gap',seq,choices:shuffle(choices)},o||{})});

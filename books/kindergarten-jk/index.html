@@ -153,7 +153,7 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 
 <script src="book.js?v=9df50954"></script>
 <script src="brand.js?v=111ada48"></script>
-<script src="voice.js?v=2211a4b3"></script>
+<script src="voice.js?v=a57a3916"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/SVGLoader.js"></script>
@@ -1031,7 +1031,7 @@ function setStep(i){lineCut=false;const sp=SP[cur];stepI=Math.max(0,Math.min(sp.
   if(s.howto&&S&&!S.game.done){S.game.phase='howto';const d=(sp.L.learn.find(x=>x.demo)||{}).demo;if(d&&curApi.demo){try{curApi.demo(d);}catch(e){console.error(e);}}holdMs=7000;refreshDock();}
   if(s.go&&S&&!S.game.done){A.stopSeq();A.later(()=>startGame(S),250);}
   showStory(s.story&&!BK.readTheory?sp:null);if(s.story){guideMode='hello';guideT=0;if(PLAY)A.later(()=>mascotCheer(false,true),700);}
-  const tk=++playTok;const adv=()=>{if(tk!==playTok||!playing)return;if(stepI<sp.steps.length-1)setStep(stepI+1);else if(s.kc){setPlay(false);refreshDock();}else if((sp.kind==='intro'||sp.kind==='learn')&&cur<SP.length-1)goSpread(cur+1,0,true);else setPlay(false);};
+  const tk=++playTok;PM.kStepDone=false;const adv=()=>{if(tk!==playTok||!playing)return;if(s.waitDone&&!PM.kStepDone){setTimeout(adv,500);return;}if(stepI<sp.steps.length-1)setStep(stepI+1);else if(s.kc){setPlay(false);refreshDock();}else if((sp.kind==='intro'||sp.kind==='learn')&&cur<SP.length-1)goSpread(cur+1,0,true);else setPlay(false);};
   const txt=s.readTheory?theoryText(sp).speech:(s.speech||s.say);const t0=Date.now();lineBusy=true;const spoke=speak(txt,()=>{if(tk===playTok)lineBusy=false;if(tk===playTok&&curApi.stepEnd)try{curApi.stepEnd(s);}catch(e){console.error(e);}setTimeout(adv,Math.max((s.demo&&!s.quietDemo?2400:s.story?1400:(s.cues?1700:1100))*(BK.grade>=6?.6:1),holdMs-(Date.now()-t0)));});if(!spoke)lineBusy=false;
   if(s.cues&&s.cues.length)startCues(s,txt,spoke);
   if(!spoke&&curApi.stepEnd){const tk3=playTok;setTimeout(()=>{if(tk3===playTok)try{curApi.stepEnd(s);}catch(e){}},Math.max(3000,txt.split(' ').length*380));}
@@ -1204,31 +1204,31 @@ const loaded=new Promise(r=>{if(document.readyState==='complete')r();else window
 Promise.all([Promise.race([Promise.all([fl,imgs]),new Promise(r=>setTimeout(r,3000))]).catch(()=>{}),loaded]).then(start);
 })();
 </script>
-<script src="pics.js?v=69eeb047"></script>
+<script src="pics.js?v=675c0e53"></script>
 <script src="sketch.js?v=61dfab03"></script>
 <script src="props3d.js?v=701fe60a"></script>
 <script src="habitats.js?v=b242204f"></script>
 <script src="kit.js?v=06660d24"></script>
-<script src="subject-kit.js?v=bf7c76e8"></script>
+<script src="subject-kit.js?v=e7cbe19a"></script>
 <script src="stage.js?v=13c96b31"></script>
 <script src="acts.js?v=b97a7468"></script>
 <script src="math-kit2.js?v=dd586727"></script>
 <script src="math-kit3.js?v=f5333b7a"></script>
 <script src="kfont.js?v=3e6d5d1e"></script>
-<script src="pk-kit.js?v=6a5c656e"></script>
-<script src="kk-kit.js?v=ab168486"></script>
+<script src="pk-kit.js?v=cf4ecc56"></script>
+<script src="kk-kit.js?v=605368b3"></script>
 <script src="g4.js?v=f49ac7f6"></script>
-<script src="pk.js?v=a9c418ce"></script>
+<script src="pk.js?v=81048a0e"></script>
 <script src="kk-gen.js?v=bc604c63"></script>
 <script src="k-abc.js?v=ad5b6e0c"></script>
-<script src="kj-gen.js?v=e6c70ef7"></script>
-<script src="kj-lux.js?v=f5f78291"></script>
+<script src="kj-gen.js?v=715fa4ca"></script>
+<script src="kj-lux.js?v=d332fd79"></script>
 <script src="lessons-a.js?v=b4b5952a"></script>
-<script src="lessons-b.js?v=f6db0f74"></script>
+<script src="lessons-b.js?v=3a100a99"></script>
 <script src="lessons-c.js?v=bf87b4fd"></script>
 <script src="lessons-d.js?v=a4d8b4bb"></script>
 <script src="vtime.js?v=7e325362"></script>
-<script src="kcue.js?v=fcee5c10"></script>
+<script src="kcue.js?v=c233a982"></script>
 
 </body>
 </html>

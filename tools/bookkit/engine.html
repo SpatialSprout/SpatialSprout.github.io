@@ -1023,7 +1023,7 @@ function setStep(i){lineCut=false;const sp=SP[cur];stepI=Math.max(0,Math.min(sp.
   if(s.howto&&S&&!S.game.done){S.game.phase='howto';const d=(sp.L.learn.find(x=>x.demo)||{}).demo;if(d&&curApi.demo){try{curApi.demo(d);}catch(e){console.error(e);}}holdMs=7000;refreshDock();}
   if(s.go&&S&&!S.game.done){A.stopSeq();A.later(()=>startGame(S),250);}
   showStory(s.story&&!BK.readTheory?sp:null);if(s.story){guideMode='hello';guideT=0;if(PLAY)A.later(()=>mascotCheer(false,true),700);}
-  const tk=++playTok;const adv=()=>{if(tk!==playTok||!playing)return;if(stepI<sp.steps.length-1)setStep(stepI+1);else if(s.kc){setPlay(false);refreshDock();}else if((sp.kind==='intro'||sp.kind==='learn')&&cur<SP.length-1)goSpread(cur+1,0,true);else setPlay(false);};
+  const tk=++playTok;PM.kStepDone=false;const adv=()=>{if(tk!==playTok||!playing)return;if(s.waitDone&&!PM.kStepDone){setTimeout(adv,500);return;}if(stepI<sp.steps.length-1)setStep(stepI+1);else if(s.kc){setPlay(false);refreshDock();}else if((sp.kind==='intro'||sp.kind==='learn')&&cur<SP.length-1)goSpread(cur+1,0,true);else setPlay(false);};
   const txt=s.readTheory?theoryText(sp).speech:(s.speech||s.say);const t0=Date.now();lineBusy=true;const spoke=speak(txt,()=>{if(tk===playTok)lineBusy=false;if(tk===playTok&&curApi.stepEnd)try{curApi.stepEnd(s);}catch(e){console.error(e);}setTimeout(adv,Math.max((s.demo&&!s.quietDemo?2400:s.story?1400:(s.cues?1700:1100))*(BK.grade>=6?.6:1),holdMs-(Date.now()-t0)));});if(!spoke)lineBusy=false;
   if(s.cues&&s.cues.length)startCues(s,txt,spoke);
   if(!spoke&&curApi.stepEnd){const tk3=playTok;setTimeout(()=>{if(tk3===playTok)try{curApi.stepEnd(s);}catch(e){}},Math.max(3000,txt.split(' ').length*380));}

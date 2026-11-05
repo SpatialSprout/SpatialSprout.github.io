@@ -123,4 +123,37 @@ P.KLETTERJ=function(L,i){const ch=L.ch,ex=(L.words||[]).slice(0,3),more=EX[ch]||
 /* shapes and colours lessons get the colouring page too (with time to colour) */
 const U0=P.unit;P.unit=function(d){try{if(d&&d.kid&&d.strand==='Shapes and Colours'&&!d.kid.color){d.kid=Object.assign({},d.kid,{color:true,id:'c'+d.id,big:''});
   d.steps=(d.steps||[]).concat([{say:'Colour time!',kc:true,speech:'Colour time! Pick a crayon, then tap the pictures to colour them in.',set:(d.steps[0]||{}).set}]);}}catch(e){}return U0.apply(this,arguments);};
+
+/* ---------- Numbers 1 to 10 (Junior K): a counting show, tracing that waits for the child, a colouring page, ten different games ---------- */
+const NWORD=['zero','one','two','three','four','five','six','seven','eight','nine','ten'];const capw=w=>w[0].toUpperCase()+w.slice(1);
+const PLUR={butterfly:'butterflies',fish:'fish',bee:'bees',ladybug:'ladybugs',strawberry:'strawberries',cherries:'cherries',cookie:'cookies',orange:'oranges',egg:'eggs',lemon:'lemons',donut:'donuts',carrot:'carrots',star:'stars',apple:'apples'};
+const NCOL=[['ball','sun','flower'],['car','kite','moon'],['boat','tree','heart'],['cake','rocket','owl'],['egg','pear','bus'],['hat','drum','leaf'],['whale','gift','pizza'],['house','turtle','book'],['lemon','snail','train'],['pig','yarn','van']];
+const NGRP=['apple','star','strawberry','cookie','orange','carrot','egg','lemon','cherries','donut'];
+P.KNUMBERJ=function(N,i){const n=N.n,item=N.item,w=NWORD[n];const pl=n===1?item:(N.plural||PLUR[item]||item+'s');const id='n'+n;const rnd=sr(i+101);const col=COL[(i*3+1)%8];
+  const others=k=>sshuf([...Array(10)].map((_,j)=>j+1).filter(j=>j!==n),rnd).slice(0,k);
+  const near=()=>{const c=[n+1,n-1,n+2,n-2].filter(x=>x>=1&&x<=10);return sshuf([n].concat(c.slice(0,2)),rnd);};
+  const gi=NGRP[i%NGRP.length],oth=N.other||'star';
+  const pool={
+    spots:()=>R.spots('Give the ladybug *'+n+'* spots. Tap, tap, tap!',n),
+    dots:()=>{const m=Math.max(5,n);const sq=[...Array(m)].map((_,k)=>String(k+1));return R.dots('Join the dots: *'+sq.join(', ')+'*!',sq,NCOL[i][1],{seed:i+1});},
+    count:()=>R.count('Tap each *'+(oth)+'* and count. How many?',oth,n,{frame:n>5?10:0,noSticker:true}),
+    cups:()=>R.cups('Watch the cups! Where is the number *'+n+'*?','txt:'+n+':'+col,others(2).map((k,j)=>'txt:'+k+':'+COL[(i+j+3)%8]),{level:Math.floor(i/4)}),
+    frog:()=>R.frog('Help the frog hop to *'+n+'*. One pad at a time!',n,{max:Math.max(5,Math.min(10,n+2))}),
+    shadow:()=>R.shadow('Which number fits the shadow?',['*txt:'+n+':'+col].concat(others(2).map((k,j)=>'txt:'+k+':'+COL[(i+j+2)%8])),{big:1.2}),
+    cake:()=>({q:'Put *'+n+'* '+(n===1?'candle':'candles')+' on the birthday cake!',set:g('putn',{n,on:'cake',item:'candle',s:1.5,extra:2})}),
+    groups:()=>({q:'Which shelf has *'+n+'* '+(n===1?(gi==='cherries'?'cherry':gi):(PLUR[gi]||gi+'s'))+'? Tap it!',set:g('groups',{n,item:gi==='cherries'?'cherries':gi,col,counts:near(),s:n>6?.34:.42})}),
+    mem:()=>{const ks=[n].concat(others(2).filter(k=>k<=6)).slice(0,3);while(ks.length<3)ks.push([1,2,3,4,5,6].find(k=>!ks.includes(k)));return R.mem('Match each number with its dots.',ks.map((k,j)=>['txt:'+k+':'+COL[(j*3)%8],'dots:'+k]));},
+    bowl:()=>R.bowl('Bowling! Knock down every pin with *'+n+'*.',['*txt:'+n+':'+col,'*txt:'+n+':'+COL[(i+4)%8]].concat(others(3).map((k,j)=>'txt:'+k+':'+COL[(j*3+2)%8]))),
+    rocket:()=>R.rocket('Which rocket has *'+n+'*? Tap it for blast off!',['*txt:'+n+':'+col].concat(others(2).map((k,j)=>'txt:'+k+':'+COL[(j*3+1)%8])))};
+  const keys=sshuf(['spots','dots','count','cups','frog','shadow','cake','groups','bowl',n<=6?'mem':'rocket'],rnd);const rounds=keys.map(k=>pool[k]());
+  const cnt=[...Array(n)].map((_,k)=>capw(NWORD[k+1])).join(', ')+'!';
+  const sp='Here comes the number '+n+'! '+capw(w)+'! Let’s count the '+pl+'. '+cnt+' '+capw(w)+' '+pl+'!';
+  U({id,title:'The number '+n,strand:'Numbers',codes:['Literacy & Math'],
+    guide:{goal:'Know the number '+n+' ('+w+'): see it, say it, count '+n+' things and trace the numeral.',words:n+', '+w+', count',ask:['How many '+pl+'?','Can you show '+n+' fingers?','What comes after '+n+'?'],home:'Count '+n+' things at home: spoons, socks, steps!'},
+    watch:[n+' '+w+'!','Count with me!'],fig:'A big 3D number '+n+' and '+n+' '+pl+'.',
+    kid:{color:true,id:'c'+id,big:String(n),pic:item,line:'*'+n+'* '+w,words:NCOL[i].map(x=>[x,x])},page:{},
+    steps:[{say:'Meet '+n,hold:9000,speech:sp,set:g('nshow',{n,item,col,cue:sp})},
+      {say:'Trace '+n,waitDone:true,speech:'Let’s trace the number '+n+'. Tap the glowing dots, one by one.',set:g('trace',{ch:String(n),say:w})},
+      {say:'Colour time!',kc:true,speech:'Colour time! Pick a crayon, then tap the number '+n+', the '+item+' and the pictures to colour them in.',set:g('nshow',{n,item,col,still:true})}],
+    rounds,tries:[['Show '+n+' fingers!',n>5?'use two hands':'one hand'],['Jump '+n+' times.','count out loud!']]});};
 })();

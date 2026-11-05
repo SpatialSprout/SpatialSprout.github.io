@@ -307,7 +307,7 @@ P.unit=function(d){(window.__UNITS=window.__UNITS||[]).push(d);if(BKs.autoRounds
   if(BKs.readTheory)d.steps.forEach((s0,i)=>{const set=s0.set||{};if(!set.row)return;(s0.cues||[]).forEach(c=>{if(!c[1]||c[3])return;const nm=String(c[1]).split('|')[0];if(set.row.includes(nm))c[3]='@'+nm;});});
   if(BKs.storyRight&&d.page&&d.page.story){const mk1=(s,i)=>({say:s.say,speech:s.speech,demo:'s'+i,cues:(s.cues||[]).map(c=>{const q={w:c[0]};if(c[1])q.p=r=>find(r,c[1]);if(c[2])q.l=c[2];if(c[3])q.demo='s'+i+c[3];if(c[4])q.keep=true;if(!q.p&&!q.l&&!q.demo)q.hl=c[0];return q;})});
     const sy=d.page.story;STORY[d.id]=storyToks(sy);P.theory[d.id]=d.steps.slice(1).map((s,i)=>mk1(s,i+1)).concat([{say:'Story time: '+sy.title,speech:STORY[d.id].speech,demo:'s0',storyRead:true}]);}
-  else P.theory[d.id]=d.steps.map((s,i)=>({say:s.say,speech:s.speech,demo:'s'+i,kc:s.kc,hold:s.hold,story3d:i===0&&!!(d.page&&d.page.story),cues:(s.cues||[]).map(c=>{const q={w:c[0]};if(c[1])q.p=r=>find(r,c[1]);if(c[2])q.l=c[2];if(c[3])q.demo='s'+i+c[3];if(c[4])q.keep=true;if(!q.p&&!q.l&&!q.demo)q.hl=c[0];return q;})}));
+  else P.theory[d.id]=d.steps.map((s,i)=>({say:s.say,speech:s.speech,demo:'s'+i,kc:s.kc,hold:s.hold,waitDone:s.waitDone,story3d:i===0&&!!(d.page&&d.page.story),cues:(s.cues||[]).map(c=>{const q={w:c[0]};if(c[1])q.p=r=>find(r,c[1]);if(c[2])q.l=c[2];if(c[3])q.demo='s'+i+c[3];if(c[4])q.keep=true;if(!q.p&&!q.l&&!q.demo)q.hl=c[0];return q;})}));
   if(d.tries)TRIES[d.id]=d.tries;if(d.more)MORE[d.id]=d.more;
   const W=d.watch||[];
   P.lesson({id:d.id,title:d.title,strand:d.strand,codes:d.codes,guide:d.guide,
