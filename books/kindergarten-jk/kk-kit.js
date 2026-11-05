@@ -180,7 +180,7 @@ function giftBox(c,s){const g=new THREE.Group();s=s||1;const body=mk(G('kk_gb',(
 /* ---------- SHOW: the letter makes a grand entrance, then its friend, then three more friends. Nothing to tap; just watch. ---------- */
 const LIN=['drop','gift','balloons','spin','roll','grow','rocket','flip'];
 const IIN=['hop','fall','ground','bubble','zoom','twirl','peek'];
-C.show=function(g2,st,h,set){mat(g2,4.4,2.3,-2.3,set.mat||'#fff8e8');const R=runner(st);const col=set.col||'#ff6b6b';const i=set.i||0;
+C.show=function(g2,st,h,set){mat(g2,4.4,2.3,-2.3,set.mat||'#fff8e8');let R=runner(st);const col=set.col||'#ff6b6b';const i=set.i||0;
   const ls=set.lin||LIN[i%LIN.length],is=set.iin||IIN[(i*3+1)%IIN.length];
   const LB=new THREE.Group();at(LB,-1.0,0,-2.75);g2.add(LB);const L=txt3(set.big,col,{size:set.big.length>1?1.05:1.3,depth:.34});LB.add(L);L.visible=false;
   const IB=new THREE.Group();at(IB,1.2,0,-2.6);g2.add(IB);const I=make(set.item,1.5);IB.add(I);I.visible=false;const is0=I.scale.x;
@@ -208,10 +208,10 @@ C.show=function(g2,st,h,set){mat(g2,4.4,2.3,-2.3,set.mat||'#fff8e8');const R=run
     else if(is==='zoom'){I.position.z=-1.3;I.scale.setScalar(.001);tween(1.2,k=>{const e=ease(k);I.position.z=-1.3*(1-e);I.scale.setScalar(Math.max(.001,is0*back(k)));});}
     else if(is==='twirl'){I.scale.setScalar(.001);tween(1.3,k=>{I.scale.setScalar(Math.max(.001,is0*back(k)));I.rotation.y=(1-ease(k))*Math.PI*4;}).then(()=>boom(I));}
     else{I.position.set(-2.0,0,-.35);I.scale.setScalar(is0*.6);tween(.7,k=>{I.position.y=Math.sin(k*Math.PI)*.35;});R.at(900,()=>{const p0=I.position.clone();tween(1.0,k=>{I.position.set(p0.x*(1-k),Math.sin(k*Math.PI)*1.1,p0.z*(1-k));I.scale.setScalar(is0*(.6+.4*k));I.rotation.y=k*Math.PI*2;}).then(()=>{sq(I);boom(I);});});}};
-  const run=()=>{const R2=runner(st);clean();L.children.slice().forEach(c=>{if(c!==L.userData.face)L.remove(c);});I.children.slice().forEach(c=>{if(c.userData.bub)I.remove(c);});L.visible=false;I.visible=false;T1.visible=false;WS.forEach(w=>{w.o.visible=false;w.t.visible=false;});
+  const run=()=>{const R2=runner(st);R=R2;clean();L.children.slice().forEach(c=>{if(c!==L.userData.face)L.remove(c);});I.children.slice().forEach(c=>{if(c.userData.bub)I.remove(c);});L.visible=false;I.visible=false;T1.visible=false;WS.forEach(w=>{w.o.visible=false;w.t.visible=false;});
     if(set.still){L.visible=true;I.visible=true;T1.visible=true;WS.forEach(w=>{w.o.visible=true;w.o.scale.setScalar(w.s);w.o.position.set(0,0,0);w.t.visible=true;});return;}
     const D0=set.intro?3200:0;if(set.intro){const it=tag(set.intro,{size:.42,bg:'#ffffff',border:col,color:'#1b2236'});it.position.set(0,1.5,-2.2);g2.add(it);ext.push(it);growS(it,.7);R2.at(2800,()=>{tween(.4,k=>{it.scale.multiplyScalar(.8);}).then(()=>{it.visible=false;});});}
-    const RA=R2.at;R2.at=(ms,fn)=>RA(ms+D0,fn);
+    const RA=R2.at;R={at:RA,ok:R2.ok};R2.at=(ms,fn)=>RA(ms+D0,fn);
     R2.at(400,letterIn);R2.at(3000,itemIn);
     R2.at(5000,()=>{growS(T1,.6);});
     WS.forEach((w,j)=>R2.at(6200+j*1500,()=>{w.o.visible=true;w.o.position.set(0,1.4,0);w.o.scale.setScalar(.001);tween(.8,k=>{w.o.scale.setScalar(Math.max(.001,w.s*back(k)));w.o.position.y=1.4*(1-k*k);}).then(()=>{sq(w.o);growS(w.t,.4);});}));

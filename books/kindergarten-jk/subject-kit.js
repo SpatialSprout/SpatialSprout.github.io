@@ -150,11 +150,11 @@ function crayon(g,x,y,w,h,c,sel){g.save();if(sel){g.beginPath();g.ellipse(x,y+h*
 function drawColor(p,y,k){const g=p.g;const c=acc();const id=k.id||'x';const S=KCOL[id]||(KCOL[id]={sel:'#ff4d4d',f:{}});const top=y+4,h=560;
   const tap=(x,yy,w,hh,fn)=>P.hot(p,x,yy,w,hh,()=>{try{A.pop();}catch(e){}fn();A.redraw();});const paint=key=>()=>{S.f[key]=S.sel;};
   rr(g,X0,top,TW,h,36);g.fillStyle=tint(c,.08);g.fill();g.lineWidth=5;g.strokeStyle=tint(c,.4);g.stroke();
-  g.save();let fs0=330;const FN=fs=>'700 '+fs+'px "Patrick Hand", "Comic Sans MS", cursive';g.font=FN(fs0);const mw=TW*.5;while(g.measureText(k.big).width>mw&&fs0>90){fs0-=20;g.font=FN(fs0);}
+  if(k.big){  g.save();let fs0=330;const FN=fs=>'700 '+fs+'px "Patrick Hand", "Comic Sans MS", cursive';g.font=FN(fs0);const mw=TW*.5;while(g.measureText(k.big).width>mw&&fs0>90){fs0-=20;g.font=FN(fs0);}
   const BX=X0+TW*.29,BY=top+250+fs0*.36;g.textAlign='center';g.textBaseline='alphabetic';g.lineJoin='round';g.lineWidth=16;g.strokeStyle='#1b2236';g.strokeText(k.big,BX,BY);g.fillStyle=S.f.big||'#ffffff';g.fillText(k.big,BX,BY);
   if(!S.f.big){g.globalAlpha=.25;g.setLineDash([6,10]);g.lineWidth=3;g.strokeStyle=c;g.strokeText(k.big,BX,BY);}g.globalAlpha=1;g.setLineDash([]);const bw=Math.max(240,g.measureText(k.big).width+40);g.restore();
-  tap(BX-bw/2,top+40,bw,420,paint('big'));
-  const PX=X0+TW*.74,PY=top+235;g.save();g.beginPath();g.arc(PX,PY,178,0,Math.PI*2);g.fillStyle='#ffffff';g.fill();g.lineWidth=6;g.strokeStyle=tint(c,.5);g.stroke();g.restore();
+  tap(BX-bw/2,top+40,bw,420,paint('big'));}
+  const PX=k.big?X0+TW*.74:X0+TW/2,PY=top+235;g.save();g.beginPath();g.arc(PX,PY,178,0,Math.PI*2);g.fillStyle='#ffffff';g.fill();g.lineWidth=6;g.strokeStyle=tint(c,.5);g.stroke();g.restore();
   colorPic(g,k.pic,PX,PY,250,S.f.pic);tap(PX-170,PY-170,340,340,paint('pic'));
   wrap(g,k.line,X0+50,top+478,TW-100,64,{font:'700 54px "Atkinson Hyperlegible", Verdana, sans-serif',bold:'700 54px "Atkinson Hyperlegible", Verdana, sans-serif',boldColor:c,center:true});
   y=top+h+16;const ws=(k.words||[]).slice(0,3),n=ws.length,sp=TW/Math.max(1,n);

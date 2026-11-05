@@ -117,4 +117,7 @@ P.KLETTERJ=function(L,i){const ch=L.ch,ex=(L.words||[]).slice(0,3),more=EX[ch]||
       {say:'Where is '+ch+'?',hold:10000,speech:'All the letters are hiding in little boxes! '+(i?('We already found '+AZ.slice(0,i).join(', ')+'. '):'')+'Which one is next? Out comes '+ch+'! '+seqLine,set:g('abc',{idx:i,col:cl(ch),line:seqLine})},
       {say:'Colour time!',kc:true,speech:'Colour time! Pick a crayon, then tap the letter '+ch+', the '+L.item+' and the pictures to colour them in.',set:g('show',{i,big:ch,item:L.item,words:ex,col:cl(ch),line:ch+' is for '+L.item,still:true})}],
     rounds,tries:[['Say it: '+ch+' is for '+L.item+'.','Can you think of another '+ch+' word?'],['Draw '+L.item+'.','Write a big '+ch+' beside it!']]});};
+/* shapes and colours lessons get the colouring page too (with time to colour) */
+const U0=P.unit;P.unit=function(d){try{if(d&&d.kid&&d.strand==='Shapes and Colours'&&!d.kid.color){d.kid=Object.assign({},d.kid,{color:true,id:'c'+d.id,big:''});
+  d.steps=(d.steps||[]).concat([{say:'Colour time!',kc:true,speech:'Colour time! Pick a crayon, then tap the pictures to colour them in.',set:(d.steps[0]||{}).set}]);}}catch(e){}return U0.apply(this,arguments);};
 })();
