@@ -32,6 +32,14 @@ jobs:
           git init -q work && cd work
           git remote add origin "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git"
           if git fetch -q --depth 1 origin assets; then git checkout -q -b assets FETCH_HEAD; else git checkout -q --orphan assets; fi
+      - name: Domain and certificate check
+        if: ${{ inputs.job == 'check' }}
+        working-directory: work
+        run: |
+          mkdir -p check
+          { for d in spatialsprout.ca www.spatialsprout.ca; do echo "== $d"; dig +short A $d; dig +short AAAA $d; dig +short CNAME $d;
+              echo | openssl s_client -connect $d:443 -servername $d 2>/dev/null | openssl x509 -noout -subject -issuer -dates -ext subjectAltName 2>&1 | head -12; done
+            curl -sSI http://spatialsprout.ca | head -5; curl -sSI https://spatialsprout.github.io | head -5; } > check/domain.txt 2>&1; cat check/domain.txt
       - uses: actions/setup-node@v4
         if: ${{ inputs.job == 'audit' }}
         with:
