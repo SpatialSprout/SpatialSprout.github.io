@@ -23,13 +23,11 @@
   if (shelf) {
     shelf.innerHTML = C.books.map(function (b) {
       if (b.status === "live") {
-        var bg = b.colors ? ' style="background:linear-gradient(150deg,' + b.colors[0] + ',' + b.colors[1] + ' 55%,' + b.colors[2] + ')"' : '';
-        return '<a class="book live" href="books/' + esc(b.slug) + '/index.html"' + bg + '>' +
-          '<span class="pill">Open now</span>' +
-          '<span class="ttl">' + esc(GN(b)) + '</span>' +
-          '<span class="tiles" aria-hidden="true">' + (b.tiles || ["M", "A", "T", "H"]).map(function (t) { return "<span>" + esc(t) + "</span>"; }).join("") + '</span>' +
-          '<span class="by">The Interactive Classroom · by ' + esc(b.author) + '</span>' +
-          '<span class="open">Open the book <span aria-hidden="true">→</span></span></a>';
+        return '<a class="book live" href="books/' + esc(b.slug) + '/index.html">' +
+          '<span class="g">' + esc(b.grade) + '</span>' +
+          '<span class="ttl">' + esc(b.name || b.subject) + '</span>' +
+          '<span class="by">by ' + esc(b.author) + '</span>' +
+          '<span class="open">Open the book</span></a>';
       }
       return '<div class="book" aria-label="Grade ' + b.grade + ' ' + esc(b.subject) + ', coming soon"' + (b.colors ? ' style="border-color:' + b.colors[1] + '55"' : '') + '>' +
         '<span class="g">' + b.grade + '</span><span class="s">Grade ' + b.grade + '<br>' + esc(b.subject) + '</span>' +
@@ -46,7 +44,7 @@
   var lib = $("libSub");
   if (lib && lives.length) { var names = lives.map(function (b) { return GN(b); });
     var list = names.length > 1 ? names.slice(0, -1).join(", ") + " and " + names[names.length - 1] : names[0];
-    lib.textContent = list + (names.length > 1 ? " are" : " is") + " open now. More grades and subjects are on the way."; }
+    lib.textContent = (names.length > 4 ? lives.length + " books are open now, from " + names[0] + " to " + names[names.length - 1] + "." : list + (names.length > 1 ? " are" : " is") + " open now.") + " More grades and subjects are on the way."; }
 
   /* lessons of the chosen book, grouped by strand */
   var legend = $("legend"), lessons = $("lessons"), tabs = $("bookTabs");
@@ -62,7 +60,7 @@
       var items = live.lessons.filter(function (l) { return l.s === s; });
       if (!items.length) return "";
       var k = SM[s];
-      return '<div class="strand"><h3><i style="background:' + k.color + '"></i>' + k.letter + " · " + esc(s) + "</h3><ol>" +
+      return '<div class="strand"><h3><i style="background:' + k.color + '"></i>' + esc(s) + "</h3><ol>" +
         items.map(function (l) {
           n++;
           return '<li><span class="n">' + n + '</span><span class="lt">' + esc(l.t) + '</span><span class="codes">' +
