@@ -1,0 +1,66 @@
+# Downloads free (CC0) 3D models and other assets that the book-building workspace cannot reach directly,
+# and saves them on the separate "assets" branch (never on main, so the website is not republished).
+name: Fetch book assets
+on:
+  workflow_dispatch:
+    inputs:
+      quaternius:
+        description: "Quaternius packs as name=GoogleDriveFolderId, comma separated"
+        required: false
+        default: ""
+      urls:
+        description: "Extra files or pages to download, comma separated (saved under web/)"
+        required: false
+        default: ""
+permissions:
+  contents: write
+concurrency:
+  group: fetch-assets
+  cancel-in-progress: false
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - name: Check out the assets branch (create it if missing)
+        run: |
+          git init -q work && cd work
+          git remote add origin "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git"
+          if git fetch -q --depth 1 origin assets; then git checkout -q -b assets FETCH_HEAD; else git checkout -q --orphan assets; echo "Downloaded assets for the SpatialSprout books. Not part of the website." > README.md; fi
+      - name: Install tools
+        run: pip install -q gdown
+      - name: Download Quaternius packs from Google Drive
+        if: ${{ inputs.quaternius != '' }}
+        working-directory: work
+        run: |
+          IFS=',' read -ra PACKS <<< "${{ inputs.quaternius }}"
+          for p in "${PACKS[@]}"; do
+            name="${p%%=*}"; id="${p#*=}"; dest="quaternius/$name"; mkdir -p "$dest"
+            echo "::group::$name"
+            gdown --folder "https://drive.google.com/drive/folders/$id" -O "/tmp/q_$name" --remaining-ok --quiet || echo "WARN: $name partly failed"
+            # unzip anything zipped, then keep only web-ready formats (glTF / GLB and their textures)
+            find "/tmp/q_$name" -iname '*.zip' -exec sh -c 'unzip -qo "$1" -d "${1%.zip}"' _ {} \; || true
+            find "/tmp/q_$name" -type f \( -iname '*.glb' -o -iname '*.gltf' -o -iname '*.bin' -o -iname '*.png' -o -iname '*.jpg' -o -iname 'license*' -o -iname '*.txt' \) -size -90M | while read f; do
+              rel="${f#/tmp/q_$name/}"; mkdir -p "$dest/$(dirname "$rel")"; cp "$f" "$dest/$rel"; done
+            echo "$name: $(find "$dest" -type f | wc -l) files"
+            echo "::endgroup::"
+          done
+      - name: Download extra files and pages
+        if: ${{ inputs.urls != '' }}
+        working-directory: work
+        run: |
+          mkdir -p web
+          IFS=',' read -ra U <<< "${{ inputs.urls }}"
+          for u in "${U[@]}"; do
+            f="web/$(echo "$u" | sed -E 's#^https?://##; s#[^A-Za-z0-9._-]+#_#g')"
+            curl -sSL -A "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124 Safari/537.36" -m 300 -o "$f" "$u" && echo "ok $u" || echo "WARN failed $u"
+          done
+      - name: Save to the assets branch
+        working-directory: work
+        run: |
+          git config user.name "asset-fetcher"; git config user.email "actions@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then echo "Nothing new"; exit 0; fi
+          git commit -q -m "Fetched assets (run ${{ github.run_id }})"
+          git push -q origin assets
+          find . -path ./.git -prune -o -type f -print | sed 's#^./##' | sort > /tmp/list.txt; wc -l /tmp/list.txt
