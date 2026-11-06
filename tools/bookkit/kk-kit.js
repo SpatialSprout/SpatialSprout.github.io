@@ -242,7 +242,7 @@ const LIN=['drop','gift','balloons','spin','roll','grow','rocket','flip'];
 const IIN=['hop','fall','ground','bubble','zoom','twirl','peek'];
 C.show=function(g2,st,h,set){mat(g2,4.4,2.3,-2.3,set.mat||'#fff8e8');let R=runner(st);const col=set.col||'#ff6b6b';const i=set.i||0;
   const ls=set.lin||LIN[i%LIN.length],is=set.iin||IIN[(i*3+1)%IIN.length];
-  const LB=new THREE.Group();at(LB,-1.0,0,-2.75);g2.add(LB);const L=txt3(set.big,col,{size:set.big.length>1?1.05:1.3,depth:.34});LB.add(L);L.visible=false;
+  const LB=new THREE.Group();at(LB,-1.0,0,-2.75);g2.add(LB);const L=txt3(set.big,col,{size:set.big.length>1?1.05:1.3,depth:.34});LB.add(L);L.visible=false;if(P.kNarrator)try{P.kNarrator(g2);}catch(e){}
   const IB=new THREE.Group();at(IB,1.2,0,-2.6);g2.add(IB);const I=make(set.item,1.5);IB.add(I);I.visible=false;const is0=I.scale.x;
   const ws=(set.words||[]).slice(0,3);const WS=ws.map((w,j)=>{const g=new THREE.Group();at(g,(j-1)*1.45,0,-1.45);g2.add(g);const o=make(w,1.05);g.add(o);o.visible=false;const t=tag(w,{size:.24,bg:'#ffffff',border:COL[j%8]});t.position.set(0,.22,.6);t.visible=false;g.add(t);return {g,o,t,s:o.scale.x};});
   const T1=tag(set.line||set.big,{size:.36,bg:'#ffffff',border:col,color:'#1b2236'});T1.position.set(0,2.0,-3.1);T1.visible=false;g2.add(T1);
@@ -447,12 +447,25 @@ C.bowl=function(g2,st,h,set){mat(g2,4.4,2.3,-2.3,'#fff4e6');const lane=mk(G('kk_
   const xs=items.length<=4?[-1.35,-.45,.45,1.35]:[-1.5,-.9,-.3,.3,.9,1.5];
   const pins=items.map((t,i)=>{const p=pin();at(p,xs[i],.06,-3.0);g2.add(p);const L=lbl(un(t),i,.5);L.position.set(0,.95,0);p.add(L);p.userData.ok=ok(t);return p;});
   const ball=mk(G('kk_ball',()=>new THREE.SphereGeometry(.26,28,20)),phong(set.ballCol||'#7048e8',120),20);at(ball,0,.32,-1.45);g2.add(ball);const home=ball.position.clone();
-  pins.forEach(p=>A.drag(p,{tap:()=>{if(busy||p.userData.down)return;busy=true;A.pop&&A.pop();const to=V(p.position.x,.32,p.position.z+.25);const f=ball.position.clone();
+  /* cannon-es physics (sample lessons): the ball really rolls into the right pin and the pin tumbles; the other pins stay put */
+  let phys=null;const physRoll=p=>{const W=new CANNON.World({gravity:new CANNON.Vec3(0,-9.8,0)});W.defaultContactMaterial.friction=.25;W.defaultContactMaterial.restitution=.3;
+    const fl=new CANNON.Body({mass:0,shape:new CANNON.Plane()});fl.quaternion.setFromEuler(-Math.PI/2,0,0);fl.position.set(0,.065,0);W.addBody(fl);
+    const bb=new CANNON.Body({mass:4,shape:new CANNON.Sphere(.26),linearDamping:.05,angularDamping:.1});bb.position.set(ball.position.x,.33,ball.position.z);
+    const dx=p.position.x-ball.position.x,dz=p.position.z-ball.position.z,dl=Math.hypot(dx,dz)||1;bb.velocity.set(dx/dl*4.2,0,dz/dl*4.2);W.addBody(bb);
+    const bodies=pins.map(q=>{const b=new CANNON.Body({mass:q===p?.5:0,shape:new CANNON.Cylinder(.08,.16,.83,12)});b.position.set(q.position.x,q.position.y+.415,q.position.z);W.addBody(b);return {q,b};});
+    phys={W,bb,bodies,t:0,p,q0:p.quaternion.clone()};};
+  const physStep=dt=>{if(!phys)return;const f=phys;f.t+=dt;f.W.step(1/60,Math.min(dt,.05),4);ball.position.set(f.bb.position.x,f.bb.position.y,f.bb.position.z);ball.quaternion.set(f.bb.quaternion.x,f.bb.quaternion.y,f.bb.quaternion.z,f.bb.quaternion.w);
+    f.bodies.forEach(({q,b})=>{if(b.mass>0){const o=new CANNON.Vec3(0,-.415,0),w=b.quaternion.vmult(o);q.position.set(b.position.x+w.x,b.position.y+w.y,b.position.z+w.z);q.quaternion.set(b.quaternion.x,b.quaternion.y,b.quaternion.z,b.quaternion.w);}});
+    if(f.t>1.9){phys=null;const pp=f.p;const up=new THREE.Vector3(0,1,0).applyQuaternion(pp.quaternion);if(up.y>.6){/* did not fall: tip it over gently */const q0=pp.quaternion.clone();tween(.5,k=>{pp.rotation.x=-k*1.4;});}
+      pp.userData.down=true;got++;boom(pp);A.later(()=>{ball.position.copy(home);ball.quaternion.set(0,0,0,1);busy=false;if(got>=need)win(h,set,300);},700);}};
+  pins.forEach(p=>A.drag(p,{tap:()=>{if(busy||p.userData.down)return;busy=true;A.pop&&A.pop();
+    if(p.userData.ok&&window.CANNON&&P.kUpNow){physRoll(p);return;}
+    const to=V(p.position.x,.32,p.position.z+.25);const f=ball.position.clone();
     tween(1.0,k=>{ball.position.lerpVectors(f,to,k*(p.userData.ok?1:.8));ball.rotation.x-=.25;},x=>x).then(()=>{
       if(p.userData.ok){p.userData.down=true;got++;const sx=Math.random()<.5?-1:1;tween(.6,k=>{p.rotation.x=-k*1.5;p.rotation.z=sx*k*.6;p.position.y=.06+Math.sin(k*Math.PI)*.4;p.position.z=-3.0-k*.35;});boom(p);
         A.later(()=>{ball.position.copy(home);busy=false;if(got>=need)win(h,set,300);},800);}
       else{wobble(p);const b0=ball.position.clone();tween(.8,k=>{ball.position.lerpVectors(b0,home,k);}).then(()=>{busy=false;});if(isPlay(h))h.miss(set.hint||'Oops! Roll at the right pin.');}});}}));
-  return {tick:(dt,t)=>{if(!busy)ball.position.y=.32+Math.abs(Math.sin(t*2.5))*.05;}};};
+  return {tick:(dt,t)=>{physStep(dt);if(!busy)ball.position.y=.32+Math.abs(Math.sin(t*2.5))*.05;}};};
 C.bowl.bare=1;
 
 /* ---------- TRAIN: load the crates with the right letter into the wagons; then the train goes choo-choo ---------- */
@@ -530,7 +543,7 @@ C.nshow=function(g2,st,h,set){mat(g2,4.4,2.3,-2.3,'#fff8e8');const n=set.n||1,co
   const run=()=>{const R=runner(st);N.visible=true;N.position.set(0,3,0);items.forEach(o=>o.visible=false);
     tween(1.0,k=>{N.position.y=3*(1-k*k);}).then(()=>{sq(N,.45);boom(N);});
     if(set.still){N.position.y=0;items.forEach(o=>{o.visible=true;o.scale.setScalar(o.userData.s0);});return;}
-    items.forEach((o,k)=>R.at(t0+dur*(k/n)+80,()=>{o.visible=true;o.scale.setScalar(.001);o.position.y=.8;tween(.55,q=>{o.scale.setScalar(Math.max(.001,o.userData.s0*back(q)));o.position.y=.8*(1-q*q);}).then(()=>sq(o,.3));boom(o);}));
+    items.forEach((o,k)=>R.at(t0+dur*(k/n)+80,()=>{o.visible=true;P.kNote&&P.kNote(k);o.scale.setScalar(.001);o.position.y=.8;tween(.55,q=>{o.scale.setScalar(Math.max(.001,o.userData.s0*back(q)));o.position.y=.8*(1-q*q);}).then(()=>sq(o,.3));boom(o);}));
     R.at(t0+dur+700,()=>{items.forEach((o,k)=>R.at(k*110,()=>{const y=o.position.y;tween(.45,q=>{o.position.y=y+Math.sin(q*Math.PI)*.35;});}));tween(1.2,k=>{N.rotation.y=ease(k)*Math.PI*2;});});};
   run();return {tick:(dt,t)=>{N.rotation.z=Math.sin(t*1.1)*.04;},play:run,controls:()=>st.round?[]:[{t:'Again!',go:true,fn:run}]};};
 C.nshow.bare=1;
@@ -541,7 +554,7 @@ C.exshow=function(g2,st,h,set){mat(g2,4.4,2.3,-2.3,'#fff8e8');const its=(set.ite
   const cue=set.cue&&window.KCUE&&window.VOICE&&window.VOICE[fnv(set.cue)]?window.KCUE[fnv(set.cue)]:null;const ts=cue&&cue.ex?cue.ex.map(x=>x*1000):its.map((_,k)=>2600+k*1300);
   const run=()=>{const R=runner(st);objs.forEach(o=>o.visible=false);
     if(set.still){objs.forEach(o=>{o.visible=true;o.scale.setScalar(o.userData.s0);});return;}
-    objs.forEach((o,k)=>R.at((ts[k]||0)+60,()=>{o.visible=true;o.scale.setScalar(.001);o.position.y=.9;tween(.6,q=>{o.scale.setScalar(Math.max(.001,o.userData.s0*back(q)));o.position.y=.9*(1-q*q);}).then(()=>sq(o,.3));boom(o);}));
+    objs.forEach((o,k)=>R.at((ts[k]||0)+60,()=>{o.visible=true;P.kNote&&P.kNote(k*2);o.scale.setScalar(.001);o.position.y=.9;tween(.6,q=>{o.scale.setScalar(Math.max(.001,o.userData.s0*back(q)));o.position.y=.9*(1-q*q);}).then(()=>sq(o,.3));boom(o);}));
     R.at((ts[n-1]||0)+1500,()=>objs.forEach((o,k)=>R.at(k*130,()=>{const y=o.position.y;tween(.45,q=>{o.position.y=y+Math.sin(q*Math.PI)*.35;});})));};
   run();return {tick:(dt,t)=>{objs.forEach((o,k)=>{if(o.visible)o.rotation.y=Math.sin(t*.9+k)*.18;});},play:run,controls:()=>st.round?[]:[{t:'Again!',go:true,fn:run}]};};
 C.exshow.bare=1;

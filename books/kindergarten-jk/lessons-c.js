@@ -14,7 +14,7 @@ SH.forEach((s,i)=>{const others=['circle','square','triangle','rectangle','star'
     guide:{goal:'Know the '+s.k+': name it, find it in toys and things around them, and tell it apart from other shapes.',words:s.k+', sides, corners',ask:['What shape is this?','Where do you see a '+s.k+'?','How many corners?'],home:'Go on a '+s.k+' hunt around the house!'},
     watch:['A '+s.k+'!',s.say+'.'],fig:'A big 3D '+s.k+' and things shaped like it.',
     kid:{big:'',pic:s.pic,line:s.line,words:s.things.map(t=>[t,t])},page:{},
-    steps:[{say:'Meet the '+s.k,speech:'This is a '+s.k+'. '+s.say[0].toUpperCase()+s.say.slice(1)+'.',set:S.tap([sh(s.k,s.c)+'@2'],{layout:'row',free:true})},
+    steps:[{say:'Meet the '+s.k,speech:'This is a '+s.k+'. '+s.say[0].toUpperCase()+s.say.slice(1)+'.',set:S.tap([sh(s.k,s.c)+'@2'],{layout:'row',free:true,morph:s.k,morphCol:'#ffe8cc'})},
       {say:'Find '+s.k+'s',speech:'What else is shaped like a '+s.k+'? '+s.things.join(', ').replace(/^./,c=>c.toUpperCase())+'!',hold:2500,set:{custom:'exshow',items:s.things,cue:'What else is shaped like a '+s.k+'? '+s.things.join(', ').replace(/^./,c=>c.toUpperCase())+'!'}},
       {say:'Pop the '+s.k+'s',speech:'Pop two bubbles with a '+s.k+' inside!',waitDone:true,set:{custom:'bubbles',need:2,respawn:true,items:[sh(s.k,s.c,1),sh(s.k,'purple',1),sh(others[0],oc[0]),sh(s.k,'pink',1),sh(others[1],oc[1]),sh(s.k,'yellow',1),sh(others[2],oc[2])]}}],
     rounds:[nb(R.bub('Pop the bubbles with a *'+s.k+'*!',[sh(s.k,s.c,1),sh(s.k,'yellow',1),sh(s.k,'pink',1),sh(others[0],oc[0]),sh(others[1],oc[1]),sh(others[2],oc[2])])),

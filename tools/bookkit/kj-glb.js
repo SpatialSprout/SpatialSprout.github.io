@@ -1,10 +1,29 @@
-/* Real 3D models (Kenney, CC0) for the JK book: loaded once, sized to match the hand-built model they replace,
-   and used only in the lessons listed in BOOK.glbLessons. */
+/* Real 3D models (Kenney and Quaternius, both CC0) for the JK book.
+   Each model is loaded compressed (gltfpack + MeshoptDecoder), its colours are taken from its texture and softened
+   toward pastel, it is smoothed with Loop subdivision (three-subdivide) and given the book's soft glossy material,
+   so it matches the chubby hand-built models. Used only in the lessons listed in BOOK.glbLessons. */
 (function(){const P=window.PM;if(!P||!window.THREE||!THREE.GLTFLoader)return;const B=window.BOOK||{};const list=B.glb||{};
-  P.GLBM={};const cache={},ref={};const ld=new THREE.GLTFLoader();
+  P.GLBM={};const cache={},ref={};const ld=new THREE.GLTFLoader();if(window.MeshoptDecoder&&ld.setMeshoptDecoder)ld.setMeshoptDecoder(MeshoptDecoder);
   const refDim=k=>{if(ref[k]!=null)return ref[k];let d=1;try{if(P.LUXM&&P.LUXM[k]){const o=P.LUXM[k](1);const b=new THREE.Box3().setFromObject(o);const s=b.getSize(new THREE.Vector3());d=Math.max(s.x,s.y,s.z)||1;}}catch(e){}return ref[k]=d;};
-  Object.keys(list).forEach(k=>ld.load('models/'+list[k],g=>{const sc=g.scene;sc.traverse(o=>{if(o.isMesh){o.castShadow=true;o.receiveShadow=true;if(o.material&&o.material.map)o.material.map.anisotropy=4;}});cache[k]=sc;
+  const PASTEL=.22,white=new THREE.Color(1,1,1);
+  const texReader=img=>{try{const c=document.createElement('canvas');c.width=img.width;c.height=img.height;const g=c.getContext('2d');g.drawImage(img,0,0);const d=g.getImageData(0,0,c.width,c.height).data;
+    return (u,v)=>{const x=Math.min(c.width-1,Math.max(0,Math.floor(((u%1)+1)%1*c.width))),y=Math.min(c.height-1,Math.max(0,Math.floor(((v%1)+1)%1*c.height)));const i=(y*c.width+x)*4;return [d[i]/255,d[i+1]/255,d[i+2]/255];};}catch(e){return null;}};
+  function soften(mesh){let g=mesh.geometry;const m=Array.isArray(mesh.material)?mesh.material[0]:mesh.material;if(!g||!g.attributes.position)return;
+    g=g.index?g.toNonIndexed():g.clone();
+    /* compressed models store points as packed integers; turn every attribute into plain floats before smoothing */
+    Object.keys(g.attributes).forEach(k=>{const a=g.attributes[k];if(a.array instanceof Float32Array&&!a.normalized&&!a.isInterleavedBufferAttribute)return;const n2=a.count,sz=a.itemSize,f=new Float32Array(n2*sz);
+      for(let i=0;i<n2;i++){f[i*sz]=a.getX(i);if(sz>1)f[i*sz+1]=a.getY(i);if(sz>2)f[i*sz+2]=a.getZ(i);if(sz>3)f[i*sz+3]=a.getW(i);}g.setAttribute(k,new THREE.BufferAttribute(f,sz));});const n=g.attributes.position.count,col=new Float32Array(n*3),uv=g.attributes.uv,base=(m&&m.color)?m.color.clone():new THREE.Color(1,1,1);
+    const rd=m&&m.map&&m.map.image?texReader(m.map.image):null;if(m&&m.map&&!rd)console.warn('model texture unreadable');const lin=new THREE.Color();
+    for(let i=0;i<n;i++){if(rd&&uv){const [r,gg,b]=rd(uv.getX(i),m.map.flipY===false?uv.getY(i):1-uv.getY(i));lin.setRGB(r,gg,b).convertSRGBToLinear().multiply(base);}else lin.copy(base);
+      lin.lerp(white,PASTEL);col[i*3]=lin.r;col[i*3+1]=lin.g;col[i*3+2]=lin.b;}
+    g.setAttribute('color',new THREE.BufferAttribute(col,3));g.deleteAttribute('uv');if(g.attributes.uv2)g.deleteAttribute('uv2');
+    let sm=g;try{if(window.LoopSubdivision){const it=n<1500?2:(n<9000?1:0);if(it)sm=LoopSubdivision.modify(g,it,{split:false,uvSmooth:false,preserveEdges:false,flatOnly:false,maxTriangles:60000});}}catch(e){sm=g;}
+    sm.computeVertexNormals();mesh.geometry=sm;
+    /* three-mesh-bvh: fast, exact taps on these detailed meshes */
+    if(window.MeshBVHLib){try{MeshBVHLib.computeBoundsTree.call(sm);mesh.raycast=MeshBVHLib.acceleratedRaycast;}catch(e){}}
+    mesh.material=new THREE.MeshPhysicalMaterial({vertexColors:true,roughness:.5,metalness:0,clearcoat:.35,clearcoatRoughness:.4});mesh.castShadow=true;mesh.receiveShadow=true;}
+  Object.keys(list).forEach(k=>ld.load('models/'+list[k],g=>{const sc=g.scene;sc.updateMatrixWorld(true);sc.traverse(o=>{if(o.isMesh)soften(o);});cache[k]=sc;
     P.GLBM[k]=s=>{const o=cache[k].clone(true);const b=new THREE.Box3().setFromObject(o),sz=b.getSize(new THREE.Vector3()),c=b.getCenter(new THREE.Vector3());const m=Math.max(sz.x,sz.y,sz.z)||1;const f=refDim(k)*(s||1)/m;
-      o.scale.setScalar(f);o.position.set(-c.x*f,-b.min.y*f,-c.z*f);const w=new THREE.Group();w.add(o);w.userData.glb=k;return w;};},undefined,e=>console.warn('model',k,e)));
+      o.scale.multiplyScalar(f);o.position.set(-c.x*f,-b.min.y*f,-c.z*f);const w=new THREE.Group();w.add(o);w.userData.glb=k;w.userData.noLux=1;return w;};},undefined,e=>console.warn('model',k,e)));
   const prev=P.onSpread;P.onSpread=sp=>{P.kGlbNow=!!(sp&&sp.L&&(B.glbLessons||[]).indexOf(sp.L.id)>=0);if(prev)prev(sp);};
 })();

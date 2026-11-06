@@ -97,6 +97,7 @@ C.tap=function(g2,st,h,set){st._pkt=[];const items=set.items||[];const n=items.l
   mat(g2,4.3,kind==='row'?1.25:2.2,kind==='row'?(set.z||-2.2):-2.35,set.mat);
   let bask=null;if(set.mode==='collect'){bask=catcher(g2,set.basket,set.bx==null?1.7:set.bx,set.bz==null?-1.55:set.bz);}
   const objs=items.map((it,i)=>{const o=make(it,set.s);const [x,y,z]=pts[i];at(o,x+(bask&&kind!=='row'?-.35:0),y,z);o.userData.ry=(Math.random()-.5)*.4;o.rotation.y=o.userData.ry;g2.add(o);if(o.userData.tick){const f=o.userData.tick;o.userData.tick=null;st._pkt=(st._pkt||[]).concat([f]);}return o;});
+  if(set.morph&&P.kMorph){const mf=P.kMorph(g2,set.morph,set.morphCol,THREE);if(mf)st._pkt=(st._pkt||[]).concat([mf]);}
   const anyOk=objs.some(o=>o.userData.pk.ok);const need=set.need||(anyOk?objs.filter(o=>o.userData.pk.ok).length:objs.length);let got=0;const done=new Set();
   objs.forEach((o,i)=>A.drag(o,{tap:()=>{if(done.has(i))return;const d=o.userData.pk;A.pop&&A.pop();
     const play=h.isPlay?h.isPlay():false;

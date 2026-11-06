@@ -665,9 +665,15 @@ let bestVoice=null;function pickVoice(){try{const vs=speechSynthesis.getVoices()
   bestVoice=vs.sort((a,b)=>score(b)-score(a))[0];}catch(e){}}
 try{pickVoice();speechSynthesis.onvoiceschanged=pickVoice;}catch(e){}
 let voClock=null;
-function stopSpeak(){voTok++;voClock=null;try{VO.pause();}catch(e){}try{speechSynthesis.cancel();}catch(e){}}
+let voH=null;
+function stopSpeak(){voTok++;voClock=null;try{VO.pause();}catch(e){}try{if(voH){voH.stop();voH=null;}}catch(e){}try{speechSynthesis.cancel();}catch(e){}}
 function speakDevice(text,onend){if((window.BOOK||{}).noDeviceVoice){const tk=voTok;const ms=Math.max(2200,String(text||'').split(/\s+/).length*330);setTimeout(()=>{if(tk===voTok&&onend)onend();},ms);return true;}if(!('speechSynthesis' in window))return false;try{const u=new SpeechSynthesisUtterance(text.replace(/SpatialSprout/g,'Spatial Sprout'));if(bestVoice){u.voice=bestVoice;u.lang=bestVoice.lang;}else u.lang='en-US';u.rate=1;u.pitch=1;u.onend=onend;const tk=voTok;u.onstart=()=>{voClock={tok:tk,t0:performance.now(),dur:text.length/14,dev:true,ch:0};};u.onboundary=e=>{if(voClock&&voClock.tok===tk)voClock.ch=e.charIndex;};speechSynthesis.speak(u);return true;}catch(e){return false;}}
-function speak(text,onend){if(!soundOn)return false;stopSpeak();const tk=voTok;const h=vhash(text);
+let voCurH=null;PM.voiceNow=()=>(voClock&&voClock.tok===voTok&&!voClock.dev)?{h:voCurH,t:(performance.now()-voClock.t0)/1000}:null;
+function speak(text,onend){if(!soundOn)return false;stopSpeak();const tk=voTok;const h=vhash(text);voCurH=h;
+  /* Howler (JK): Web Audio playback that unlocks itself on phones and tablets; falls back to the plain audio element */
+  if(window.Howl&&(window.BOOK||{}).howler&&window.VOICE&&VOICE[h]){let done=false;const fin=()=>{if(done||tk!==voTok)return;done=true;if(onend)onend();};
+    const fb=()=>{if(tk!==voTok||done)return;voH=null;VO.onended=fin;VO.src='voice/'+h+'.mp3';try{const p=VO.play();if(p&&p.catch)p.catch(()=>{if(!done){done=true;speakDevice(text,onend);}});}catch(e){done=true;speakDevice(text,onend);}};
+    try{const hw=new Howl({src:['voice/'+h+'.mp3'],format:['mp3'],html5:false,onplay:()=>{if(tk===voTok)voClock={tok:tk,t0:performance.now(),dur:hw.duration()||VOICE[h]};},onend:fin,onloaderror:fb,onplayerror:()=>{hw.once('unlock',()=>{if(tk===voTok)hw.play();});}});voH=hw;hw.play();return true;}catch(e){fb();return true;}}
   if(window.VOICE&&VOICE[h]){let done=false;const fin=()=>{if(done||tk!==voTok)return;done=true;if(onend)onend();};
     VO.onended=fin;VO.onplaying=()=>{if(tk===voTok)voClock={tok:tk,t0:performance.now()-VO.currentTime*1000,dur:(isFinite(VO.duration)&&VO.duration)||VOICE[h]};};VO.onerror=()=>{if(tk===voTok&&!done){done=true;speakDevice(text,onend);}};VO.src='voice/'+h+'.mp3';
     try{const p=VO.play();if(p&&p.catch)p.catch(()=>{if(tk===voTok&&!done){done=true;speakDevice(text,onend);}});}catch(e){done=true;return speakDevice(text,onend);}return true;}
@@ -978,8 +984,8 @@ function challenger(L,r){return CREW[((L&&L.n?L.n-1:0)+(r||0))%CREW.length].n;}
 function startGame(S){const g=S.game;if(g.phase==='play'||g.done)return;g.phase='play';g.miss=false;A.stopSeq();g.setup=true;try{g.text=S.api.task(g.round);}catch(e){console.error(e);g.text='';}g.setup=false;A.say('Round '+(g.round+1)+': '+g.text.replace(/\*/g,''));A.redraw();}
 let nextTok=0;
 function gameSolved(S,msg){const g=S.game;if(g.lock||g.done||g.setup||g.phase!=='play'||SP[cur].S!==S)return;g.lock=true;g.stars++;const pts=(g.miss?10:15)+(!g.miss&&g.streak>=2?5:0);g.streak=g.miss?0:g.streak+1;
-  A.good(msg||'Correct!');cheerVoice(true);mascotCheer(false);guideCheer(false);addPts(pts);A.redraw();
-  A.later(()=>{g.lock=false;g.round++;g.miss=false;if(g.round>=NR()){g.done=true;A.win();addPts(25);mascotCheer(true);guideCheer(true);speak(NR()!==5?(BOOK.winLine||'Amazing! You finished all '+NRW()+' questions!'):(PLAY?LINES.winKid:LINES.winOld));A.say('You won all '+NR()+' rounds! +25 bonus points. Next lesson coming up…');A.redraw();
+  A.good(msg||'Correct!');cheerVoice(true);mascotCheer(false);if(PM.kFx)try{PM.kFx(false);}catch(e){}guideCheer(false);addPts(pts);A.redraw();
+  A.later(()=>{g.lock=false;g.round++;g.miss=false;if(g.round>=NR()){g.done=true;A.win();addPts(25);mascotCheer(true);if(PM.kFx)try{PM.kFx(true);}catch(e){}guideCheer(true);speak(NR()!==5?(BOOK.winLine||'Amazing! You finished all '+NRW()+' questions!'):(PLAY?LINES.winKid:LINES.winOld));A.say('You won all '+NR()+' rounds! +25 bonus points. Next lesson coming up…');A.redraw();
       const tk=++nextTok,here=cur;setTimeout(()=>{if(tk===nextTok&&cur===here&&!busy&&cur<SP.length-1&&S.game.done)goSpread(cur+1,0,true);},6500);}
     else{g.setup=true;try{g.text=S.api.task(g.round);}finally{g.setup=false;}A.say('Round '+(g.round+1)+': '+g.text.replace(/\*/g,''));}A.redraw();},Math.max(1600,+((S.api&&S.api.hold&&S.api.hold())||0)));}
 function replay(S){nextTok++;S.game={round:0,stars:0,done:false,text:'',phase:'play',miss:false,streak:0};S.game.setup=true;try{S.game.text=S.api.task(0);}finally{S.game.setup=false;}A.say('New game! '+S.game.text.replace(/\*/g,''));A.redraw();}
@@ -1093,7 +1099,12 @@ const landRing=new THREE.Mesh(new THREE.RingGeometry(.2,.27,40).rotateX(-Math.PI
 function doTap(h){if(!h||!h.tap)return;const o=h.o;const s0=o?o.scale.clone():null;
   try{h.tap(o);}catch(err){console.error(err);}
   if(o&&!h.page){if(h.point)ripple(h.point);if(s0&&o.scale.equals(s0)&&!movers.has(o)&&o.parent){const sc=screenOf(o);if(sc&&sc.r<110)bounce(o);}}}
+/* free crayon drawing on a page (JK sample lessons): PM.kDraw={start,move,end} gets page-canvas coordinates; a short press is still a tap */
+let pdraw=null;function pageXY(e){setRay(e);const hs=ray.intersectObjects([rightMesh],false);if(!hs.length||!hs[0].uv)return null;return {x:hs[0].uv.x*CW,y:(1-hs[0].uv.y)*CH};}
+window.addEventListener('pointermove',e=>{if(!pdraw||e.pointerId!==pdraw.id)return;const q=pageXY(e);if(!q)return;if(!pdraw.on){if(Math.hypot(e.clientX-pdraw.sx,e.clientY-pdraw.sy)<10)return;pdraw.on=true;controls.enabled=false;try{PM.kDraw&&PM.kDraw.start(pdraw.p0.x,pdraw.p0.y);}catch(err){}}try{PM.kDraw&&PM.kDraw.move(q.x,q.y);}catch(err){}});
+window.addEventListener('pointerup',e=>{if(!pdraw||e.pointerId!==pdraw.id)return;const on=pdraw.on;pdraw=null;controls.enabled=true;if(on){try{PM.kDraw&&PM.kDraw.end();}catch(err){}}});
 stage.addEventListener('pointerdown',e=>{if(busy||e.target!==renderer.domElement||(e.button&&e.button>0)||press)return;
+  if(PM.kDraw&&!pdraw){const q=pageXY(e);if(q&&(!PM.kDraw.ok||PM.kDraw.ok(q.x,q.y))){const hh=hitTest(e,true);if(!hh||hh.page){pdraw={id:e.pointerId,sx:e.clientX,sy:e.clientY,p0:q,on:false};controls.enabled=false;}}}
   const h=hitTest(e,true);if(!h)return;
   if(h.drag&&h.drag.instant&&h.drag.tap){e.stopPropagation();doTap({o:h.o,tap:h.drag.tap,point:h.point});return;}
   e.stopPropagation();controls.enabled=false;try{renderer.domElement.setPointerCapture(e.pointerId);}catch(err){}
@@ -1192,6 +1203,8 @@ function start(){LESSONS=PM.lessons;makeSpreads();applyLight();updateBadge();upd
   leftBlock.visible=leftMesh.visible=false;coverDeco=buildCoverDeco();
   new ResizeObserver(()=>{applyCam();setView(view);}).observe(stage);applyCam();
   setView('cover',true);camera.position.add(V(0,5,4));setView('cover');frame();$('#loading').style.opacity=0;}
+/* offline mode (books that ship sw.js and set BOOK.offline) */
+if((window.BOOK||{}).offline&&'serviceWorker' in navigator&&location.protocol==='https:'){window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});}
 PM.debug={get cam(){return {p:camera.position.toArray().map(x=>+x.toFixed(2)),t:controls.target.toArray().map(x=>+x.toFixed(2)),view,tw:!!camTween,auto:autoCam};},mascotCheer,set TS(v){TS=v;},sim,set norender(v){NORENDER=v;},get stepI(){return stepI;},startGame,get clickables(){return clickables;},setStep,get renderer(){return renderer;},get cur(){return cur;},get busy(){return busy;},get SP(){return SP;},leftP,rightP,coverCanvas,goSpread,openBook,A,get api(){return curApi;},get drags(){return draggables;},get S(){return SP[cur]&&SP[cur].S;}};
 const fl=document.fonts&&document.fonts.load?Promise.all(['700 64px "Zilla Slab"','400 29px "Atkinson Hyperlegible"','700 29px "Atkinson Hyperlegible"','italic 400 23px "Atkinson Hyperlegible"','34px "Patrick Hand"'].map(f=>document.fonts.load(f))):Promise.resolve();
 const imgs=Promise.all([LOGO,MARK,MARKT].map(i=>i.decode?i.decode().catch(()=>{}):Promise.resolve()));
