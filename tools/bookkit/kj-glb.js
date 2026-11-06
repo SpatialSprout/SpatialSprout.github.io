@@ -22,8 +22,12 @@
     /* three-mesh-bvh: fast, exact taps on these detailed meshes */
     if(window.MeshBVHLib){try{MeshBVHLib.computeBoundsTree.call(sm);mesh.raycast=MeshBVHLib.acceleratedRaycast;}catch(e){}}
     mesh.material=new THREE.MeshPhysicalMaterial({vertexColors:true,roughness:.5,metalness:0,clearcoat:.35,clearcoatRoughness:.4});mesh.castShadow=true;mesh.receiveShadow=true;}
-  Object.keys(list).forEach(k=>ld.load('models/'+list[k],g=>{const sc=g.scene;sc.updateMatrixWorld(true);sc.traverse(o=>{if(o.isMesh)soften(o);});cache[k]=sc;
+  /* animated (rigged) models are frozen in their standing pose, so they can be smoothed like the rest */
+  const unskin=sc=>{const sk=[];sc.traverse(o=>{if(o.isSkinnedMesh)sk.push(o);});sk.forEach(o=>{const g=o.geometry.clone();['skinIndex','skinWeight'].forEach(a=>g.deleteAttribute(a));const m=new THREE.Mesh(g,o.material);m.position.copy(o.position);m.quaternion.copy(o.quaternion);m.scale.copy(o.scale);o.parent.add(m);o.parent.remove(o);});};
+  const loading={};const want=k=>{if(cache[k]||loading[k]||!list[k])return;loading[k]=1;ld.load('models/'+list[k],g=>{const sc=g.scene;unskin(sc);sc.updateMatrixWorld(true);sc.traverse(o=>{if(o.isMesh)soften(o);});cache[k]=sc;
     P.GLBM[k]=s=>{const o=cache[k].clone(true);const b=new THREE.Box3().setFromObject(o),sz=b.getSize(new THREE.Vector3()),c=b.getCenter(new THREE.Vector3());const m=Math.max(sz.x,sz.y,sz.z)||1;const f=refDim(k)*(s||1)/m;
-      o.scale.multiplyScalar(f);o.position.set(-c.x*f,-b.min.y*f,-c.z*f);const w=new THREE.Group();w.add(o);w.userData.glb=k;w.userData.noLux=1;return w;};},undefined,e=>console.warn('model',k,e)));
-  const prev=P.onSpread;P.onSpread=sp=>{P.kGlbNow=!!(sp&&sp.L&&(B.glbLessons||[]).indexOf(sp.L.id)>=0);if(prev)prev(sp);};
+      o.scale.multiplyScalar(f);o.position.set(-c.x*f,-b.min.y*f,-c.z*f);const w=new THREE.Group();w.add(o);w.userData.glb=k;w.userData.noLux=1;return w;};},undefined,e=>console.warn('model',k,e));};
+  /* load a lesson's models when the lesson opens: every model whose name starts with the lesson's letter, plus any listed for it */
+  const prev=P.onSpread;P.onSpread=sp=>{const id=sp&&sp.L&&sp.L.id;P.kGlbNow=!!(id&&(B.glbLessons||[]).indexOf(id)>=0);
+    if(P.kGlbNow){const ch=/^a[A-Z]$/.test(id)?id[1].toLowerCase():null;Object.keys(list).filter(k=>(ch&&k[0]===ch)||((B.glbFor||{})[id]||[]).indexOf(k)>=0).forEach(want);}if(prev)prev(sp);};
 })();

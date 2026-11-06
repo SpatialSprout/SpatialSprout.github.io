@@ -113,8 +113,8 @@ P.KLETTERJ=function(L,i){const ch=L.ch,ex=(L.words||[]).slice(0,3),more=EX[ch]||
     guide:{goal:'Know the letter '+ch+' by name and shape, and link it to '+[L.item].concat(ex).join(', ')+'.',words:[L.item].concat(ex,more).join(', '),ask:['What letter is this?','What starts with '+ch+'?','Where did the magic book take us?'],home:'Hunt for '+ch+' at home: on cereal boxes, books and signs. Find something that starts with '+ch+'!'},
     watch:[ch+' for '+L.item+'!',say+'!'],fig:'A big 3D letter '+ch+' and '+L.item+'.',
     kid:{color:true,id:'c'+id,big:ch+ch.toLowerCase(),pic:L.item,line,words:ex.map(x=>[x,NM(x)])},page:{},
-    steps:[{say:'Meet '+ch,hold:17000,speech:'Here comes the letter '+ch+'! '+say+'! What else '+SW.replace(/^(\w+)/,'$1s')+' '+ch+'? '+ex.map(NM).join(', ')+'!',
-        set:g('show',{i,big:ch,item:L.item,words:ex,col:cl(ch),line:ch+' is for '+L.item,face:true})},
+    steps:[(()=>{const s1='Here comes the letter '+ch+'! '+say+'! What else '+SW.replace(/^(\w+)/,'$1s')+' '+ch+'? '+ex.map(NM).join(', ')+'!';
+        return {say:'Meet '+ch,speech:s1,set:g('show',{i,big:ch,item:L.item,words:ex,col:cl(ch),line:ch+' is for '+L.item,face:true,cue:s1})};})(),
       (()=>{const sp='All the letters are hiding! '+(i?('We already found '+AZ.slice(0,i).join(', ')+'. What’s next?'):'Which one comes first?')+' Say it out loud! Yay! It is '+ch+'!';
         const pre=sp.split('Yay!')[0].trim().split(/\s+/).length;const est=Math.round(250+pre*480+3*550+2800);
         return {say:'Where is '+ch+'?',hold:Math.max(12000,est+7000),speech:sp,set:g('abc',{idx:i,col:cl(ch),line:seqLine,cue:sp,revealAt:est})};})(),

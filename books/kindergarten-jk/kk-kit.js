@@ -240,6 +240,7 @@ function giftBox(c,s){const g=new THREE.Group();s=s||1;const body=mk(G('kk_gb',(
 /* ---------- SHOW: the letter makes a grand entrance, then its friend, then three more friends. Nothing to tap; just watch. ---------- */
 const LIN=['drop','gift','balloons','spin','roll','grow','rocket','flip'];
 const IIN=['hop','fall','ground','bubble','zoom','twirl','peek'];
+const fnvS=t=>{let h=0x811c9dc5;for(let i=0;i<t.length;i++){h^=t.charCodeAt(i);h=Math.imul(h,0x01000193)>>>0;}return ('0000000'+h.toString(16)).slice(-8);};
 C.show=function(g2,st,h,set){mat(g2,4.4,2.3,-2.3,set.mat||'#fff8e8');let R=runner(st);const col=set.col||'#ff6b6b';const i=set.i||0;
   const ls=set.lin||LIN[i%LIN.length],is=set.iin||IIN[(i*3+1)%IIN.length];
   const LB=new THREE.Group();at(LB,-1.0,0,-2.75);g2.add(LB);const L=txt3(set.big,col,{size:set.big.length>1?1.05:1.3,depth:.34});LB.add(L);L.visible=false;if(P.kNarrator)try{P.kNarrator(g2);}catch(e){}
@@ -274,9 +275,11 @@ C.show=function(g2,st,h,set){mat(g2,4.4,2.3,-2.3,set.mat||'#fff8e8');let R=runne
     const RA=R2.at;R={at:RA,ok:R2.ok};R2.at=(ms,fn)=>RA(ms+D0,fn);
     R2.at(400,letterIn);R2.at(3000,itemIn);
     R2.at(5000,()=>{growS(T1,.6);});
-    WS.forEach((w,j)=>R2.at(6200+j*1500,()=>{w.o.visible=true;w.o.position.set(0,1.4,0);w.o.scale.setScalar(.001);tween(.8,k=>{w.o.scale.setScalar(Math.max(.001,w.s*back(k)));w.o.position.y=1.4*(1-k*k);}).then(()=>{sq(w.o);growS(w.t,.4);});}));
-    R2.at(6200+WS.length*1500+600,()=>{[L,I].concat(WS.map(w=>w.o)).forEach((o,j)=>R2.at(j*260,()=>bob(o,.35)));});
-    R2.at(6200+WS.length*1500+2600,()=>{tween(1.2,k=>{L.rotation.y=ease(k)*Math.PI*2;});boom(L);});};
+    /* time each example to its word in the narration (KCUE 'ex' cues), otherwise the old fixed timing */
+    const cq=set.cue&&window.KCUE&&window.VOICE&&window.VOICE[fnvS(set.cue)]?window.KCUE[fnvS(set.cue)]:null;const WT=(cq&&cq.ex&&cq.ex.length>=WS.length)?cq.ex.map(x=>x*1000-150):WS.map((_,j)=>6200+j*1500);const WE=WT[WS.length-1]||(6200+WS.length*1500);
+    WS.forEach((w,j)=>R2.at(WT[j],()=>{w.o.visible=true;w.o.position.set(0,1.4,0);w.o.scale.setScalar(.001);tween(.8,k=>{w.o.scale.setScalar(Math.max(.001,w.s*back(k)));w.o.position.y=1.4*(1-k*k);}).then(()=>{sq(w.o);growS(w.t,.4);});}));
+    R2.at(WE+(cq?900:2100),()=>{[L,I].concat(WS.map(w=>w.o)).forEach((o,j)=>R2.at(j*260,()=>bob(o,.35)));});
+    R2.at(WE+(cq?1500:4100),()=>{tween(1.2,k=>{L.rotation.y=ease(k)*Math.PI*2;});boom(L);});};
   /* labels: tag() makes sprites at their natural scale; remember it */
   [T1].concat(WS.map(w=>w.t)).forEach(t=>{t.userData.s0v=t.scale.clone();});
   run();let t0=0;
