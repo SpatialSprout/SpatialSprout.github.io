@@ -52,7 +52,7 @@ C.trace=function(g2,st,h,set){const on=tickers(st);mat(g2,4.4,2.3,-2.3,'#fff8e8'
     if(d.start){const T=tag(String(d.si+1),{size:.18,bg:'#5cc46a',border:'#2b8a3e',color:'#ffffff'});T.position.set(-.18,.18,0);b.add(T);}
     A.drag(b,{tap:()=>tapDot(i)});return b;});
   const line=[];const seg=(a,b)=>{const d=b.clone().sub(a);const m=mk(G('kk_tube',()=>new THREE.CylinderGeometry(.055,.055,1,10)),lam(col),0);m.scale.y=d.length();m.position.copy(a).add(b).multiplyScalar(.5);m.quaternion.setFromUnitVectors(V(0,1,0),d.normalize());g2.add(m);line.push(m);};
-  const finish=()=>{P.kStepDone=true;L.userData.face&&(L.userData.face.material=new THREE.MeshPhongMaterial({color:'#ffd43b',shininess:90}));boom(L);jump(L,.3);SAY(set.say||ch);if(set.item){const o=make(set.item,1.2);at(o,1.75,0,-2.2);g2.add(o);pop(o);}done(g2,h,set,900);};
+  const finish=()=>{P.kStepDone=true;if(!isPlay(h))A.later(()=>P.kNext&&P.kNext(),1800);L.userData.face&&(L.userData.face.material=new THREE.MeshPhongMaterial({color:'#ffd43b',shininess:90}));boom(L);jump(L,.3);SAY(set.say||ch);if(set.item){const o=make(set.item,1.2);at(o,1.75,0,-2.2);g2.add(o);pop(o);}done(g2,h,set,900);};
   const tapDot=i=>{if(i!==nxt){if(i<nxt)return;wobble(balls[i]);if(isPlay(h)&&i>nxt+1)SAY('Find the glowing dot!');return;}A.pop&&A.pop();const d=dots[i];if(i>0&&!d.start)seg(dots[i-1].p,d.p);balls[i].material=lam(col);jump(balls[i],.15);nxt++;if(nxt>=dots.length)finish();};
   on((dt,t)=>{balls.forEach((b,i)=>{const s=i===nxt?1.25+Math.sin(t*6)*.25:1;b.scale.setScalar(s);});});
   const auto=()=>{if(nxt>=dots.length)return;let k=0;const step=()=>{if(nxt>=dots.length)return;tapDot(nxt);k++;A.later(step,170);};step();};
@@ -65,9 +65,9 @@ C.bubbles=function(g2,st,h,set){const on=tickers(st);mat(g2,4.4,2.3,-2.3,'#e7f5f
     const hl=mk(G('kk_bubh',()=>new THREE.SphereGeometry(.07,10,8)),new THREE.MeshBasicMaterial({color:'#ffffff'}),0);hl.position.set(-.14,.16,.25);g.add(hl);
     const c=make(it,.62);c.position.y=-.2;c.traverse(o=>{if(o.isMesh)o.castShadow=false;});g.add(c);g.userData.pk=c.userData.pk;
     const x=-1.75+((i*1.37)%1)*3.5+(i%2)*.2,z=-2.95+((i*.61)%1)*1.2;g.userData.base=[x,z,.25+(i%3)*.12,i*.37];g.position.set(x,((i*.53)%1)*2,z);g2.add(g);
-    A.drag(g,{tap:()=>{if(g.userData.gone)return;const d=g.userData.pk;if(d.ok||!items.some(x=>String(x)[0]==='*')){g.userData.gone=1;boom(g);A.pop&&A.pop();SAY(d.lab);tween(.2,k=>g.scale.setScalar(Math.max(.01,1+k*.4-k*1.4)));A.later(()=>{g.visible=false;},220);got++;if(got>=need){P.kStepDone=true;done(g2,h,set,400);}if(set.respawn)A.later(()=>{g.userData.gone=0;g.scale.setScalar(1);g.position.y=-.25;g.visible=true;},1300);}
+    A.drag(g,{instant:true,tap:()=>{if(g.userData.gone)return;const d=g.userData.pk;if(d.ok||!items.some(x=>String(x)[0]==='*')){g.userData.gone=1;boom(g);A.pop&&A.pop();SAY(d.lab);tween(.2,k=>g.scale.setScalar(Math.max(.01,1+k*.4-k*1.4)));A.later(()=>{g.visible=false;},220);got++;if(got>=need&&!g2.userData.kDone){g2.userData.kDone=1;P.kStepDone=true;done(g2,h,set,400);if(!isPlay(h))A.later(()=>P.kNext&&P.kNext(),1300);}if(set.respawn)A.later(()=>{g.userData.gone=0;g.scale.setScalar(1);g.position.y=-.25;g.visible=true;},1300);}
       else{wobble(g);SAY(d.lab);if(isPlay(h))h.miss(set.hint);}}});return g;});
-  on((dt,t)=>bs.forEach(g=>{if(g.userData.gone)return;const [x,z,v,ph]=g.userData.base;g.position.y+=dt*v;if(g.position.y>2.1)g.position.y=-.1;g.position.x=x+Math.sin(t*1.2+ph*5)*.12;g.position.z=z;g.rotation.y=Math.sin(t+ph)*.3;}));
+  on((dt,t)=>bs.forEach(g=>{if(g.userData.gone)return;const [x,z,v,ph]=g.userData.base;g.position.y+=dt*v*(set.respawn?.6:1);if(g.position.y>2.1)g.position.y=-.1;g.position.x=x+Math.sin(t*1.2+ph*5)*.12;g.position.z=z;g.rotation.y=Math.sin(t+ph)*.3;}));
   return {tick:TK(st)};};
 C.bubbles.bare=1;
 
@@ -495,6 +495,17 @@ C.nshow=function(g2,st,h,set){mat(g2,4.4,2.3,-2.3,'#fff8e8');const n=set.n||1,co
     R.at(t0+dur+700,()=>{items.forEach((o,k)=>R.at(k*110,()=>{const y=o.position.y;tween(.45,q=>{o.position.y=y+Math.sin(q*Math.PI)*.35;});}));tween(1.2,k=>{N.rotation.y=ease(k)*Math.PI*2;});});};
   run();return {tick:(dt,t)=>{N.rotation.z=Math.sin(t*1.1)*.04;},play:run,controls:()=>st.round?[]:[{t:'Again!',go:true,fn:run}]};};
 C.nshow.bare=1;
+
+/* example show: the things pop in one by one, each exactly when the voice names it */
+C.exshow=function(g2,st,h,set){mat(g2,4.4,2.3,-2.3,'#fff8e8');const its=(set.items||[]).slice(0,4),n=its.length,sp=set.sp||1.45;
+  const objs=its.map((it,k)=>{const o=make(it,set.s||1.05);at(o,(k-(n-1)/2)*sp,0,-2.25);o.visible=false;g2.add(o);o.userData.s0=o.scale.x;A.drag(o,{instant:true,tap:()=>{if(!o.visible)return;const y=o.position.y;tween(.45,q=>{o.position.y=y+Math.sin(q*Math.PI)*.4;});sq(o,.3);}});return o;});
+  const cue=set.cue&&window.KCUE&&window.VOICE&&window.VOICE[fnv(set.cue)]?window.KCUE[fnv(set.cue)]:null;const ts=cue&&cue.ex?cue.ex.map(x=>x*1000):its.map((_,k)=>2600+k*1300);
+  const run=()=>{const R=runner(st);objs.forEach(o=>o.visible=false);
+    if(set.still){objs.forEach(o=>{o.visible=true;o.scale.setScalar(o.userData.s0);});return;}
+    objs.forEach((o,k)=>R.at((ts[k]||0)+60,()=>{o.visible=true;o.scale.setScalar(.001);o.position.y=.9;tween(.6,q=>{o.scale.setScalar(Math.max(.001,o.userData.s0*back(q)));o.position.y=.9*(1-q*q);}).then(()=>sq(o,.3));boom(o);}));
+    R.at((ts[n-1]||0)+1500,()=>objs.forEach((o,k)=>R.at(k*130,()=>{const y=o.position.y;tween(.45,q=>{o.position.y=y+Math.sin(q*Math.PI)*.35;});})));};
+  run();return {tick:(dt,t)=>{objs.forEach((o,k)=>{if(o.visible)o.rotation.y=Math.sin(t*.9+k)*.18;});},play:run,controls:()=>st.round?[]:[{t:'Again!',go:true,fn:run}]};};
+C.exshow.bare=1;
 /* PUTN: put exactly N things on the cake (candles) or in the basket. Every candle works; it is done at N. */
 C.putn=function(g2,st,h,set){mat(g2,4.4,2.3,-2.3,'#fff4e6');const n=set.n||3,extra=set.extra==null?2:set.extra;const cake=set.on==='cake';
   const T=make(cake?'cake':'basket',cake?1.9:1.6);at(T,-1.0,0,-2.6);g2.add(T);let got=0,busy=false;

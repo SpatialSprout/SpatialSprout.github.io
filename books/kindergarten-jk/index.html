@@ -1022,6 +1022,7 @@ function savedAt(){let at=0;try{at=parseInt(localStorage.getItem(SKEY+'at')||'0'
 let playing=false,playTok=0;
 let lineBusy=false,lineCut=false;
 function setPlay(on){playing=on;if(!on){if(lineBusy)lineCut=true;lineBusy=false;}$('#icPlay').innerHTML=on?'<path d="M5 3.5h3.5v13H5zM11.5 3.5H15v13h-3.5z"/>':'<path d="M5 3.5v13l11-6.5z"/>';$('#bPlay').setAttribute('aria-label',on?'Pause':'Play lesson');$('#bPlay').classList.toggle('on',on);if(!on){playTok++;stopSpeak();}}
+PM.kNext=()=>{const sp=SP[cur];if(!sp||sp.kind!=='learn'||busy)return;const s=sp.steps[stepI];if(s&&s.waitDone&&stepI<sp.steps.length-1)setStep(stepI+1);};
 function setStep(i){lineCut=false;const sp=SP[cur];stepI=Math.max(0,Math.min(sp.steps.length-1,i));const s=sp.steps[stepI];
   document.documentElement.style.setProperty('--lesson',sp.color);$('#capNum').textContent=sp.L?String(sp.L.n)+(sp.kind==='play'?'P':''):'';setCaption(s.say);drawDots();spotOff();cueRun=null;setView(s.view==='cover'?s.view:(pagePick||autoView(sp,s)));const dirTok=++camDir;if(!pagePick&&s.story3d&&!wideStage())setTimeout(()=>{if(dirTok===camDir&&!pagePick)setView('stage');},4200);
   readStop();if(s.readTheory&&!pagePick){READ.sp=sp;theoryText(sp);READ.on=true;READ.cur=-1;READ.t=0;READ.voiced=false;drawPage(leftP,sp,'L');}
@@ -1101,6 +1102,7 @@ function doTap(h){if(!h||!h.tap)return;const o=h.o;const s0=o?o.scale.clone():nu
   if(o&&!h.page){if(h.point)ripple(h.point);if(s0&&o.scale.equals(s0)&&!movers.has(o)&&o.parent){const sc=screenOf(o);if(sc&&sc.r<110)bounce(o);}}}
 stage.addEventListener('pointerdown',e=>{if(busy||e.target!==renderer.domElement||(e.button&&e.button>0)||press)return;
   const h=hitTest(e,true);if(!h)return;
+  if(h.drag&&h.drag.instant&&h.drag.tap){e.stopPropagation();doTap({o:h.o,tap:h.drag.tap,point:h.point});return;}
   e.stopPropagation();controls.enabled=false;try{renderer.domElement.setPointerCapture(e.pointerId);}catch(err){}
   press={h,x:e.clientX,y:e.clientY,id:e.pointerId,moved:false,touch:e.pointerType!=='mouse'};},true);
 const dragPt=new THREE.Vector3(),grabOff=new THREE.Vector3();
@@ -1216,7 +1218,7 @@ Promise.all([Promise.race([Promise.all([fl,imgs]),new Promise(r=>setTimeout(r,30
 <script src="math-kit3.js?v=f5333b7a"></script>
 <script src="kfont.js?v=3e6d5d1e"></script>
 <script src="pk-kit.js?v=1db4ac12"></script>
-<script src="kk-kit.js?v=72d12a6e"></script>
+<script src="kk-kit.js?v=423fd3e6"></script>
 <script src="g4.js?v=f49ac7f6"></script>
 <script src="pk.js?v=81048a0e"></script>
 <script src="kk-gen.js?v=bc604c63"></script>
@@ -1225,7 +1227,7 @@ Promise.all([Promise.race([Promise.all([fl,imgs]),new Promise(r=>setTimeout(r,30
 <script src="kj-lux.js?v=d332fd79"></script>
 <script src="lessons-a.js?v=b4b5952a"></script>
 <script src="lessons-b.js?v=3a100a99"></script>
-<script src="lessons-c.js?v=503a0e22"></script>
+<script src="lessons-c.js?v=7297b43e"></script>
 <script src="lessons-d.js?v=a4d8b4bb"></script>
 <script src="vtime.js?v=7e325362"></script>
 <script src="kcue.js?v=c233a982"></script>
