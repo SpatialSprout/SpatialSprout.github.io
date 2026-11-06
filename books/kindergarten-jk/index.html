@@ -153,7 +153,7 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 
 <script src="book.js?v=a8b22dee"></script>
 <script src="brand.js?v=111ada48"></script>
-<script src="voice.js?v=c7927ed8"></script>
+<script src="voice.js?v=6bd27d52"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/SVGLoader.js"></script>
@@ -1030,7 +1030,7 @@ function setStep(i){lineCut=false;const sp=SP[cur];stepI=Math.max(0,Math.min(sp.
   if(s.demo&&s.demo!=='hold'&&curApi.demo){try{curApi.demo(s.demo);}catch(e){console.error(e);}}
   const S=sp.S;let holdMs=s.hold||0;
   if(s.howto&&S&&!S.game.done){S.game.phase='howto';const d=(sp.L.learn.find(x=>x.demo)||{}).demo;if(d&&curApi.demo){try{curApi.demo(d);}catch(e){console.error(e);}}holdMs=7000;refreshDock();}
-  if(s.go&&S&&!S.game.done){A.stopSeq();A.later(()=>startGame(S),250);}
+  if(s.go&&S&&!S.game.done){A.stopSeq();const gw=(BOOK.goFor&&sp.L&&BOOK.goFor[sp.L.id]&&window.VOICE)?(VOICE[vhash(s.speech||s.say||'')]||0)*1000+350:0;A.later(()=>startGame(S),Math.max(250,gw));}
   showStory(s.story&&!BK.readTheory?sp:null);if(s.story){guideMode='hello';guideT=0;if(PLAY)A.later(()=>mascotCheer(false,true),700);}
   const tk=++playTok;PM.kStepDone=false;const adv=()=>{if(tk!==playTok||!playing)return;if(s.waitDone&&!PM.kStepDone){setTimeout(adv,500);return;}if(stepI<sp.steps.length-1)setStep(stepI+1);else if(s.kc){setPlay(false);refreshDock();}else if((sp.kind==='intro'||sp.kind==='learn')&&cur<SP.length-1)goSpread(cur+1,0,true);else setPlay(false);};
   const txt=s.readTheory?theoryText(sp).speech:(s.speech||s.say);const t0=Date.now();lineBusy=true;const spoke=speak(txt,()=>{if(tk===playTok)lineBusy=false;if(tk===playTok&&curApi.stepEnd)try{curApi.stepEnd(s);}catch(e){console.error(e);}setTimeout(adv,Math.max((s.demo&&!s.quietDemo?2400:s.story?1400:(s.cues?1700:1100))*(BK.grade>=6?.6:1),holdMs-(Date.now()-t0)));});if(!spoke)lineBusy=false;
@@ -1230,7 +1230,7 @@ Promise.all([Promise.race([Promise.all([fl,imgs]),new Promise(r=>setTimeout(r,30
 <script src="lessons-c.js?v=e5520655"></script>
 <script src="lessons-d.js?v=a4d8b4bb"></script>
 <script src="vtime.js?v=7e325362"></script>
-<script src="kcue.js?v=fe1601ef"></script>
+<script src="kcue.js?v=91330a97"></script>
 
 </body>
 </html>
