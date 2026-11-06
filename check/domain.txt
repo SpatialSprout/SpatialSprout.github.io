@@ -1,0 +1,39 @@
+== spatialsprout.ca
+185.199.110.153
+185.199.108.153
+185.199.109.153
+185.199.111.153
+subject=CN=*.github.io
+issuer=C=US, O=Let's Encrypt, CN=YR1
+notBefore=Sep 30 23:44:46 2026 GMT
+notAfter=Dec 29 23:44:45 2026 GMT
+X509v3 Subject Alternative Name: 
+    DNS:*.github.com, DNS:*.github.io, DNS:*.githubusercontent.com, DNS:github.com, DNS:github.io, DNS:githubusercontent.com
+== www.spatialsprout.ca
+spatialsprout.github.io.
+185.199.108.153
+185.199.109.153
+185.199.110.153
+185.199.111.153
+spatialsprout.github.io.
+2606:50c0:8000::153
+2606:50c0:8001::153
+2606:50c0:8003::153
+2606:50c0:8002::153
+spatialsprout.github.io.
+subject=CN=*.github.io
+issuer=C=US, O=Let's Encrypt, CN=YR1
+notBefore=Sep 30 23:44:46 2026 GMT
+notAfter=Dec 29 23:44:45 2026 GMT
+X509v3 Subject Alternative Name: 
+    DNS:*.github.com, DNS:*.github.io, DNS:*.githubusercontent.com, DNS:github.com, DNS:github.io, DNS:githubusercontent.com
+HTTP/1.1 200 OK
+Connection: keep-alive
+Content-Length: 7750
+Server: GitHub.com
+Content-Type: text/html; charset=utf-8
+HTTP/2 301 
+server: GitHub.com
+content-type: text/html
+location: http://spatialsprout.ca/
+x-github-request-id: 81DE:12E594:6ABF17:7355B1:6AEDE6DA
