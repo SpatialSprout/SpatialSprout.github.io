@@ -89,6 +89,12 @@ h1, h2, h3 { color: var(--color-ink); }
 .tiles > .tile:nth-child(5) { grid-column: span 4; }
 .tile--shot { grid-column: span 4; padding: 0; overflow: hidden; }
 
+/* the ad */
+.ad { padding-block: var(--section-gap-s) 0; display: grid; gap: var(--space-xl); }
+.ad-frame { margin: 0; border-radius: var(--radius-card); overflow: hidden; background: var(--color-ink); box-shadow: var(--shadow-card); }
+.ad-frame video { display: block; width: 100%; aspect-ratio: 16 / 9; background: var(--color-ink); }
+.ad-frame figcaption { padding: var(--space-sm) var(--space-lg); font-size: var(--text-sm); color: var(--color-ink-paper); }
+
 /* how: a pinned run */
 .how { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--space-2xl); padding-block: var(--section-gap-s); align-items: start; }
 .how-pin { position: sticky; top: calc(var(--bar-h) + var(--space-xl)); }
