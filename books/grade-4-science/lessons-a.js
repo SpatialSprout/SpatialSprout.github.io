@@ -114,9 +114,9 @@ U({id:'s05',title:'Carnivores, herbivores and omnivores',strand:'Habitats and Co
   words:[['carnivore','an animal that eats mainly meat'],['herbivore','an animal that eats only plants']]},
  steps:[
   {say:'Read the story',speech:'The wolf had sharp canines: a carnivore. The moose had flat molars: a herbivore. The bear had both: an omnivore.',set:S.row(['wolf','moose','bear','girl'])},
-  {say:'Three groups',speech:'Wolves hunt meat. Moose munch plants. Bears eat berries and fish. Carnivore, herbivore, omnivore.',set:S.row(['wolf','moose','bear'],{labels:['carnivore','herbivore','omnivore']}),
+  {say:'Three groups',pause:2600,speech:'Wolves hunt meat. Moose munch plants. Bears eat berries and fish. Carnivore, herbivore, omnivore.',set:S.row(['wolf','moose','bear'],{labels:['carnivore','herbivore','omnivore']}),
    cues:[['Wolves','wolf','meat'],['Moose','moose','plants'],['Bears','bear','both']]},
-  {say:'Sort them',speech:'A lynx eats hares, so it is a carnivore. A rabbit eats clover, a herbivore. A raccoon eats almost anything, an omnivore.',set:S.sort(['carnivore','herbivore','omnivore'],[['tiger',0],['rabbit',1],['raccoon',2],['owl',0],['cow',1],['pig',2]]),
+  {say:'Sort them',pause:3200,speech:'A lynx eats hares, so it is a carnivore. A rabbit eats clover, a herbivore. A raccoon eats almost anything, an omnivore.',set:S.sort(['carnivore','herbivore','omnivore'],[['tiger',0],['rabbit',1],['raccoon',2],['owl',0],['cow',1],['pig',2]]),
    cues:[['carnivore','tiger','meat'],['herbivore','rabbit','plants'],['omnivore','raccoon','both']]}],
  more:{title:'Did you know?',text:'Some plants are carnivores! The *pitcher plant*, the provincial flower of Newfoundland and Labrador, traps insects in its slippery leaves and digests them.',pics:['plant','fly']},
  rounds:[R.sort('Sort by diet.',['carnivore','herbivore','omnivore'],[['wolf',0],['moose',1],['bear',2],['owl',0],['rabbit',1],['raccoon',2]]),R.q('A herbivore eats…',['only plants','only meat','both'],'only plants'),
