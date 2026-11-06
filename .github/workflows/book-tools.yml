@@ -1,0 +1,76 @@
+# Jobs that need tools or websites the book workspace cannot reach. Results are saved on the "assets" branch.
+#  - audit: Lighthouse (speed, accessibility, best practices) and pa11y (accessibility) on the live books
+#  - voice: Chatterbox (Resemble AI, MIT) sample lines, to compare with the current narrator
+name: Book tools
+on:
+  workflow_dispatch:
+    inputs:
+      job:
+        description: "audit or voice"
+        required: true
+        default: audit
+      pages:
+        description: "Pages to audit, comma separated"
+        required: false
+        default: "https://spatialsprout.ca/,https://spatialsprout.ca/books/kindergarten-jk/"
+      lines:
+        description: "Voice lines separated by |"
+        required: false
+        default: ""
+permissions:
+  contents: write
+concurrency:
+  group: fetch-assets
+  cancel-in-progress: false
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - name: Check out the assets branch
+        run: |
+          git init -q work && cd work
+          git remote add origin "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git"
+          if git fetch -q --depth 1 origin assets; then git checkout -q -b assets FETCH_HEAD; else git checkout -q --orphan assets; fi
+      - uses: actions/setup-node@v4
+        if: ${{ inputs.job == 'audit' }}
+        with:
+          node-version: 20
+      - name: Lighthouse and pa11y
+        if: ${{ inputs.job == 'audit' }}
+        working-directory: work
+        run: |
+          mkdir -p audit && npm i -g lighthouse@12 pa11y@8 >/dev/null 2>&1
+          IFS=',' read -ra PG <<< "${{ inputs.pages }}"
+          for u in "${PG[@]}"; do n=$(echo "$u" | sed -E 's#^https?://##; s#[^A-Za-z0-9]+#_#g')
+            lighthouse "$u" --quiet --chrome-flags="--headless=new --no-sandbox" --output=json --output-path="audit/lh_$n.json" --only-categories=performance,accessibility,best-practices,seo || echo "WARN lighthouse $u"
+            pa11y "$u" --reporter json --timeout 120000 > "audit/pa11y_$n.json" || true
+          done
+          ls -la audit
+      - uses: actions/setup-python@v5
+        if: ${{ inputs.job == 'voice' }}
+        with:
+          python-version: "3.11"
+      - name: Chatterbox samples
+        if: ${{ inputs.job == 'voice' }}
+        working-directory: work
+        run: |
+          pip install -q chatterbox-tts torchaudio >/dev/null 2>&1 || pip install -q chatterbox-tts
+          mkdir -p voice-samples
+          cat > /tmp/cb.py <<'PY'
+          import sys,torchaudio as ta
+          from chatterbox.tts import ChatterboxTTS
+          m=ChatterboxTTS.from_pretrained(device="cpu")
+          for i,t in enumerate([x for x in sys.argv[1].split('|') if x.strip()]):
+              for ex in (0.5,0.8):
+                  w=m.generate(t,exaggeration=ex,cfg_weight=0.5)
+                  ta.save(f"voice-samples/line{i+1}_expr{int(ex*10)}.wav",w,m.sr)
+                  print("ok",i,ex,flush=True)
+          PY
+          python /tmp/cb.py "${{ inputs.lines }}"
+      - name: Save to the assets branch
+        working-directory: work
+        run: |
+          git config user.name "book-tools"; git config user.email "actions@users.noreply.github.com"
+          git add -A; if git diff --cached --quiet; then echo "Nothing new"; exit 0; fi
+          git commit -q -m "Book tools: ${{ inputs.job }} (run ${{ github.run_id }})"; git push -q origin assets
