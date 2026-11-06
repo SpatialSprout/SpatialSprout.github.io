@@ -99,7 +99,8 @@ h1, h2, h3 { color: var(--color-ink); }
 .how { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--space-2xl); padding-block: var(--section-gap-s); align-items: start; }
 .how-pin { position: sticky; top: calc(var(--bar-h) + var(--space-xl)); }
 .how-shot { margin: 0; border-radius: var(--radius-card); overflow: hidden; box-shadow: var(--shadow-card); background: var(--color-card); }
-.how-shot img, .how-shot video { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; display: block; }
+.how-shot img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; display: block; }
+.how-shot video { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; display: block; background: var(--color-ink); }
 .how-shot figcaption { padding: var(--space-sm) var(--space-lg); font-size: var(--text-sm); color: var(--color-muted); }
 .how h2 { margin-bottom: var(--space-xl); }
 .steps { list-style: none; margin: 0; padding: 0; counter-reset: s; display: grid; }
