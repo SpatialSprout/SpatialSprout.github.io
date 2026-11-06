@@ -29,7 +29,6 @@
     <nav class="nav" id="nav" aria-label="Main">
       <a href="#how">How it works</a>
       <a href="#library">Library</a>
-      <a href="#inside">Inside the books</a>
       <a href="#about">About</a>
       <a class="btn btn--primary btn--sm" href="#library">Open a book</a>
     </nav>
@@ -55,8 +54,8 @@
     <h2 id="bentoHead">Every lesson is a real book spread.</h2>
     <div class="tiles">
       <figure class="tile tile--lead">
-        <img src="assets/img/shot-letter.jpg" alt="An open Junior Kindergarten book with a big 3D letter standing on the right page" width="1600" height="1000" loading="lazy">
-        <figcaption>Junior Kindergarten, meeting a letter in 3D</figcaption>
+        <video class="demo" src="assets/video/letter-a.mp4" poster="assets/img/shot-letter.jpg" width="1280" height="800" muted loop playsinline preload="metadata" aria-label="Demo: in the Junior Kindergarten book, a big 3D letter A pops up with an apple and an ant"></video>
+        <figcaption>Junior Kindergarten: A is for apple, and the ant walks in</figcaption>
       </figure>
       <div class="tile">
         <h3>Opens anywhere</h3>
@@ -74,8 +73,8 @@
         <p>Stars and stamps are saved on your device, so kids pick up where they left off.</p>
       </div>
       <figure class="tile tile--shot">
-        <img src="assets/img/shot-game.jpg" alt="A Practice spread with a 3D game on the right page of the book" width="1600" height="1000" loading="lazy">
-        <figcaption>A Practice game, five rounds</figcaption>
+        <video class="demo" src="assets/video/fishing.mp4" poster="assets/img/shot-game.jpg" width="1280" height="800" muted loop playsinline preload="metadata" aria-label="Demo: a Practice game where kids catch the fish carrying the letter A"></video>
+        <figcaption>Practice: catch the fish with A</figcaption>
       </figure>
     </div>
   </section>
@@ -83,7 +82,8 @@
   <section class="how container" id="how" aria-labelledby="howHead">
     <div class="how-pin">
       <figure class="how-shot">
-        <img src="assets/img/shot-learn.jpg" alt="A Grade 3 Math Learn spread: base ten blocks build 358 on the right page" width="1600" height="1000" loading="lazy">
+        <video class="demo" src="assets/video/base-ten.mp4" poster="assets/img/shot-learn.jpg" width="1280" height="800" muted loop playsinline preload="metadata" aria-label="Demo: a Grade 3 Math lesson where base ten blocks build the number 358"></video>
+        <figcaption>Grade 3 Math: building 358 from hundreds, tens and ones</figcaption>
       </figure>
     </div>
     <div class="how-run">
@@ -112,24 +112,12 @@
   <section class="library" id="library" aria-labelledby="libHead">
     <div class="container">
       <div class="lib-head">
-        <h2 id="libHead">One book at a time, every grade.</h2>
+        <h2 id="libHead">Find your child’s grade.</h2>
         <p class="sub" id="libSub">More grades and subjects are on the way.</p>
       </div>
       <div class="shelf" id="shelf"></div>
       <p class="more" id="more"></p>
     </div>
-  </section>
-
-  <section class="inside container" id="inside" aria-labelledby="insideTitle">
-    <div class="inside-intro">
-      <h2 id="insideTitle">Every expectation, page by page.</h2>
-      <p class="inside-book" id="insideEyebrow">Inside the book</p>
-      <p>Each lesson is tagged with the Ontario curriculum codes it covers, so teachers can match it to their plans and parents can see what the class is working on.</p>
-      <div class="tabs" id="bookTabs" role="tablist" aria-label="Choose a book"></div>
-      <div class="legend" id="legend"></div>
-      <a class="btn" id="insideOpen" href="#library">Open the book</a>
-    </div>
-    <div class="lessons" id="lessons"></div>
   </section>
 
   <section class="who container" aria-label="Families and teachers">
@@ -175,5 +163,6 @@
 <script src="assets/catalog.js"></script>
 <script src="assets/site.js"></script>
 <script src="assets/hero3d.js"></script>
+<script src="assets/demo.js"></script>
 </body>
 </html>

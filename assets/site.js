@@ -18,20 +18,30 @@
   }
 
   function GN(b){return b.name||("Grade "+b.grade+" "+b.subject);}
-  /* library shelf */
+  /* library shelf, one row per grade */
   var shelf = $("shelf");
+  var GL = function (g) { return g === "JK" ? "Junior Kindergarten" : g === "SK" ? "Senior Kindergarten" : "Grade " + g; };
+  var strandsOf = function (b) { return Object.keys(b.strands || C.strands); };
   if (shelf) {
-    shelf.innerHTML = C.books.map(function (b) {
-      if (b.status === "live") {
-        return '<a class="book live" href="books/' + esc(b.slug) + '/index.html">' +
-          '<span class="g">' + esc(b.grade) + '</span>' +
-          '<span class="ttl">' + esc(b.name || b.subject) + '</span>' +
-          '<span class="by">by ' + esc(b.author) + '</span>' +
-          '<span class="open">Open the book</span></a>';
-      }
-      return '<div class="book" aria-label="Grade ' + b.grade + ' ' + esc(b.subject) + ', coming soon"' + (b.colors ? ' style="border-color:' + b.colors[1] + '55"' : '') + '>' +
-        '<span class="g">' + b.grade + '</span><span class="s">Grade ' + b.grade + '<br>' + esc(b.subject) + '</span>' +
-        '<span class="st">Coming soon</span></div>';
+    var grades = [];
+    C.books.forEach(function (b) { if (grades.indexOf(String(b.grade)) < 0) grades.push(String(b.grade)); });
+    shelf.innerHTML = grades.map(function (g) {
+      var books = C.books.filter(function (b) { return String(b.grade) === g; });
+      return '<section class="grade" aria-label="' + esc(GL(g)) + '">' +
+        '<header class="grade-head"><span class="grade-n">' + esc(g) + '</span><h3>' + esc(GL(g)) + '</h3>' +
+        '<p>' + books.length + (books.length > 1 ? ' books' : ' book') + '</p></header>' +
+        '<div class="grade-books">' + books.map(function (b) {
+          var n = b.lessons ? b.lessons.length : 0;
+          var what = strandsOf(b).join(", ");
+          if (b.status === "live") {
+            return '<a class="book live" href="books/' + esc(b.slug) + '/index.html">' +
+              '<span class="ttl">' + esc(b.name ? "The " + g + " book" : b.subject) + '</span>' +
+              (n ? '<span class="n">' + n + ' lessons</span>' : '') +
+              '<span class="what">' + esc(what) + '</span>' +
+              '<span class="open">Open the book</span></a>';
+          }
+          return '<div class="book"><span class="ttl">' + esc(b.subject) + '</span><span class="what">Coming soon</span></div>';
+        }).join("") + '</div></section>';
     }).join("");
   }
   var more = $("more");
