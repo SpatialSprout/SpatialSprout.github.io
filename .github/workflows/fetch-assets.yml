@@ -37,7 +37,7 @@ jobs:
           for p in "${PACKS[@]}"; do
             name="${p%%=*}"; id="${p#*=}"; dest="quaternius/$name"; mkdir -p "$dest"
             echo "::group::$name"
-            gdown --folder "https://drive.google.com/drive/folders/$id" -O "/tmp/q_$name" --remaining-ok --quiet || echo "WARN: $name partly failed"
+            gdown --folder "https://drive.google.com/drive/folders/$id" -O "/tmp/q_$name" --quiet || echo "WARN: $name partly failed"
             # unzip anything zipped, then keep only web-ready formats (glTF / GLB and their textures)
             find "/tmp/q_$name" -iname '*.zip' -exec sh -c 'unzip -qo "$1" -d "${1%.zip}"' _ {} \; || true
             find "/tmp/q_$name" -type f \( -iname '*.glb' -o -iname '*.gltf' -o -iname '*.bin' -o -iname '*.png' -o -iname '*.jpg' -o -iname 'license*' -o -iname '*.txt' \) -size -90M | while read f; do
