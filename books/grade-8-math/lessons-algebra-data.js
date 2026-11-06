@@ -525,37 +525,123 @@ P.lesson({id:'venn8',title:'Venn diagrams and probability',strand:'Data',codes:[
 P.lesson({id:'tree8',title:'Tree diagrams and multiple events',strand:'Data',codes:['D2.1','D2.2'],
  guide:{goal:'Determine and compare the theoretical and experimental probabilities of multiple independent events and of multiple dependent events, using tree diagrams.',words:'tree diagram, independent events, dependent events, theoretical probability, experimental probability, trial, outcome',
   ask:['How many outcomes are there when you flip a coin and spin a 4-colour spinner?','Why do you multiply probabilities along a branch?','Why does drawing without replacement change the second branch?'],home:'Flip a coin and roll a die 36 times. Count how often you get heads and a 6. Compare with 1/12.'},
- learn:[{say:'Branches multiply.',speech:'Marcus flips a coin, then spins a spinner with four equal colours. The tree has two branches, then four on each: eight outcomes. The chance of heads and red is one half times one quarter: one eighth.',view:'model',demo:'ind'},
+ learn:[{say:'Flip, then spin.',speech:'Marcus flips a coin. Heads! Then he spins a spinner with four equal colours. Red! Heads, then red, is one path through the tree.',view:'model',demo:'flip',pause:1200},
+        {say:'Branches multiply.',speech:'Every branch shows a chance. One half for heads, then one quarter for red. Multiply along the path. One half times one quarter is one eighth.',view:'model',demo:'mult',pause:1400},
         {say:'Read about dependent events.',speech:'If the first event changes the second, the events are dependent. Draw two tickets from five without putting the first back: the second branch has only four tickets left. Multiply along the branches using the new chances.',view:'read'},
-        {say:'Watch: run the experiment.',speech:'Now run two hundred trials. The experimental probability of heads and red gets close to the theoretical one eighth, which is zero point one two five.',view:'model',demo:'run'},
+        {say:'Draw without replacement.',speech:'Now Marcus draws two tickets from three red and two blue, and keeps the first one out. After a red, only four tickets are left, and two are red. Red, then red, is three fifths times two quarters. That is three tenths.',view:'model',demo:'dep',pause:1400},
+        {say:'Watch: run the experiment.',speech:'Now run two hundred trials. Every outcome gets its own bar. The bars settle close to the thin dark lines, the theoretical one eighth.',view:'model',demo:'run',pause:1600},
         {say:'Predict, then lift the flap.',speech:'Predict, then lift the flap.',view:'read'},
-        {say:'Your turn: build the tree.',speech:'Your turn. Switch between independent and dependent events, choose a path, and run trials.',view:'model'}],
- fig:'A 3D tree diagram whose branches light up.',rz:.35,
- explore:['Switch *Coin + spinner* or *Two tickets*.','*Tap a leaf* to pick an outcome.','Run *trials* to compare with theory.'],
+        {say:'Your turn: build the tree.',speech:'Your turn. Flip the coin, spin the spinner, tap any leaf, and run trials to test it.',view:'model'}],
+ fig:'A 3D tree diagram that grows from a real coin flip and spinner.',rz:.35,
+ explore:['*Tap the coin* or the *spinner* for one trial.','*Tap a leaf* to pick an outcome.','Switch to *Two tickets* for dependent events.'],
  howTo:'Use the tree to find the probability, then choose the answer.',
- init:k=>({kind:'ind',leaf:0,runs:0,hits:0,ask:null}),
+ init:k=>({kind:'ind',leaf:0,runs:0,hits:0,counts:null,ask:null}),
  left(p,S){const g=p.g;let y=header(p,S);
-  y=para(p,y,'A *tree diagram* shows every outcome of two or more events. *Multiply* along a path to find its probability.')+14;
-  const ox=X0+30,oy=y+120;g.strokeStyle=INK;g.lineWidth=2;[['H',-60],['T',60]].forEach(([t,dy])=>{g.beginPath();g.moveTo(ox,oy);g.lineTo(ox+140,oy+dy);g.stroke();T(g,t+' (1/2)',ox+150,oy+dy+6,FT.smallB,acc());['R','B','G','Y'].forEach((c,j)=>{const yy=oy+dy+(j-1.5)*26;g.beginPath();g.moveTo(ox+230,oy+dy);g.lineTo(ox+360,yy);g.stroke();T(g,t+c+'  1/8',ox+370,yy+6,FT.cap,INK);});});y+=250;
-  rr(g,X0,y,TW,150,16);g.fillStyle=tint(acc(),.1);g.fill();T(g,'Dependent: 3 red and 2 blue tickets, no replacement',X0+20,y+36,FT.bodyB,acc());T(g,'P(red, red) = 3/5 × 2/4 = 6/20 = 3/10',X0+20,y+80,FT.body);T(g,'With replacement: 3/5 × 3/5 = 9/25',X0+20,y+120,FT.body,GREY);y+=170;
-  y=para(p,y,'More trials make the *experimental* probability closer to the *theoretical* one.')+10;
+  y=para(p,y,'A *tree diagram* shows every outcome of two or more events. *Multiply* along a path to find its probability.')+12;
+  /* the tree, drawn with the same colours as the 3D page */
+  const C=[['R','#e4572e'],['B','#2f7de1'],['G','#16a36f'],['Y','#f5b301']];
+  const BH=Math.round(TW*.37),ox=X0+TW*.05,oy=y+BH*.54,fx=X0+TW*.34,lx=X0+TW*.64,DY=BH*.24,SP=BH*.105;
+  rr(g,X0,y,TW,BH,18);g.fillStyle=tint(acc(),.07);g.fill();
+  T(g,'coin',ox-6,y+34,FT.cap,GREY);T(g,'spinner',fx-30,y+34,FT.cap,GREY);T(g,'outcome',lx+22,y+34,FT.cap,GREY);
+  g.beginPath();g.arc(ox,oy,9,0,Math.PI*2);g.fillStyle=INK;g.fill();
+  [['H',-DY],['T',DY]].forEach(([t,dy],i)=>{const hot=i===0;
+    g.strokeStyle=hot?'#f5b301':'#9aa8bc';g.lineWidth=hot?7:4;g.beginPath();g.moveTo(ox,oy);g.bezierCurveTo(ox+(fx-ox)*.5,oy,fx-(fx-ox)*.5,oy+dy,fx,oy+dy);g.stroke();
+    T(g,'1/2',ox+(fx-ox)*.42,oy+dy*.55+(dy<0?-10:30),FT.smallB,hot?'#b07800':GREY);
+    g.beginPath();g.arc(fx,oy+dy,22,0,Math.PI*2);g.fillStyle=hot?'#f5b301':'#e9edf3';g.fill();g.lineWidth=3;g.strokeStyle=INK;g.stroke();T(g,t,fx-9,oy+dy+10,FT.bodyB,INK);
+    C.forEach(([c,col],j)=>{const yy=oy+dy+(j-1.5)*SP,hot2=hot&&j===0;
+      g.strokeStyle=hot2?'#f5b301':'#c3ccd8';g.lineWidth=hot2?7:3.5;g.beginPath();g.moveTo(fx+22,oy+dy);g.bezierCurveTo(fx+(lx-fx)*.5,oy+dy,lx-(lx-fx)*.5,yy,lx,yy);g.stroke();
+      g.beginPath();g.arc(lx,yy,11,0,Math.PI*2);g.fillStyle=col;g.fill();
+      T(g,t+', '+c,lx+24,yy+8,hot2?FT.smallB:FT.small,INK);T(g,'1/8',lx+TW*.2,yy+8,hot2?FT.smallB:FT.small,hot2?'#b07800':GREY);});});
+  T(g,'1/4 each',fx+(lx-fx)*.38,oy-DY-SP*1.5-14,FT.cap,GREY);
+  T(g,'H, R:  1/2 × 1/4 = 1/8',X0+18,y+BH-18,FT.smallB,'#b07800');
+  y+=BH+14;
+  rr(g,X0,y,TW,118,16);g.fillStyle=tint(acc(),.1);g.fill();T(g,'Dependent: 3 red and 2 blue tickets, no replacement',X0+20,y+34,FT.bodyB,acc());T(g,'P(red, red) = 3/5 × 2/4 = 6/20 = 3/10',X0+20,y+70,FT.body);T(g,'With replacement: 3/5 × 3/5 = 9/25',X0+20,y+102,FT.small,GREY);y+=132;
+  y=para(p,y,'More trials make the *experimental* probability closer to the *theoretical* one.')+8;
   y=keyWords(p,y,[['independent events','one does not change the other’s chances'],['dependent events','the first changes the chances of the second']]);
   predict(p,y,S,'p23','Flip a coin and roll a die. What is P(heads and 6)?','*1/12.* 1/2 × 1/6.');},
- readout(p,S,y){const g=p.g,st=S.st,L=leaves(st.kind)[st.leaf];T(g,'P('+L.n+') = '+L.p+' = '+(L.v).toFixed(3),X0,y+46,ZS(40),acc());T(g,st.runs?'Experiment: '+st.hits+'/'+st.runs+' = '+(st.hits/st.runs).toFixed(3):'Run trials to compare.',X0,y+88,FT.bodyB);return y+98;},
+ readout(p,S,y){const g=p.g,st=S.st,L=leaves(st.kind)[st.leaf];const F=st.kind==='ind'?['1/2','1/4']:(st.leaf<2?['3/5',st.leaf===0?'2/4':'2/4']:['2/5',st.leaf===2?'3/4':'1/4']);
+  T(g,'P('+L.n+') = '+F[0]+' × '+F[1]+' = '+L.p,X0,y+40,ZS(36),acc());
+  T(g,st.runs?'Experiment: '+st.hits+'/'+st.runs+' = '+(st.hits/st.runs).toFixed(3)+'   theory: '+L.v.toFixed(3):'Theory: '+L.v.toFixed(3)+'. Run trials to compare.',X0,y+84,FT.bodyB);return y+96;},
  build(S,grp,mode,game){const st=S.st;const g2=new THREE.Group();grp.add(g2);
-  function draw(){clearGroup(g2);const L=leaves(st.kind);const root=V(-2.1,.6,-2.0);const firsts=st.kind==='ind'?[['H','1/2'],['T','1/2']]:[['R','3/5'],['B','2/5']];const per=L.length/2;
-    firsts.forEach(([t,pp],i)=>{const m=V(-.9,.6,-2.0+(i?.75:-.75));const on=Math.floor(st.leaf/per)===i;g2.add(seg(root,m,on?'#f5b301':'#94a3b8',on?.03:.015));const nd=mk(new THREE.SphereGeometry(.12,14,10),lam(on?'#f5b301':'#cbd5e1'),0);nd.position.copy(m);g2.add(nd);const l=label(t+' '+pp,{size:.15,bg:'#ffffff'});l.position.copy(m).add(V(-.35,.25,0));g2.add(l);
-      for(let j=0;j<per;j++){const idx=i*per+j,lf=L[idx];const e=V(.7,.6,m.z+(j-(per-1)/2)*(per>2?.36:.5));const lon=idx===st.leaf;g2.add(seg(m,e,lon?'#f5b301':'#cbd5e1',lon?.03:.012));const s=mk(new THREE.SphereGeometry(.1,14,10),lam(lon?'#f5b301':lf.col),0);s.position.copy(e);g2.add(s);A.drag(s,{tap:()=>{st.leaf=idx;st.runs=0;st.hits=0;A.pop();draw();A.say(lf.n+': '+lf.p);if(mode==='play'&&!st.setup&&st.want!=null&&st.want===idx)game.solved('Yes! P('+lf.n+') = '+lf.p+'.');}});
-        const l2=label(lf.n+'  '+lf.p,{size:.13,color:INK});l2.position.copy(e).add(V(.55,.05,0));g2.add(l2);}});
-    const rl=label(st.kind==='ind'?'coin, then spinner':'2 tickets, no replacement',{size:.17,color:GREY});rl.position.set(-1.5,1.3,-2.6);g2.add(rl);
-    if(st.runs){const th=leaves(st.kind)[st.leaf].v,ex=st.hits/st.runs;[[th,'#2f7de1','theory'],[ex,'#f5b301','experiment']].forEach(([v,c,t],k)=>{const b=mk(new THREE.BoxGeometry(.22,Math.max(.01,v*4),.22),lam(c),0);b.position.set(1.85+k*.3,v*2,-1.0);g2.add(b);});}A.redraw();}
+  const Y=.06,GOLD='#f5b301',IDLE='#b9c4d3';
+  const std=(c,r,m,e)=>{const x=new THREE.MeshStandardMaterial({color:c,roughness:r==null?.42:r,metalness:m||0});if(e){x.emissive=new THREE.Color(e);x.emissiveIntensity=.38;}return x;};
+  let R={};const wait=ms=>new Promise(r=>A.later(r,ms));
+  /* coin faces drawn on canvas */
+  function face(t){const c=document.createElement('canvas');c.width=c.height=256;const g=c.getContext('2d');const gr=g.createRadialGradient(100,90,20,128,128,128);gr.addColorStop(0,'#ffe58a');gr.addColorStop(1,'#d99a00');g.fillStyle=gr;g.beginPath();g.arc(128,128,126,0,Math.PI*2);g.fill();
+    g.lineWidth=10;g.strokeStyle='#b07800';g.beginPath();g.arc(128,128,104,0,Math.PI*2);g.stroke();g.fillStyle='#7a5200';g.font='bold 140px sans-serif';g.textAlign='center';g.textBaseline='middle';g.fillText(t,128,138);const tx=new THREE.CanvasTexture(c);return new THREE.MeshStandardMaterial({map:tx,roughness:.35,metalness:.25});}
+  function curve(a,b){const mx=(a.x+b.x)/2;return new THREE.CubicBezierCurve3(a,V(mx,a.y,a.z),V(mx,b.y,b.z),b);}
+  function branch(a,b,hot){const geo=new THREE.TubeGeometry(curve(a,b),28,hot?.03:.019,8,false);const m=new THREE.Mesh(geo,hot?std(GOLD,.35,0,GOLD):std(IDLE,.5));m.castShadow=true;m.userData.full=geo.index.count;g2.add(m);return m;}
+  function grow(m,k){m.geometry.setDrawRange(0,Math.max(0,Math.floor(m.userData.full*k/6)*6));}
+  function draw(opts){if(!g2.parent)return;opts=opts||{};clearGroup(g2);R={b1:[],b2:[],nodes:[],leafs:[],bars:[],labs2:[],s1:[],lf:[]};
+    const L=leaves(st.kind),per=L.length/2,ind=st.kind==='ind';
+    const zs=L.map((_,i)=>ind?-2.72+i*.315:-2.5+i*.62);
+    const root=V(-1.2,Y+.18,(zs[0]+zs[zs.length-1])/2);
+    const firsts=ind?[['H','1/2','#f5d36b'],['T','1/2','#f5d36b']]:[['R','3/5','#e4572e'],['B','2/5','#2f7de1']];
+    const rn=mk(new THREE.SphereGeometry(.09,20,14),std('#ffffff',.3));rn.position.copy(root);g2.add(rn);
+    const pathA=Math.floor(st.leaf/per);
+    firsts.forEach(([t,pp,col],i)=>{const zz=(zs[i*per]+zs[i*per+per-1])/2;const m=V(-.3,Y+.18,zz);const on=i===pathA;
+      R.b1.push(branch(root,m,on));
+      const nd=mk(new THREE.SphereGeometry(.13,24,16),on?std(GOLD,.3,0,GOLD):std(col,.45),0);nd.position.copy(m);g2.add(nd);R.nodes.push(nd);
+      const nl=label(t,{size:.15,color:INK});nl.position.copy(m).add(V(0,.21,0));g2.add(nl);
+      const pl=label(pp,{size:.13,color:on?'#9a6a00':GREY,bg:on?'#fff4cc':null,border:'#f5b301'});pl.position.copy(root).lerp(m,.5).add(V(0,.16,0));g2.add(pl);R.s1.push(nd,nl,pl);
+      const tp=()=>{st.leaf=i*per;A.pop();draw();A.say(t+' first: '+pp);};A.drag(nd,{tap:tp});
+      for(let j=0;j<per;j++){const idx=i*per+j,lf=L[idx];const e=V(.62,Y+.12,zs[idx]);const lon=idx===st.leaf;
+        const br=branch(m,e,lon);R.b2.push(br);
+        if(lon){const p2=ind?'1/4':(i===0?(j===0?'2/4':'2/4'):(j===0?'3/4':'1/4'));const l2=label(p2,{size:.12,color:'#9a6a00',bg:'#fff4cc',border:'#f5b301'});l2.position.copy(m).lerp(e,.55).add(V(0,.15,0));g2.add(l2);R.labs2.push(l2);(R.lf[idx]=R.lf[idx]||[]).push(l2);}
+        const s=mk(new THREE.SphereGeometry(lon?.11:.085,22,16),std(lf.col,.4,0,lon?lf.col:null),0);s.position.copy(e);g2.add(s);R.leafs.push(s);
+        const hit=new THREE.Mesh(new THREE.BoxGeometry(1.25,.2,ind?.3:.5),new THREE.MeshBasicMaterial({visible:false}));hit.position.set(1.05,Y+.12,zs[idx]);g2.add(hit);
+        const tap=()=>{st.leaf=idx;A.pop();draw();A.say(lf.n+': '+lf.p);if(mode==='play'&&!st.setup&&st.want!=null&&st.want===idx)game.solved('Yes! P('+lf.n+') = '+lf.p+'.');};
+        A.drag(s,{tap});A.drag(hit,{tap});
+        const tl=label(lf.n+'   '+lf.p,{size:lon?.15:.13,color:lon?'#9a6a00':INK});tl.position.set(1.02,Y+.16,zs[idx]);g2.add(tl);(R.lf[idx]=R.lf[idx]||[]).push(s,tl);
+        /* experiment bar and the theory line */
+        const cnt=st.counts?st.counts[idx]:0,v=st.runs?cnt/st.runs:0,sc=2.4;
+        const bar=mk(new THREE.BoxGeometry(1,.06,ind?.16:.3),std(lon?GOLD:lf.col,.5),0);bar.scale.x=Math.max(.001,v*sc);bar.position.set(1.52+v*sc/2,Y+.03,zs[idx]);bar.visible=!!st.runs;g2.add(bar);R.bars.push(bar);
+        const tm=mk(new THREE.BoxGeometry(.018,.14,ind?.24:.4),std('#3b4252',.6),0);tm.position.set(1.52+lf.v*sc,Y+.07,zs[idx]);tm.visible=!!st.runs;g2.add(tm);}});
+    if(st.runs){const hl=label('trials: '+st.runs,{size:.11,color:GREY});hl.position.set(1.85,Y+.14,zs[0]-.27);g2.add(hl);}
+    R.root=root;R.zs=zs;
+    /* the event props */
+    if(ind){const coin=mk(new THREE.CylinderGeometry(.25,.25,.05,48),[std('#d9a400',.35,.3),face('H'),face('T')],0);coin.position.set(-1.95,Y+.03,-2.25);coin.rotation.x=st.coinUp==='T'?Math.PI:0;g2.add(coin);R.coin=coin;A.drag(coin,{tap:()=>oneTrial()});
+      const cl=label('coin',{size:.11,color:GREY});cl.position.set(-1.95,Y+.12,-1.86);g2.add(cl);
+      const sp=new THREE.Group();sp.position.set(-1.95,Y,-.95);g2.add(sp);const COLS=['#e4572e','#2f7de1','#16a36f','#f5b301'];
+      COLS.forEach((c,k)=>{const w=mk(wedgeGeo(.36,.05,k*Math.PI/2,(k+1)*Math.PI/2),lam(c));sp.add(w);});
+      const hub=mk(new THREE.CylinderGeometry(.05,.05,.1,16),std('#ffffff',.3),0);hub.position.y=.08;sp.add(hub);
+      const arm=new THREE.Group();arm.position.y=.1;sp.add(arm);const ar=mk(new THREE.BoxGeometry(.3,.025,.05),std('#2b2f3a',.4),0);ar.position.x=.14;arm.add(ar);const tip=mk(new THREE.ConeGeometry(.05,.1,12),std('#2b2f3a',.4),0);tip.rotation.z=-Math.PI/2;tip.position.x=.31;arm.add(tip);
+      arm.rotation.y=st.armA!=null?st.armA:Math.PI*1.25;R.arm=arm;A.drag(sp.children[0],{tap:()=>oneTrial()});COLS.forEach((_,k)=>A.drag(sp.children[k],{tap:()=>oneTrial()}));
+      const sl=label('spinner',{size:.11,color:GREY});sl.position.set(-1.95,Y+.12,-.47);g2.add(sl);}
+    else{const tray=mk(new THREE.BoxGeometry(.62,.04,1.75),std('#eef1f6',.6),0);tray.position.set(-1.95,Y,-1.6);g2.add(tray);R.tix=[];
+      const order=['#e4572e','#e4572e','#e4572e','#2f7de1','#2f7de1'];order.forEach((c,k)=>{const t=mk(new THREE.BoxGeometry(.44,.035,.22),std(c,.45),0);t.position.set(-1.95,Y+.05,-2.3+k*.33);g2.add(t);R.tix.push(t);A.drag(t,{tap:()=>oneTrial()});});
+      if(st.drawn!=null){const t=R.tix[st.drawn];t.position.set(-1.95,Y+.05,-.42);t.rotation.y=.25;}
+      const tl=label('3 red, 2 blue',{size:.11,color:GREY});tl.position.set(-1.95,Y+.12,-2.62);g2.add(tl);}
+    if(opts.hideTree){R.b1.concat(R.b2).forEach(m=>grow(m,0));R.s1.concat(...R.lf).forEach(o=>{o.userData.s0=o.scale.clone();o.scale.multiplyScalar(.001);});R.hidden=true;}
+    A.redraw();}
+  function pathLeaf(i){return [R.b1[Math.floor(i/(R.leafs.length/2))],R.b2[i]];}
+  async function flipCoin(t){const c=R.coin;if(!c)return;const from=c.rotation.x%(Math.PI*2),to=Math.PI*6+(t==='T'?Math.PI:0);const p0=c.position.clone();
+    await tween(.9,k=>{c.rotation.x=from+(to-from)*k;c.position.y=p0.y+Math.sin(Math.PI*k)*.75;c.position.z=p0.z;},x=>x);c.rotation.x=t==='T'?Math.PI:0;st.coinUp=t;}
+  async function spin(k){const a=R.arm;if(!a)return;const a0=a.rotation.y,tg=k*Math.PI/2+Math.PI/4,to=a0+Math.PI*6+(((tg-a0)%(Math.PI*2))+Math.PI*2)%(Math.PI*2);
+    await tween(1.2,x=>{a.rotation.y=a0+(to-a0)*x;},easeOut);st.armA=tg;}
+  async function light(i){if(!g2.parent||!R.leafs||!R.leafs[i])return;const [b1,b2]=pathLeaf(i);[b1,b2].forEach(b=>{b.material=std(GOLD,.35,0,GOLD);});const s=R.leafs[i];await tween(.35,k=>s.scale.setScalar(1+Math.sin(Math.PI*k)*.6));}
+  async function growTree(){if(!R.b1)return;const all=R.b1.concat(R.b2);all.forEach(m=>grow(m,0));
+    const pop=(arr)=>tween(.25,k=>arr.forEach(o=>{if(o.userData.s0)o.scale.copy(o.userData.s0).multiplyScalar(Math.max(.001,easeOut(k)*(1+.3*Math.sin(Math.PI*k))));}));
+    await tween(.6,k=>R.b1.forEach(m=>grow(m,k)));await pop(R.s1);let n=0;for(const m of R.b2){const i=n;P.kNote&&P.kNote(n++);await tween(.16,k=>grow(m,k));pop(R.lf[i]||[]);}await wait(260);}
+  async function oneTrial(){if(!g2.parent)return;const L=leaves(st.kind);const idx=trial();if(st.kind==='ind'){const per=L.length/2;const t=idx<per?'H':'T';await Promise.all([flipCoin(t),spin(idx%per)]);}
+    else{await drawTicket(idx<2?0:3);}
+    if(!g2.parent)return;st.leaf=idx;draw();await light(idx);A.say(L[idx].n+'!  '+L[idx].p);}
+  async function drawTicket(k){if(!g2.parent)return;st.drawn=null;draw();const t=R.tix&&R.tix[k];if(!t)return;const p0=t.position.clone();await tween(.7,x=>{t.position.lerpVectors(p0,V(-1.95,Y+.05,-.42),x);t.position.y=p0.y+Math.sin(Math.PI*x)*.55;t.rotation.y=.25*x;});st.drawn=k;}
   function trial(){const L=leaves(st.kind);let r=Math.random(),acc2=0,k=0;for(;k<L.length;k++){acc2+=L[k].v;if(r<acc2)break;}return Math.min(k,L.length-1);}
-  function run(n){const s=[];for(let b=0;b<10;b++)s.push([120,()=>{for(let i=0;i<n/10;i++){st.runs++;if(trial()===st.leaf)st.hits++;}draw();}]);s.push([200,()=>{A.pop();A.say(st.hits+'/'+st.runs+' ≈ '+(st.hits/st.runs).toFixed(3));}]);A.seq(s);}
+  function run(n){const L=leaves(st.kind);if(!st.counts||st.counts.length!==L.length)st.counts=L.map(()=>0);const s=[];const per=20;
+    for(let b=0;b<n/per;b++)s.push([110,()=>{for(let i=0;i<per;i++){const k=trial();st.counts[k]++;st.runs++;if(k===st.leaf)st.hits++;}draw();}]);
+    s.push([200,()=>{A.pop();P.kFx&&P.kFx(false);A.say(st.hits+'/'+st.runs+' ≈ '+(st.hits/st.runs).toFixed(3));}]);A.seq(s);}
   draw();
   return {info:()=>st.kind+' '+st.leaf,
-    controls:()=>{const c=[{t:st.kind==='ind'?'Coin + spinner':'Two tickets',fn:()=>{st.kind=st.kind==='ind'?'dep':'ind';st.leaf=0;st.runs=0;st.hits=0;draw();}},{t:'Run 200 trials',go:true,fn:()=>run(200)},{t:'Clear',fn:()=>{st.runs=0;st.hits=0;draw();}}];if(mode==='play'&&st.ask)return choices(st.setup?null:game,st.ask.o,st.ask.ans,st.ask.ok).concat(c);return c;},
-    demo(n){st.ask=null;st.want=null;st.runs=0;st.hits=0;if(n==='ind'){st.kind='ind';st.leaf=0;draw();}if(n==='run'){st.kind='ind';st.leaf=0;draw();A.seq([[500,()=>run(200)]]);}},
-    task(r){st.setup=true;st.ask=null;st.want=null;st.runs=0;st.hits=0;st.leaf=0;let txt;
+    controls:()=>{const c=[{t:st.kind==='ind'?'Coin + spinner':'Two tickets',fn:()=>{st.kind=st.kind==='ind'?'dep':'ind';st.leaf=0;st.runs=0;st.hits=0;st.counts=null;st.drawn=null;draw();}},{t:'One trial',fn:()=>oneTrial()},{t:'Run 200 trials',go:true,fn:()=>run(200)},{t:'Clear',fn:()=>{st.runs=0;st.hits=0;st.counts=null;draw();}}];if(mode==='play'&&st.ask)return choices(st.setup?null:game,st.ask.o,st.ask.ans,st.ask.ok).concat(c);return c;},
+    demo(n){st.ask=null;st.want=null;st.runs=0;st.hits=0;st.counts=null;
+      if(n==='ind'||n==='grow'){st.kind='ind';st.leaf=0;draw({hideTree:true});growTree();}
+      if(n==='flip'){st.kind='ind';st.leaf=0;st.coinUp='T';st.armA=Math.PI*1.25;draw({hideTree:true});(async()=>{await wait(600);await flipCoin('H');P.kNote&&P.kNote(2);await wait(2300);await spin(0);P.kNote&&P.kNote(4);await wait(500);await growTree();draw();await light(0);P.kNote&&P.kNote(7);})();}
+      if(n==='mult'){st.kind='ind';st.leaf=0;draw();if(!R.b1)return;const [b1,b2]=pathLeaf(0);[b1,b2].forEach(b=>{b.material=std(IDLE,.5);});
+        A.seq([[2000,()=>{b1.material=std(GOLD,.35,0,GOLD);P.kNote&&P.kNote(2);}],[1700,()=>{b2.material=std(GOLD,.35,0,GOLD);P.kNote&&P.kNote(4);}],[3400,()=>{light(0);P.kNote&&P.kNote(7);A.say('1/2 × 1/4 = 1/8');}]]);}
+      if(n==='dep'){st.kind='dep';st.leaf=0;st.drawn=null;draw({hideTree:true});(async()=>{await growTree();await wait(2500);await drawTicket(0);draw();await light(0);P.kNote&&P.kNote(5);})();}
+      if(n==='run'){st.kind='ind';st.leaf=0;draw();A.seq([[600,()=>run(200)]]);}},
+    task(r){st.setup=true;st.ask=null;st.want=null;st.runs=0;st.hits=0;st.counts=null;st.leaf=0;st.drawn=null;let txt;
       if(r===0){st.kind='ind';st.ask={ans:'8',o:shuffle(['8','6','4']),ok:'Yes! 2 × 4 = 8 outcomes.'};txt='How many outcomes does a *coin + 4-colour spinner* have?';}
       else if(r===1){st.kind='ind';st.want=6;txt='Tap the leaf for *tails and green*. What is its probability?';}
       else if(r===2){st.kind='dep';st.ask={ans:'3/10',o:shuffle(['3/10','9/25','6/25']),ok:'Yes! 3/5 × 2/4 = 6/20 = 3/10.'};txt='3 red and 2 blue tickets, *no replacement*. Find *P(red, red)*.';}
