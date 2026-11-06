@@ -3,6 +3,7 @@
 "use strict";
 const P=window.PM;if(!P||!P.unit||!P.PK)return;const U=P.unit,R=P.R,S=P.S;const {shuffle}=P.PK;
 const C={red:'#ff6b6b',blue:'#4fb3ff',green:'#5cc46a',yellow:'#ffd43b',orange:'#ffa94d',purple:'#b07cff',pink:'#ff8fc7'};
+const nb=r=>Object.assign(r,{q:String(r.q).replace(/^Bowling! /,'')});
 const sh=(k,c,ok)=>(ok?'*':'')+'shape:'+k+':'+(C[c]||c)+':'+k;
 const SH=[{k:'circle',c:'red',pic:'circle',things:['ball','clock','donut'],not:['book','gift','pizza'],line:'A *circle* is round. No corners!',say:'round and round, a circle has no corners'},
  {k:'square',c:'blue',pic:'square',things:['gift','block','box'],not:['ball','pizza','donut'],line:'A *square* has *4* sides, all the same.',say:'a square has four sides, all the same'},
@@ -16,10 +17,10 @@ SH.forEach((s,i)=>{const others=['circle','square','triangle','rectangle','star'
     steps:[{say:'Meet the '+s.k,speech:'This is a '+s.k+'. '+s.say[0].toUpperCase()+s.say.slice(1)+'.',set:S.tap([sh(s.k,s.c)+'@2'],{layout:'row',free:true})},
       {say:'Find '+s.k+'s',speech:'What else is shaped like a '+s.k+'? '+s.things.join(', ').replace(/^./,c=>c.toUpperCase())+'!',hold:2500,set:{custom:'exshow',items:s.things,cue:'What else is shaped like a '+s.k+'? '+s.things.join(', ').replace(/^./,c=>c.toUpperCase())+'!'}},
       {say:'Pop the '+s.k+'s',speech:'Pop two bubbles with a '+s.k+' inside!',waitDone:true,set:{custom:'bubbles',need:2,respawn:true,items:[sh(s.k,s.c,1),sh(s.k,'purple',1),sh(others[0],oc[0]),sh(s.k,'pink',1),sh(others[1],oc[1]),sh(s.k,'yellow',1),sh(others[2],oc[2])]}}],
-    rounds:[R.bub('Pop the bubbles with a *'+s.k+'*!',[sh(s.k,s.c,1),sh(s.k,'yellow',1),sh(s.k,'pink',1),sh(others[0],oc[0]),sh(others[1],oc[1]),sh(others[2],oc[2])]),
+    rounds:[nb(R.bub('Pop the bubbles with a *'+s.k+'*!',[sh(s.k,s.c,1),sh(s.k,'yellow',1),sh(s.k,'pink',1),sh(others[0],oc[0]),sh(others[1],oc[1]),sh(others[2],oc[2])])),
       R.tap('Tap every *'+s.k+'*.',[sh(s.k,s.c,1),sh(s.k,'purple',1),sh(others[0],oc[0]),sh(others[1],oc[1])]),
       R.feed('Put the things shaped like a *'+s.k+'* in the basket.','basket',s.things.map(t=>'*'+t).concat(s.not)),
-      R.web('Help the spider catch the *'+s.k+'s*!',[sh(s.k,s.c,1),sh(s.k,'yellow',1),sh(s.k,'green',1),sh(others[0],oc[0]),sh(others[1],oc[1]),sh(others[3],oc[3])]),
+      R.web('Help the spider catch the *'+s.k+'s*!',[sh(s.k,s.c,1),sh(s.k,'yellow',1),sh(s.k,'green',1),sh(others[0],oc[0]),sh(others[1],oc[1]),sh(others[3],oc[3])],{corner:true,hint:'That is not a '+s.k+'. Try another one!'}),
       R.join('Join the pairs! Tap a shape, then the thing shaped like it.',[[sh('circle','red'),'ball'],[sh('triangle','green'),'pizza'],[sh('square','blue'),'gift']]),
       R.dig('Dig in the sand! Find the *'+s.k+'s*.',[sh(s.k,s.c,1),sh(s.k,'pink',1),sh(others[0],oc[0]),sh(others[1],oc[1]),sh(others[2],oc[2]),sh(others[3],oc[3])]),
       R.gap('What comes next?',[sh(s.k,s.c),sh(others[0],oc[0]),sh(s.k,s.c),sh(others[0],oc[0]),'?'],[sh(s.k,s.c,1),sh(others[1],oc[1]),sh(others[2],oc[2])],{s:.8}),
@@ -36,14 +37,14 @@ U({id:'scolours',title:'Colours',strand:'Shapes and Colours',codes:['Problem Sol
   steps:[{say:'Colour friends',speech:'Red, like an apple. Yellow, like the sun. Green, like a leaf. Blue, like the sea.',set:S.tap(['apple','sun','leaf','whale'],{layout:'row',free:true})},
     {say:'Yellow and blue',speech:'Pour yellow and blue together and stir. Swish, swish… green!',set:S.mix('#ffd43b','yellow','#4dabf7','blue','#40c057','green','Yellow and blue make green!')},
     {say:'Red and yellow',speech:'Now red and yellow. Swish, swish… orange!',set:S.mix('#ff6b6b','red','#ffd43b','yellow','#ff922b','orange','Red and yellow make orange!')}],
-  rounds:[R.bub('Pop the *red* bubbles!',['*balloon::#ff6b6b:red','*balloon::#ff6b6b:red','*apple','balloon::#4fb3ff:blue','balloon::#ffd43b:yellow','leaf']),
+  rounds:[nb(R.bub('Pop the *red* bubbles!',['*balloon::#ff6b6b:red','*balloon::#ff6b6b:red','*apple','balloon::#4fb3ff:blue','balloon::#ffd43b:yellow','leaf'])),
     (R.rocket?R.rocket('Which rocket carries the *blue* paint? Tap it for blast off!',['*paint:#4fb3ff:blue','paint:#ff6b6b:red','paint:#ffd43b:yellow']):R.pop('Pop the *blue* balloons!',['*balloon::#4fb3ff:blue','*balloon::#4fb3ff:blue','balloon::#ff6b6b:red','balloon::#5cc46a:green','balloon::#ffd43b:yellow'])),
     R.feed('Put the *yellow* things in the basket.','basket',['*banana','*sun','*star','apple','leaf','whale']),
     R.one('What colour is a *leaf*? Tap the green paint.','paint:#40c057:green',['paint:#ff6b6b:red','paint:#4dabf7:blue']),
     R.tap('Red and yellow make… tap the paint!',['*paint:#ff922b:orange','paint:#40c057:green','paint:#845ef7:purple']),
     R.tap('Yellow and blue make… tap the paint!',['*paint:#40c057:green','paint:#ff922b:orange','paint:#ff6b6b:red']),
     R.join('Join the pairs! Tap a colour, then the thing that is that colour.',[['paint:#ff6b6b:red','apple'],['paint:#ffd43b:yellow','banana'],['paint:#40c057:green','leaf']]),
-    R.web('Help the spider catch the *red* things!',['*apple','*strawberry','*cherries','banana','leaf','whale']),
+    R.web('Help the spider catch the *red* things!',['*apple','*strawberry','*cherries','banana','leaf','whale'],{corner:true,hint:'That is not red. Try another one!'}),
     R.cups('Watch the cups! Where is the *purple* paint?','paint:#845ef7:purple',['paint:#ff6b6b:red','paint:#4fb3ff:blue']),
     R.peek('Hide and seek! Find all the *green* animals.',['*frog','*turtle','*snake','pig','penguin','flamingo'])],
   tries:[['Find something red, yellow and blue.','look around!'],['Mix two crayons on paper.','what new colour?']]});

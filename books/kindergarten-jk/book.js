@@ -2,6 +2,7 @@ window.BOOK={kSpread:true,noDeviceVoice:true,readTheory:true,stillCam:true,token
   grade:0,gradeName:'JK',badge:'JUNIOR',subject:'Kindergarten',subTitle:'Junior Kindergarten',codePrefix:'K ',tiles:['J','K'],key:'kj',strands:'numbers, shapes and patterns, letters and sounds, stories, my world, me and my community, and art and music',world:'meadow',rounds:10,
   strandColors:{'Letters':'#ff6b6b','Numbers':'#4fb3ff','Shapes and Colours':'#ffb347','Words':'#5cc46a','Shapes and More':'#ffb347','Story Time':'#b07cff'},
   theme:{c:['#ffd166','#ff8fab','#7fd8f0'],mat:'#ffe6f0',bg:'#fff4e6',paper:'#fffaf2'},glyphs:'☀✿♥★☁♪',
+  goFor:{scircle:"Let's practice!",ssquare:"Let's practice!",striangle:"Let's practice!",srectangle:"Let's practice!",scolours:"Let's practice!"},
   goLines:["Let's play!","Your turn to play!","Ready? Let's play!","Time to play, superstar!","Tap, tap, tap! Let's play!","Let's go, little explorer!","Play time!","Let's have some fun!"],
   winLine:'Hooray! You did it, superstar!',
   introLine:'A first book that comes alive! Every letter pops up in 3D with its friend: A for apple, B for ball. Tap it, trace it, pop bubbles, feed hungry animals, catch fish and dig for treasure. Then meet the numbers 1 to 10, the shapes, and story time at the end.',

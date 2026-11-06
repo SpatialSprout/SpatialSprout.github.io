@@ -88,14 +88,15 @@ C.path.bare=1;
 function spider(){const g=new THREE.Group();const b=mk(G('kk_spb',()=>new THREE.SphereGeometry(.28,20,16)),lam('#495057'),20);b.position.y=.42;g.add(b);const hd=mk(G('kk_sph',()=>new THREE.SphereGeometry(.18,18,14)),lam('#343a40'),20);hd.position.set(0,.4,.3);g.add(hd);
   [-1,1].forEach(s=>{const e=mk(G('kk_spe',()=>new THREE.SphereGeometry(.06,12,10)),lam('#ffffff'),0);e.position.set(s*.07,.47,.45);g.add(e);const p2=mk(G('kk_spp',()=>new THREE.SphereGeometry(.03,8,6)),lam('#1b2236'),0);p2.position.set(s*.07,.47,.5);g.add(p2);
     for(let i=0;i<4;i++){const l=mk(G('kk_spl',()=>new THREE.CylinderGeometry(.02,.02,.5,6)),lam('#343a40'),0);l.position.set(s*.28,.25,-.15+i*.12);l.rotation.z=s*1.0;l.rotation.x=(i-1.5)*.25;g.add(l);}});return g;}
-C.web=function(g2,st,h,set){const on=tickers(st);mat(g2,4.4,2.3,-2.3,'#f8f0fc');const sp=(P.kLuxNow&&P.LUXM&&P.LUXM.spider)?P.LUXM.spider():spider();at(sp,0,0,-2.3);g2.add(sp);
-  const ring=mk(G('kk_web',()=>new THREE.TorusGeometry(.6,.008,4,40)),lam('#dee2e6'),0);ring.rotation.x=Math.PI/2;at(ring,0,.02,-2.3);g2.add(ring);
+C.web=function(g2,st,h,set){const on=tickers(st);mat(g2,4.4,2.3,-2.3,'#f8f0fc');const CO=!!set.corner,SX=CO?-1.85:0,SZ=CO?-3.15:-2.3;const sp=(P.kLuxNow&&P.LUXM&&P.LUXM.spider)?P.LUXM.spider():spider();at(sp,SX,0,SZ);if(CO)sp.scale.multiplyScalar(.6);g2.add(sp);
+  const ring=mk(G('kk_web',()=>new THREE.TorusGeometry(.6,.008,4,40)),lam('#dee2e6'),0);ring.rotation.x=Math.PI/2;at(ring,SX,.02,SZ);if(CO)ring.scale.setScalar(.6);g2.add(ring);
+  const SCAT=[[-.35,-3.1],[.95,-3.2],[2.0,-2.85],[-1.15,-1.7],[.35,-2.0],[1.6,-1.55],[-1.95,-2.2]];
   const items=set.items||[];const n=items.length;const need=items.filter(x=>String(x)[0]==='*').length;let got=0;
-  items.forEach((it,i)=>{const a=Math.PI*(0.15+0.7*i/Math.max(1,n-1));const o=make(it,1.0);at(o,-Math.cos(a)*1.75,0,-2.3-Math.sin(a)*.85+.55);g2.add(o);
-    A.drag(o,{tap:()=>{if(o.userData.got)return;const d=o.userData.pk;SAY(d.lab);if(d.ok){o.userData.got=1;got++;const a0=V(0,.45,-2.3),b0=o.position.clone().add(V(0,.3,0));const m=mk(G('kk_silk',()=>new THREE.CylinderGeometry(.015,.015,1,6)),lam('#ffffff'),0);g2.add(m);
+  items.forEach((it,i)=>{const a=Math.PI*(0.15+0.7*i/Math.max(1,n-1));const o=make(it,CO?.85:1.0);if(CO)at(o,SCAT[i%7][0],0,SCAT[i%7][1]);else at(o,-Math.cos(a)*1.75,0,-2.3-Math.sin(a)*.85+.55);g2.add(o);
+    A.drag(o,{tap:()=>{if(o.userData.got)return;const d=o.userData.pk;SAY(d.lab);if(d.ok){o.userData.got=1;got++;const a0=V(SX,CO?.3:.45,SZ),b0=o.position.clone().add(V(0,.3,0));const m=mk(G('kk_silk',()=>new THREE.CylinderGeometry(.015,.015,1,6)),lam('#ffffff'),0);g2.add(m);
         tween(.45,k=>{const b=a0.clone().lerp(b0,k);const dd=b.clone().sub(a0);m.scale.y=Math.max(.01,dd.length());m.position.copy(a0).add(b).multiplyScalar(.5);m.quaternion.setFromUnitVectors(V(0,1,0),dd.normalize());}).then(()=>{jump(o,.35);boom(o);if(got>=need){jump(sp,.4);done(g2,h,set,500);}});}
       else{wobble(o);if(isPlay(h))h.miss(set.hint);}}});});
-  on((dt,t)=>{sp.rotation.y=Math.sin(t*1.3)*.25;});A.drag(sp,{tap:()=>{jump(sp,.3);SAY(set.spiderSay||'Hello!');}});
+  on((dt,t)=>{sp.rotation.y=(CO?.6:0)+Math.sin(t*1.3)*.25;});A.drag(sp,{tap:()=>{jump(sp,.3);SAY(set.spiderSay||'Hello!');}});
   return {tick:TK(st)};};
 C.web.bare=1;
 

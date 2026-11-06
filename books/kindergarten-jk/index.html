@@ -151,9 +151,9 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 
 <div class="sheetwrap" id="sheet" hidden><div class="sheet" role="dialog" aria-modal="true" id="sheetBody"></div></div>
 
-<script src="book.js?v=9df50954"></script>
+<script src="book.js?v=a8b22dee"></script>
 <script src="brand.js?v=111ada48"></script>
-<script src="voice.js?v=fd10e625"></script>
+<script src="voice.js?v=c7927ed8"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/SVGLoader.js"></script>
@@ -651,7 +651,7 @@ function finishPage(p,side,sp){const g=p.g,L=side==='L';
   else{g.textAlign='left';if(sp.codes&&sp.codes.length)g.fillText('Ontario '+sp.codes.map(c=>CPX+c).join(' · '),X0,1358);g.textAlign='right';g.fillText(String(num),X0+TW,1358);g.fillStyle=TEAL;g.fillText(BRANDNAME,X0+TW-60,1358);}g.textAlign='left';}
 const cxOf=x=>(x+W/2)*PX,cyOf=z=>(z+D/2)*PX;
 const NR=()=>(window.BOOK&&BOOK.rounds)||5;const NRW=()=>['zero','one','two','three','four','five','six','seven','eight','nine','ten'][NR()]||String(NR());
-function goLine(L){const gl=(BOOK.goLines&&BOOK.goLines.length)?BOOK.goLines:null;if(!gl)return {say:"It's your turn! Let's play!",speech:LINES.go};const k=((L.n||1)*7+3)%gl.length;const x=gl[k];return typeof x==='string'?{say:x,speech:x}:x;}
+function goLine(L){const gf=BOOK.goFor&&L&&BOOK.goFor[L.id];if(gf)return {say:gf,speech:gf};const gl=(BOOK.goLines&&BOOK.goLines.length)?BOOK.goLines:null;if(!gl)return {say:"It's your turn! Let's play!",speech:LINES.go};const k=((L.n||1)*7+3)%gl.length;const x=gl[k];return typeof x==='string'?{say:x,speech:x}:x;}
 function starsRow(g,x,y,n,of,size){for(let i=0;i<of;i++)T(g,'★',x+i*size*1.1,y,ZS(size),i<n?'#f2a400':'#d7dbe3');}
 
 /* ================= sounds ================= */
@@ -1218,7 +1218,7 @@ Promise.all([Promise.race([Promise.all([fl,imgs]),new Promise(r=>setTimeout(r,30
 <script src="math-kit3.js?v=f5333b7a"></script>
 <script src="kfont.js?v=3e6d5d1e"></script>
 <script src="pk-kit.js?v=1db4ac12"></script>
-<script src="kk-kit.js?v=423fd3e6"></script>
+<script src="kk-kit.js?v=a1927472"></script>
 <script src="g4.js?v=f49ac7f6"></script>
 <script src="pk.js?v=81048a0e"></script>
 <script src="kk-gen.js?v=bc604c63"></script>
@@ -1227,10 +1227,10 @@ Promise.all([Promise.race([Promise.all([fl,imgs]),new Promise(r=>setTimeout(r,30
 <script src="kj-lux.js?v=d332fd79"></script>
 <script src="lessons-a.js?v=b4b5952a"></script>
 <script src="lessons-b.js?v=3a100a99"></script>
-<script src="lessons-c.js?v=7297b43e"></script>
+<script src="lessons-c.js?v=e5520655"></script>
 <script src="lessons-d.js?v=a4d8b4bb"></script>
 <script src="vtime.js?v=7e325362"></script>
-<script src="kcue.js?v=c233a982"></script>
+<script src="kcue.js?v=fe1601ef"></script>
 
 </body>
 </html>

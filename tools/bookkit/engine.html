@@ -643,7 +643,7 @@ function finishPage(p,side,sp){const g=p.g,L=side==='L';
   else{g.textAlign='left';if(sp.codes&&sp.codes.length)g.fillText('Ontario '+sp.codes.map(c=>CPX+c).join(' · '),X0,1358);g.textAlign='right';g.fillText(String(num),X0+TW,1358);g.fillStyle=TEAL;g.fillText(BRANDNAME,X0+TW-60,1358);}g.textAlign='left';}
 const cxOf=x=>(x+W/2)*PX,cyOf=z=>(z+D/2)*PX;
 const NR=()=>(window.BOOK&&BOOK.rounds)||5;const NRW=()=>['zero','one','two','three','four','five','six','seven','eight','nine','ten'][NR()]||String(NR());
-function goLine(L){const gl=(BOOK.goLines&&BOOK.goLines.length)?BOOK.goLines:null;if(!gl)return {say:"It's your turn! Let's play!",speech:LINES.go};const k=((L.n||1)*7+3)%gl.length;const x=gl[k];return typeof x==='string'?{say:x,speech:x}:x;}
+function goLine(L){const gf=BOOK.goFor&&L&&BOOK.goFor[L.id];if(gf)return {say:gf,speech:gf};const gl=(BOOK.goLines&&BOOK.goLines.length)?BOOK.goLines:null;if(!gl)return {say:"It's your turn! Let's play!",speech:LINES.go};const k=((L.n||1)*7+3)%gl.length;const x=gl[k];return typeof x==='string'?{say:x,speech:x}:x;}
 function starsRow(g,x,y,n,of,size){for(let i=0;i<of;i++)T(g,'★',x+i*size*1.1,y,ZS(size),i<n?'#f2a400':'#d7dbe3');}
 
 /* ================= sounds ================= */
