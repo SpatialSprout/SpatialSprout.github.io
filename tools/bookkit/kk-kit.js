@@ -56,7 +56,7 @@ C.trace=function(g2,st,h,set){const on=tickers(st);mat(g2,4.4,2.3,-2.3,'#fff8e8'
   const tapDot=i=>{if(i!==nxt){if(i<nxt)return;wobble(balls[i]);if(isPlay(h)&&i>nxt+1)SAY('Find the glowing dot!');return;}A.pop&&A.pop();const d=dots[i];if(i>0&&!d.start)seg(dots[i-1].p,d.p);balls[i].material=lam(col);jump(balls[i],.15);nxt++;if(nxt>=dots.length)finish();};
   on((dt,t)=>{balls.forEach((b,i)=>{const s=i===nxt?1.25+Math.sin(t*6)*.25:1;b.scale.setScalar(s);});});
   const auto=()=>{if(nxt>=dots.length)return;let k=0;const step=()=>{if(nxt>=dots.length)return;tapDot(nxt);k++;A.later(step,170);};step();};
-  return {tick:TK(st),play:auto,controls:()=>st.round?[]:[{t:'Show me how',go:true,fn:auto}]};};
+  return {tick:TK(st),play:auto,controls:()=>(st.round||(window.BOOK||{}).kSpread)?[]:[{t:'Show me how',go:true,fn:auto}]};};
 C.trace.bare=1;
 
 /* ---------- BUBBLES: bubbles float up with letters, numbers or pictures inside; pop the right ones ---------- */
