@@ -41,7 +41,45 @@ const STROKES={A:[[[0,0],[.5,1],[1,0]],[[.22,.38],[.78,.38]]],B:[[[.1,0],[.1,1]]
  '0':[arc(.5,.5,.45,.5,90,450,12)],'1':[[[.25,.75],[.55,1],[.55,0]]],'2':[arc(.5,.7,.38,.3,160,-20,5).concat([[.1,0],[.9,0]])],'3':[arc(.48,.75,.35,.25,150,-90,5).concat(arc(.48,.26,.4,.26,90,-150,5))],
  '4':[[[.7,0],[.7,1],[.05,.3],[.95,.3]]],'5':[[[.85,1],[.2,1],[.15,.58]].concat(arc(.48,.32,.4,.32,120,-150,6))],'6':[arc(.55,.6,.42,.42,80,190,4).concat(arc(.5,.3,.38,.3,180,540,9))],
  '7':[[[.08,1],[.92,1],[.35,0]]],'8':[arc(.5,.75,.32,.25,270,-90,8).concat(arc(.5,.27,.4,.27,90,450,9))],'9':[arc(.5,.72,.38,.28,0,360,8).concat([[.88,.72],[.8,0]])]};
-C.trace=function(g2,st,h,set){const on=tickers(st);mat(g2,4.4,2.3,-2.3,'#fff8e8');const ch=String(set.ch).toUpperCase();const col=set.col||'#ff6b6b';
+/* finger tracing (JK): the numeral lies flat like a worksheet; the child draws over it with a finger; strokes are drawn with perfect-freehand; guide dots light up in order */
+/* a flat ribbon along a 2D path (x,z) with round caps; w(t) gives the half-width along the path (t 0..1) */
+function ribbonMesh(pts,w,m){const n=pts.length;const pos=[],idx=[];let tot=0;const acc=[0];for(let i=1;i<n;i++){tot+=Math.hypot(pts[i][0]-pts[i-1][0],pts[i][1]-pts[i-1][1]);acc.push(tot);}
+  for(let i=0;i<n;i++){const a=pts[Math.max(0,i-1)],b=pts[Math.min(n-1,i+1)];let dx=b[0]-a[0],dz=b[1]-a[1];const l=Math.hypot(dx,dz)||1;dx/=l;dz/=l;const r=w(tot?acc[i]/tot:0);pos.push(pts[i][0]-dz*r,0,pts[i][1]+dx*r,pts[i][0]+dz*r,0,pts[i][1]-dx*r);
+    if(i<n-1){const k=i*2;idx.push(k,k+1,k+2,k+1,k+3,k+2);}}
+  const caps=[0,n-1];caps.forEach(ci=>{const r=w(ci?1:0),c=pts[ci],base=pos.length/3;pos.push(c[0],0,c[1]);for(let k=0;k<=16;k++){const an=k/16*Math.PI*2;pos.push(c[0]+Math.cos(an)*r,0,c[1]+Math.sin(an)*r);}for(let k=1;k<=16;k++)idx.push(base,base+k+1,base+k);});
+  const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));g.setIndex(idx);g.computeVertexNormals();const me=new THREE.Mesh(g,m);me.userData.noLux=1;return me;}
+function fingerTrace(g2,st,h,set){const on=tickers(st);mat(g2,4.4,2.3,-2.3,'#fff8e8');const ch=String(set.ch).toUpperCase();const col=set.col||'#ff6b6b';
+  /* the number is drawn as a soft wide track (the shape to trace) with small guide dots down its middle */
+  const chars=ch.split(''),nc=chars.length,Wd=nc>1?2.6:1.45,Hd=1.95,X0=nc>1?-1.3:-.95,Z0=-1.32,Y=.09;const toW=(u,v)=>new THREE.Vector3(X0+u*Wd,Y,Z0-v*Hd);
+  const strokes=[];chars.forEach((c1,ci)=>(STROKES[c1]||STROKES.O).forEach(st1=>strokes.push(st1.map(([u,v])=>[(ci+(nc>1?.08+u*.84:u))/nc,v]))));const dots=[];
+  const L=new THREE.Group();g2.add(L);let face=null;
+  const trackM=new THREE.MeshBasicMaterial({color:'#ffe3e3',side:THREE.DoubleSide}),edgeM=new THREE.MeshBasicMaterial({color:'#f1a7a7',side:THREE.DoubleSide});
+  strokes.forEach(s=>{const cu=new THREE.CatmullRomCurve3(s.map(([u,v])=>toW(u,v)),false,'centripetal');const pp=cu.getSpacedPoints(Math.max(8,Math.round(cu.getLength()/.05)));
+    const pts2=pp.map(p=>[p.x,p.z]);const a1=ribbonMesh(pts2,()=>.25,edgeM);a1.position.y=Y-.008;L.add(a1);const a2=ribbonMesh(pts2,()=>.21,trackM);a2.position.y=Y-.004;L.add(a2);});
+  strokes.forEach((s,si)=>{const cu=new THREE.CatmullRomCurve3(s.map(([u,v])=>toW(u,v)),false,'centripetal');const n=Math.max(2,Math.round(cu.getLength()/.22));cu.getSpacedPoints(n).forEach((p,k)=>dots.push({p,si,start:k===0}));});
+  const balls=dots.map(d=>{const b=mk(G(d.start?'kj_fdot1':'kj_fdot',()=>new THREE.CylinderGeometry(d.start?.11:.045,d.start?.11:.045,.02,20)),lam(d.start?'#5cc46a':'#ffffff'),0);b.userData.noLux=1;b.position.copy(d.p);b.position.y=Y+.01;g2.add(b);
+    if(d.start){const T=tag(String(d.si+1),{size:.2,bg:'#5cc46a',border:'#2b8a3e',color:'#ffffff'});T.position.set(-.22,.2,0);b.add(T);}return b;});
+  const halo=mk(G('kj_fhalo',()=>new THREE.TorusGeometry(.17,.025,8,32)),new THREE.MeshBasicMaterial({color:'#5cc46a',transparent:true,opacity:.85}),0);halo.rotation.x=Math.PI/2;halo.userData.noLux=1;g2.add(halo);
+  const inkM=new THREE.MeshBasicMaterial({color:col,side:THREE.DoubleSide});const strokesM=[];let pts=null,mesh=null,nxt=0,fin=false,hinted=false;
+  const redraw=()=>{if(!pts||pts.length<2)return;/* perfect-freehand smooths the finger path; the crayon line is drawn as a ribbon that tapers at its ends */
+    const sp=window.PFH?PFH.getStrokePoints(pts.map(p=>[p.x,p.z]),{size:.24,streamline:.45,smoothing:.55,last:false}).map(q=>q.point):pts.map(p=>[p.x,p.z]);if(sp.length<2)return;
+    const m2=ribbonMesh(sp,t=>.075+.035*Math.min(1,t*6,(1-t)*6+.4),inkM);m2.position.y=Y+.02;m2.renderOrder=3;
+    if(mesh){g2.remove(mesh);mesh.geometry.dispose();strokesM.splice(strokesM.indexOf(mesh),1);}mesh=m2;g2.add(mesh);strokesM.push(mesh);};
+  const finish=()=>{fin=true;halo.visible=false;P.kStepDone=true;if(!isPlay(h))A.later(()=>P.kNext&&P.kNext(),1800);trackM.color.set('#fff3bf');edgeM.color.set('#ffd43b');balls.forEach((b,i)=>A.later(()=>jump(b,.18),i*25));boom(balls[balls.length-1]);SAY(set.say||ch);
+    if(set.item){const o=make(set.item,1.2);at(o,1.8,0,-2.2);g2.add(o);pop(o);}done(g2,h,set,900);};
+  const reach=p=>{if(fin)return;let moved=false;for(let k=0;k<2&&nxt+k<dots.length;k++){const d=dots[nxt+k];if(k===1&&d.start)break;if(new THREE.Vector2(p.x-d.p.x,p.z-d.p.z).length()<.25){for(let j=nxt;j<=nxt+k;j++){balls[j].material=lam(col);jump(balls[j],.12);}nxt+=k+1;moved=true;A.pop&&A.pop();break;}}
+    if(moved&&nxt>=dots.length)finish();};
+  const W=Wd,H=Hd,hitW=W*1.0+1.0,hitH=H+1.0;const hit=mk(G('kj_fhit'+hitW.toFixed(2)+hitH.toFixed(2),()=>new THREE.BoxGeometry(hitW,.3,hitH)),new THREE.MeshBasicMaterial({visible:false}),0);hit.userData.noLux=1;
+  const c=toW(.5,.5);hit.position.set(c.x,.15,c.z);g2.add(hit);
+  const loc=w=>g2.worldToLocal(w.clone());
+  A.drag(hit,{get plane(){const wy=g2.localToWorld(dots[0].p.clone()).y;return new THREE.Plane(new THREE.Vector3(0,1,0),-wy);},
+    start:()=>{pts=[];mesh=null;},move:(w)=>{if(fin)return;const p=loc(w);if(!pts)pts=[];
+      if(!pts.length&&nxt===0&&!hinted&&new THREE.Vector2(p.x-dots[0].p.x,p.z-dots[0].p.z).length()>.6){hinted=true;SAY('Start at the green dot!');}
+      pts.push(p);redraw();reach(p);},drop:()=>{pts=null;mesh=null;hit.scale.setScalar(1);},tap:()=>{if(nxt<dots.length)jump(balls[nxt],.2);}});
+  on((dt,t)=>{if(fin||nxt>=dots.length)return;const d=dots[nxt];halo.position.set(d.p.x,d.p.y+.01,d.p.z);const k=1+.25*Math.sin(t*6);halo.scale.setScalar(k);});
+  const reset=()=>{strokesM.forEach(m=>{g2.remove(m);m.geometry.dispose();});strokesM.length=0;nxt=0;fin=false;halo.visible=true;balls.forEach((b,i)=>b.material=lam(dots[i].start?'#5cc46a':'#ffffff'));};
+  return {tick:TK(st),controls:()=>(st.round||(window.BOOK||{}).kSpread)?[]:[{t:'Start again',fn:reset}]};}
+C.trace=function(g2,st,h,set){if(set.finger&&window.PFH)return fingerTrace(g2,st,h,set);const on=tickers(st);mat(g2,4.4,2.3,-2.3,'#fff8e8');const ch=String(set.ch).toUpperCase();const col=set.col||'#ff6b6b';
   const L=txt3(ch,'#ffe3e3',{size:ch.length>1?1.6:2.0,depth:.12});at(L,0,0,-2.85);L.rotation.x=-.25;g2.add(L);
   const face=L.userData.face;let bb;if(face){face.geometry.computeBoundingBox();bb=face.geometry.boundingBox;}else bb={min:{x:-.7,y:0},max:{x:.7,y:1.4}};
   const W=bb.max.x-bb.min.x,H=bb.max.y-bb.min.y,toW=(u,v)=>{L.updateMatrix();const p=new THREE.Vector3(bb.min.x+u*W,bb.min.y+v*H,.2);p.applyMatrix4(L.matrix);return p;};

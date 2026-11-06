@@ -153,7 +153,7 @@ P.KNUMBERJ=function(N,i){const n=N.n,item=N.item,w=NWORD[n];const pl=n===1?item:
     watch:[n+' '+w+'!','Count with me!'],fig:'A big 3D number '+n+' and '+n+' '+pl+'.',
     kid:{color:true,id:'c'+id,big:String(n),pic:item,line:'*'+n+'* '+w,words:NCOL[i].map(x=>[x,x])},page:{},
     steps:[{say:'Meet '+n,hold:9000,speech:sp,set:g('nshow',{n,item,col,cue:sp})},
-      {say:'Trace '+n,waitDone:true,speech:'Let’s trace the number '+n+'. Tap the glowing dots, one by one.',set:g('trace',{ch:String(n),say:w})},
+      {say:'Trace '+n,waitDone:true,kTop:true,speech:'Let’s trace the number '+n+'. Put your finger on the green dot, and draw!',set:g('trace',{ch:String(n),say:w,finger:true})},
       {say:'Colour time!',kc:true,speech:'Colour time! Pick a crayon, then tap the number '+n+', the '+item+' and the pictures to colour them in.',set:g('nshow',{n,item,col,still:true})}],
     rounds,tries:[['Show '+n+' fingers!',n>5?'use two hands':'one hand'],['Jump '+n+' times.','count out loud!']]});};
 })();

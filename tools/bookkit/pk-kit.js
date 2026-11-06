@@ -69,6 +69,7 @@ function make(spec,s){let k=String(spec);const ok=k[0]==='*';if(ok)k=k.slice(1);
   else if(parts[0]==='dots'){o=diceToy(+parts[1],parts[2]);name=parts[1];lab=parts[1];}
   else if(parts[0]==='paint'){o=paintToy(parts[1]);name=parts[2]||parts[1];lab=parts[2]||'';}
   else if(parts[0]==='blank'){o=new THREE.Group();name='';}
+  if(!o&&P.kGlbNow&&P.GLBM&&P.GLBM[k]){o=P.GLBM[k](s||1);}
   if(!o&&P.kLuxNow&&P.LUXM&&P.LUXM[k]){o=P.LUXM[k](s||1);}
   if(!o){o=P.STAGE&&P.STAGE.prop?P.STAGE.prop(k,{s:.62*(s||1),label:false,bare:true,tap:false}):K2.standee(k,{label:false,s:.7*(s||1)});name=k;lab=k;}
   if(s&&parts.length>1)o.scale.multiplyScalar(s);

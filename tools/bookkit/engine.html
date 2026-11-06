@@ -555,6 +555,7 @@ function pose(v){
   if(v==='pageF'){const tg=V(W/2,PY+.45,.35);const d=fitDist(W*1.0,D*.86);return {p:tg.clone().add(V(0,.68,.74).normalize().multiplyScalar(d)),t:tg};}
   if(v==='readM'){const tg=V(-W/2,PY+.25,.15);const d=fitDist(W*1.02,D*.98);return {p:tg.clone().add(V(0,.88,.47).normalize().multiplyScalar(d)),t:tg};}
   if(v==='pageR'){const tg=V(W/2,PY+.3,.2);const d=fitDist(W*1.04,D*1.0);return {p:tg.clone().add(V(0,.86,.52).normalize().multiplyScalar(d)),t:tg};}
+  if(v==='kT'){const tg=V(-W/2,PY+.1,-.05);const d=fitDist(W*1.0,D*.8);return {p:tg.clone().add(V(0,1,.42).normalize().multiplyScalar(d)),t:tg};}
   if(v==='kL'){const tg=V(-W/2,PY+.75,.05);const d=fitDist(W*1.08,D*.78);return {p:tg.clone().add(V(0,.5,.87).normalize().multiplyScalar(d)),t:tg};}
   if(v==='kC'){const tg=V(W/2,PY,.05);const d=fitDist(W*1.02,D*1.0);return {p:tg.clone().add(V(0,1,.22).normalize().multiplyScalar(d)),t:tg};}
   if(v==='kS'){const tg=V(0,PY+1.15,-.1);const d=fitDist(2*W*.96,D*.98);return {p:tg.clone().add(V(0,.5,.87).normalize().multiplyScalar(d)),t:tg};}
@@ -565,7 +566,7 @@ function pose(v){
    scene that acts it out; on a phone held upright one page at a time, the 3D side while things happen. */
 let camDir=0;const wideStage=()=>(stage.clientWidth/(stage.clientHeight||1))>1.15;
 const kSp=sp=>!!(BK.kSpread&&sp&&sp.L&&!(sp.kind==='learn'&&sp.L.strand==='Story Time'));
-function autoView(sp,s){if(kSp(sp)){if(sp.kind==='play')return 'kS';if(sp.kind==='learn')return s.kc?'kC':'kL';}if(s.storyRead)return 'pageR';if(BK.readTheory){const pf=BK.tokens?'pageF':'model';if(sp.kind==='learn')return s.readTheory?'readF':pf;if(sp.kind==='play')return pf;}if(BK.storyRight&&sp.kind==='learn')return 'readM';if(s.story3d)return wideStage()?'storyW':'storyL';if(wideStage())return 'book';
+function autoView(sp,s){if(kSp(sp)){if(sp.kind==='play')return 'kS';if(sp.kind==='learn')return s.kc?'kC':(s.kTop?'kT':'kL');}if(s.storyRead)return 'pageR';if(BK.readTheory){const pf=BK.tokens?'pageF':'model';if(sp.kind==='learn')return s.readTheory?'readF':pf;if(sp.kind==='play')return pf;}if(BK.storyRight&&sp.kind==='learn')return 'readM';if(s.story3d)return wideStage()?'storyW':'storyL';if(wideStage())return 'book';
   if(sp.kind==='play')return 'model';if(sp.kind==='learn'&&(s.view==='theory'||s.view==='model')&&(s.demo||s.cues))return PM.STAGE?'stage':'model';return s.view==='read'||s.story?'read':'book';}
 function setView(v,instant){const orig=v;if(v==='theory')v=(stage.clientWidth/(stage.clientHeight||1))>1.15?'book':'read';if(!bookOpen)v='cover';view=v;{const lb=document.getElementById('bLeftPg'),rb=document.getElementById('bRightPg');if(lb){lb.classList.toggle('on',v==='read');rb.classList.toggle('on',v==='model');}}document.querySelectorAll('.views button').forEach(b=>b.classList.toggle('on',b.dataset.view===v));
   refreshDock(true);applyCam();const q=pose(orig==='theory'&&v==='book'?'tbook':v);basePose=q;if(instant){camera.position.copy(q.p);controls.target.copy(q.t);camTween=null;return;}
