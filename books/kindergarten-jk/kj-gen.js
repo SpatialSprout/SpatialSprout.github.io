@@ -75,7 +75,7 @@ const g=(custom,o)=>Object.assign({custom},o||{});
 const sr=seed=>{let s=seed*9301+49297;return ()=>{s=(s*9301+49297)%233280;return s/233280;};};
 const sshuf=(a,rnd)=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(rnd()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
 const NMS={ufo:'UFO','x-ray':'X-ray'};
-const R2={line:(q,items,o)=>({q,set:g('line',Object.assign({items},o||{}))}),rocket:(q,items,o)=>({q,set:g('rocket',Object.assign({items:shuffle(items)},o||{}))}),bowl:(q,items,o)=>({q,set:g('bowl',Object.assign({items:shuffle(items)},o||{}))}),train:(q,items,o)=>({q,set:g('train',Object.assign({items:shuffle(items)},o||{}))})};
+const R2={line:(q,items,o)=>({q,set:g('line',Object.assign({items},o||{}))}),rocket:(q,items,o)=>({q,set:g('rocket',Object.assign({items:shuffle(items)},o||{}))}),bowl:(q,items,o)=>({q,set:g('bowl',Object.assign({items:shuffle(items)},o||{}))}),train:(q,items,o)=>({q,set:g('train',Object.assign({items:shuffle(items)},o||{}))}),join:(q,pairs,o)=>({q,set:g('join',Object.assign({pairs},o||{}))})};
 Object.assign(R,R2);
 /* no balloons in this book: balloon and bubble games become bowling */
 const unBal=t=>String(t).replace(/^(\*?)balloon::([^:]+):(.*)$/,'$1paint:$2:$3').replace(/^(\*?)balloon:([^:]+):(.*)$/,'$1txt:$2:$3');

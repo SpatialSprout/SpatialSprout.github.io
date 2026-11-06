@@ -65,7 +65,7 @@ C.bubbles=function(g2,st,h,set){const on=tickers(st);mat(g2,4.4,2.3,-2.3,'#e7f5f
     const hl=mk(G('kk_bubh',()=>new THREE.SphereGeometry(.07,10,8)),new THREE.MeshBasicMaterial({color:'#ffffff'}),0);hl.position.set(-.14,.16,.25);g.add(hl);
     const c=make(it,.62);c.position.y=-.2;c.traverse(o=>{if(o.isMesh)o.castShadow=false;});g.add(c);g.userData.pk=c.userData.pk;
     const x=-1.75+((i*1.37)%1)*3.5+(i%2)*.2,z=-2.95+((i*.61)%1)*1.2;g.userData.base=[x,z,.25+(i%3)*.12,i*.37];g.position.set(x,((i*.53)%1)*2,z);g2.add(g);
-    A.drag(g,{tap:()=>{if(g.userData.gone)return;const d=g.userData.pk;if(d.ok||!items.some(x=>String(x)[0]==='*')){g.userData.gone=1;boom(g);A.pop&&A.pop();SAY(d.lab);tween(.2,k=>g.scale.setScalar(Math.max(.01,1+k*.4-k*1.4)));A.later(()=>{g.visible=false;},220);got++;if(got>=need)done(g2,h,set,400);}
+    A.drag(g,{tap:()=>{if(g.userData.gone)return;const d=g.userData.pk;if(d.ok||!items.some(x=>String(x)[0]==='*')){g.userData.gone=1;boom(g);A.pop&&A.pop();SAY(d.lab);tween(.2,k=>g.scale.setScalar(Math.max(.01,1+k*.4-k*1.4)));A.later(()=>{g.visible=false;},220);got++;if(got>=need){P.kStepDone=true;done(g2,h,set,400);}if(set.respawn)A.later(()=>{g.userData.gone=0;g.scale.setScalar(1);g.position.y=-.25;g.visible=true;},1300);}
       else{wobble(g);SAY(d.lab);if(isPlay(h))h.miss(set.hint);}}});return g;});
   on((dt,t)=>bs.forEach(g=>{if(g.userData.gone)return;const [x,z,v,ph]=g.userData.base;g.position.y+=dt*v;if(g.position.y>2.1)g.position.y=-.1;g.position.x=x+Math.sin(t*1.2+ph*5)*.12;g.position.z=z;g.rotation.y=Math.sin(t+ph)*.3;}));
   return {tick:TK(st)};};
@@ -158,6 +158,27 @@ C.spots=function(g2,st,h,set){mat(g2,4.4,2.3,-2.3,'#ebfbee');const n=set.n||3;co
     if(c===n){A.later(()=>{boom(g);jump(g,.3);},300);done(g2,h,set,800);}}});
   return {};};
 C.spots.bare=1;
+/* join the pairs: tap a shape (or colour) on the left, then the thing that matches it on the right; a rope joins them */
+C.join=function(g2,st,h,set){const on=tickers(st);mat(g2,4.4,2.3,-2.3,'#eef7ff');const prs=(set.pairs||[]).slice(0,3);const n=prs.length;const zs=[-3.3,-2.3,-1.3];
+  const ord=prs.map((p,i)=>i);for(let i=ord.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[ord[i],ord[j]]=[ord[j],ord[i]];}if(ord.every((v,i)=>v===i)&&n>1)ord.push(ord.shift());
+  const RC=['#ff6b6b','#4dabf7','#51cf66'];let sel=null,got=0,fin=false;const ropes=[];
+  const mkSide=(side,i,it,z,hy)=>{const x=side?1.55:-1.6;let base;
+    if(side){base=mk(G('kj_js'+hy,()=>new THREE.BoxGeometry(.95,hy+.08,.62)),lam(['#ffe3e3','#fff3bf','#d3f9d8'][i%3]),20);at(base,x,(hy+.08)/2,z);g2.add(base);}else base=pedestal(g2,x,z,'#ffffff',.32);
+    const o=make(it,side?.62:.58);const y0=side?hy+.08:.12;at(o,x,y0,z);g2.add(o);const ring=mk(G('kj_jring',()=>new THREE.TorusGeometry(.42,.035,8,40)),new THREE.MeshBasicMaterial({color:'#ffd43b'}),0);ring.rotation.x=Math.PI/2;at(ring,x,y0+.02,z);ring.visible=false;g2.add(ring);
+    const hit=mk(G('kj_jhit',()=>new THREE.BoxGeometry(.95,.9,.62)),new THREE.MeshBasicMaterial({visible:false}),0);hit.userData.noLux=1;at(hit,x,y0+.4,z);g2.add(hit);
+    const e={side,i,o,ring,y0,x,z,done:false,pk:o.userData.pk||{}};A.drag(hit,{tap:()=>tapIt(e)});return e;};
+  const L=prs.map((p,i)=>mkSide(0,i,p[0],zs[i],0));const Rr=ord.map((pi,k)=>mkSide(1,pi,prs[pi][1],zs[k],(n-1-k)*.22));
+  const rope=(a,b,c)=>{const A0=V(a.x+.3,a.y0+.35,a.z),B0=V(b.x-.4,b.y0+.35,b.z);const mid=A0.clone().lerp(B0,.5);mid.y+=.75;const cu=new THREE.QuadraticBezierCurve3(A0,mid,B0);
+    const m=mk(new THREE.TubeGeometry(cu,40,.045,10,false),new THREE.MeshPhongMaterial({color:c,shininess:80}),0);m.castShadow=false;m.userData.noLux=1;g2.add(m);ropes.push(m);const d=m.geometry.index.count;m.geometry.setDrawRange(0,0);tween(.5,k=>m.geometry.setDrawRange(0,Math.floor(d*k/6)*6));};
+  const pick=e=>{if(sel){sel.ring.visible=false;}sel=e;if(e){e.ring.visible=true;jump(e.o,.2);if(e.pk.lab)SAY(e.pk.lab);}};
+  function tapIt(e){if(fin||e.done)return;A.pop&&A.pop();if(!sel||sel.side===e.side){pick(e);return;}
+    const a=sel.side?e:sel,b=sel.side?sel:e;
+    if(a.i===b.i){a.done=b.done=true;a.ring.visible=b.ring.visible=false;sel=null;rope(a,b,RC[got%3]);jump(a.o,.3);jump(b.o,.3);boom(b.o);SAY((a.pk.lab||'')+(b.pk.lab?' and '+b.pk.lab:''));got++;
+      if(got>=n){fin=true;P.kStepDone=true;A.later(()=>{[...L,...Rr].forEach((q,k)=>A.later(()=>jump(q.o,.35),k*90));},600);done(g2,h,set,1500);}}
+    else{wobble(e.o);wobble(sel.o);if(isPlay(h))h.miss(set.hint||'Those two do not match. Try another one!');pick(null);}}
+  on((dt,t)=>{if(sel&&!sel.done){sel.o.position.y=sel.y0+.08+Math.sin(t*5)*.06;}[...L,...Rr].forEach(q=>{if(q!==sel&&!q.done)q.o.position.y+= (q.y0-q.o.position.y)*Math.min(1,dt*8);});});
+  return {tick:TK(st)};};
+C.join.bare=1;
 })();
 /* ===== Letter lessons, part 2: a slow little 3D show for every letter, and the hidden alphabet ===== */
 (function(){

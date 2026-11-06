@@ -78,7 +78,7 @@ const mat=(g2,w,d,z,c)=>{if(P.kMatCol)c=P.kMatCol;const m=mk(G('pk_mat'+w+'_'+d,
 function layout(n,kind,o){o=o||{};const pts=[];
   if(kind==='float'){const cols=Math.min(n,5),rows=Math.ceil(n/cols);for(let i=0;i<n;i++){const r=Math.floor(i/cols),c=i%cols,nc=Math.min(cols,n-r*cols);pts.push([(c-(nc-1)/2)*Math.min(.85,4/cols)+(r%2)*.2,(r%2)*.25,-2.75+r*.65]);}}
   else if(kind==='scatter'){const cols=Math.min(n,n>8?5:4),rows=Math.ceil(n/cols);for(let i=0;i<n;i++){const r=Math.floor(i/cols),c=i%cols,nc=Math.min(cols,n-r*cols);pts.push([(c-(nc-1)/2)*Math.min(.95,3.9/cols)+((i*37)%7-3)*.03,0,-2.85+r*Math.min(.75,1.7/Math.max(1,rows-1||1))+((i*53)%5-2)*.03]);}}
-  else{const sp=Math.min(1.05,4.1/Math.max(1,n));for(let i=0;i<n;i++)pts.push([(i-(n-1)/2)*sp,0,o.z==null?-2.2:o.z]);}
+  else{const sp=o.sp||Math.min(1.05,4.1/Math.max(1,n));for(let i=0;i<n;i++)pts.push([(i-(n-1)/2)*sp,0,o.z==null?-2.2:o.z]);}
   return pts;}
 /* a basket (or a hungry animal) that collects toys */
 function catcher(g2,kind,x,z){const g=new THREE.Group();at(g,x,0,z);g2.add(g);let o;
@@ -92,7 +92,7 @@ const boom=o=>{try{const w=new THREE.Vector3();o.getWorldPosition(w);w.y+=.5;P.b
 const sticker=(o,t,c)=>{const L=tag(t,{size:.3,bg:c||'#ffd43b',border:'#e09b00'});L.position.set(0,1.0,0);o.add(L);L.scale.multiplyScalar(.01);tween(.3,k=>L.scale.setScalar(Math.max(.01,k*1.1)));return L;};
 
 /* ---------- TAP: find, pop, collect or light up the right toys ---------- */
-C.tap=function(g2,st,h,set){st._pkt=[];const items=set.items||[];const n=items.length;const kind=set.layout||(set.mode==='pop'?'float':n>5?'scatter':'row');const pts=layout(n,kind,{z:set.z});
+C.tap=function(g2,st,h,set){st._pkt=[];const items=set.items||[];const n=items.length;const kind=set.layout||(set.mode==='pop'?'float':n>5?'scatter':'row');const pts=layout(n,kind,{z:set.z,sp:set.sp});
   mat(g2,4.3,kind==='row'?1.25:2.2,kind==='row'?(set.z||-2.2):-2.35,set.mat);
   let bask=null;if(set.mode==='collect'){bask=catcher(g2,set.basket,set.bx==null?1.7:set.bx,set.bz==null?-1.55:set.bz);}
   const objs=items.map((it,i)=>{const o=make(it,set.s);const [x,y,z]=pts[i];at(o,x+(bask&&kind!=='row'?-.35:0),y,z);o.userData.ry=(Math.random()-.5)*.4;o.rotation.y=o.userData.ry;g2.add(o);if(o.userData.tick){const f=o.userData.tick;o.userData.tick=null;st._pkt=(st._pkt||[]).concat([f]);}return o;});
