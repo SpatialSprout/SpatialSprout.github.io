@@ -1,0 +1,12 @@
+.auth { max-width: 30rem; margin: var(--space-2xl, 4rem) auto; padding: 0 var(--space-md, 1rem); }
+.auth h1 { margin-bottom: .4em; }
+.auth form { display: grid; gap: var(--space-sm, .75rem); margin-top: var(--space-md, 1rem); }
+.auth label { display: grid; gap: .3rem; font-weight: 600; }
+.auth input { min-height: 52px; padding: 0 .9rem; border: 2px solid var(--color-ink, #1b2a41); border-radius: 12px; background: #fff; color: #1b2a41; }
+.auth input:focus-visible { outline: 3px solid var(--color-accent, #f76707); outline-offset: 2px; }
+.auth .msg { min-height: 1.4em; margin: .3rem 0 0; }
+.auth .msg.err { color: #c92a2a; } .auth .msg.ok { color: #2b8a3e; }
+.auth .link { background: none; border: 0; padding: 0; color: inherit; text-decoration: underline; cursor: pointer; justify-self: start; }
+.auth .books { list-style: none; padding: 0; display: grid; gap: .6rem; margin: var(--space-md, 1rem) 0; }
+.auth .books a { display: block; padding: .9rem 1rem; border: 2px solid var(--color-ink, #1b2a41); border-radius: 12px; text-decoration: none; color: inherit; font-weight: 600; }
+.auth [hidden] { display: none !important; }

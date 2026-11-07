@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Log in · SpatialSprout 3D</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png">
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=chillax@500,600&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/auth.css">
+</head>
+<body>
+<header class="site-head">
+  <div class="bar container">
+    <a class="brand" href="./" aria-label="SpatialSprout 3D home">
+      <img class="brand-mark" src="assets/img/mark-teal.png" alt="" width="36" height="36">
+      <span class="brand-name">SpatialSprout 3D</span>
+    </a>
+    <nav class="nav" aria-label="Main"><a href="./#library">Library</a></nav>
+  </div>
+</header>
+<main id="main" class="auth">
+  <h1>Log in</h1>
+  <p>For families and teachers who bought a book. Use the email you paid with.</p>
+  <form id="fLogin">
+    <label>Email<input type="email" id="em" autocomplete="email" required></label>
+    <label>Password<input type="password" id="pw" autocomplete="current-password" required></label>
+    <button class="btn btn--primary" type="submit">Log in</button>
+    <button class="link" type="button" id="forgot">Forgot your password?</button>
+    <p class="msg" id="msg" role="status" aria-live="polite"></p>
+  </form>
+  <p>No account yet? You get one when you buy a book. <a href="./#library">See the books</a>.</p>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.4/dist/umd/supabase.js"></script>
+<script src="assets/catalog.js"></script>
+<script src="assets/auth.js"></script>
+<script>
+(function(){var sb=window.SS_AUTH,m=document.getElementById('msg');
+function say(t,ok){m.textContent=t;m.className='msg '+(ok?'ok':'err');}
+if(!sb){say('Log in is not available right now. Please try again later.');return;}
+sb.auth.getSession().then(function(r){if(r.data.session)location.replace('account.html');});
+document.getElementById('fLogin').addEventListener('submit',function(e){e.preventDefault();say('Logging in…',true);
+  sb.auth.signInWithPassword({email:em.value.trim(),password:pw.value}).then(function(r){
+    if(r.error)say('That email and password do not match. Try again, or reset your password.');else location.replace('account.html');});});
+document.getElementById('forgot').addEventListener('click',function(){var e=em.value.trim();if(!e){say('Type your email first, then tap “Forgot your password?”.');em.focus();return;}
+  sb.auth.resetPasswordForEmail(e,{redirectTo:location.origin+'/account.html'}).then(function(r){
+    if(r.error)say('We could not send the email. Please try again in a minute.');else say('If that email has an account, a reset link is on its way.',true);});});
+})();
+</script>
+</body>
+</html>

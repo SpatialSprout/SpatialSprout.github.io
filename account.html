@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>My books · SpatialSprout 3D</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png">
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=chillax@500,600&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/auth.css">
+</head>
+<body>
+<header class="site-head">
+  <div class="bar container">
+    <a class="brand" href="./" aria-label="SpatialSprout 3D home">
+      <img class="brand-mark" src="assets/img/mark-teal.png" alt="" width="36" height="36">
+      <span class="brand-name">SpatialSprout 3D</span>
+    </a>
+    <nav class="nav" aria-label="Main"><a href="./#library">Library</a></nav>
+  </div>
+</header>
+<main id="main" class="auth">
+  <section id="setPw" hidden>
+    <h1>Set your password</h1>
+    <p>Choose a password for your SpatialSprout account.</p>
+    <form id="fPw">
+      <label>New password<input type="password" id="np" autocomplete="new-password" minlength="8" required></label>
+      <button class="btn btn--primary" type="submit">Save password</button>
+      <p class="msg" id="pmsg" role="status" aria-live="polite"></p>
+    </form>
+  </section>
+  <section id="mine" hidden>
+    <h1>My books</h1>
+    <p id="who"></p>
+    <ul class="books" id="list"></ul>
+    <p class="msg" id="lmsg" role="status" aria-live="polite"></p>
+    <button class="btn" type="button" id="out">Log out</button>
+  </section>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.4/dist/umd/supabase.js"></script>
+<script src="assets/catalog.js"></script>
+<script src="assets/auth.js"></script>
+<script>
+(function(){var sb=window.SS_AUTH;if(!sb){location.replace('login.html');return;}
+var setPw=document.getElementById('setPw'),mine=document.getElementById('mine'),list=document.getElementById('list');
+var fromLink=/type=(recovery|invite|signup)/.test(location.hash)||/type=(recovery|invite)/.test(location.search);
+var books={};(window.CATALOG&&CATALOG.books||[]).forEach(function(b){books[b.slug]=b;});
+function showBooks(s){setPw.hidden=true;mine.hidden=false;document.getElementById('who').textContent='Signed in as '+s.user.email+'.';
+  sb.from('purchases').select('book_slug').then(function(r){var m=document.getElementById('lmsg');list.innerHTML='';
+    if(r.error){m.className='msg err';m.textContent='We could not load your books. Please refresh the page.';return;}
+    var seen={};(r.data||[]).forEach(function(p){if(seen[p.book_slug])return;seen[p.book_slug]=1;var b=books[p.book_slug]||{title:p.book_slug};
+      var li=document.createElement('li'),a=document.createElement('a');a.href='books/'+p.book_slug+'/';a.textContent=b.title||b.name||p.book_slug;li.appendChild(a);list.appendChild(li);});
+    if(!list.children.length){m.className='msg';m.textContent='No books yet. Books you buy with this email show up here.';}});}
+sb.auth.onAuthStateChange(function(ev,s){if(ev==='PASSWORD_RECOVERY'){setPw.hidden=false;mine.hidden=true;}});
+sb.auth.getSession().then(function(r){var s=r.data.session;if(!s){location.replace('login.html');return;}
+  if(fromLink){setPw.hidden=false;mine.hidden=true;}else showBooks(s);});
+document.getElementById('fPw').addEventListener('submit',function(e){e.preventDefault();var m=document.getElementById('pmsg');
+  sb.auth.updateUser({password:np.value}).then(function(r){if(r.error){m.className='msg err';m.textContent=r.error.message;return;}
+    history.replaceState(null,'','account.html');sb.auth.getSession().then(function(x){showBooks(x.data.session);});});});
+document.getElementById('out').addEventListener('click',function(){sb.auth.signOut().then(function(){location.replace('./');});});
+})();
+</script>
+</body>
+</html>
