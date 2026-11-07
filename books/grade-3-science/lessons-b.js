@@ -3,31 +3,30 @@
 "use strict";
 const P=window.PM;if(!P||!P.unit)return;const U=P.unit,R=P.R,S=P.S;
 
-/* 9 ─ Pushes and pulls */
+/* 9 ─ Pushes and pulls: the Force Lab (scenes in force-lab.js) */
+{const L9=P.LAB9||{SAY:{},steps:{},rounds:{}};const SAY=L9.SAY,ST=L9.steps,RS=L9.rounds;const sc=(r,f)=>{if(f)r.scene=f;return r;};
 U({id:'q09',title:'Pushes and pulls',strand:'Forces and Motion',codes:['C2.2','C2.4'],
- guide:{goal:'Describe a force as a push or a pull, and find the ways forces are used at home, at school and in play.',words:'force, push, pull, motion, strength, direction',ask:['Is opening a drawer a push or a pull?','What makes a swing move?','Can a force be big or small?'],home:'List 5 pushes and 5 pulls you do before breakfast.'},
- watch:['Push or pull?','Kicking a ball is a push. Pulling a wagon is a pull. Both are forces!'],
- fig:'Children pushing and pulling in a playground.',
- page:{story:{title:'Playground Olympics',text:'Room 3 held *Playground Olympics*. Event one: the *wagon race*. Leo *pulled* his sister Mia in a wagon. Event two: the *swing*. Amir *pushed* his friend higher and higher. Event three: *tug-of-war*! Both teams *pulled* the rope as hard as they could. The rope did not move. "The *forces* are equal!" shouted Ms. Lee. Then the red team pulled *harder*, and the blue team slid across the line. Everyone collapsed laughing.',pics:['wagon','swing','rope','boy'],
-   acts:[[null,'park',['wagon','boy','girl'],'Pull!'],['swing','park',['swing','boy'],'Push higher!'],['tug-of-war','park',['rope','boy','girl'],'Pull harder!']]},
-  boxes:[{title:'Forces',text:'A *force* is a *push* or a *pull*. Forces can make things *move*, *stop* or *change direction*.',ex:[['ball','kick: *push*'],['wagon','wagon: *pull*'],['door','door: push *or* pull'],['magnet','magnet: *pull*']],cols:4},
-   {title:'Big and small forces',text:'A *stronger* force moves things *farther* and *faster*. Equal forces pulling opposite ways *balance*: nothing moves.'}],
+ guide:{goal:'Describe a force as a push or a pull, show its direction with an arrow, and test how the size of a force changes motion.',words:'force, push, pull, direction, force meter, balanced',ask:['Is opening a drawer a push or a pull?','Which way does the arrow point for a push?','What happens when two equal forces pull opposite ways?'],home:'Roll a toy car with a gentle push, then a strong push. Mark where it stops each time.'},
+ watch:['Push or pull?','A push moves things away. A pull moves things closer. Engineers test both!'],
+ fig:'The Force Lab: a test cart, a spring launcher, a winch and force meters.',
+ page:{
+  boxes:[{title:'Forces',text:'A *force* is a *push* or a *pull*. Forces can make things *start*, *stop* or *change direction*.',ex:[['ball','kick: *push*'],['wagon','wagon: *pull*'],['door','door: push *or* pull'],['magnet','magnet: *pull*']],cols:4},
+   {title:'Arrows show forces',text:'Engineers draw a force as an *arrow*. The arrow points the way the force *pushes* or *pulls*. A *longer* arrow means a *stronger* force.'},
+   {title:'Big, small and balanced',text:'A *stronger* push moves things *farther* and *faster*. A *force meter* measures how hard something pulls. Equal pulls in opposite directions are *balanced*: nothing moves.'}],
   cards:[{q:'Opening a drawer is a…',a:'*pull*'},{q:'Kicking a soccer ball is a…',pics:['ball'],a:'*push*'}],
-  words:[['force','a push or a pull'],['motion','moving from one place to another']]},
+  words:[['force','a push or a pull'],['balanced','equal forces pulling opposite ways']]},
  steps:[
-  {say:'Read the story',speech:'Leo pulled his sister in a wagon. Amir pushed his friend on the swing. In tug-of-war, both teams pulled. Equal forces did not move the rope, until one team pulled harder.',set:S.row(['wagon','swing','rope','boy'])},
-  {say:'Pushes',speech:'A push moves something away from you. Kicking a ball, pushing a swing, and pushing a stroller are pushes.',set:S.row(['ball','swing','scooter'],{labels:['kick','push','push']}),
-   cues:[['Kicking a ball','ball','push'],['pushing a swing','swing','push'],['a stroller','scooter','push']]},
-  {say:'Pulls',speech:'A pull moves something toward you. Pulling a wagon, pulling a sled up a hill, and pulling a kite string are pulls.',set:S.row(['wagon','sled','kite'],{labels:['pull','pull','pull']}),
-   cues:[['Pulling a wagon','wagon','pull'],['a sled','sled','pull'],['a kite','kite','pull']]},
-  {say:'Strong and gentle',speech:'A gentle push moves a ball a little. A strong push sends it far and fast. The size of the force matters.',set:S.row(['ball','hockey'],{labels:['gentle','strong']}),
-   cues:[['gentle push','ball','small force'],['strong push','hockey','big force']]}],
+  {say:'The Force Lab',speech:SAY.lab,set:{scene:ST.lab},pause:2200},
+  {say:'A push',speech:SAY.push,set:{scene:ST.push},pause:1600},
+  {say:'A pull',speech:SAY.pull,set:{scene:ST.pull},pause:1600},
+  {say:'Gentle and strong',speech:SAY.size,set:{scene:ST.size},pause:2400},
+  {say:'Balanced forces',speech:SAY.bal,set:{scene:ST.bal},pause:2600}],
  more:{title:'Did you know?',text:'Sled dogs in the North can pull a sled *together* as a team. A team of 12 huskies can pull a heavy sled for *hundreds of kilometres*!',pics:['dog','sled']},
  rounds:[R.sort('Sort: *push* or *pull*?',['push','pull'],[['ball',0],['wagon',1],['swing',0],['kite',1],['door',0],['sled',1]]),R.q('Pulling a wagon is a…',['pull','push'],'pull',{set:{row:['wagon'],keep:true}}),
   R.q('What is a *force*?',['a push or a pull','a kind of rock','a colour'],'a push or a pull'),R.q('In tug-of-war, why did the rope not move at first?',['the forces were equal','nobody pulled','it was glued'],'the forces were equal'),
   R.q('Who pulled Mia in the wagon?',['Leo','Amir','Ms. Lee'],'Leo'),R.q('A stronger push makes a ball go…',['farther and faster','slower','nowhere'],'farther and faster'),
   R.tf('Forces can make things start moving.',true),R.q('Opening a fridge door is a…',['pull','push'],'pull')],
- tries:[['Find something that needs a push AND a pull.','a door, a drawer, a swing'],['Push a toy car softly, then hard. Measure how far it goes.','harder push = *farther*']]});
+ tries:[['Find something that needs a push AND a pull.','a door, a drawer, a swing'],['Push a toy car softly, then hard. Measure how far it goes.','harder push = *farther*']]});}
 
 /* 10 ─ Gravity and magnets */
 U({id:'q10',title:'Forces that act from far away',strand:'Forces and Motion',codes:['C2.1'],

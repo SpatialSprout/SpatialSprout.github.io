@@ -151,7 +151,7 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 
 <div class="sheetwrap" id="sheet" hidden><div class="sheet" role="dialog" aria-modal="true" id="sheetBody"></div></div>
 
-<script src="book.js?v=dd6f30f6"></script>
+<script src="book.js?v=0f266dd1"></script>
 <script src="brand.js?v=111ada48"></script>
 <script src="voice.js?v=8b49d2b2"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -170,8 +170,8 @@ const img=src=>{const i=new Image();if(src)i.src=src;return i;};
 const LOGO=img(BR.full),MARK=img(BR.mark),MARKT=img(BR.markTeal);
 if(BR.mark)$('#brandMark').src=BR.mark;
 const BK=Object.assign({grade:3,subject:'Math',tiles:['M','A','T','H'],key:'3',strands:'all five Ontario strands'},window.BOOK||{});
-const GR=String(BK.grade),SUBJ=BK.subject,SKEY='tic'+BK.key+'-';
-const AUTHOR='M. A. Mafodh',BRANDNAME='SpatialSprout 3D',TITLE='The Interactive Classroom',SUB='Grade '+GR+' '+SUBJ;
+const GR=String(BK.gradeName||BK.grade),CPX=BK.codePrefix||(String(BK.gradeName||BK.grade)+'.'),SUBJ=BK.subject,SKEY='tic'+BK.key+'-';
+const AUTHOR='M. A. Mafodh',BRANDNAME='SpatialSprout 3D',TITLE='The Interactive Classroom',SUB=BK.subTitle||('Grade '+GR+' '+SUBJ);
 /* every grade has its own colours: cover gradient, desk mat, room background and paper tint */
 const THEMES={1:{c:['#ffd24a','#ff8a3d','#ef4444'],mat:'#f4b860',bg:'#f3e4c6',paper:'#fbe6c0'},2:{c:['#ffd24a','#7cc243','#1f9e74'],mat:'#9ccf6a',bg:'#e3eed2',paper:'#dff0d6'},3:{c:['#1fb0a6','#2f7de1','#5b4fd8'],mat:'#62b8b0',bg:'#d9d2c4',paper:'#d9eaf7'},
   4:{c:['#5fd38a','#16a36f','#0e7490'],mat:'#7cc98f',bg:'#d9e8d4',paper:'#f9e0d2'},5:{c:['#b39dff','#7c3aed','#4c1d95'],mat:'#a294e2',bg:'#e3def2',paper:'#e6ddf9'},6:{c:['#ffbf47','#f97316','#be3a12'],mat:'#f0a35e',bg:'#f3e4d2',paper:'#f8ecd8'},
@@ -283,17 +283,17 @@ function motif(g,k,x,y,s,c){g.save();g.translate(x,y);g.fillStyle=c;g.strokeStyl
   else {g.beginPath();g.arc(0,0,s*.5,0,Math.PI*2);g.fill();}
   g.restore();}
 /* the rug under the book: the book's own colour, a stitched border and its world motif */
-function rugTex(){const c=document.createElement('canvas');c.width=2048;c.height=1472;const g=c.getContext('2d');
-  const gr=g.createLinearGradient(0,0,2048,1472);gr.addColorStop(0,mixHex(TH.mat,'#ffffff',.18));gr.addColorStop(1,mixHex(TH.mat,TH.c[2],.18));g.fillStyle=gr;g.fillRect(0,0,2048,1472);
+function rugTex(wd){wd=wd||WD;const RG=wd.rug||{mat:TH.mat,c:TH.c};const T2={mat:RG.mat,c:RG.c};const WD2=wd;const c=document.createElement('canvas');c.width=2048;c.height=1472;const g=c.getContext('2d');
+  const gr=g.createLinearGradient(0,0,2048,1472);gr.addColorStop(0,mixHex(T2.mat,'#ffffff',.18));gr.addColorStop(1,mixHex(T2.mat,T2.c[2],.18));g.fillStyle=gr;g.fillRect(0,0,2048,1472);
   const step=2048/50;g.strokeStyle='rgba(255,255,255,.1)';g.lineWidth=1;for(let i=0;i<=50;i++){g.beginPath();g.moveTo(i*step,0);g.lineTo(i*step,1472);g.stroke();}for(let j=0;j*step<=1472;j++){g.beginPath();g.moveTo(0,j*step);g.lineTo(2048,j*step);g.stroke();}
-  const R=wrnd(BK.grade*977+3),cs=[...TH.c,'#ffffff','#ffd24a'];
-  for(let i=0;i<150;i++){const x=R()*2048,y=R()*1472;if(x>360&&x<1688&&y>230&&y<1242&&R()<.85)continue;g.globalAlpha=.22+R()*.2;motif(g,WD.motif,x,y,14+R()*22,cs[Math.floor(R()*cs.length)]);}g.globalAlpha=1;
+  const R=wrnd(BK.grade*977+3),cs=[...T2.c,'#ffffff','#ffd24a'];
+  for(let i=0;i<150;i++){const x=R()*2048,y=R()*1472;if(x>360&&x<1688&&y>230&&y<1242&&R()<.85)continue;g.globalAlpha=.22+R()*.2;motif(g,WD2.motif,x,y,14+R()*22,cs[Math.floor(R()*cs.length)]);}g.globalAlpha=1;
   /* border band with scallops and stitches */
-  const bw=58;g.fillStyle=mixHex(TH.c[1],'#ffffff',.12);g.fillRect(0,0,2048,bw);g.fillRect(0,1472-bw,2048,bw);g.fillRect(0,0,bw,1472);g.fillRect(2048-bw,0,bw,1472);
-  g.fillStyle=mixHex(TH.c[0],'#ffffff',.25);for(let x=0;x<2048;x+=64){g.beginPath();g.arc(x+32,bw,24,0,Math.PI);g.fill();g.beginPath();g.arc(x+32,1472-bw,24,Math.PI,0);g.fill();}
+  const bw=58;g.fillStyle=mixHex(T2.c[1],'#ffffff',.12);g.fillRect(0,0,2048,bw);g.fillRect(0,1472-bw,2048,bw);g.fillRect(0,0,bw,1472);g.fillRect(2048-bw,0,bw,1472);
+  g.fillStyle=mixHex(T2.c[0],'#ffffff',.25);for(let x=0;x<2048;x+=64){g.beginPath();g.arc(x+32,bw,24,0,Math.PI);g.fill();g.beginPath();g.arc(x+32,1472-bw,24,Math.PI,0);g.fill();}
   for(let y=0;y<1472;y+=64){g.beginPath();g.arc(bw,y+32,24,-Math.PI/2,Math.PI/2);g.fill();g.beginPath();g.arc(2048-bw,y+32,24,Math.PI/2,Math.PI*1.5);g.fill();}
   g.setLineDash([18,14]);g.strokeStyle='rgba(255,255,255,.85)';g.lineWidth=5;g.strokeRect(bw*.45,bw*.45,2048-bw*.9,1472-bw*.9);g.setLineDash([]);
-  [[110,110],[1938,110],[110,1362],[1938,1362]].forEach(([x,y],i)=>{g.globalAlpha=.95;motif(g,WD.motif,x,y,44,['#ffd24a','#ffffff',TH.c[0],'#ffffff'][i]);});g.globalAlpha=1;
+  [[110,110],[1938,110],[110,1362],[1938,1362]].forEach(([x,y],i)=>{g.globalAlpha=.95;motif(g,WD2.motif,x,y,44,['#ffd24a','#ffffff',T2.c[0],'#ffffff'][i]);});g.globalAlpha=1;
   const t=new THREE.CanvasTexture(c);t.anisotropy=MAXANI;return t;}
 /* the ground: a soft, light pattern tinted by the current mood */
 function groundTex(wd){wd=wd||WD;const c=document.createElement('canvas');c.width=c.height=512;const g=c.getContext('2d');g.fillStyle='#ffffff';g.fillRect(0,0,512,512);const R=wrnd(BK.grade*31+7);const k=wd.ground;
@@ -307,8 +307,8 @@ function groundTex(wd){wd=wd||WD;const c=document.createElement('canvas');c.widt
   g.globalAlpha=1;const t=new THREE.CanvasTexture(c);t.wrapS=t.wrapT=THREE.RepeatWrapping;t.repeat.set(12,12);t.anisotropy=MAXANI;return t;}
 const groundMat=new THREE.MeshLambertMaterial({map:groundTex(),color:WD.moods[0].gr});
 const desk=new THREE.Mesh(new THREE.PlaneGeometry(90,90),groundMat);desk.rotation.x=-Math.PI/2;desk.receiveShadow=true;scene.add(desk);
-(function(){const t=rugTex();const side=lam(mixHex(TH.mat,'#1b2236',.22));
-  const m=new THREE.Mesh(new THREE.BoxGeometry(14,MAT_Y,10),[side,side,new THREE.MeshLambertMaterial({map:t}),side,side,side]);m.position.y=MAT_Y/2;m.receiveShadow=true;scene.add(m);})();
+let rugMesh=null;(function(){const t=rugTex();const side=lam(mixHex(TH.mat,'#1b2236',.22));
+  const m=rugMesh=new THREE.Mesh(new THREE.BoxGeometry(14,MAT_Y,10),[side,side,new THREE.MeshLambertMaterial({map:t}),side,side,side]);m.position.y=MAT_Y/2;m.receiveShadow=true;scene.add(m);})();
 /* ---- props: small, chunky, low-poly scenery ---- */
 const W3={};const wl=c=>lam(c);
 function PG(){return new THREE.Group();}
@@ -391,18 +391,19 @@ const PROPS={
  bubbles:R=>{const g=PG();g.userData.bubbles=true;return g;},
  turtle:R=>{const g=PG();const s=mk(G('wtt',()=>new THREE.SphereGeometry(.45,14,8,0,Math.PI*2,0,Math.PI/2)),wl('#4fa65a'),0);g.add(s);g.add(at(sph(.14,'#8fd17a'),.5,.05,0));g.userData.swim=4;return g;}};
 const WC={};let worldGrp=null,worldAnim=[],snowPts=null,bubPts=null,WK=HOMEW;
+const PF=k=>PROPS[k]||(R=>{try{return PM.worldProp(k,R);}catch(e){return new THREE.Group();}});
 function buildWorld(key){const WD=WORLDS[key];const worldGrp=new THREE.Group();scene.add(worldGrp);const worldAnim=[];let snowPts=null,bubPts=null;const R=wrnd(BK.grade*7919+11+(+key)*131);
   const ok=(x,z,m)=>!(Math.abs(x)<7.4+m&&Math.abs(z)<5.4+m);
   /* ground props: a close ring that peeks in at the screen edges, and a far ring for depth */
   for(let i=0;i<46;i++){let x,z,tries=0;const near=i<26;do{const a=R()*Math.PI*2,r=near?8.2+R()*2.6:11+R()*7;x=Math.cos(a)*r*1.25;z=Math.sin(a)*r*.95;tries++;}while(!ok(x,z,near?.3:2)&&tries<20);
-    const k=WD.far[Math.floor(R()*WD.far.length)];const o=PROPS[k](R);const s=(near?.9:1.25)*(.8+R()*.45);o.scale.setScalar(s);o.position.set(x,MAT_Y*0,z);o.rotation.y=R()*Math.PI*2;
+    const k=WD.far[Math.floor(R()*WD.far.length)];const o=PF(k)(R);const s=(near?.9:1.25)*(WD.farScale||1)*(.8+R()*.45);o.scale.setScalar(s);o.position.set(x,MAT_Y*0,z);o.rotation.y=R()*Math.PI*2;
     o.traverse(m=>{if(m.isMesh){m.castShadow=near;m.receiveShadow=false;}});worldGrp.add(o);if(o.userData.spin||o.userData.flame||o.userData.blink||o.userData.sway||o.userData.smoke)worldAnim.push(o);}
   /* a back row on the rug, peeking over the top of the book: you can see the place from every view */
-  [-6.3,-4.5,-2.6,-.9,.9,2.6,4.5,6.3].forEach((x,i)=>{const pool=WD.far.filter(k=>!['volcano','mesa','mountain','igloo','tent'].includes(k));const k=pool[Math.floor(R()*pool.length)];const o=PROPS[k](R);
+  [-6.3,-4.5,-2.6,-.9,.9,2.6,4.5,6.3].forEach((x,i)=>{const pool=WD.far.filter(k=>!['volcano','mesa','mountain','igloo','tent'].includes(k));const k=pool[Math.floor(R()*pool.length)];const o=PF(k)(R);
     o.scale.setScalar(.55+R()*.22);o.position.set(x+(R()-.5)*.4,MAT_Y,-4.55+(R()-.5)*.35);o.rotation.y=(R()-.5)*1.2;o.traverse(m=>{if(m.isMesh){m.castShadow=true;m.receiveShadow=false;}});worldGrp.add(o);
     if(o.userData.spin||o.userData.flame||o.userData.blink||o.userData.sway||o.userData.smoke)worldAnim.push(o);});
   /* things in the air, mostly behind and to the sides so they never cover the pages */
-  for(let i=0;i<16;i++){const k=WD.air[i%WD.air.length];const o=PROPS[k](R);let x,y,z;
+  for(let i=0;i<16;i++){const k=WD.air[i%WD.air.length];const o=PF(k)(R);let x,y,z;
     if(o.userData.big){x=(R()-.5)*8;y=3+R()*2;z=-13-R()*4;o.scale.setScalar(1.1);}
     else{const side=R()<.5?-1:1;x=side*(8+R()*6);y=1.2+R()*3.2;z=-9+R()*14;if(R()<.4){x=(R()-.5)*20;z=-8-R()*5;}}
     o.position.set(x,y,z);o.userData.home=o.position.clone();o.userData.ph=R()*6;o.traverse(m=>{if(m.isMesh)m.castShadow=false;});worldGrp.add(o);worldAnim.push(o);}
@@ -432,10 +433,11 @@ let wTok=0;
 function setWorld(key,mood,instant){key=String(WKEYS[key]||key);if(!WORLDS[key])key=HOMEW;if(key===WK){setMood(mood,instant);return;}
   const tk=++wTok;const old=WC[WK];const nw=WC[key]||buildWorld(key);if(!nw.gtex)nw.gtex=groundTex(WORLDS[key]);WK=key;WD=WORLDS[key];
   worldAnim=nw.anim;snowPts=nw.snowPts;bubPts=nw.bubPts;moodI=-1;setMood(mood,instant);
-  if(instant){if(old)old.grp.visible=false;nw.grp.visible=true;nw.grp.position.y=0;groundMat.map=nw.gtex;groundMat.needsUpdate=true;return;}
+  if(instant){if(old)old.grp.visible=false;nw.grp.visible=true;nw.grp.position.y=0;groundMat.map=nw.gtex;groundMat.needsUpdate=true;setRug(WORLDS[key]);return;}
   nw.grp.visible=true;nw.grp.position.y=-6;
-  tween(.7,k=>{if(old)old.grp.position.y=-6*k;},easeIO).then(()=>{if(tk!==wTok)return;if(old){old.grp.visible=false;old.grp.position.y=0;}groundMat.map=nw.gtex;groundMat.needsUpdate=true;
+  tween(.7,k=>{if(old)old.grp.position.y=-6*k;},easeIO).then(()=>{if(tk!==wTok)return;if(old){old.grp.visible=false;old.grp.position.y=0;}groundMat.map=nw.gtex;groundMat.needsUpdate=true;setRug(WORLDS[key]);
     return tween(1.1,k=>{nw.grp.position.y=-6*(1-k);},easeSoftBack);});}
+const RUGC={};function setRug(wd){if(!rugMesh||!(BK.kSpread||wd.rug))return;const k=wd.name;const t=RUGC[k]||(RUGC[k]=rugTex(wd));const m=rugMesh.material[2];if(m.map!==t){m.map=t;m.needsUpdate=true;}}
 function worldFor(sp){const id=sp&&sp.L&&sp.L.id;return (id&&PM.surprise&&PM.surprise[id])||HOMEW;}
 /* moods: smooth colour change when the lesson strand changes */
 let moodTw=null;
@@ -480,7 +482,7 @@ function drawCover(g){g.setTransform(PS,0,0,PS,0,0);
   const tc=['#ffd24a','#ff8a5b','#7fe0c8','#ffb347','#b9d1ff','#c7f0a4','#ffc4a8'];const tsp=Math.min(142,560/Math.max(1,BK.tiles.length-1+.6)),tsc=Math.min(1,tsp/142);BK.tiles.forEach((L,i)=>{g.save();g.translate(X0+64*tsc+i*tsp,470);g.rotate((i%2?1:-1)*.07);g.scale(tsc,tsc);
     rr(g,-60,-52,120,120,24);g.fillStyle='rgba(10,20,60,.25)';g.fill();rr(g,-60,-60,120,120,24);g.fillStyle=tc[i];g.fill();g.lineWidth=5;g.strokeStyle='#fff';g.stroke();T(g,L,0,30,ZS(90),INK,'center');g.restore();});
   g.save();g.translate(CW-165,470);g.beginPath();for(let i=0;i<24;i++){const r=i%2?92:114,a=i/24*Math.PI*2;i?g.lineTo(Math.cos(a)*r,Math.sin(a)*r):g.moveTo(Math.cos(a)*r,Math.sin(a)*r);}g.closePath();g.fillStyle='#ffd24a';g.fill();
-  T(g,'GRADE',0,-30,'700 25px "Atkinson Hyperlegible", sans-serif',INK,'center');T(g,GR,0,60,ZS(100),INK,'center');g.restore();
+  T(g,BK.badge||'GRADE',0,-30,'700 25px "Atkinson Hyperlegible", sans-serif',INK,'center');T(g,GR,0,60,ZS(100),INK,'center');g.restore();
   T(g,'by '+AUTHOR,X0,620,'700 40px "Atkinson Hyperlegible", sans-serif','#fff');
   /* brand: the logo sits straight on the cover art, no panel; a soft halo and shadow seat it into the colour */
   const LY=700,LH=350,LWd=LOGO.naturalWidth?LH*LOGO.naturalWidth/LOGO.naturalHeight:0,LX=CW/2-LWd/2;
@@ -561,13 +563,18 @@ function pose(v){
   if(v==='pageF'){const tg=V(W/2,PY+.45,.35);const d=fitDist(W*1.0,D*.86);return {p:tg.clone().add(V(0,.68,.74).normalize().multiplyScalar(d)),t:tg};}
   if(v==='readM'){const tg=V(-W/2,PY+.25,.15);const d=fitDist(W*1.02,D*.98);return {p:tg.clone().add(V(0,.88,.47).normalize().multiplyScalar(d)),t:tg};}
   if(v==='pageR'){const tg=V(W/2,PY+.3,.2);const d=fitDist(W*1.04,D*1.0);return {p:tg.clone().add(V(0,.86,.52).normalize().multiplyScalar(d)),t:tg};}
+  if(v==='kT'){const tg=V(-W/2,PY+.1,-.05);const d=fitDist(W*1.0,D*.8);return {p:tg.clone().add(V(0,1,.42).normalize().multiplyScalar(d)),t:tg};}
+  if(v==='kL'){const tg=V(-W/2,PY+.75,.05);const d=fitDist(W*1.08,D*.78);return {p:tg.clone().add(V(0,.5,.87).normalize().multiplyScalar(d)),t:tg};}
+  if(v==='kC'){const tg=V(W/2,PY,.05);const d=fitDist(W*1.02,D*1.0);return {p:tg.clone().add(V(0,1,.22).normalize().multiplyScalar(d)),t:tg};}
+  if(v==='kS'){const tg=V(0,PY+1.15,-.1);const d=fitDist(2*W*.96,D*.98);return {p:tg.clone().add(V(0,.5,.87).normalize().multiplyScalar(d)),t:tg};}
   if(v==='stage'&&BK.storyRight){const tg=V(W/2,PY+.45,1.7);const d=fitDist(W*.98,D*.58);return {p:tg.clone().add(V(0,.8,.66).normalize().multiplyScalar(d)),t:tg};}
   if(v==='stage'){const tg=V(W/2,PY+.4,-D/2+D*.36);const d=fitDist(W*.96,D*.56);return {p:tg.clone().add(V(0,.78,.72).normalize().multiplyScalar(d)),t:tg};}
   const tg=V(0,PY,.1);const d=fitDist(2*W*1.0,D*1.0);return {p:tg.clone().add(V(0,1,.6).normalize().multiplyScalar(d)),t:tg};}
 /* camera director: close and simple for small hands. Stories: the camera goes to the text, then to the
    scene that acts it out; on a phone held upright one page at a time, the 3D side while things happen. */
 let camDir=0;const wideStage=()=>(stage.clientWidth/(stage.clientHeight||1))>1.15;
-function autoView(sp,s){if(s.storyRead)return 'pageR';if(BK.readTheory){const pf=BK.tokens?'pageF':'model';if(sp.kind==='learn')return s.readTheory?'readF':pf;if(sp.kind==='play')return pf;}if(BK.storyRight&&sp.kind==='learn')return 'readM';if(s.story3d)return wideStage()?'storyW':'storyL';if(wideStage())return 'book';
+const kSp=sp=>!!(BK.kSpread&&sp&&sp.L&&!(sp.kind==='learn'&&sp.L.strand==='Story Time'));
+function autoView(sp,s){if(kSp(sp)){if(sp.kind==='play')return 'kS';if(sp.kind==='learn')return s.kc?'kC':(s.kTop?'kT':'kL');}if(s.storyRead)return 'pageR';if(BK.readTheory){const pf=BK.tokens?'pageF':'model';if(sp.kind==='learn')return s.readTheory?'readF':pf;if(sp.kind==='play')return pf;}if(BK.storyRight&&sp.kind==='learn')return 'readM';if(s.story3d)return wideStage()?'storyW':'storyL';if(wideStage())return 'book';
   if(sp.kind==='play')return 'model';if(sp.kind==='learn'&&(s.view==='theory'||s.view==='model')&&(s.demo||s.cues))return PM.STAGE?'stage':'model';return s.view==='read'||s.story?'read':'book';}
 function setView(v,instant){const orig=v;if(v==='theory')v=(stage.clientWidth/(stage.clientHeight||1))>1.15?'book':'read';if(!bookOpen)v='cover';view=v;{const lb=document.getElementById('bLeftPg'),rb=document.getElementById('bRightPg');if(lb){lb.classList.toggle('on',v==='read');rb.classList.toggle('on',v==='model');}}document.querySelectorAll('.views button').forEach(b=>b.classList.toggle('on',b.dataset.view===v));
   refreshDock(true);applyCam();const q=pose(orig==='theory'&&v==='book'?'tbook':v);basePose=q;if(instant){camera.position.copy(q.p);controls.target.copy(q.t);camTween=null;return;}
@@ -642,10 +649,10 @@ function finishPage(p,side,sp){const g=p.g,L=side==='L';
   const gr=g.createLinearGradient(L?CW:0,0,L?CW-160:160,0);gr.addColorStop(0,'rgba(20,28,50,.24)');gr.addColorStop(.3,'rgba(20,28,50,.07)');gr.addColorStop(1,'rgba(20,28,50,0)');g.fillStyle=gr;g.fillRect(L?CW-160:0,0,160,CH);
   g.font=FT.small;g.fillStyle=GREY;const num=sp.page+(L?0:1);
   if(L){g.textAlign='left';g.fillText(String(num),X0,1358);g.fillText(TITLE+' · '+SUB,X0+60,1358);}
-  else{g.textAlign='left';if(sp.codes&&sp.codes.length)g.fillText('Ontario '+sp.codes.map(c=>GR+'.'+c).join(' · '),X0,1358);g.textAlign='right';g.fillText(String(num),X0+TW,1358);g.fillStyle=TEAL;g.fillText(BRANDNAME,X0+TW-60,1358);}g.textAlign='left';}
+  else{g.textAlign='left';if(sp.codes&&sp.codes.length)g.fillText('Ontario '+sp.codes.map(c=>CPX+c).join(' · '),X0,1358);g.textAlign='right';g.fillText(String(num),X0+TW,1358);g.fillStyle=TEAL;g.fillText(BRANDNAME,X0+TW-60,1358);}g.textAlign='left';}
 const cxOf=x=>(x+W/2)*PX,cyOf=z=>(z+D/2)*PX;
 const NR=()=>(window.BOOK&&BOOK.rounds)||5;const NRW=()=>['zero','one','two','three','four','five','six','seven','eight','nine','ten'][NR()]||String(NR());
-function goLine(L){const gl=(BOOK.goLines&&BOOK.goLines.length)?BOOK.goLines:null;if(!gl)return {say:"It's your turn! Let's play!",speech:LINES.go};const k=((L.n||1)*7+3)%gl.length;const x=gl[k];return typeof x==='string'?{say:x,speech:x}:x;}
+function goLine(L){const gf=BOOK.goFor&&L&&BOOK.goFor[L.id];if(gf)return {say:gf,speech:gf};const gl=(BOOK.goLines&&BOOK.goLines.length)?BOOK.goLines:null;if(!gl)return {say:"It's your turn! Let's play!",speech:LINES.go};const k=((L.n||1)*7+3)%gl.length;const x=gl[k];return typeof x==='string'?{say:x,speech:x}:x;}
 function starsRow(g,x,y,n,of,size){for(let i=0;i<of;i++)T(g,'★',x+i*size*1.1,y,ZS(size),i<n?'#f2a400':'#d7dbe3');}
 
 /* ================= sounds ================= */
@@ -666,9 +673,15 @@ let bestVoice=null;function pickVoice(){try{const vs=speechSynthesis.getVoices()
   bestVoice=vs.sort((a,b)=>score(b)-score(a))[0];}catch(e){}}
 try{pickVoice();speechSynthesis.onvoiceschanged=pickVoice;}catch(e){}
 let voClock=null;
-function stopSpeak(){voTok++;voClock=null;try{VO.pause();}catch(e){}try{speechSynthesis.cancel();}catch(e){}}
-function speakDevice(text,onend){if(!('speechSynthesis' in window))return false;try{const u=new SpeechSynthesisUtterance(text.replace(/SpatialSprout/g,'Spatial Sprout'));if(bestVoice){u.voice=bestVoice;u.lang=bestVoice.lang;}else u.lang='en-US';u.rate=1;u.pitch=1;u.onend=onend;const tk=voTok;u.onstart=()=>{voClock={tok:tk,t0:performance.now(),dur:text.length/14,dev:true,ch:0};};u.onboundary=e=>{if(voClock&&voClock.tok===tk)voClock.ch=e.charIndex;};speechSynthesis.speak(u);return true;}catch(e){return false;}}
-function speak(text,onend){if(!soundOn)return false;stopSpeak();const tk=voTok;const h=vhash(text);
+let voH=null;
+function stopSpeak(){voTok++;voClock=null;try{VO.pause();}catch(e){}try{if(voH){voH.stop();voH=null;}}catch(e){}try{speechSynthesis.cancel();}catch(e){}}
+function speakDevice(text,onend){if((window.BOOK||{}).noDeviceVoice){const tk=voTok;const ms=Math.max(2200,String(text||'').split(/\s+/).length*330);setTimeout(()=>{if(tk===voTok&&onend)onend();},ms);return true;}if(!('speechSynthesis' in window))return false;try{const u=new SpeechSynthesisUtterance(text.replace(/SpatialSprout/g,'Spatial Sprout'));if(bestVoice){u.voice=bestVoice;u.lang=bestVoice.lang;}else u.lang='en-US';u.rate=1;u.pitch=1;u.onend=onend;const tk=voTok;u.onstart=()=>{voClock={tok:tk,t0:performance.now(),dur:text.length/14,dev:true,ch:0};};u.onboundary=e=>{if(voClock&&voClock.tok===tk)voClock.ch=e.charIndex;};speechSynthesis.speak(u);return true;}catch(e){return false;}}
+let voCurH=null;PM.voiceNow=()=>(voClock&&voClock.tok===voTok&&!voClock.dev)?{h:voCurH,t:(performance.now()-voClock.t0)/1000}:null;
+function speak(text,onend){if(!soundOn)return false;stopSpeak();const tk=voTok;const h=vhash(text);voCurH=h;
+  /* Howler (JK): Web Audio playback that unlocks itself on phones and tablets; falls back to the plain audio element */
+  if(window.Howl&&(window.BOOK||{}).howler&&window.VOICE&&VOICE[h]){let done=false;const fin=()=>{if(done||tk!==voTok)return;done=true;if(onend)onend();};
+    const fb=()=>{if(tk!==voTok||done)return;voH=null;VO.onended=fin;VO.src='voice/'+h+'.mp3';try{const p=VO.play();if(p&&p.catch)p.catch(()=>{if(!done){done=true;speakDevice(text,onend);}});}catch(e){done=true;speakDevice(text,onend);}};
+    try{const hw=new Howl({src:['voice/'+h+'.mp3'],format:['mp3'],html5:false,onplay:()=>{if(tk===voTok)voClock={tok:tk,t0:performance.now(),dur:hw.duration()||VOICE[h]};},onend:fin,onloaderror:fb,onplayerror:()=>{hw.once('unlock',()=>{if(tk===voTok)hw.play();});}});voH=hw;hw.play();return true;}catch(e){fb();return true;}}
   if(window.VOICE&&VOICE[h]){let done=false;const fin=()=>{if(done||tk!==voTok)return;done=true;if(onend)onend();};
     VO.onended=fin;VO.onplaying=()=>{if(tk===voTok)voClock={tok:tk,t0:performance.now()-VO.currentTime*1000,dur:(isFinite(VO.duration)&&VO.duration)||VOICE[h]};};VO.onerror=()=>{if(tk===voTok&&!done){done=true;speakDevice(text,onend);}};VO.src='voice/'+h+'.mp3';
     try{const p=VO.play();if(p&&p.catch)p.catch(()=>{if(tk===voTok&&!done){done=true;speakDevice(text,onend);}});}catch(e){done=true;return speakDevice(text,onend);}return true;}
@@ -901,8 +914,8 @@ PM.redrawR=()=>{if(cur<0||building||busy)return;drawPage(rightP,SP[cur],'R');};
 PM.curStep=()=>cur>=0&&SP[cur]?SP[cur].steps[stepI]:null;
 PM.spot={on:spotOn,off:spotOff,pick:pickObjs,stop(){cueRun=null;},get run(){return cueRun;},get list(){return spots;}};
 /* ================= exports for lesson files ================= */
-Object.assign(PM,{paperBase,kid,CREW,THREE,V,W,D,PY,PX,CW,CH,X0,TW,INK,RED,BLUE,GREY,TEAL,VIBE,FT,ZS,G,M,lam,mk,ink,unitBox,cellMat,label,starGeo,wedgeGeo,clearGroup,disposeObj,rr,T,wrap,para,header,keyWords,predict,
-  flapBox,tryIt,box,caption,hot,starsRow,cxOf,cyOf,tint,moveTo,hop,tween,burst,easeOut,easeIO,easeBack,A,movers,get ACC(){return ACC;}});
+Object.assign(PM,{WORLDS,WKEYS,kSp,applyLight,paperBase,kid,CREW,THREE,V,W,D,PY,PX,CW,CH,X0,TW,INK,RED,BLUE,GREY,TEAL,VIBE,FT,ZS,G,M,lam,mk,ink,unitBox,cellMat,label,starGeo,wedgeGeo,clearGroup,disposeObj,rr,T,wrap,para,header,keyWords,predict,
+  flapBox,tryIt,box,caption,hot,starsRow,cxOf,cyOf,tint,moveTo,hop,tween,burst,easeOut,easeIO,easeBack,A,movers,speak:(t,f)=>speak(t,f),get ACC(){return ACC;}});
 
 /* ================= spreads ================= */
 const INTRO={id:'intro',kind:'intro',title:'Welcome',strand:'',color:TEAL,num:'',codes:[],
@@ -933,7 +946,7 @@ const INTRO={id:'intro',kind:'intro',title:'Welcome',strand:'',color:TEAL,num:''
 function learnRight(p,S,L){if(PM.learnRight&&PM.learnRight(p,S,L))return;const g=p.g;if(BK.readTheory){if(L.fig){g.font=FT.cap;g.fillStyle=GREY;g.textAlign='center';g.fillText(L.fig,CW/2,CH-80);g.textAlign='left';}if(L.readout)L.readout(p,S,CH-200);return;}let y=cyOf(L.rz==null?.55:L.rz);if(L.readout)y=L.readout(p,S,y)||y;
   y=caption(p,y+26,'Fig. '+L.n+'a',L.fig||'')+12;const tips=(L.explore||[]).filter(t=>!(BK.noLearnDock&&/(\bNext\b|Press \*?New\b)/.test(t)));const h=74+tips.length*44;box(p,y,h,'Explore');
   tips.forEach((t,i)=>{g.beginPath();g.arc(X0+42,y+80+i*44,9,0,Math.PI*2);g.fillStyle=VIBE[i%6];g.fill();wrap(g,t,X0+64,y+88+i*44,TW-90,30,{font:FT.small,bold:FT.smallB});});}
-function practiceLeft(p,S,L){const g=p.g;let y=header(p,S);
+function practiceLeft(p,S,L){if(kSp(S.sp)){if(PM.kPage)PM.kPage(p,S,L,'L');return;}const g=p.g;let y=header(p,S);
   if(PM.practiceStory){const y2=PM.practiceStory(L,p,S,y);if(y2){y=y2;const i=rankIdx(PTS);rr(g,X0,y,TW,96,22);g.fillStyle=tint(TH.c[0],.16);g.fill();T(g,'YOUR POINTS',X0+26,y+38,FT.eyebrow,ACC);T(g,String(PTS),X0+26,y+80,ZS(40),INK);T(g,RANKS[i][1],X0+200,y+76,ZS(36),'#16a36f');
       starsRow(g,X0+TW-NR()*24-20,y+62,S.game.stars,NR(),22);if(S.st.won)drawStamp(g,X0+TW-60,y-36,40);y+=118;if(PM.practiceMore)try{PM.practiceMore(L,p,S,y);}catch(e){console.error(e);}return;}}
   y=para(p,y,'Your crew has *'+NR()+' challenges* for you. Every right answer earns *points*: more for a first try and for a streak!')+18;
@@ -945,7 +958,7 @@ function practiceLeft(p,S,L){const g=p.g;let y=header(p,S);
   T(g,'This lesson',X0,y+10,FT.smallB,GREY);starsRow(g,X0+190,y+16,S.game.stars,NR(),NR()>5?22:40);if(S.st.won)drawStamp(g,X0+TW-70,y,52);y+=60;
   const tips=(L.explore||[]).filter(t=>!(BK.noLearnDock&&/(\bNext\b|Press \*?New\b)/.test(t)));if(tips.length){T(g,'Tips',X0,y+20,FT.h3);y+=40;tips.forEach((t,k)=>{g.beginPath();g.arc(X0+12,y+12,8,0,Math.PI*2);g.fillStyle=VIBE[k%6];g.fill();y=wrap(g,t,X0+34,y+22,TW-40,32,{font:FT.small,bold:FT.smallB})+8;});}
   if(PM.practiceMore)try{PM.practiceMore(L,p,S,y);}catch(e){console.error(e);}}
-function practiceRight(p,S,L){const g=p.g;let y=cyOf(L.rz==null?.55:L.rz);if(L.readout)y=L.readout(p,S,y)||y;y+=24;const Gm=S.game;
+function practiceRight(p,S,L){if(kSp(S.sp)){if(PM.kPage)PM.kPage(p,S,L,'R');return;}const g=p.g;let y=cyOf(L.rz==null?.55:L.rz);if(L.readout)y=L.readout(p,S,y)||y;y+=24;const Gm=S.game;
   const tt=Gm.done?'You won all '+NR()+' rounds! Press Play again for new puzzles.':Gm.phase==='howto'?'Get ready. The first question is coming!':(Gm.text||'');const th=wrap(g,tt,0,0,TW-60,38,{font:FT.bodyB,dry:true});const h=Math.max(150,th+110);
   box(p,y,h,(NR()>5?'Question ':'Round ')+Math.min(Gm.round+1,NR())+' of '+NR());starsRow(g,X0+TW-(NR()>5?300:210),y+44,Gm.stars,NR(),NR()>5?26:34);wrap(g,tt,X0+30,y+96,TW-60,38,{font:FT.bodyB,boldColor:ACC});
   p.stampAt={x:X0+TW-90,y:y+h-60};if(S.st.won)drawStamp(g,X0+TW-90,y+h-50,56);
@@ -959,6 +972,7 @@ function learnSteps(L){if(BK.readTheory)return learnSteps2(L);const why=(PM.why|
 function learnSteps2(L){const core=(L.learn||[]).filter(s=>!/^predict/i.test((s.speech||s.say||'').trim())&&!/^your turn/i.test((s.say||'').trim())&&!s.howto);
   const TH2=(PM.theory||{})[L.id];let three;if(TH2){const dm=core.filter(s=>s.view!=='read'&&s.demo);const fd=(dm[0]||{}).demo;const own=TH2.some(s=>s.demo);three=TH2.filter(s=>!s.storyRead).map(s=>Object.assign({},s,{demo:s.demo||fd,quietDemo:!s.demo&&!s.cues}));if(!own)three=three.concat(dm);}else{const th=core.filter(s=>s.view==='read'),dm=core.filter(s=>s.view!=='read');const fd=(dm.find(d=>d.demo)||{}).demo;three=th.map(s=>Object.assign({},s,{demo:s.demo||fd})).concat(dm);}
   const story=TH2?TH2.filter(s=>s.storyRead):[];
+  if(BK.kSpread&&L.strand!=='Story Time')return three.map(s=>Object.assign({},s,{view:'pageF',explain:true})).concat(story);
   return [{say:'Read with me: '+L.title,readTheory:true,view:'readF'}].concat(three.map(s=>Object.assign({},s,{view:'pageF',explain:true})),story);}
 function makeSpreads(){SP=[INTRO];LESSONS.forEach((L,i)=>{L.n=i+1;L.color=STRAND[L.strand]||TEAL;
   const base={L,title:L.title,strand:L.strand,codes:L.codes||[],color:L.color};
@@ -972,14 +986,14 @@ function buildSpread(t){const sp=SP[t],S=ensure(sp);const grp=new THREE.Group();
   const old=cur;building=true;cur=t;let api={};
   try{if(sp.kind==='intro')api=sp.build(S,grp)||{};else{const game={solved:(msg)=>gameSolved(S,msg),get round(){return S.game.round;}};S.gameObj=game;api=sp.L.build(S,grp,sp.kind,game)||{};
     if(sp.kind==='play'&&!S.game.done){S.game.phase='howto';S.game.text='';}
-    if(BK.readTheory&&!BK.tokens&&PM.HAB&&sp.L){try{const H=PM.HAB.mini(PM.HAB.strandEnv(sp.L.strand,sp.L.n),sp.L.n*5+(sp.kind==='play'?1:0));H.g.position.z=1.0+(-1.95*1.08)+1.95*1.08-0.0;H.g.scale.setScalar(1.08);H.g.position.z=1.0;grp.add(H.g);}catch(e){console.error(e);}}/* crew guide no longer stands on the book */}}catch(e){console.error(e);}
+    if(BK.readTheory&&!BK.tokens&&PM.HAB&&sp.L&&!kSp(sp)){try{const H=PM.HAB.mini(PM.HAB.strandEnv(sp.L.strand,sp.L.n),sp.L.n*5+(sp.kind==='play'?1:0));H.g.position.z=1.0+(-1.95*1.08)+1.95*1.08-0.0;H.g.scale.setScalar(1.08);H.g.position.z=1.0;grp.add(H.g);}catch(e){console.error(e);}}/* crew guide no longer stands on the book */}}catch(e){console.error(e);}
   building=false;cur=old;popGrp=grp;S.api=api;return api;}
 function challenger(L,r){return CREW[((L&&L.n?L.n-1:0)+(r||0))%CREW.length].n;}
 function startGame(S){const g=S.game;if(g.phase==='play'||g.done)return;g.phase='play';g.miss=false;A.stopSeq();g.setup=true;try{g.text=S.api.task(g.round);}catch(e){console.error(e);g.text='';}g.setup=false;A.say('Round '+(g.round+1)+': '+g.text.replace(/\*/g,''));A.redraw();}
 let nextTok=0;
 function gameSolved(S,msg){const g=S.game;if(g.lock||g.done||g.setup||g.phase!=='play'||SP[cur].S!==S)return;g.lock=true;g.stars++;const pts=(g.miss?10:15)+(!g.miss&&g.streak>=2?5:0);g.streak=g.miss?0:g.streak+1;
-  A.good(msg||'Correct!');cheerVoice(true);mascotCheer(false);guideCheer(false);addPts(pts);A.redraw();
-  A.later(()=>{g.lock=false;g.round++;g.miss=false;if(g.round>=NR()){g.done=true;A.win();addPts(25);mascotCheer(true);guideCheer(true);speak(NR()!==5?(BOOK.winLine||'Amazing! You finished all '+NRW()+' questions!'):(PLAY?LINES.winKid:LINES.winOld));A.say('You won all '+NR()+' rounds! +25 bonus points. Next lesson coming up…');A.redraw();
+  A.good(msg||'Correct!');cheerVoice(true);mascotCheer(false);if(PM.kFx)try{PM.kFx(false);}catch(e){}guideCheer(false);addPts(pts);A.redraw();
+  A.later(()=>{g.lock=false;g.round++;g.miss=false;if(g.round>=NR()){g.done=true;A.win();addPts(25);mascotCheer(true);if(PM.kFx)try{PM.kFx(true);}catch(e){}guideCheer(true);speak(NR()!==5?(BOOK.winLine||'Amazing! You finished all '+NRW()+' questions!'):(PLAY?LINES.winKid:LINES.winOld));A.say('You won all '+NR()+' rounds! +25 bonus points. Next lesson coming up…');A.redraw();
       const tk=++nextTok,here=cur;setTimeout(()=>{if(tk===nextTok&&cur===here&&!busy&&cur<SP.length-1&&S.game.done)goSpread(cur+1,0,true);},6500);}
     else{g.setup=true;try{g.text=S.api.task(g.round);}finally{g.setup=false;}A.say('Round '+(g.round+1)+': '+g.text.replace(/\*/g,''));}A.redraw();},Math.max(1600,+((S.api&&S.api.hold&&S.api.hold())||0)));}
 function replay(S){nextTok++;S.game={round:0,stars:0,done:false,text:'',phase:'play',miss:false,streak:0};S.game.setup=true;try{S.game.text=S.api.task(0);}finally{S.game.setup=false;}A.say('New game! '+S.game.text.replace(/\*/g,''));A.redraw();}
@@ -989,7 +1003,7 @@ let dockSig='';
 const NXA=/^\s*(▶\s*)?(Next|Again|New|↻)/i;
 function learnCtl(){if(!BK.noLearnDock)return null;let c=[];try{c=curApi&&curApi.controls?curApi.controls():[];}catch(e){}return c.filter(x=>!NXA.test(x.t||''));}
 function refreshDock(noCam){const dock=$('#dock');const sp=SP[cur];
-  const show=bookOpen&&!busy&&cur>=0&&sp&&sp.kind!=='intro'&&!(BK.noLearnDock&&sp.kind==='learn'&&(!(learnCtl()||[]).length||(sp.steps[stepI]&&sp.steps[stepI].readTheory)))&&view!=='read'&&!(sp.steps[stepI]&&sp.steps[stepI].view==='theory'&&view==='book');
+  const show=bookOpen&&!busy&&cur>=0&&sp&&sp.kind!=='intro'&&!(BK.noLearnDock&&sp.kind==='learn'&&!(BK.kSpread&&sp.steps[stepI]&&sp.steps[stepI].kc)&&(!(learnCtl()||[]).length||(sp.steps[stepI]&&sp.steps[stepI].readTheory)))&&view!=='read'&&!(sp.steps[stepI]&&sp.steps[stepI].view==='theory'&&view==='book');
   if(!show){if(!dock.hidden){dock.hidden=true;if(!noCam){applyCam();if(!camTween)setView(view);}}return;}
   const S=sp.S,api=curApi||{};const dS=$('#dStars'),dI=$('#dInfo'),dB=$('#dBtns');
   if(sp.kind==='play'){const g=S.game;dS.innerHTML=Array.from({length:NR()},(_,i)=>i).map(i=>i<g.stars?'★':'<i>★</i>').join('');dI.textContent=g.done?'You won! Next lesson is coming up.':g.phase==='howto'?'Get ready…':'Round '+(g.round+1)+' · '+challenger(sp.L,g.round)+'’s challenge: '+(g.text||'').replace(/\*/g,'');}
@@ -998,6 +1012,7 @@ function refreshDock(noCam){const dock=$('#dock');const sp=SP[cur];
   if(sp.kind==='play'&&S.game.phase==='howto'&&!S.game.done)ctl=[{t:"▶ Let's play!",go:true,big:true,fn:()=>{startGame(S);}}];
   if(sp.kind==='play'&&S.game.done)ctl=[{t:'Next lesson ▶',go:true,big:true,fn:()=>{nextTok++;goSpread(cur+1,0,true);}},{t:'↻ Play again',fn:()=>replay(S)}].concat(ctl);
   if(BK.noLearnDock&&sp.kind==='learn'){ctl=ctl.filter(x=>!NXA.test(x.t||''));dI.textContent='';}
+  if(BK.kSpread&&sp.kind==='learn'&&sp.steps[stepI]&&sp.steps[stepI].kc){ctl=[{t:'I finished colouring! ▶',go:true,big:true,fn:()=>goSpread(cur+1,0,true)}];dI.textContent='Colour the page with the crayons!';}
   else if(sp.kind==='learn'&&stepI===sp.steps.length-1)ctl=ctl.concat([{t:'Practice ▶',go:true,fn:()=>goSpread(cur+1,0,true)}]);
   dB.innerHTML='';ctl.forEach(c=>{const b=document.createElement('button');b.type='button';b.textContent=c.t;if(c.on)b.classList.add('on');if(c.go)b.classList.add('go');if(c.big)b.classList.add('big');if(c.dis)b.disabled=true;
     b.addEventListener('click',()=>{if(busy)return;pop();c.fn();});dB.append(b);});
@@ -1014,17 +1029,18 @@ function savedAt(){let at=0;try{at=parseInt(localStorage.getItem(SKEY+'at')||'0'
 let playing=false,playTok=0;
 let lineBusy=false,lineCut=false;
 function setPlay(on){playing=on;if(!on){if(lineBusy)lineCut=true;lineBusy=false;}$('#icPlay').innerHTML=on?'<path d="M5 3.5h3.5v13H5zM11.5 3.5H15v13h-3.5z"/>':'<path d="M5 3.5v13l11-6.5z"/>';$('#bPlay').setAttribute('aria-label',on?'Pause':'Play lesson');$('#bPlay').classList.toggle('on',on);if(!on){playTok++;stopSpeak();}}
+PM.kNext=()=>{const sp=SP[cur];if(!sp||sp.kind!=='learn'||busy)return;const s=sp.steps[stepI];if(s&&s.waitDone&&stepI<sp.steps.length-1)setStep(stepI+1);};
 function setStep(i){lineCut=false;const sp=SP[cur];stepI=Math.max(0,Math.min(sp.steps.length-1,i));const s=sp.steps[stepI];
   document.documentElement.style.setProperty('--lesson',sp.color);$('#capNum').textContent=sp.L?String(sp.L.n)+(sp.kind==='play'?'P':''):'';setCaption(s.say);drawDots();spotOff();cueRun=null;setView(s.view==='cover'?s.view:(pagePick||autoView(sp,s)));const dirTok=++camDir;if(!pagePick&&s.story3d&&!wideStage())setTimeout(()=>{if(dirTok===camDir&&!pagePick)setView('stage');},4200);
   readStop();if(s.readTheory&&!pagePick){READ.sp=sp;theoryText(sp);READ.on=true;READ.cur=-1;READ.t=0;READ.voiced=false;drawPage(leftP,sp,'L');}
   autoCam=!BK.stillCam&&(sp.kind==='intro'||((s.view==='model'||s.view==='theory')&&(!!s.demo||!!s.howto)));autoT=0;
   if(s.demo&&s.demo!=='hold'&&curApi.demo){try{curApi.demo(s.demo);}catch(e){console.error(e);}}
-  const S=sp.S;let holdMs=0;
+  const S=sp.S;let holdMs=s.hold||0;
   if(s.howto&&S&&!S.game.done){S.game.phase='howto';const d=(sp.L.learn.find(x=>x.demo)||{}).demo;if(d&&curApi.demo){try{curApi.demo(d);}catch(e){console.error(e);}}holdMs=7000;refreshDock();}
-  if(s.go&&S&&!S.game.done){A.stopSeq();A.later(()=>startGame(S),250);}
+  if(s.go&&S&&!S.game.done){A.stopSeq();const gw=(BOOK.goFor&&sp.L&&BOOK.goFor[sp.L.id]&&window.VOICE)?(VOICE[vhash(s.speech||s.say||'')]||0)*1000+350:0;A.later(()=>startGame(S),Math.max(250,gw));}
   showStory(s.story&&!BK.readTheory?sp:null);if(s.story){guideMode='hello';guideT=0;if(PLAY)A.later(()=>mascotCheer(false,true),700);}
-  const tk=++playTok;const adv=()=>{if(tk!==playTok||!playing)return;if(stepI<sp.steps.length-1)setStep(stepI+1);else if((sp.kind==='intro'||sp.kind==='learn')&&cur<SP.length-1)goSpread(cur+1,0,true);else setPlay(false);};
-  const txt=s.readTheory?theoryText(sp).speech:(s.speech||s.say);const t0=Date.now();lineBusy=true;const spoke=speak(txt,()=>{if(tk===playTok)lineBusy=false;if(tk===playTok&&curApi.stepEnd)try{curApi.stepEnd(s);}catch(e){console.error(e);}setTimeout(adv,Math.max((s.demo&&!s.quietDemo?2400:s.story?1400:(s.cues?1700:1100))*(BK.grade>=6?.6:1),holdMs-(Date.now()-t0)));});if(!spoke)lineBusy=false;
+  const tk=++playTok;PM.kStepDone=false;const adv=()=>{if(tk!==playTok||!playing)return;if(s.waitDone&&!PM.kStepDone){setTimeout(adv,500);return;}if(stepI<sp.steps.length-1)setStep(stepI+1);else if(s.kc){setPlay(false);refreshDock();}else if((sp.kind==='intro'||sp.kind==='learn')&&cur<SP.length-1)goSpread(cur+1,0,true);else setPlay(false);};
+  const txt=s.readTheory?theoryText(sp).speech:(s.speech||s.say);const t0=Date.now();lineBusy=true;const spoke=speak(txt,()=>{if(tk===playTok)lineBusy=false;if(tk===playTok&&curApi.stepEnd)try{curApi.stepEnd(s);}catch(e){console.error(e);}setTimeout(adv,Math.max((s.demo&&!s.quietDemo?2400:s.story?1400:(s.cues?1700:1100))*(BK.grade>=6?.6:1)+(s.pause||0),holdMs-(Date.now()-t0)));});if(!spoke)lineBusy=false;
   if(s.cues&&s.cues.length)startCues(s,txt,spoke);
   if(!spoke&&curApi.stepEnd){const tk3=playTok;setTimeout(()=>{if(tk3===playTok)try{curApi.stepEnd(s);}catch(e){}},Math.max(3000,txt.split(' ').length*380));}
   if(playing&&!spoke)setTimeout(adv,Math.max(holdMs,s.demo?6000:3800,txt.split(' ').length*380));
@@ -1042,14 +1058,14 @@ async function popUp(){const g=popGrp;if(!g)return;g.scale.y=.02;
 function flip(fwd){setLeaf(fwd?0:Math.PI,fwd?1:-1);leafF.visible=leafBk.visible=true;paperSound(.45);return tween(1.35,k=>setLeaf(fwd?Math.PI*k:Math.PI*(1-k),fwd?1:-1),easeSine).then(()=>{leafF.visible=leafBk.visible=false;});}
 function copyCanvas(dst,src){dst.g.setTransform(1,0,0,1,0,0);dst.g.drawImage(src.c,0,0);dst.t.needsUpdate=true;}
 async function goSpread(t,stepTo,keepPlay){if(busy||t===cur||t<0||t>=SP.length)return;readStop();if(!bookOpen){openBook(t);return;}const resume=keepPlay||playing;busy=true;guide=null;spotOff();cueRun=null;setPlay(false);nextTok++;mTok++;mascot.visible=false;emblemObj=null;logoObj=null;A.stopSeq();token++;$('#sheet').hidden=true;refreshDock(true);
-  const fwd=t>cur,sp=SP[t];const autoRun=resume||sp.kind==='learn';showStory(null);setWorld(worldFor(sp),STRANDI[sp.strand]||0);clearFlaps();clickables=[];draggables=[];curApi={};setView('book');await foldDown();
+  const fwd=t>cur,sp=SP[t];const autoRun=resume||sp.kind==='learn';showStory(null);setWorld(worldFor(sp),STRANDI[sp.strand]||0);if(PM.onSpread)try{PM.onSpread(sp);}catch(e){}clearFlaps();clickables=[];draggables=[];curApi={};setView('book');await foldDown();
   if(fwd)copyCanvas(flipF,rightP);else copyCanvas(flipB,leftP);
   const api=buildSpread(t);
   if(fwd){drawPage(flipB,sp,'L');drawPage(rightP,sp,'R');await flip(true);drawPage(leftP,sp,'L');}else{drawPage(flipF,sp,'R');drawPage(leftP,sp,'L');await flip(false);drawPage(rightP,sp,'R');}
   cur=t;curApi=api;popGrp.visible=true;restoreFlaps();await popUp();busy=false;try{localStorage.setItem(SKEY+'at',String(t));}catch(e){}pagePick=null;if(autoRun&&sp.kind!=='play')setPlay(true);setStep(stepTo||0);refreshDock();}
 async function openBook(t){if(busy||bookOpen)return;busy=true;token++;setPlay(false);$('#sheet').hidden=true;const sp=SP[t];if(!userMuted)setSound(true);
   if(coverDeco){const d=coverDeco;coverDeco=null;tween(.35,k=>d.scale.setScalar(Math.max(.01,1-k))).then(()=>{scene.remove(d);disposeObj(d);});}
-  const api=buildSpread(t);setWorld(worldFor(sp),STRANDI[sp.strand]||0);drawPage(leftP,sp,'L');drawPage(rightP,sp,'R');paperSound(.5);bookOpen=true;setView('book');
+  const api=buildSpread(t);setWorld(worldFor(sp),STRANDI[sp.strand]||0);if(PM.onSpread)try{PM.onSpread(sp);}catch(e){}drawPage(leftP,sp,'L');drawPage(rightP,sp,'R');paperSound(.5);bookOpen=true;setView('book');
   await tween(1.8,k=>{coverPivot.rotation.z=Math.PI*k;},easeSine);leftBlock.visible=leftMesh.visible=true;
   await tween(.35,k=>{const s=Math.max(.02,k);leftBlock.scale.y=s;leftBlock.position.y=MAT_Y+COVER_T+BLOCK_T*s/2;leftMesh.position.y=MAT_Y+COVER_T+BLOCK_T*s+.004;},easeOut);
   cur=t;curApi=api;popGrp.visible=true;restoreFlaps();await popUp();busy=false;try{localStorage.setItem(SKEY+'at',String(t));}catch(e){}setPlay(true);setStep(0);refreshDock();}
@@ -1091,8 +1107,14 @@ const landRing=new THREE.Mesh(new THREE.RingGeometry(.2,.27,40).rotateX(-Math.PI
 function doTap(h){if(!h||!h.tap)return;const o=h.o;const s0=o?o.scale.clone():null;
   try{h.tap(o);}catch(err){console.error(err);}
   if(o&&!h.page){if(h.point)ripple(h.point);if(s0&&o.scale.equals(s0)&&!movers.has(o)&&o.parent){const sc=screenOf(o);if(sc&&sc.r<110)bounce(o);}}}
+/* free crayon drawing on a page (JK sample lessons): PM.kDraw={start,move,end} gets page-canvas coordinates; a short press is still a tap */
+let pdraw=null;function pageXY(e){setRay(e);const hs=ray.intersectObjects([rightMesh],false);if(!hs.length||!hs[0].uv)return null;return {x:hs[0].uv.x*CW,y:(1-hs[0].uv.y)*CH};}
+window.addEventListener('pointermove',e=>{if(!pdraw||e.pointerId!==pdraw.id)return;const q=pageXY(e);if(!q)return;if(!pdraw.on){if(Math.hypot(e.clientX-pdraw.sx,e.clientY-pdraw.sy)<10)return;pdraw.on=true;controls.enabled=false;try{PM.kDraw&&PM.kDraw.start(pdraw.p0.x,pdraw.p0.y);}catch(err){}}try{PM.kDraw&&PM.kDraw.move(q.x,q.y);}catch(err){}});
+window.addEventListener('pointerup',e=>{if(!pdraw||e.pointerId!==pdraw.id)return;const on=pdraw.on;pdraw=null;controls.enabled=true;if(on){try{PM.kDraw&&PM.kDraw.end();}catch(err){}}});
 stage.addEventListener('pointerdown',e=>{if(busy||e.target!==renderer.domElement||(e.button&&e.button>0)||press)return;
+  if(PM.kDraw&&!pdraw){const q=pageXY(e);if(q&&(!PM.kDraw.ok||PM.kDraw.ok(q.x,q.y))){const hh=hitTest(e,true);if(!hh||hh.page){pdraw={id:e.pointerId,sx:e.clientX,sy:e.clientY,p0:q,on:false};controls.enabled=false;}}}
   const h=hitTest(e,true);if(!h)return;
+  if(h.drag&&h.drag.instant&&h.drag.tap){e.stopPropagation();doTap({o:h.o,tap:h.drag.tap,point:h.point});return;}
   e.stopPropagation();controls.enabled=false;try{renderer.domElement.setPointerCapture(e.pointerId);}catch(err){}
   press={h,x:e.clientX,y:e.clientY,id:e.pointerId,moved:false,touch:e.pointerType!=='mouse'};},true);
 const dragPt=new THREE.Vector3(),grabOff=new THREE.Vector3();
@@ -1136,7 +1158,7 @@ $('#bSound').onclick=()=>{setSound(!soundOn);userMuted=!soundOn;if(soundOn&&cur>
 $('#rankPill').onclick=openRanks;
 let night=false;
 function applyLight(){const sky=night?moodNow.sky.clone().lerp(new THREE.Color('#0d1020'),.84):moodNow.sky;
-  hemi.intensity=night?.22:(WD.dark?.78:.64);if(night)hemi.color.set(0x8090c0);else hemi.color.copy(moodNow.hm);sun.intensity=night?0:(WD.dark?.62:.78);lamp.intensity=night?1.25:0;
+  hemi.intensity=(night?.22:(WD.dark?.78:.64))*(PM.kHemiK||1);if(night)hemi.color.set(0x8090c0);else hemi.color.copy(moodNow.hm);sun.intensity=(night?0:(WD.dark?.62:.78))*(PM.kSunK||1);lamp.intensity=night?1.25:0;
   if(!(scene.background&&scene.background.isColor))scene.background=new THREE.Color();scene.background.copy(sky);
   if(!scene.fog)scene.fog=new THREE.Fog(0xffffff,26,78);scene.fog.color.copy(sky);
   groundMat.color.copy(moodNow.gr);if(night)groundMat.color.multiplyScalar(.45);
@@ -1147,12 +1169,12 @@ $('#sheet').addEventListener('click',e=>{if(e.target.id==='sheet')$('#sheet').hi
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){$('#sheet').hidden=true;return;}if(!$('#sheet').hidden)return;if(e.key==='ArrowRight')next();else if(e.key==='ArrowLeft')prev();});
 function openToc(){let h='<div class="eyebrow">'+TITLE+' · '+SUB+'</div><h2>Contents</h2><div class="muted">By '+AUTHOR+'. Each lesson has a Learn spread and a Practice spread. Win the practice game to earn its stamp.</div><ol class="toclist">';
   let last='';LESSONS.forEach(L=>{if(L.strand!==last){h+='<li class="grp">'+L.strand+'</li>';last=L.strand;}const i=SP.indexOf(L.learnSp);
-    h+='<li><button type="button" data-i="'+i+'"><span class="n" style="background:'+L.color+'">'+L.n+'</span><span><span class="tt">'+L.title+'</span><br><span class="st">'+L.codes.map(c=>GR+'.'+c).join(', ')+'</span></span><span class="sc'+(stamps[L.id]?' got':'')+'">'+(stamps[L.id]?'★ Stamped':'')+'</span></button></li>';});
+    h+='<li><button type="button" data-i="'+i+'"><span class="n" style="background:'+L.color+'">'+L.n+'</span><span><span class="tt">'+L.title+'</span><br><span class="st">'+L.codes.map(c=>CPX+c).join(', ')+'</span></span><span class="sc'+(stamps[L.id]?' got':'')+'">'+(stamps[L.id]?'★ Stamped':'')+'</span></button></li>';});
   sheet(h+'</ol>');document.querySelectorAll('.toclist button').forEach(b=>b.onclick=()=>{$('#sheet').hidden=true;const i=+b.dataset.i;bookOpen?goSpread(i):openBook(i);});}
 $('#bToc').onclick=openToc;$('#badge').onclick=openToc;
 $('#bGuide').onclick=()=>{const s=bookOpen&&cur>=0?SP[cur]:SP[0];const L=s.L;
   if(!L){sheet('<div class="eyebrow">For parents and teachers</div><h2>About this book</h2><p><b>'+TITLE+': '+SUB+'</b> by '+AUTHOR+', published by '+BRANDNAME+', '+(BK.about||('follows the Ontario Grade '+GR+' '+(BK.curriculum||'mathematics')+' curriculum (2020) across all five content strands: Number, Algebra, Data, Spatial Sense and Financial Literacy.'))+'</p><h3>How a lesson runs</h3><ul><li><b>Learn spread:</b> the theory, key words and a prediction flap on the left; a 3D model on the right that demonstrates the idea when you press play, and that children can touch, drag and build.</li><li><b>Practice spread:</b> three lift-the-flap questions and a five-round 3D game with fresh puzzles every time.</li></ul><p class="muted">Each lesson lists its Ontario expectation codes in the footer and in this guide. Read-aloud is on the speaker button. Progress is saved in this browser.</p>'+(BK.credits?'<p class="muted">'+BK.credits+'</p>':''));return;}
-  const g=L.guide||{};sheet('<div class="eyebrow">Lesson '+L.n+' · '+L.strand+'</div><h2>'+L.title+'</h2><div class="codes">'+L.codes.map(c=>'<span>Ontario '+GR+'.'+c+'</span>').join('')+'</div><h3>Learning goal</h3><p>'+(g.goal||'')+'</p><h3>Key vocabulary</h3><p>'+(g.words||'')+'</p><h3>Questions to ask</h3><ul>'+(g.ask||[]).map(a=>'<li>'+a+'</li>').join('')+'</ul><h3>Try at home</h3><p>'+(g.home||'')+'</p><p class="muted">'+TITLE+' by '+AUTHOR+' · '+BRANDNAME+'</p>');};
+  const g=L.guide||{};sheet('<div class="eyebrow">Lesson '+L.n+' · '+L.strand+'</div><h2>'+L.title+'</h2><div class="codes">'+L.codes.map(c=>'<span>Ontario '+CPX+c+'</span>').join('')+'</div><h3>Learning goal</h3><p>'+(g.goal||'')+'</p><h3>Key vocabulary</h3><p>'+(g.words||'')+'</p><h3>Questions to ask</h3><ul>'+(g.ask||[]).map(a=>'<li>'+a+'</li>').join('')+'</ul><h3>Try at home</h3><p>'+(g.home||'')+'</p><p class="muted">'+TITLE+' by '+AUTHOR+' · '+BRANDNAME+'</p>');};
 
 /* ================= loop ================= */
 const clock=new THREE.Clock();
@@ -1189,6 +1211,8 @@ function start(){LESSONS=PM.lessons;makeSpreads();applyLight();updateBadge();upd
   leftBlock.visible=leftMesh.visible=false;coverDeco=buildCoverDeco();
   new ResizeObserver(()=>{applyCam();setView(view);}).observe(stage);applyCam();
   setView('cover',true);camera.position.add(V(0,5,4));setView('cover');frame();$('#loading').style.opacity=0;}
+/* offline mode (books that ship sw.js and set BOOK.offline) */
+if((window.BOOK||{}).offline&&'serviceWorker' in navigator&&location.protocol==='https:'){window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});}
 PM.debug={get cam(){return {p:camera.position.toArray().map(x=>+x.toFixed(2)),t:controls.target.toArray().map(x=>+x.toFixed(2)),view,tw:!!camTween,auto:autoCam};},mascotCheer,set TS(v){TS=v;},sim,set norender(v){NORENDER=v;},get stepI(){return stepI;},startGame,get clickables(){return clickables;},setStep,get renderer(){return renderer;},get cur(){return cur;},get busy(){return busy;},get SP(){return SP;},leftP,rightP,coverCanvas,goSpread,openBook,A,get api(){return curApi;},get drags(){return draggables;},get S(){return SP[cur]&&SP[cur].S;}};
 const fl=document.fonts&&document.fonts.load?Promise.all(['700 64px "Zilla Slab"','400 29px "Atkinson Hyperlegible"','700 29px "Atkinson Hyperlegible"','italic 400 23px "Atkinson Hyperlegible"','34px "Patrick Hand"'].map(f=>document.fonts.load(f))):Promise.resolve();
 const imgs=Promise.all([LOGO,MARK,MARKT].map(i=>i.decode?i.decode().catch(()=>{}):Promise.resolve()));
@@ -1205,8 +1229,10 @@ Promise.all([Promise.race([Promise.all([fl,imgs]),new Promise(r=>setTimeout(r,30
 <script src="stage.js?v=13c96b31"></script>
 <script src="acts.js?v=b97a7468"></script>
 <script src="g3.js?v=10335227"></script>
+<script src="motion.js?v=4653ec26"></script>
+<script src="force-lab.js?v=42b1d208"></script>
 <script src="lessons-a.js?v=69556676"></script>
-<script src="lessons-b.js?v=9cd715eb"></script>
+<script src="lessons-b.js?v=38af1b45"></script>
 <script src="lessons-c.js?v=192684ff"></script>
 <script src="vtime.js?v=e2956f2f"></script>
 
