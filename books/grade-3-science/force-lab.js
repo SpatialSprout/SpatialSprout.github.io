@@ -161,14 +161,16 @@ function rollCart(R,tr,x,z,col){const cart=makeCart(col||C.cart);cart.position.s
 
 /* launcher + cart contact: while the plate touches the cart they move together; they part when the spring stops pushing */
 const KP=62,MP=.25;
-function link(R,L,K){L.mode='rest';R.phys.push(h=>{if(L.mode==='held')return;
+function link(R,L,K){L.mode='rest';L.cart=K;R.phys.push(h=>{if(L.mode==='held')return;
   if(L.mode==='free'){const touching=L.p>=K.x-HL-.001;const f=KP*(L.rest-L.p)-1.4*L.v;
     if(touching&&f>0){const a=(f-MU*1)/(MP+1);L.v=Math.max(L.v,K.v)+a*h;K.v=L.v;L.p+=L.v*h;K.x=L.p+HL;L.touch=true;}
     else{L.v+=(f/MP)*h;L.p+=L.v*h;if(L.p>K.x-HL&&K.drive==null){L.p=K.x-HL;}if(L.touch&&Math.abs(L.p-L.rest)<.002&&Math.abs(L.v)<.02){L.p=L.rest;L.v=0;L.mode='rest';}}
     L.set(L.p);}});}
 /* wind the launcher back by c (with ratchet clicks), then hold */
 function load(R,L,c,dur){if(L.mode==='held'||L.loading)return Promise.resolve();L.loading=true;L.mode='held';const p0=L.p;let clicks=-1;
-  return R.anim(dur||.9,k=>{L.set(p0-c*k);const n=Math.floor(k*5);if(n>clicks){clicks=n;if(n>0&&P.kNote)P.kNote(n-1);}},E.inOutCubic).then(()=>{L.loading=false;L.v=0;});}
+  /* the cart rests against the plate, so loading the spring pushes the cart back with it */
+  const K=L.cart,touch=K&&K.v===0&&Math.abs(K.x-HL-p0)<.02;if(touch)K.drive=()=>L.p+HL;
+  return R.anim(dur||.9,k=>{L.set(p0-c*k);const n=Math.floor(k*5);if(n>clicks){clicks=n;if(n>0&&P.kNote)P.kNote(n-1);}},E.inOutCubic).then(()=>{L.loading=false;L.v=0;if(touch){K.drive=null;K.v=0;K.x=L.p+HL;}});}
 function fire(L){if(L.mode!=='held'||L.loading)return false;L.mode='free';L.v=0;L.touch=false;A.pop&&A.pop();return true;}
 
 /* a force arrow that rides above a cart; its length eases to the force with a spring */
@@ -226,7 +228,7 @@ function stepPull(sc){const R=rig(sc,{speech:SAY.pull,board:['FORCE LAB','Test 3
   return {};}
 
 function stepSize(sc){const R=rig(sc,{speech:SAY.size,board:['FORCE LAB','Test 4: gentle or strong?'],matD:3.9,matZ:-.25,boardZ:-1.95});
-  const lanes=[{z:-1.0,c:.1,col:'#69db7c',name:'gentle',ac:'#2f9e44'},{z:.45,c:.28,col:C.cart,name:'strong',ac:C.push}];
+  const lanes=[{z:-1.0,c:.16,col:'#69db7c',name:'gentle',ac:'#2f9e44'},{z:.45,c:.28,col:C.cart,name:'strong',ac:C.push}];
   lanes.forEach(ln=>{track(R.root,-1.95,1.95,ln.z);ln.L=launcher(R.root,-1.7,ln.z);ln.B=bumper(R.root,1.86,ln.z);ln.K=rollCart(R,null,ln.L.rest+HL,ln.z,ln.col);ln.K.bump=ln.B;link(R,ln.L,ln.K);
     ln.ar=forceArrow(R,ln.ac,ln.name);ln.start=ln.K.x;R.every(()=>{ln.ar.at(ln.start-HL-.05,.72,ln.z);return !R.alive();});
     ln.state=0;R.every(()=>{if(ln.state===1&&ln.K.v===0&&ln.L.mode!=='held'&&ln.K.x>ln.start+.05){ln.state=2;const d=ln.K.x-ln.start;const p=pin(R.root,ln.K.x+HL,ln.z-.4,Math.max(1,Math.round(d/.39))+(Math.round(d/.39)>1?' marks':' mark'),ln.ac);R.every(pop(p.children[2],.8));if(P.kNote)P.kNote(ln.name==='strong'?8:3);}return !R.alive();});});
@@ -246,15 +248,15 @@ function stepBalance(sc){const R=rig(sc,{speech:SAY.bal,board:['FORCE LAB','Test
   const ease=(cur,to,h)=>cur+(to-cur)*Math.min(1,h*4.5);
   R.phys.push(h=>{fL=ease(fL,want[0],h);fR=ease(fR,want[1],h);const net=(fR-fL);
     /* static friction holds the cart while the pulls are nearly equal */
-    if(K.v===0&&Math.abs(net)<.6){K.push=null;}else{K.push=()=>net*.7;}});
+    if(K.v===0&&Math.abs(net)<.6){K.push=null;}else{K.push=()=>net*.6;}});
   R.every(()=>{mL.set(fL);mR.set(fR);mL.g.position.set(K.x-HL-.03,0,z);mR.g.position.set(K.x+HL+.03,0,z);
     const eL=K.x-HL-.03-.62,eR=K.x+HL+.03+.62;sL.userData.span(WL.x+WL.r,eL,.3,z);sR.userData.span(eR,WR2.x-WR2.r,.3,z);
     if(tl!==eL){if(tl)WL.turn((eL-tl)/WL.r);tl=eL;}if(tr!==eR){if(tr)WR2.turn((tr-eR)/WR2.r);tr=eR;}
-    aL.at(K.x-.05,.95,z);aR.at(K.x+.05,.95,z);aL.dir=-1;return !R.alive();});
-  const badge=label('balanced',{size:.24,color:'#ffffff',bg:C.green,border:C.green});badge.visible=false;badge.position.set(0,1.35,z);R.root.add(badge);
+    aL.at(K.x-.05,.78,z);aR.at(K.x+.05,.78,z);aL.dir=-1;return !R.alive();});
+  const badge=label('balanced',{size:.24,color:'#ffffff',bg:C.green,border:C.green});badge.visible=false;badge.position.set(0,1.08,z);R.root.add(badge);
   R.cue('two motors',()=>{want=[3,3];aL.show(.75,-1);aR.show(.75,1);});
   R.cue('balanced',()=>{badge.visible=true;R.every(pop(badge,.8));if(P.kNote)P.kNote(4);});
-  R.cue('harder',()=>{badge.visible=false;want=[3,5.2];aR.show(1.3,1);R.after(1.2,()=>{want=[3,3];aR.show(.75,1);});});
+  R.cue('harder',()=>{badge.visible=false;want=[3,5.2];aR.show(1.3,1);R.after(2.4,()=>{want=[3,3];aR.show(.75,1);});});
   return {};}
 
 /* ===================== Practice scenes ===================== */
