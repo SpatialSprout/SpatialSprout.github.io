@@ -4,7 +4,7 @@ import Stripe from "https://esm.sh/stripe@14.25.0?target=deno";
 
 const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY")!, { apiVersion: "2024-06-20", httpClient: Stripe.createFetchHttpClient() });
 const SITE = "https://spatialsprout.ca";
-const cors = { "Access-Control-Allow-Origin": SITE, "Access-Control-Allow-Headers": "authorization, apikey, content-type", "Access-Control-Allow-Methods": "POST, OPTIONS" };
+const cors = { "Access-Control-Allow-Origin": "*", "Access-Control-Allow-Headers": "authorization, apikey, content-type", "Access-Control-Allow-Methods": "POST, OPTIONS" };
 // sandbox price IDs (same as assets/stripe-prices.js); swap for live IDs at launch
 const PRICES: Record<string, string> = JSON.parse(Deno.env.get("PRICES_JSON") || "{}");
 

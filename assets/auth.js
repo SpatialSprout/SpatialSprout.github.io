@@ -28,9 +28,8 @@
   function buy(slug, el) {
     el.textContent = "Opening checkout…";
     fetch(FN, { method: "POST", headers: { "content-type": "application/json", apikey: KEY, authorization: "Bearer " + KEY }, body: JSON.stringify({ slug: slug }) })
-      .then(function (r) { return r.json(); })
-      .then(function (d) { if (d && d.url) location.href = d.url; else throw new Error((d && d.error) || "no url"); })
-      .catch(function () { el.textContent = "Checkout failed, try again"; });
+      .then(function (r) { return r.text().then(function (t) { var d = {}; try { d = JSON.parse(t); } catch (e) {} if (d.url) { location.href = d.url; return; } throw new Error("error " + r.status + ": " + (d.error || d.message || d.msg || t).toString().slice(0, 120)); }); })
+      .catch(function (e) { el.textContent = "Checkout failed (" + (e && e.message === "Failed to fetch" ? "blocked by browser, check the function's CORS" : (e && e.message)) + ")"; });
   }
   function add() {
     document.querySelectorAll("a.book.live").forEach(function (a) {
