@@ -29,10 +29,18 @@
   const Q=[];let busyQ=false;const pump=()=>{const t0=performance.now();while(Q.length&&performance.now()-t0<6){const one=1;const j=Q[0];if(j.i<j.ms.length){try{soften(j.ms[j.i]);}catch(e){}j.i++;}if(j.i>=j.ms.length){Q.shift();try{j.done();}catch(e){}}if(one)break;}
     if(Q.length)requestAnimationFrame(pump);else busyQ=false;};
   const work=(ms,done)=>{Q.push({ms,i:0,done});if(!busyQ){busyQ=true;requestAnimationFrame(pump);}};
-  const loading={};const want=k=>{if(cache[k]||loading[k]||!list[k])return;loading[k]=1;ld.load('models/'+list[k],g=>{const sc=g.scene;unskin(sc);sc.updateMatrixWorld(true);const ms=[];sc.traverse(o=>{if(o.isMesh)ms.push(o);});
-    work(ms,()=>{cache[k]=sc;
+  /* baked models (smoothed once ahead of time, see tools/bookkit/bake-glb.md): no work on the device, taps get their fast BVH on first use */
+  const toFloat=g=>{Object.keys(g.attributes).forEach(k=>{const a=g.attributes[k];if(a.array instanceof Float32Array&&!a.normalized&&!a.isInterleavedBufferAttribute)return;const n2=a.count,sz=a.itemSize,f=new Float32Array(n2*sz);
+      for(let i=0;i<n2;i++){f[i*sz]=a.getX(i);if(sz>1)f[i*sz+1]=a.getY(i);if(sz>2)f[i*sz+2]=a.getZ(i);if(sz>3)f[i*sz+3]=a.getW(i);}g.setAttribute(k,new THREE.BufferAttribute(f,sz));});};
+  const ready=mesh=>{mesh.material=new THREE.MeshPhysicalMaterial({vertexColors:true,roughness:.5,metalness:0,clearcoat:.35,clearcoatRoughness:.4});mesh.castShadow=true;mesh.receiveShadow=true;
+    if(window.MeshBVHLib){const base=THREE.Mesh.prototype.raycast;mesh.raycast=function(r,hits){try{if(!this.geometry.boundsTree){toFloat(this.geometry);MeshBVHLib.computeBoundsTree.call(this.geometry);}return MeshBVHLib.acceleratedRaycast.call(this,r,hits);}catch(e){return base.call(this,r,hits);}};}};
+  const loading={};const want=k=>{if(cache[k]||loading[k]||!list[k])return;loading[k]=1;
+    if(B.glbBaked){ld.load('models-baked/'+list[k],g=>{const sc=g.scene;sc.traverse(o=>{if(o.isMesh)ready(o);});cache[k]=sc;define(k);},undefined,e=>{console.warn('baked model',k,e);B.glbBaked=0;loading[k]=0;want(k);});return;}
+    ld.load('models/'+list[k],g=>{const sc=g.scene;unskin(sc);sc.updateMatrixWorld(true);const ms=[];sc.traverse(o=>{if(o.isMesh)ms.push(o);});
+    work(ms,()=>{cache[k]=sc;define(k);});},undefined,e=>console.warn('model',k,e));};
+  const define=k=>{
     P.GLBM[k]=s=>{const o=cache[k].clone(true);const b=new THREE.Box3().setFromObject(o),sz=b.getSize(new THREE.Vector3()),c=b.getCenter(new THREE.Vector3());const m=Math.max(sz.x,sz.y,sz.z)||1;const f=refDim(k)*(s||1)/m;
-      o.scale.multiplyScalar(f);o.position.set(-c.x*f,-b.min.y*f,-c.z*f);const w=new THREE.Group();w.add(o);w.userData.glb=k;w.userData.noLux=1;return w;};});},undefined,e=>console.warn('model',k,e));};
+      o.scale.multiplyScalar(f);o.position.set(-c.x*f,-b.min.y*f,-c.z*f);const w=new THREE.Group();w.add(o);w.userData.glb=k;w.userData.noLux=1;return w;};};
   /* load a lesson's models when the lesson opens: every model whose name starts with the lesson's letter, plus any listed for it */
   const prev=P.onSpread;P.onSpread=sp=>{const id=sp&&sp.L&&sp.L.id;P.kGlbNow=!!(id&&(B.glbLessons||[]).indexOf(id)>=0);
     if(P.kGlbNow){const ch=/^a[A-Z]$/.test(id)?id[1].toLowerCase():null;Object.keys(list).filter(k=>(ch&&k[0]===ch)||((B.glbFor||{})[id]||[]).indexOf(k)>=0).forEach(want);}if(prev)prev(sp);};
