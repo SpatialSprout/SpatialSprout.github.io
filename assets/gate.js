@@ -15,7 +15,7 @@
   g.innerHTML = '<div class="card"><h1>Opening your book…</h1></div>';
   document.documentElement.appendChild(g);
   function locked(msg) {
-    var title = (document.title || "").replace(/^The Interactive Classroom:\s*/, "") || slug.replace(/-/g, " ").replace(/\b\w/g, function (c) { return c.toUpperCase(); });
+    var title = ({ "kindergarten-jk": "Junior Kindergarten", "kindergarten-sk": "Senior Kindergarten" })[slug] || (document.title || "").replace(/^The Interactive Classroom:\s*/, "") || slug.replace(/-/g, " ").replace(/\b\w/g, function (c) { return c.toUpperCase(); });
     g.innerHTML = '<div class="card"><h1>' + title.replace(/</g, "&lt;") + '</h1><p>This book is locked. Buy it once to open it on any device, or log in if you already bought it.</p>' +
       '<button class="buy" type="button">Buy for ' + price + '</button>' +
       '<a class="b" href="../../login.html?next=' + encodeURIComponent("books/" + m[1] + "/") + '">Log in</a>' +
@@ -29,19 +29,27 @@
         .catch(function (e) { b.textContent = "Buy for " + price; out.textContent = "Checkout could not open (" + String(e && e.message || e).slice(0, 140) + ")."; });
     });
   }
-  function open() { g.remove(); st.remove(); }
+  function open() { if (g.parentNode) g.remove(); if (st.parentNode) st.remove(); }
+  var CK = "ssOwn:" + slug, cached = null;
+  try { cached = JSON.parse(localStorage.getItem(CK) || "null"); } catch (e) {}
+  if (cached && cached.u && Date.now() - cached.t < 30 * 864e5) open();
   function check() {
     if (!window.supabase || !window.supabase.createClient) { locked("We could not check your account. Please refresh the page."); return; }
     var sb = window.supabase.createClient(URL, KEY, { auth: { persistSession: true } });
     sb.auth.getSession().then(function (r) {
-      if (!r.data.session) { locked(); return; }
+      if (!r.data.session) { try { localStorage.removeItem(CK); } catch (e) {} if (!g.parentNode) { document.documentElement.appendChild(st); document.documentElement.appendChild(g); } locked(); return; }
       sb.from("purchases").select("book_slug").eq("book_slug", slug).limit(1).then(function (q) {
-        if (q.data && q.data.length) open(); else { locked(q.error ? "We could not check your books. Please refresh." : "Signed in as " + r.data.session.user.email + ". This book is not in your library yet.");
+        if (q.data && q.data.length) { try { localStorage.setItem(CK, JSON.stringify({ u: r.data.session.user.id, t: Date.now() })); } catch (e) {} open(); }
+        else if (q.error && cached) { /* offline: keep the remembered access */ }
+        else { try { localStorage.removeItem(CK); } catch (e) {}
+          if (!g.parentNode) { document.documentElement.appendChild(st); document.documentElement.appendChild(g); } locked(q.error ? "We could not check your books. Please refresh." : "Signed in as " + r.data.session.user.email + ". This book is not in your library yet.");
           var lo = document.createElement("button"); lo.type = "button"; lo.textContent = "Log out"; lo.style.cssText = "background:none;color:#1b2a41;text-decoration:underline;min-height:40px;line-height:40px";
           lo.addEventListener("click", function () { sb.auth.signOut().then(function () { location.reload(); }); });
           var lg = g.querySelector("a.b"); if (lg) lg.replaceWith(lo); }
       });
-    }).catch(function () { locked("We could not check your account. Please refresh the page."); });
+    }).catch(function () { if (!cached) locked("We could not check your account. Please refresh the page."); });
   }
-  if (window.supabase) check(); else window.addEventListener("load", check);
+  if (window.supabase) check();
+  else { var sc = document.createElement("script"); sc.src = "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.4/dist/umd/supabase.js"; sc.async = true;
+    sc.onload = check; sc.onerror = function () { if (cached) return; locked("We could not check your account. Please refresh the page."); }; document.head.appendChild(sc); }
 })();

@@ -12,7 +12,7 @@ eng=eng.replace('/*LINES*/{}',open(os.path.join(here,'lines.json')).read().strip
 eng=eng.replace('{{TITLE}}',f'The Interactive Classroom: Grade {g} {subj}').replace('{{LESSON_SCRIPTS}}','\n'.join(f'<script src="{f}"></script>' for f in files))
 HEAD=('<!doctype html>\n<html lang="en-CA">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n'
   '<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>\n'
-  '<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.4/dist/umd/supabase.js"></script>\n<script src="../../assets/gate.js?v=3"></script>\n</head>\n<body>\n')
+  '<script src="../../assets/gate.js?v=4"></script>\n</head>\n<body>\n')
 import hashlib
 def ver(f):
     p=os.path.join(d,f) if f!='brand.js' else os.path.join(here,'brand.js')
