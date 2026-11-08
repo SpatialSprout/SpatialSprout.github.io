@@ -12,6 +12,10 @@
       if (session) { a.textContent = "My books"; a.href = "account.html"; }
       else { a.textContent = "Log in"; a.href = "login.html"; }
     });
+    document.querySelectorAll("[data-auth-out]").forEach(function (o) {
+      o.hidden = !session;
+      if (!o.__wired) { o.__wired = 1; o.addEventListener("click", function (e) { e.preventDefault(); sb.auth.signOut().then(function () { location.reload(); }); }); }
+    });
   }
   sb.auth.getSession().then(function (r) { paint(r.data.session); });
   sb.auth.onAuthStateChange(function (_e, session) { paint(session); });

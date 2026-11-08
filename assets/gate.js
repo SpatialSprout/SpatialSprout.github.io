@@ -36,7 +36,10 @@
     sb.auth.getSession().then(function (r) {
       if (!r.data.session) { locked(); return; }
       sb.from("purchases").select("book_slug").eq("book_slug", slug).limit(1).then(function (q) {
-        if (q.data && q.data.length) open(); else locked(q.error ? "We could not check your books. Please refresh." : "Signed in as " + r.data.session.user.email + ". This book is not in your library yet.");
+        if (q.data && q.data.length) open(); else { locked(q.error ? "We could not check your books. Please refresh." : "Signed in as " + r.data.session.user.email + ". This book is not in your library yet.");
+          var lo = document.createElement("button"); lo.type = "button"; lo.textContent = "Log out"; lo.style.cssText = "background:none;color:#1b2a41;text-decoration:underline;min-height:40px;line-height:40px";
+          lo.addEventListener("click", function () { sb.auth.signOut().then(function () { location.reload(); }); });
+          var lg = g.querySelector("a.b"); if (lg) lg.replaceWith(lo); }
       });
     }).catch(function () { locked("We could not check your account. Please refresh the page."); });
   }
