@@ -35,15 +35,16 @@
 </main>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.4/dist/umd/supabase.js"></script>
 <script src="assets/catalog.js"></script>
-<script src="assets/auth.js?v=3"></script>
+<script src="assets/auth.js?v=4"></script>
 <script>
 (function(){var sb=window.SS_AUTH,m=document.getElementById('msg');
 function say(t,ok){m.textContent=t;m.className='msg '+(ok?'ok':'err');}
 if(!sb){say('Log in is not available right now. Please try again later.');return;}
-sb.auth.getSession().then(function(r){if(r.data.session)location.replace('account.html');});
+var nx=(new URLSearchParams(location.search).get('next')||'');var dest=/^books\/[a-z0-9-]+\/$/.test(nx)?nx:'account.html';
+sb.auth.getSession().then(function(r){if(r.data.session)location.replace(dest);});
 document.getElementById('fLogin').addEventListener('submit',function(e){e.preventDefault();say('Logging in…',true);
   sb.auth.signInWithPassword({email:em.value.trim(),password:pw.value}).then(function(r){
-    if(r.error)say('That email and password do not match. Try again, or reset your password.');else location.replace('account.html');});});
+    if(r.error)say('That email and password do not match. Try again, or reset your password.');else location.replace(dest);});});
 document.getElementById('forgot').addEventListener('click',function(){var e=em.value.trim();if(!e){say('Type your email first, then tap “Forgot your password?”.');em.focus();return;}
   sb.auth.resetPasswordForEmail(e,{redirectTo:location.origin+'/account.html'}).then(function(r){
     if(r.error)say('We could not send the email. Please try again in a minute.');else say('If that email has an account, a reset link is on its way.',true);});});
