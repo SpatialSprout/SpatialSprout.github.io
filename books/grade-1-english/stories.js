@@ -1,7 +1,7 @@
 /* lesson openers: one line from the crew (Kai, Zara, Leo, Amara, Milo, Suki take turns) */
 (function(){var P=window.PM;if(!P)return;P.why=Object.assign(P.why||{},{
-"e01":"Kai went to a pumpkin patch! Let's read his story and listen for the first sound of each word.",
-"e02":"Zara loves boats. Let's read about them and listen for the last sound of each word.",
+"e01":"Kai found a story about a busy bee! Let's read it and listen for the first sound of each word.",
+"e02":"Zara rode a very bumpy bus! Let's read about it and listen for the last sound of each word.",
 "e03":"Leo has a story about a dog who would not share. Let's find the short vowels!",
 "e04":"Amara loves to look at the sky. Let's find the long vowels that say their own names.",
 "e05":"Milo made up a silly food song. Let's find the words that rhyme!",

@@ -17,35 +17,44 @@ const fly=(o,x,y,z,h,dur)=>D.arc(o,x,y,z,h,dur);
 const person=(sc,w,x,z,o)=>D.person(sc,w,x,z,o);
 const kid=(sc,i,x,z,o)=>D.kid(sc,i,x,z,o);
 const mode=(sc,k,m,ms)=>sc.mode(k,m,ms);
+const L2=(f,ms)=>ST().later(f,ms);
 const say=(sc,o,t,ms)=>D.say(sc,o,t,ms);
 const rise=(o,dy,dur)=>{const y0=o.position.y;return tween(dur||.8,k=>{o.position.y=y0+dy*k;});};
 const turn=(o,a,dur)=>{const r0=o.rotation.y;return tween(dur||.5,k=>{o.rotation.y=r0+a*k;});};
 const tint=(o,c)=>o.traverse(m=>{if(m.isMesh&&m.material&&!m.userData.ink&&!Array.isArray(m.material))m.material=P.paper(c,{mix:.15});});
 const row=(n,x0,x1,f)=>{for(let i=0;i<n;i++)f(n>1?x0+(x1-x0)*i/(n-1):x0,i);};
 
-/* e01 · A Trip to the Pumpkin Patch */
-story('e01',sc=>{D.base(sc,'#c9d99a');
-  put(sc,S.fence(3.9),0,-3.6);const gate=prop(sc,'gate',-1.6,-3.45,{s:.55});put(sc,S.barn?S.barn():P.PROP3.barn(),1.55,-3.2,{s:.9});put(sc,S.tree({s:.9,c:'#e8a33a'}),-1.9,-2.9);
-  for(let i=0;i<9;i++){const p=prop(sc,'pumpkin',-1.2+(i%5)*.45,-2.3-Math.floor(i/5)*.45,{s:.32+(i%3)*.05});p.rotation.y=i;}
-  const fam=[person(sc,'mom',-1.95,-1.6,{ry:.8,on:'family'}),person(sc,'dad',-1.6,-1.55,{ry:.8,on:'family'}),kid(sc,1,-1.25,-1.6,{ry:.8,on:'family'})];
-  const sis=person(sc,'girl',-.9,-1.6,{ry:.8,on:'little sister',p:{s:.58}});
-  const wag=prop(sc,'hay wagon',-2.6,-2.9,{s:.9,hide:true});
-  at(sc,'hay wagon',()=>{wag.visible=true;sc.move(wag,.4,-2.9,2.2);sc.tick((dt,t)=>{wag.position.y=Math.abs(Math.sin(t*9))*.025;});card(sc,'bump! bump!',.4,-2.55,{h:.16,col:'#b86e00'}).visible=true;});
-  const goat=prop(sc,'goat',-1.3,-3.25,{s:.55,on:'goat'});at(sc,'goat',()=>ST().alive(goat,true));
-  const big=prop(sc,'pumpkin',.2,-1.75,{s:.7,on:'fat, round'});at(sc,'picked a fat',()=>{fam[2].visible=true;D.walk(sc,fam[2],-.2,-1.8,1,'pull');boom(big);});
-  const tiny=prop(sc,'pumpkin',.75,-1.7,{s:.22,on:'tiny one'});at(sc,'tiny one',()=>{D.walk(sc,sis,.55,-1.7,1,'cheer');});
-  const cups=[prop(sc,'cider',1.3,-1.8,{s:.28,on:'apple cider'}),prop(sc,'cider',1.55,-1.85,{s:.28,on:'apple cider'})];at(sc,'warm apple cider',()=>sc.fx('steam',{x:1.4,z:-1.8,w:.4,h:.6,y:.25}));
-  at(sc,'fun day',()=>fam.concat([sis]).forEach(k=>{k.visible=true;mode(sc,k,'cheer');}));
+/* e01 · Bella the Busy Bee: the bee buzzes to the barn, the bear bangs a drum, the goat eats a pear, the duck dives, Bella sleeps on a sunflower */
+story('e01',sc=>{D.base(sc,'#c9e3a0');
+  put(sc,S.barn?S.barn():P.PROP3.barn(),1.55,-3.25,{s:.85});put(sc,S.tree({s:.85}),-1.95,-3.2);put(sc,S.fence(3.6),0,-3.65);
+  const lake=put(sc,S.pond(.5),-1.4,-1.85);
+  const bee=prop(sc,'bee',-1.9,-2.6,{s:.32});bee.position.y=.75;sc.tick((dt,t)=>{bee.rotation.z=Math.sin(t*18)*.12;});
+  at(sc,'buzzed to the barn',()=>{fly(bee,1.0,.9,-2.75,.35,2.2);card(sc,'bzzz',.1,-2.75,{h:.16,col:'#b8860b'}).visible=true;});
+  const bear=prop(sc,'bear',.35,-2.75,{s:.62,on:'big bear'});const drum=prop(sc,'drum',.8,-2.55,{s:.32,on:'big bear'});
+  at(sc,'banged a drum',()=>{ST().alive(bear,true);sc.tick((dt,t)=>{drum.position.y=Math.abs(Math.sin(t*7))*.06;});});
+  at(sc,'boom, boom',()=>{card(sc,'BOOM!',.8,-2.25,{h:.2,col:'#e8505b'}).visible=true;boom(drum);});
+  const goat=prop(sc,'goat',-.6,-2.35,{s:.55,on:'a goat'});const pear=prop(sc,'pear',-.25,-2.15,{s:.22,on:'a goat'});
+  at(sc,'green pear',()=>{ST().alive(goat);tween(1.2,k=>{pear.scale.setScalar(Math.max(.01,1-k));});});
+  const duck=prop(sc,'duck',-1.0,-2.0,{s:.4,on:'a duck'});
+  at(sc,'dove into the lake',()=>{fly(duck,-1.4,.0,-1.85,.4,1.0);L2(()=>boom(lake),900);});
+  const sf=prop(sc,'sunflower',1.7,-1.8,{s:.7,on:'sunflower'});
+  at(sc,'landed on a sunflower',()=>{fly(bee,1.65,1.05,-1.8,.4,1.8);});
+  at(sc,'went to sleep',()=>{card(sc,'z z z',1.65,-1.55,{h:.16,col:'#6c5ce7'}).visible=true;});
 });
-/* e02 · Boats on the Lake */
-story('e02',sc=>{D.base(sc,'#cfe3b0');const lake=put(sc,S.water(3.4,1.5),.2,-2.55);for(let i=0;i<4;i++)D.ribbon(sc,[[-1.4,.04,-2.2-i*.25],[0,.04,-2.25-i*.25],[1.8,.04,-2.2-i*.25]],'#d0ebff',{w:.02,up:V(0,1,0)}).userData.full();
-  put(sc,S.pine({s:.8}),-1.85,-3.4);put(sc,S.pine({s:.65}),-1.9,-1.7);put(sc,S.mountain({s:.6}),1.6,-3.65);
-  const B4=[['canoe',-1.0,-1.85,.6],['kayak',.0,-2.0,.55],['sailboat',.9,-2.6,.9],['ship',-.2,-3.1,1.2]];
-  const bs=B4.map(([n,x,z,s],i)=>{const b=prop(sc,n,x,z,{s,on:n==='ship'?'A ship':n});sc.tick((dt,t)=>{b.position.y=Math.sin(t*2+i)*.02;});return b;});
-  at(sc,'paddle',()=>{const k=kid(sc,0,-1.0,-1.85,{s:.5,mode:'pull'});k.position.y=.05;sc.move(bs[0],-.6,-1.85,3);sc.move(k,-.6,-1.85,3);});
-  at(sc,'seat inside',()=>{const k=kid(sc,3,0,-2.0,{s:.45,mode:'pull'});k.position.y=.02;sc.move(bs[1],.4,-1.9,3);sc.move(k,.4,-1.9,3);});
-  at(sc,'catches the wind',()=>{D.ribbon(sc,[[-.3,.6,-2.6],[.2,.65,-2.65],[.7,.6,-2.6]],'#a5d8ff',{w:.05});sc.move(bs[2],1.5,-2.6,3);});
-  at(sc,'hundreds of people',()=>{for(let i=0;i<5;i++){const k=kid(sc,i,-.55+i*.17,-3.1,{s:.3});k.position.y=.3;}boom(bs[3]);});
+/* e02 · The Bumpy Bus: the bus drives in, the cat and the pig climb on, a bump sends everyone up */
+story('e02',sc=>{D.base(sc,'#d5e8b8');
+  const road=disc(sc,0,-2.35,0,'#8d99ae');road.visible=false;
+  for(let i=0;i<7;i++){const d=disc(sc,-2.0+i*.65,-2.35,.06,'#ffffff');}
+  put(sc,S.tree({s:.75}),-1.9,-3.3);put(sc,S.house?S.house():P.PROP3.house(),1.7,-3.3,{s:.6});
+  const bus=prop(sc,'bus',-2.6,-2.4,{s:.75,hide:true});
+  at(sc,'red bus',()=>{bus.visible=true;sc.move(bus,-.3,-2.4,2.2);});
+  const cat=prop(sc,'cat',-1.2,-1.75,{s:.4,on:'our cat'});
+  at(sc,'sat on the bus',()=>{fly(cat,-.45,.55,-2.4,.35,1.0);});
+  const pig=prop(sc,'pig',.9,-1.75,{s:.45,on:'a pig'});const drum=prop(sc,'drum',1.25,-1.7,{s:.25,on:'a pig'});
+  at(sc,'got on with a drum',()=>{fly(pig,-.05,.55,-2.4,.35,1.1);fly(drum,.25,.55,-2.4,.4,1.2);});
+  at(sc,'big bump',()=>{card(sc,'BUMP!',-.2,-1.95,{h:.2,col:'#e8505b'}).visible=true;const y0=bus.position.y;tween(.5,k=>{bus.position.y=y0+Math.sin(k*Math.PI)*.12;});});
+  at(sc,'up went',()=>{[cat,pig,drum].forEach((o,i)=>{const y0=o.position.y;tween(1.1,k=>{o.position.y=y0+Math.sin(k*Math.PI)*.5;});});});
+  at(sc,'what a trip',()=>{sc.move(bus,2.8,-2.4,2.4);[cat,pig,drum].forEach(o=>sc.move(o,o.position.x+3.1,o.position.z,2.4));});
 });
 /* e03 · The Dog Who Would Not Share */
 story('e03',sc=>{D.base(sc,'#bfe0a0');put(sc,S.tree({s:1}),-1.8,-3.3);put(sc,S.bush({s:.8}),1.8,-3.4);const pond=put(sc,S.pond(.55),1.0,-2.3);
