@@ -24,9 +24,9 @@
     b.addEventListener("click", function () {
       b.textContent = "Opening checkout…";
       fetch(URL + "/functions/v1/create-checkout", { method: "POST", headers: { "content-type": "application/json", apikey: KEY, authorization: "Bearer " + KEY }, body: JSON.stringify({ slug: slug }) })
-        .then(function (r) { return r.json(); })
-        .then(function (d) { if (d && d.url) location.href = d.url; else throw 0; })
-        .catch(function () { b.textContent = "Buy for " + price; out.textContent = "Checkout could not open. Please try again."; });
+        .then(function (r) { return r.json().catch(function () { return { error: "HTTP " + r.status }; }); })
+        .then(function (d) { if (d && d.url) location.href = d.url; else throw new Error(d && d.error || "no link"); })
+        .catch(function (e) { b.textContent = "Buy for " + price; out.textContent = "Checkout could not open (" + String(e && e.message || e).slice(0, 140) + ")."; });
     });
   }
   function open() { g.remove(); st.remove(); }

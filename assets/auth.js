@@ -29,7 +29,7 @@
     el.textContent = "Opening checkout…";
     fetch(FN, { method: "POST", headers: { "content-type": "application/json", apikey: KEY, authorization: "Bearer " + KEY }, body: JSON.stringify({ slug: slug }) })
       .then(function (r) { return r.text().then(function (t) { var d = {}; try { d = JSON.parse(t); } catch (e) {} if (d.url) { location.href = d.url; return; } throw new Error("error " + r.status + ": " + (d.error || d.message || d.msg || t).toString().slice(0, 120)); }); })
-      .catch(function (e) { el.textContent = el.dataset.label || "Buy"; alert("Checkout could not open. Please try again in a moment."); });
+      .catch(function (e) { el.textContent = el.dataset.label || "Buy"; alert("Checkout could not open (" + String(e && e.message || e).slice(0, 160) + ")."); });
   }
   function add() {
     document.querySelectorAll("a.book.live").forEach(function (a) {
