@@ -3,14 +3,22 @@
 "use strict";
 const P=window.PM;if(!P||!P.DIO)return;P.SCN=P.SCN||{};
 const D=P.DIO,S=P.SET,{V,tween,burst,THREE}=P;const ST=()=>P.STAGE;
-const story=(id,fn)=>{P.SCN[id]=P.SCN[id]||{steps:[]};P.SCN[id].steps[0]={scene:fn};};
-const at=(sc,w,f,n)=>sc.on(w,f,n);
+const story=(id,fn)=>{P.SCN[id]=P.SCN[id]||{steps:[]};P.SCN[id].steps[0]={scene:sc=>{sc.__sid=id;return fn(sc);}};};
+/* story cues fire when the narrator reaches the words, from the story's word timings (VTIME);
+   the word hook stays as a backup, and each cue runs once */
+const toks=t=>String(t).toLowerCase().replace(/[^a-z0-9\s']/g,' ').split(/\s+/).filter(Boolean);
+const at=(sc,w,f,n)=>{let ran=false;const go=()=>{if(ran||!sc.g.parent)return;ran=true;try{f();}catch(e){console.error(e);}};
+  try{const SY=P.storyOf&&P.storyOf(sc.__sid);const VT=SY&&(window.VTIME||{})[P.vhash?P.vhash(SY.speech):''];
+    if(VT){const N=toks(SY.speech),ws=toks(w);let c=0,ix=-1;for(let i=0;i+ws.length<=N.length;i++){if(ws.every((x,j)=>N[i+j]===x||N[i+j]===x+'s')){c++;if(c===(n||1)){ix=i;break;}}}
+      if(ix>=0)ST().later(go,Math.round((ix>0?VT[ix-1]:0)*1000)+150);}}catch(e){}
+  sc.on(w,go,n);};
+
 /* a picture prop (paper-tinted 3D figure); o.on = appear when that word is read */
-const prop=(sc,n,x,z,o)=>{o=Object.assign({label:false,bare:true,tap:false},o||{});const p=sc.prop(n,x,z,o);if(o.on){p.visible=false;sc.on(o.on,()=>D.grow(p),o.nth);}if(o.hide)p.visible=false;return p;};
+const prop=(sc,n,x,z,o)=>{o=Object.assign({label:false,bare:true,tap:false},o||{});const p=sc.prop(n,x,z,o);if(o.on){p.visible=false;at(sc,o.on,()=>D.grow(p),o.nth);}if(o.hide)p.visible=false;return p;};
 const wp=o=>o.getWorldPosition(new THREE.Vector3());
 const put=(sc,o,x,z,opt)=>D.put(sc,o,x,z,opt);
 const card=(sc,t,x,z,o)=>D.card(sc,t,x,z,Object.assign({h:.22},o||{}));
-const pop=(sc,word,o,n)=>{o.visible=false;sc.on(word,()=>D.grow(o),n);return o;};
+const pop=(sc,word,o,n)=>{o.visible=false;at(sc,word,()=>D.grow(o),n);return o;};
 const boom=o=>burst(wp(o).add(V(0,.5,0)));
 const disc=(sc,x,z,r,c,y)=>{const m=P.mk(new THREE.CylinderGeometry(r,r,.012,24),P.glow(c,.92,.25),0);m.position.set(x,y||.012,z);sc.g.add(m);return m;};
 const fly=(o,x,y,z,h,dur)=>D.arc(o,x,y,z,h,dur);

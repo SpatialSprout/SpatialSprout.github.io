@@ -900,7 +900,7 @@ function tickCues(){const cr=cueRun;if(!cr||busy)return;if(cr.tok!==playTok){cue
   else ch=(now-cr.t0)/1000*13;
   while(cr.k<cr.list.length&&cr.list[cr.k].i<=ch){const q=cr.list[cr.k++];try{if(q.demo&&q.demo!=='hold'&&curApi.demo)curApi.demo(q.demo);}catch(e){console.error(e);}if(q.p||q.l)spotOn(q);else if(q.hl){setHL(q.hl);A.redraw();}}
   if(cr.k>=cr.list.length)cueRun=null;}
-PM.voNow=()=>{const vc=voClock;if(!vc||vc.tok!==voTok)return null;if(vc.dev)return {dev:true,ch:vc.ch,el:(performance.now()-vc.t0)/1000};return {t:VO.currentTime,dur:vc.dur};};
+PM.voNow=()=>{const vc=voClock;if(!vc||vc.tok!==voTok)return null;if(vc.dev)return {dev:true,ch:vc.ch,el:(performance.now()-vc.t0)/1000};const ct=VO&&VO.currentTime;return {t:(typeof ct==='number'&&isFinite(ct)&&ct>0)?ct:(performance.now()-vc.t0)/1000,dur:vc.dur};};
 PM.vhash=vhash;
 PM.redrawR=()=>{if(cur<0||building||busy)return;drawPage(rightP,SP[cur],'R');};
 PM.curStep=()=>cur>=0&&SP[cur]?SP[cur].steps[stepI]:null;

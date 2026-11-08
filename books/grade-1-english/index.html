@@ -154,7 +154,7 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 
 <script src="book.js?v=39f4eb0f"></script>
 <script src="brand.js?v=111ada48"></script>
-<script src="voice.js?v=598878c0"></script>
+<script src="voice.js?v=43b997c7"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/SVGLoader.js"></script>
@@ -909,7 +909,7 @@ function tickCues(){const cr=cueRun;if(!cr||busy)return;if(cr.tok!==playTok){cue
   else ch=(now-cr.t0)/1000*13;
   while(cr.k<cr.list.length&&cr.list[cr.k].i<=ch){const q=cr.list[cr.k++];try{if(q.demo&&q.demo!=='hold'&&curApi.demo)curApi.demo(q.demo);}catch(e){console.error(e);}if(q.p||q.l)spotOn(q);else if(q.hl){setHL(q.hl);A.redraw();}}
   if(cr.k>=cr.list.length)cueRun=null;}
-PM.voNow=()=>{const vc=voClock;if(!vc||vc.tok!==voTok)return null;if(vc.dev)return {dev:true,ch:vc.ch,el:(performance.now()-vc.t0)/1000};return {t:VO.currentTime,dur:vc.dur};};
+PM.voNow=()=>{const vc=voClock;if(!vc||vc.tok!==voTok)return null;if(vc.dev)return {dev:true,ch:vc.ch,el:(performance.now()-vc.t0)/1000};const ct=VO&&VO.currentTime;return {t:(typeof ct==='number'&&isFinite(ct)&&ct>0)?ct:(performance.now()-vc.t0)/1000,dur:vc.dur};};
 PM.vhash=vhash;
 PM.redrawR=()=>{if(cur<0||building||busy)return;drawPage(rightP,SP[cur],'R');};
 PM.curStep=()=>cur>=0&&SP[cur]?SP[cur].steps[stepI]:null;
@@ -1229,13 +1229,13 @@ Promise.all([Promise.race([Promise.all([fl,imgs]),new Promise(r=>setTimeout(r,30
 <script src="subject-kit.js?v=874f94a7"></script>
 <script src="stage.js?v=13c96b31"></script>
 <script src="scenes.js?v=fd9a30fe"></script>
-<script src="dioramas.js?v=1b6e1a01"></script>
+<script src="dioramas.js?v=b353d2f3"></script>
 <script src="lessons-a.js?v=a7efdf56"></script>
 <script src="lessons-b.js?v=fc087af0"></script>
 <script src="lessons-c.js?v=13f5bb4c"></script>
 <script src="lessons-d.js?v=1073b0d3"></script>
 <script src="stories.js?v=482d7de2"></script>
-<script src="vtime.js?v=17e8412f"></script>
+<script src="vtime.js?v=0c41101a"></script>
 <script src="howler.js?v=f115d096"></script>
 <script src="confetti.js?v=aca2432d"></script>
 <script src="tone.js?v=cf1a1cd9"></script>
