@@ -154,7 +154,7 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 
 <script src="book.js"></script>
 <script src="brand.js"></script>
-<script src="voice.js"></script>
+<script src="voice.js?v=2"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/SVGLoader.js"></script>
@@ -639,7 +639,7 @@ function stopSpeak(){voTok++;voClock=null;try{VO.pause();}catch(e){}try{speechSy
 function speakDevice(text,onend){if(!('speechSynthesis' in window))return false;try{const u=new SpeechSynthesisUtterance(text.replace(/SpatialSprout/g,'Spatial Sprout'));if(bestVoice){u.voice=bestVoice;u.lang=bestVoice.lang;}else u.lang='en-US';u.rate=1;u.pitch=1;u.onend=onend;const tk=voTok;u.onstart=()=>{voClock={tok:tk,t0:performance.now(),dur:text.length/14,dev:true,ch:0};};u.onboundary=e=>{if(voClock&&voClock.tok===tk)voClock.ch=e.charIndex;};speechSynthesis.speak(u);return true;}catch(e){return false;}}
 function speak(text,onend){if(!soundOn)return false;stopSpeak();const tk=voTok;const h=vhash(text);
   if(window.VOICE&&VOICE[h]){let done=false;const fin=()=>{if(done||tk!==voTok)return;done=true;if(onend)onend();};
-    VO.onended=fin;VO.onplaying=()=>{if(tk===voTok)voClock={tok:tk,t0:performance.now()-VO.currentTime*1000,dur:(isFinite(VO.duration)&&VO.duration)||VOICE[h]};};VO.onerror=()=>{if(tk===voTok&&!done){done=true;speakDevice(text,onend);}};VO.src='voice/'+h+'.mp3';
+    VO.onended=fin;VO.onplaying=()=>{if(tk===voTok)voClock={tok:tk,t0:performance.now()-VO.currentTime*1000,dur:(isFinite(VO.duration)&&VO.duration)||VOICE[h]};};VO.onerror=()=>{if(tk===voTok&&!done){done=true;speakDevice(text,onend);}};VO.src='voice/'+h+'.mp3?v=2';
     try{const p=VO.play();if(p&&p.catch)p.catch(()=>{if(tk===voTok&&!done){done=true;speakDevice(text,onend);}});}catch(e){done=true;return speakDevice(text,onend);}return true;}
   return speakDevice(text,onend);}
 
