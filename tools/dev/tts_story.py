@@ -9,7 +9,7 @@ tj=os.path.join(d,'vtime.js');T={}
 if os.path.exists(tj):
     try:T=json.loads(open(tj).read().split('=',1)[1].rstrip().rstrip(';'))
     except Exception:T={}
-SR=24000;GAP=float(os.environ.get('GAP','.3'));SPEED=float(os.environ.get('SPEED','.95'))
+SR=24000;GAP=float(os.environ.get('GAP','.4'));SPEED=float(os.environ.get('SPEED','.95'))
 def trim(a,th=.012):
     idx=np.where(np.abs(a)>th)[0]
     if not len(idx):return a
@@ -34,7 +34,8 @@ for s in stories:
     for se in sents:
         a=trim(tts.synth(se,speed=SPEED).astype(np.float32));dur=len(a)/SR;ws=se.split();wt=[weight(w) for w in ws];tot=sum(wt);c=0
         for w in wt:c+=w;ends.append(round(t+dur*c/tot,3))
-        audio+= [a,np.zeros(int(GAP*SR),dtype=np.float32)];t+=dur+GAP
+        gap=(GAP+.25) if re.search(r'[?!]["”]?$',se) else GAP
+        audio+= [a,np.zeros(int(gap*SR),dtype=np.float32)];t+=dur+gap
     a=np.clip(np.concatenate(audio),-1,1);w=f'/tmp/{h}.wav'
     with wave.open(w,'wb') as f:f.setnchannels(1);f.setsampwidth(2);f.setframerate(SR);f.writeframes((a*32767).astype('<i2').tobytes())
     subprocess.run(['ffmpeg','-v','error','-y','-i',w,'-ac','1','-b:a','48k',out]);os.remove(w)

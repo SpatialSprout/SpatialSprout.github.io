@@ -8,11 +8,54 @@ def fnv(t):
     for u in t.encode('utf-16-le').hex() and [int.from_bytes(t.encode('utf-16-le')[i:i+2],'little') for i in range(0,len(t.encode('utf-16-le')),2)]:
         h^=u;h=(h*0x01000193)&0xffffffff
     return '%08x'%h
+# Phonics: letter -> its spoken sound, for when a lone letter means a SOUND
+# rather than its name ("the first sound is m" -> "mmm", not "em").
+# Set SOUNDS=0 in the environment to disable this mapping.
+LETTER_SOUNDS = {
+    'b':'buh','c':'kuh','d':'duh','f':'fff','g':'guh','h':'huh','j':'juh',
+    'k':'kuh','l':'lll','m':'mmm','n':'nnn','p':'puh','q':'kwuh','r':'rrr',
+    's':'sss','t':'tuh','v':'vvv','w':'wuh','x':'ks','y':'yuh','z':'zzz',
+}
+
+def _sound(m):
+    return LETTER_SOUNDS.get(m.group(1).lower(), m.group(1))
+
 def norm(t):
-    t=t.replace('*','').replace('M. A. Mafodh','Em Eh Mafodh').replace('SpatialSprout 3D','Spatial Sprout 3 D').replace('SpatialSprout','Spatial Sprout')
-    t=re.sub(r'\ba\.m\.','A M',t);t=re.sub(r'\bp\.m\.','P M',t);t=t.replace('°C',' degrees Celsius').replace('¢',' cents').replace('—',', ').replace('–',', ').replace('…','.').replace('×',' times ').replace('÷',' divided by ')
-    t=re.sub(r'\$(\d+)',r'\1 dollars',t);t=re.sub(r'(\d)\s*\+\s*(\d)',r'\1 plus \2',t);t=re.sub(r'(\d)\s*-\s*(\d)',r'\1 minus \2',t);t=re.sub(r'(\d)\s*=\s*(\d)',r'\1 equals \2',t)
-    return t
+    # Collapse every run of whitespace/newlines to one space: raw line breaks
+    # otherwise read as abrupt, robotic pauses.
+    t = re.sub(r'\s+', ' ', t).strip()
+    # Normalize smart punctuation so espeak-ng never reads literal glyphs.
+    t = (t.replace('\u2018', "'").replace('\u2019', "'")
+          .replace('\u201c', '"').replace('\u201d', '"')
+          .replace('\u2013', ', ').replace('\u2014', ', ')
+          .replace('\u2026', '.').replace('\u00a0', ' '))
+    # Fill-in-the-blank markers become a spoken word, never "underscore".
+    t = re.sub(r'_{2,}', ' blank ', t)
+    # Strip visual emphasis markers (UI-only, not speech).
+    t = t.replace('*', '')
+    # Brand / author pronunciations.
+    t = t.replace('M. A. Mafodh', 'Em Eh Mafodh')
+    t = t.replace('SpatialSprout 3D', 'Spatial Sprout 3 D')
+    t = t.replace('SpatialSprout', 'Spatial Sprout')
+    # Abbreviations and units.
+    t = re.sub(r'\ba\.m\.', 'A M', t)
+    t = re.sub(r'\bp\.m\.', 'P M', t)
+    t = (t.replace('°C', ' degrees Celsius').replace('¢', ' cents')
+          .replace('×', ' times ').replace('÷', ' divided by '))
+    # Money and simple arithmetic.
+    t = re.sub(r'\$(\d+)', r'\1 dollars', t)
+    t = re.sub(r'(\d)\s*\+\s*(\d)', r'\1 plus \2', t)
+    t = re.sub(r'(\d)\s*-\s*(\d)', r'\1 minus \2', t)
+    t = re.sub(r'(\d)\s*=\s*(\d)', r'\1 equals \2', t)
+    # Phonics: "the first sound is m" / "same sound: b" / "the b sound" ->
+    # the SOUND ("mmm"/"buh"), so early learners hear the phoneme, not the
+    # letter name ("em"/"bee").
+    if os.environ.get('SOUNDS', '1') != '0':
+        t = re.sub(r'\bsound\s+is\s+([a-zA-Z])\b', lambda m: 'sound is ' + _sound(m), t)
+        t = re.sub(r'\bsound\s*:\s*([a-zA-Z])\b', lambda m: 'sound: ' + _sound(m), t)
+        t = re.sub(r'\bthe\s+([a-zA-Z])\s+sound\b', lambda m: 'the ' + _sound(m) + ' sound', t)
+    # Re-collapse any double spaces introduced above.
+    return re.sub(r'\s+', ' ', t).strip()
 cfg=json.load(open(K+'/config.json'));vocab=cfg['vocab']
 voices=np.load(K+'/voices-v1.0.bin')
 sess=ort.InferenceSession(K+'/kokoro-v1.0.onnx',providers=['CPUExecutionProvider'])
