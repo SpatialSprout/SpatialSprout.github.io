@@ -107,8 +107,14 @@ def main():
 
     th = open(os.path.join(bdir, "theory.js"), encoding="utf-8").read()
     for lid in ids:
-        for m in re.finditer(lid + r":\[\{.*?speech:" + sq, th, re.DOTALL):
-            strings.append(js_unescape(m.group(1)))
+        start = th.find(lid + ":[")
+        if start < 0:
+            continue
+        nxt = re.search(r"\n \w+:\[", th[start + len(lid) + 2:])
+        end = start + len(lid) + 2 + nxt.start() if nxt else len(th)
+        block = th[start:end]
+        for sm in re.finditer(r"speech:" + sq, block):
+            strings.append(js_unescape(sm.group(1)))
 
     for f in glob.glob(os.path.join(bdir, "lessons-*.js")):
         js = open(f, encoding="utf-8").read()

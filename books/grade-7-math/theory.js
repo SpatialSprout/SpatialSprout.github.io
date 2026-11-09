@@ -3,10 +3,14 @@
    narration sounds like a teacher explaining, not a list of facts. */
 (function(){var P=window.PM;if(!P)return;
 P.theory={
- billion7:[{say:'Powers of ten',demo:'hold',speech:'Let us understand place value. Every place value is a power of ten: ten to the third is a thousand, ten to the sixth is a million, and ten to the ninth is a billion, a one with nine zeros.',
-  cues:[{w:'power of ten',demo:'build',hl:'power of ten',l:'10ⁿ'},{w:'ten to the sixth',l:'10⁶ = 1 000 000'},{w:'ten to the ninth',demo:'billion',l:'10⁹ = 1 billion'}]}],
- squares7:[{say:'Squares and square roots',demo:'hold',speech:'Here is the idea of a perfect square: it is a number of tiles that forms a square, like one, four, nine, sixteen, twenty-five. The square root is the side length. For example, the square root of forty-nine is seven.',
-  cues:[{w:'perfect square',demo:'grow',hl:'perfect square',l:'n × n'},{w:'square root',hl:'square root',l:'√ = side'},{w:'forty-nine is seven',l:'√49 = 7',keep:true}]}],
+ billion7:[{say:'Powers of ten',demo:'hold',speech:'Let us learn about big numbers. Every place in a number is ten times bigger than the one before it. We write big places as powers of ten. The little number on top, the exponent, tells you how many zeros. Ten to the third has three zeros: one thousand. Ten to the sixth has six zeros: one million. Ten to the ninth has nine zeros: one billion.',
+  cues:[{w:'powers of ten',hl:'power of ten',l:'10ⁿ'},{w:'ten to the sixth',l:'10⁶ = 1 000 000'},{w:'ten to the ninth',demo:'billion',l:'10⁹ = 1 billion'}]},
+ {say:'Break a number apart',demo:'build',speech:'Now let us break a big number into its parts. Forty-five million, three hundred thousand means four times ten to the seventh, plus five times ten to the sixth, plus three times ten to the fifth. The exponent tells you which place each digit sits in. Watch the towers show each part, then add them together.',
+  cues:[{w:'ten to the seventh',l:'4 × 10⁷'},{w:'ten to the sixth',l:'5 × 10⁶'},{w:'ten to the fifth',l:'3 × 10⁵'}]}],
+ squares7:[{say:'Perfect squares',demo:'hold',speech:'Let us learn about perfect squares. A perfect square is a number of tiles that makes an actual square shape. One tile makes a one-by-one square. Four tiles make a two-by-two square. Nine tiles make a three-by-three square. So one, four, and nine are perfect squares.',
+  cues:[{w:'perfect square',demo:'grow',hl:'perfect square',l:'n × n'},{w:'four tiles',l:'2 × 2 = 4'},{w:'nine tiles',l:'3 × 3 = 9'}]},
+ {say:'Square roots',demo:'hold',speech:'Now the square root works the other way. The square root asks: what is the side length of the square? For example, the square root of forty-nine is seven, because a seven-by-seven square has forty-nine tiles.',
+  cues:[{w:'square root',hl:'square root',l:'√ = side'},{w:'forty-nine is seven',l:'√49 = 7',keep:true}]}],
  rational7:[{say:'Rational numbers',demo:'hold',speech:'Let us define a rational number: any number you can write as a fraction, positive or negative. Between any two rational numbers there is always another one, so you can keep zooming in forever.',
   cues:[{w:'rational number',demo:'order',hl:'rational',l:'a/b'},{w:'always another',demo:'zoom',l:'zoom in…'}]}],
  simplify7:[{say:'Simplify with common factors',demo:'hold',speech:'Let us learn to simplify fractions: divide the top and bottom by the same number. Take six eighths and group the pieces in twos. Eight parts become four, and six become three, so six eighths simplifies to three quarters. Do it in one step by dividing by the greatest common factor.',
