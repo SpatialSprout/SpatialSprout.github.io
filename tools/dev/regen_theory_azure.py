@@ -10,7 +10,7 @@ from mutagen.mp3 import MP3
 
 KEY = os.environ["AZURE_SPEECH_KEY"]
 REGION = os.environ.get("AZURE_SPEECH_REGION", "eastus")
-VOICE = "en-GB-SoniaNeural"
+VOICE = "en-US-JennyNeural"
 RATE = "-10%"
 PITCH = "+5Hz"
 OUTFMT = "audio-24khz-48kbitrate-mono-mp3"
@@ -30,8 +30,25 @@ def xml_escape(s):
     return s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
 
 
+def norm(t):
+    t = re.sub(r"\s+", " ", t).strip()
+    t = (t.replace("\u2018", "'").replace("\u2019", "'")
+          .replace("\u201c", '"').replace("\u201d", '"')
+          .replace("\u2013", ", ").replace("\u2014", ", ")
+          .replace("\u2026", ".").replace("\u00a0", " "))
+    t = re.sub(r"_{2,}", " blank ", t)
+    t = t.replace("*", "")
+    t = t.replace("\u00d7", " times ").replace("\u00f7", " divided by ")
+    t = re.sub(r"\$(\d+)", r"\1 dollars", t)
+    t = re.sub(r"(\d)\s*\+\s*(\d)", r"\1 plus \2", t)
+    t = re.sub(r"(\d)\s*-\s*(\d)", r"\1 minus \2", t)
+    t = re.sub(r"(\d)\s*=\s*(\d)", r"\1 equals \2", t)
+    return re.sub(r"\s+", " ", t).strip()
+
+
 def synth(text, path):
-    ssml = ("<speak version='1.0' xml:lang='en-GB'>"
+    text = norm(text)
+    ssml = ("<speak version='1.0' xml:lang='en-US'>"
             "<voice name='%s'><prosody rate='%s' pitch='%s'>%s</prosody></voice>"
             "</speak>") % (VOICE, RATE, PITCH, xml_escape(text))
     req = urllib.request.Request(
@@ -118,6 +135,7 @@ def main():
             print("FAIL %d %r -> %s" % (i, speech[:60], e), flush=True)
         if i % 5 == 0:
             print("progress %d/%d" % (i, len(data)), flush=True)
+        time.sleep(3.5)
 
     open(vj, "w", encoding="utf-8").write("window.VOICE=" + json.dumps(V, separators=(",", ":")) + ";")
     open(tj, "w", encoding="utf-8").write("window.VTIME=" + json.dumps(T, separators=(",", ":")) + ";")

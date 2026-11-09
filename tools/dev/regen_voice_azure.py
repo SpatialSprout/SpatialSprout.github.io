@@ -16,7 +16,7 @@ from mutagen.mp3 import MP3
 
 KEY = os.environ["AZURE_SPEECH_KEY"]
 REGION = os.environ.get("AZURE_SPEECH_REGION", "eastus")
-VOICE = "en-GB-SoniaNeural"
+VOICE = "en-US-JennyNeural"
 RATE = "-10%"
 PITCH = "+5Hz"
 OUTFMT = "audio-24khz-48kbitrate-mono-mp3"
@@ -40,6 +40,11 @@ def norm(t):
           .replace("\u2026", ".").replace("\u00a0", " "))
     t = re.sub(r"_{2,}", " blank ", t)
     t = t.replace("*", "")
+    t = t.replace("\u00d7", " times ").replace("\u00f7", " divided by ")
+    t = re.sub(r"\$(\d+)", r"\1 dollars", t)
+    t = re.sub(r"(\d)\s*\+\s*(\d)", r"\1 plus \2", t)
+    t = re.sub(r"(\d)\s*-\s*(\d)", r"\1 minus \2", t)
+    t = re.sub(r"(\d)\s*=\s*(\d)", r"\1 equals \2", t)
     return re.sub(r"\s+", " ", t).strip()
 
 
@@ -82,7 +87,7 @@ def xml_escape(s):
 
 
 def synth(text, path):
-    ssml = ("<speak version='1.0' xml:lang='en-GB'>"
+    ssml = ("<speak version='1.0' xml:lang='en-US'>"
             "<voice name='%s'><prosody rate='%s' pitch='%s'>%s</prosody></voice>"
             "</speak>") % (VOICE, RATE, PITCH, xml_escape(text))
     req = urllib.request.Request(
@@ -153,6 +158,7 @@ def main():
             print("FAIL %d %r -> %s" % (i, s[:50], e), flush=True)
         if i % 5 == 0:
             print("progress %d/%d" % (i, len(strings)), flush=True)
+        time.sleep(3.5)
 
     open(vj, "w", encoding="utf-8").write("window.VOICE=" + json.dumps(V, separators=(",", ":")) + ";")
     print("DONE ok=%d total_voice_entries=%d" % (ok, len(V)), flush=True)
