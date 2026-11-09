@@ -681,10 +681,10 @@ let voCurH=null;PM.voiceNow=()=>(voClock&&voClock.tok===voTok&&!voClock.dev)?{h:
 function speak(text,onend){if(!soundOn)return false;stopSpeak();const tk=voTok;const h=vhash(text);voCurH=h;
   /* Howler (JK): Web Audio playback that unlocks itself on phones and tablets; falls back to the plain audio element */
   if(window.Howl&&(window.BOOK||{}).howler&&window.VOICE&&VOICE[h]){let done=false;const fin=()=>{if(done||tk!==voTok)return;done=true;if(onend)onend();};
-    const fb=()=>{if(tk!==voTok||done)return;voH=null;VO.onended=fin;VO.src='voice/'+h+'.mp3';try{const p=VO.play();if(p&&p.catch)p.catch(()=>{if(!done){done=true;speakDevice(text,onend);}});}catch(e){done=true;speakDevice(text,onend);}};
-    try{const hw=new Howl({src:['voice/'+h+'.mp3'],format:['mp3'],html5:false,onplay:()=>{if(tk===voTok)voClock={tok:tk,t0:performance.now(),dur:hw.duration()||VOICE[h]};},onend:fin,onloaderror:fb,onplayerror:()=>{hw.once('unlock',()=>{if(tk===voTok)hw.play();});}});voH=hw;hw.play();return true;}catch(e){fb();return true;}}
+    const fb=()=>{if(tk!==voTok||done)return;voH=null;VO.onended=fin;VO.src='voice/'+h+'.mp3?v=2';try{const p=VO.play();if(p&&p.catch)p.catch(()=>{if(!done){done=true;speakDevice(text,onend);}});}catch(e){done=true;speakDevice(text,onend);}};
+    try{const hw=new Howl({src:['voice/'+h+'.mp3?v=2'],format:['mp3'],html5:false,onplay:()=>{if(tk===voTok)voClock={tok:tk,t0:performance.now(),dur:hw.duration()||VOICE[h]};},onend:fin,onloaderror:fb,onplayerror:()=>{hw.once('unlock',()=>{if(tk===voTok)hw.play();});}});voH=hw;hw.play();return true;}catch(e){fb();return true;}}
   if(window.VOICE&&VOICE[h]){let done=false;const fin=()=>{if(done||tk!==voTok)return;done=true;if(onend)onend();};
-    VO.onended=fin;VO.onplaying=()=>{if(tk===voTok)voClock={tok:tk,t0:performance.now()-VO.currentTime*1000,dur:(isFinite(VO.duration)&&VO.duration)||VOICE[h]};};VO.onerror=()=>{if(tk===voTok&&!done){done=true;speakDevice(text,onend);}};VO.src='voice/'+h+'.mp3';
+    VO.onended=fin;VO.onplaying=()=>{if(tk===voTok)voClock={tok:tk,t0:performance.now()-VO.currentTime*1000,dur:(isFinite(VO.duration)&&VO.duration)||VOICE[h]};};VO.onerror=()=>{if(tk===voTok&&!done){done=true;speakDevice(text,onend);}};VO.src='voice/'+h+'.mp3?v=2';
     try{const p=VO.play();if(p&&p.catch)p.catch(()=>{if(tk===voTok&&!done){done=true;speakDevice(text,onend);}});}catch(e){done=true;return speakDevice(text,onend);}return true;}
   return speakDevice(text,onend);}
 
