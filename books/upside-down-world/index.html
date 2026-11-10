@@ -87,7 +87,7 @@ body.narrow #bar{gap:6px;padding-top:8px}body.narrow #bar button{padding:0 12px;
   <button id="next" aria-label="Next page">&#8594;</button>
 </div>
 <script src="story.js"></script>
-<script src="sprite.js?v=5"></script>
+<script src="sprite.js?v=6"></script>
 <script src="voice.js"></script>
 <script src="vtime.js"></script>
 <script>
@@ -305,8 +305,8 @@ const DEP={};function depthAt(img,x,y){let o=DEP[img];if(!o){o=DEP[img]={c:null}
 const MOT={
   leg(tt){const T=6.3;tt=((tt%T)+T)%T;let rot=Math.sin(tt*1.7)*.02,sy=1,dy=0;
     if(tt>=1.4&&tt<2.0){const u=ease((tt-1.4)/.6);rot=.46*u;sy=1+.14*u;dy=1.5*u;}
-    else if(tt>=2.0&&tt<2.1){const u=ease((tt-2.0)/.1);rot=.46-1.02*u;sy=1.14-.28*u;dy=1.5-1.5*u;}
-    else if(tt>=2.1&&tt<2.8){const u=(tt-2.1)/.7,e=1-Math.pow(1-u,2.4);rot=-.56*(1-e)+Math.sin(u*9)*.05*(1-u);sy=.86+.14*e;}
+    else if(tt>=2.0&&tt<2.1){const u=ease((tt-2.0)/.1);rot=.46-1.31*u;sy=1.14-.52*u;dy=1.5-1.5*u;}
+    else if(tt>=2.1&&tt<2.8){const u=(tt-2.1)/.7,e=1-Math.pow(1-u,2.4);rot=-.85*(1-e)+Math.sin(u*9)*.05*(1-u);sy=.62+.38*e;}
     return {rot,sx:1,sy,dx:0,dy};},
   head(tt,dir,lag){const T=8;tt=((tt-lag)%T+T)%T;let k=0;
     if(tt>=.8&&tt<1.9)k=ease((tt-.8)/1.1);else if(tt>=1.9&&tt<4.8)k=1;else if(tt>=4.8&&tt<5.9)k=1-ease((tt-4.8)/1.1);
