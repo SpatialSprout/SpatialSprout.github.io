@@ -4,6 +4,7 @@
   var URL = "https://mjtdwumwnpkzogbhvukg.supabase.co", KEY = "sb_publishable_YlpgiQC1v5JFBQbB5-I6NA_9K0fklN3";
   var m = location.pathname.match(/\/books\/([^/]+)\//); if (!m) return;
   var slug = m[1].replace(/-classic$/, "");
+  var PRIV = { "upside-down-world": "mu.mahfodh@gmail.com" }; /* private books: only the owner's account opens them */
   var price = /^(kindergarten|grade-[123]-)/.test(slug) ? "$14.99" : "$19.99";
   var css = "#ssGate{position:fixed;inset:0;z-index:2147483647;display:grid;place-items:center;padding:16px;background:#f4efe6;font:16px/1.45 system-ui,-apple-system,Segoe UI,sans-serif;color:#1b2a41}" +
     "#ssGate .card{max-width:26rem;width:100%;background:#fff;border:2px solid #1b2a41;border-radius:18px;padding:28px 24px;text-align:center;box-shadow:0 6px 0 #1b2a41}" +
@@ -16,6 +17,9 @@
   document.documentElement.appendChild(g);
   function locked(msg) {
     var title = ({ "kindergarten-jk": "Junior Kindergarten", "kindergarten-sk": "Senior Kindergarten" })[slug] || (document.title || "").replace(/^The Interactive Classroom:\s*/, "") || slug.replace(/-/g, " ").replace(/\b\w/g, function (c) { return c.toUpperCase(); });
+    if (PRIV[slug]) { g.innerHTML = '<div class="card"><h1>Private book</h1><p>This book is private.</p>' +
+      '<a class="b" href="../../login.html?next=' + encodeURIComponent("books/" + m[1] + "/") + '">Log in</a>' +
+      '<p class="msg" role="status">' + (msg || "") + '</p><a class="home" href="../../#library">Back to the library</a></div>'; return; }
     g.innerHTML = '<div class="card"><h1>' + title.replace(/</g, "&lt;") + '</h1><p>This book is locked. Buy it once to open it on any device, or log in if you already bought it.</p>' +
       '<button class="buy" type="button">Buy for ' + price + '</button>' +
       '<a class="b" href="../../login.html?next=' + encodeURIComponent("books/" + m[1] + "/") + '">Log in</a>' +
@@ -38,6 +42,11 @@
     var sb = window.supabase.createClient(URL, KEY, { auth: { persistSession: true } });
     sb.auth.getSession().then(function (r) {
       if (!r.data.session) { try { localStorage.removeItem(CK); } catch (e) {} if (!g.parentNode) { document.documentElement.appendChild(st); document.documentElement.appendChild(g); } locked(); return; }
+      if (PRIV[slug]) {
+        if ((r.data.session.user.email || "").toLowerCase() === PRIV[slug]) { try { localStorage.setItem(CK, JSON.stringify({ u: r.data.session.user.id, t: Date.now() })); } catch (e) {} open(); }
+        else { try { localStorage.removeItem(CK); } catch (e) {} if (!g.parentNode) { document.documentElement.appendChild(st); document.documentElement.appendChild(g); } locked("Signed in as " + r.data.session.user.email + "."); }
+        return;
+      }
       sb.from("purchases").select("book_slug").eq("book_slug", slug).limit(1).then(function (q) {
         if (q.data && q.data.length) { try { localStorage.setItem(CK, JSON.stringify({ u: r.data.session.user.id, t: Date.now() })); } catch (e) {} open(); }
         else if (q.error && cached) { /* offline: keep the remembered access */ }

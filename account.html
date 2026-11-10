@@ -40,7 +40,7 @@
   </section>
 </main>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.4/dist/umd/supabase.js"></script>
-<script src="assets/catalog.js"></script>
+<script src="assets/catalog.js?v=2"></script>
 <script src="assets/auth.js?v=6"></script>
 <script>
 (function(){var sb=window.SS_AUTH;if(!sb){location.replace('login.html');return;}
@@ -61,7 +61,7 @@ function showBooks(s){
   }
   var email=(s.user.email||'').toLowerCase();
   if(email==='mu.mahfodh@gmail.com'){
-    (window.CATALOG&&window.CATALOG.books||[]).forEach(function(b){if(b.free)addBook(b.slug);});
+    (window.CATALOG&&window.CATALOG.books||[]).forEach(function(b){if(b.free||b.private)addBook(b.slug);});
   }
   sb.from('purchases').select('book_slug').then(function(r){
     if(r.error){if(!list.children.length){m.className='msg err';m.textContent='We could not load your books. Please refresh the page.';}return;}

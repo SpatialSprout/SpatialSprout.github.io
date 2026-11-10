@@ -870,7 +870,7 @@ window.CATALOG = {
       name: "The Upside-Down World",
       subject: "Storybook",
       status: "live",
-      free: true,
+      private: true,
       colors: ["#7c4dff", "#e05a7a", "#7fd8f0"],
       slug: "upside-down-world",
       tiles: ["L", "S"],

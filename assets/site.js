@@ -1,6 +1,7 @@
 (function () {
   "use strict";
   var C = window.CATALOG || { books: [], strands: {}, moreSubjects: [] };
+  C = Object.assign({}, C, { books: (C.books || []).filter(function (b) { return !b.private; }) }); /* private books stay off the public shelf */
   var $ = function (id) { return document.getElementById(id); };
   var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); };
 
