@@ -108,19 +108,26 @@ const audio=new Audio();audio.preload='auto';
    adds a gentle breathing sway to the raised parts, and shimmers their light. */
 const VS='attribute vec2 p;varying vec2 v;void main(){v=p*.5+.5;v.y=1.-v.y;gl_Position=vec4(p,0.,1.);}';
 const FS=`precision highp float;varying vec2 v;
-uniform sampler2D tA,dA,tB,dB;uniform float mixv,t,sA,sB,dimA,dimB;uniform vec2 par,oA,oB;
+uniform sampler2D tA,dA,tB,dB;uniform float mixv,t,sA,sB,dimA,dimB,windA,windB;uniform vec2 par,oA,oB;uniform vec4 hairA,hairB;
 float mask(vec2 q){return smoothstep(.30,.40,q.x)*smoothstep(.97,.90,q.x)*smoothstep(.95,.85,q.y);}
-vec3 live(sampler2D tx,sampler2D dx,vec2 uv,float s,vec2 o,float dim){
+vec3 live(sampler2D tx,sampler2D dx,vec2 uv,float s,vec2 o,float dim,float wind,vec4 hair){
   vec2 q=o+(uv-o)/s;
   float m=mask(q);vec2 dir=par*.011*(.35+.65*m)+m*vec2(sin(t*.85+q.y*9.+q.x*2.),cos(t*.67+q.x*7.))*.0022;
   float rl=smoothstep(.14,1.,texture2D(dx,q).r);
   float r2=smoothstep(.14,1.,texture2D(dx,q-dir*rl).r);
   vec2 q2=q-dir*max(r2,rl*.5);
-  vec3 c=texture2D(tx,q2).rgb;
+  /* wind in the foliage (dark green, raised) and a flutter in a small patch of hair */
+  vec3 c0=texture2D(tx,q2).rgb;float lm=dot(c0,vec3(.3,.55,.15));
+  float fol=smoothstep(.0,.05,c0.g-max(c0.r*.9,c0.b*1.1))*(1.-smoothstep(.36,.52,lm));
+  float fm=wind*fol*smoothstep(.22,.6,rl);
+  vec2 w=vec2(sin(t*1.9+q.y*38.+q.x*21.)*.0016+sin(t*3.3+q.x*57.+q.y*11.)*.0010+sin(t*.7+q.x*6.)*.0014,cos(t*1.6+q.x*33.)*.0010)*fm;
+  vec2 hd=(q-hair.xy)/hair.zw;float hf=exp(-dot(hd,hd)*1.2)*smoothstep(.7,-.8,hd.y)*step(0.,hair.z);
+  w+=vec2(sin(t*3.4+q.x*90.)*.0034+sin(t*5.3+q.y*70.)*.0016,cos(t*2.7+q.x*80.)*.0015)*hf;
+  vec3 c=texture2D(tx,q2-w).rgb;
   float sh=m*r2*(.055*sin(t*1.6+q.x*13.+q.y*6.)+.035*sin(t*2.7-q.y*17.));
   c*=1.+sh;c*=1.-dim*.25;
   return c;}
-void main(){vec3 a=live(tA,dA,v,sA,oA,dimA);vec3 b=live(tB,dB,v,sB,oB,dimB);
+void main(){vec3 a=live(tA,dA,v,sA,oA,dimA,windA,hairA);vec3 b=live(tB,dB,v,sB,oB,dimB,windB,hairB);
   vec3 c=mix(a,b,smoothstep(0.,1.,mixv));c+=vec3(1.,.82,.5)*.10*sin(3.14159*mixv);
   gl_FragColor=vec4(c,1.);}`;
 let gl=null,prog=null,U={},tex={},slotA=null,slotB=null,fadeT0=0,fading=false;
@@ -129,7 +136,7 @@ function sh(type,src){const s=gl.createShader(type);gl.shaderSource(s,src);gl.co
 if(gl){try{prog=gl.createProgram();gl.attachShader(prog,sh(gl.VERTEX_SHADER,VS));gl.attachShader(prog,sh(gl.FRAGMENT_SHADER,FS));gl.linkProgram(prog);gl.useProgram(prog);
   const b=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,b);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
   const loc=gl.getAttribLocation(prog,'p');gl.enableVertexAttribArray(loc);gl.vertexAttribPointer(loc,2,gl.FLOAT,false,0,0);
-  ['tA','dA','tB','dB','mixv','t','sA','sB','dimA','dimB','par','oA','oB'].forEach(n=>U[n]=gl.getUniformLocation(prog,n));
+  ['tA','dA','tB','dB','mixv','t','sA','sB','dimA','dimB','par','oA','oB','windA','windB','hairA','hairB'].forEach(n=>U[n]=gl.getUniformLocation(prog,n));
   [0,1,2,3].forEach(i=>gl.uniform1i(U[['tA','dA','tB','dB'][i]],i));}catch(e){console.warn(e);gl=null;}}
 if(!gl)document.body.classList.add('nogl');
 function loadTex(src){
@@ -346,6 +353,8 @@ function drawGL(now){
   gl.uniform1f(U.mixv,m);gl.uniform1f(U.t,t);gl.uniform1f(U.sA,sa);gl.uniform1f(U.sB,sb);
   gl.uniform2f(U.oA,oa[0],oa[1]);gl.uniform2f(U.oB,ob[0],ob[1]);gl.uniform2f(U.par,par[0],par[1]);
   dimS+=((slotB.p.fx==='shade'?1:0)-dimS)*.01;gl.uniform1f(U.dimA,A.p.fx==='shade'?dimS:0);gl.uniform1f(U.dimB,slotB.p.fx==='shade'?dimS:0);
+  const hv=p=>p.hair?[p.hair[0]/W,p.hair[1]/H,p.hair[2]/W,p.hair[3]/H]:[0,0,-1,-1];
+  gl.uniform1f(U.windA,A.p.wind?1:0);gl.uniform1f(U.windB,slotB.p.wind?1:0);gl.uniform4fv(U.hairA,hv(A.p));gl.uniform4fv(U.hairB,hv(slotB.p));
   curPar=par;curS=sb;
   gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
   const L=layers[cur];if(L&&L._kb)L._kb.style.transform='scale('+sb+')';
