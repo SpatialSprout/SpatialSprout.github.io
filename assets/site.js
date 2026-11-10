@@ -20,7 +20,7 @@
   function GN(b){return b.name||("Grade "+b.grade+" "+b.subject);}
   /* library shelf, one row per grade */
   var shelf = $("shelf");
-  var GL = function (g) { return g === "JK" ? "Junior Kindergarten" : g === "SK" ? "Senior Kindergarten" : "Grade " + g; };
+  var GL = function (g) { return g === "JK" ? "Junior Kindergarten" : g === "SK" ? "Senior Kindergarten" : (String(g).match(/^\d+$/) ? "Grade " + g : String(g)); };
   var strandsOf = function (b) { return Object.keys(b.strands || C.strands); };
   if (shelf) {
     var grades = [];
@@ -35,7 +35,7 @@
           var what = strandsOf(b).join(", ");
           if (b.status === "live") {
             return '<a class="book live" href="books/' + esc(b.slug) + '/index.html">' +
-              '<span class="ttl">' + esc(b.name ? "The " + g + " book" : b.subject) + '</span>' +
+              '<span class="ttl">' + esc(b.name || b.subject) + '</span>' +
               (n ? '<span class="n">' + n + ' lessons</span>' : '') +
               '<span class="what">' + esc(what) + '</span>' +
               '<span class="open">Open the book</span></a>';

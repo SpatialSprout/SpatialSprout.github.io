@@ -864,6 +864,20 @@ window.CATALOG = {
         { t: "Sales, loyalty programs and best value", s: "Financial Literacy", c: ["F1.5"] },
         { t: "Comparing credit cards and contracts", s: "Financial Literacy", c: ["F1.6"] }
       ]
+    },
+    {
+      grade: "Storybooks",
+      name: "The Upside-Down World",
+      subject: "Storybook",
+      status: "live",
+      colors: ["#7c4dff", "#e05a7a", "#7fd8f0"],
+      slug: "upside-down-world",
+      tiles: ["L", "S"],
+      title: "The Upside-Down World",
+      author: "M. A. Mafodh",
+      blurb: "A magical tree, flying fish and the strangest game of soccer ever. Leo and Sam crawl under an old oak tree and tumble into an upside-down world — where the sun is blue, the sea is yellow, and the fish fly through the sky. An illustrated storybook to read together.",
+      strands: { "Storybook": { letter: "S", color: "#7c4dff" } },
+      lessons: []
     }
   ],
   moreSubjects: ["English, Science and Social Studies for Grades 3 to 8", "History and Geography"]
