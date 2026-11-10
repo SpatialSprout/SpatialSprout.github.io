@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Upside-Down World</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--ink:#3b2a20;--paper:rgba(255,255,255,.86);--accent:#e05a7a}
+html,body{height:100%}
+body{font-family:'Segoe UI','Comic Sans MS','Trebuchet MS',system-ui,sans-serif;color:var(--ink);background:#0d0a14;overflow:hidden;-webkit-font-smoothing:antialiased}
+#stage{position:fixed;inset:0}
+.scene{position:absolute;inset:0;overflow:hidden;opacity:.5;transition:opacity .6s ease}
+.scene .el{position:absolute;display:block;will-change:transform}
+@keyframes drift{from{transform:translateX(-25vw)}to{transform:translateX(125vw)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-18px)}}
+@keyframes swim{0%{transform:translate(0,0) rotate(-4deg)}25%{transform:translate(46px,-16px) rotate(3deg)}50%{transform:translate(90px,0) rotate(-3deg)}75%{transform:translate(46px,16px) rotate(3deg)}100%{transform:translate(0,0) rotate(-4deg)}}
+@keyframes bounce{0%,100%{transform:translateY(0) scaleY(1)}45%{transform:translateY(-80px) scaleY(1.05)}60%{transform:translateY(0) scaleY(.92)}}
+@keyframes pulse{0%,100%{opacity:.45;transform:scale(.92)}50%{opacity:1;transform:scale(1.1)}}
+@keyframes sway{0%,100%{transform:rotate(-5deg)}50%{transform:rotate(5deg)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes rise{0%{transform:translateY(0);opacity:0}12%{opacity:.85}100%{transform:translateY(-92vh);opacity:0}}
+@keyframes ripple{0%{transform:scale(.15);opacity:.85}100%{transform:scale(2.8);opacity:0}}
+@keyframes shimmer{0%,100%{opacity:.35}50%{opacity:1}}
+@keyframes twinkle{0%,100%{opacity:.15;transform:scale(.7)}50%{opacity:1;transform:scale(1.2)}}
+@keyframes fall{0%{transform:translateY(-12vh) rotate(0)}100%{transform:translateY(112vh) rotate(360deg)}}
+@keyframes wink{0%,100%{transform:scaleY(1)}50%{transform:scaleY(.15)}}
+#app{position:relative;height:100%;display:flex;flex-direction:column}
+#topbar{position:absolute;top:0;left:0;right:0;z-index:5;display:flex;justify-content:space-between;align-items:center;padding:14px 20px;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.55);pointer-events:none}
+#topbar .book-title{font-weight:800;letter-spacing:.05em;font-size:.95rem}
+#topbar .page-num{font-size:.85rem;font-weight:600}
+#page{flex:1;display:flex;align-items:center;justify-content:center;padding:64px 18px 92px;overflow-y:auto}
+.card{position:relative;z-index:2;width:100%;max-width:840px;background:var(--paper);backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px);border-radius:26px;box-shadow:0 22px 60px rgba(0,0,0,.38);border:1px solid rgba(255,255,255,.65);padding:32px 38px;animation:cardin .5s ease}
+@keyframes cardin{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+.chapter{font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--accent);font-size:.8rem;margin-bottom:10px}
+.text{font-size:1.24rem;line-height:1.78}
+.text p{margin-bottom:14px}
+.text p:last-child{margin-bottom:0}
+.text em{font-style:italic}
+#nav{position:absolute;bottom:0;left:0;right:0;z-index:5;display:flex;justify-content:center;align-items:center;gap:18px;padding:14px}
+button{font:inherit;cursor:pointer;border:none;border-radius:999px;background:rgba(255,255,255,.92);color:var(--ink);padding:12px 22px;font-weight:700;box-shadow:0 8px 24px rgba(0,0,0,.28);transition:transform .12s ease,background .12s}
+button:hover{transform:translateY(-2px)}
+button:active{transform:scale(.96)}
+button:disabled{opacity:.4;cursor:default;transform:none}
+#dots{color:#fff;font-weight:700;text-shadow:0 2px 8px rgba(0,0,0,.5);letter-spacing:.08em;min-width:110px;text-align:center}
+.cover{max-width:760px;text-align:center;padding:48px 40px}
+.cover h1{font-size:3rem;line-height:1.08;margin-bottom:14px;color:#6a3fb5;font-weight:900;letter-spacing:.01em}
+.cover h1 .sub{display:block;font-size:1.05rem;font-weight:700;color:#e05a7a;letter-spacing:.14em;text-transform:uppercase;margin-top:14px}
+.cover .byline{font-size:1.12rem;color:#5a4a3a;margin:18px auto 28px;max-width:520px;line-height:1.6}
+.cover button{font-size:1.05rem;background:linear-gradient(135deg,#7c4dff,#e05a7a);color:#fff}
+.end h1{font-size:3rem;color:#6a3fb5}
+@media (max-width:600px){.text{font-size:1.08rem}.cover h1{font-size:2.2rem}.card{padding:22px 20px}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<defs>
+<linearGradient id="rainbowGrad" x1="0" y1="0" x2="1" y2="1">
+<stop offset="0" stop-color="#ff5c5c"/><stop offset=".2" stop-color="#ffb13d"/><stop offset=".4" stop-color="#ffe14d"/><stop offset=".6" stop-color="#5cd65c"/><stop offset=".8" stop-color="#5ca8ff"/><stop offset="1" stop-color="#b57cff"/>
+</linearGradient>
+<symbol id="cloud" viewBox="0 0 120 60"><g fill="currentColor"><ellipse cx="40" cy="40" rx="34" ry="20"/><ellipse cx="72" cy="30" rx="30" ry="22"/><ellipse cx="98" cy="42" rx="20" ry="14"/></g></symbol>
+<symbol id="sun" viewBox="0 0 100 100"><circle cx="50" cy="50" r="24" fill="currentColor"/><g stroke="currentColor" stroke-width="5" stroke-linecap="round"><line x1="50" y1="6" x2="50" y2="20"/><line x1="50" y1="80" x2="50" y2="94"/><line x1="6" y1="50" x2="20" y2="50"/><line x1="80" y1="50" x2="94" y2="50"/><line x1="19" y1="19" x2="29" y2="29"/><line x1="71" y1="71" x2="81" y2="81"/><line x1="19" y1="81" x2="29" y2="71"/><line x1="71" y1="29" x2="81" y2="19"/></g></symbol>
+<symbol id="fish" viewBox="0 0 120 60"><path d="M18 30 Q48 6 96 30 Q48 54 18 30 Z" fill="#ff9a56"/><path d="M96 30 L118 10 L110 30 L118 50 Z" fill="#7bd3ff"/><path d="M50 18 Q62 12 74 18" stroke="#ff5c8a" stroke-width="4" fill="none" stroke-linecap="round"/><circle cx="34" cy="26" r="4" fill="#3b2a20"/><path d="M44 40 Q52 34 60 40" stroke="#fff" stroke-width="3" fill="none" opacity=".7"/></symbol>
+<symbol id="whale" viewBox="0 0 220 110"><path d="M34 60 Q64 18 140 40 Q186 54 196 60 Q186 66 140 80 Q64 102 34 60 Z" fill="#6a9df0"/><path d="M196 60 L222 40 L212 60 L222 80 Z" fill="url(#rainbowGrad)"/><circle cx="62" cy="50" r="5" fill="#223"/><path d="M90 62 Q112 52 134 62" stroke="#fff" stroke-width="3" fill="none" opacity=".6"/><circle cx="150" cy="52" r="6" fill="#b57cff" opacity=".8"/><circle cx="168" cy="66" r="4" fill="#ff5c8a" opacity=".8"/></symbol>
+<symbol id="jelly" viewBox="0 0 80 120"><path d="M40 8 Q66 8 66 42 Q66 62 40 66 Q14 62 14 42 Q14 8 40 8 Z" fill="currentColor" opacity=".85"/><g stroke="currentColor" stroke-width="4" stroke-linecap="round" opacity=".8"><path d="M22 66 Q20 84 18 102"/><path d="M40 68 Q40 90 40 108"/><path d="M58 66 Q60 84 62 100"/></g></symbol>
+<symbol id="ball" viewBox="0 0 60 60"><circle cx="30" cy="30" r="28" fill="currentColor"/><path d="M30 2 C21 30 39 30 30 58" stroke="#fff" stroke-width="3" fill="none" opacity=".7"/><path d="M4 30 H56" stroke="#fff" stroke-width="3" opacity=".7"/><path d="M2 16 C20 30 40 30 58 16" stroke="#fff" stroke-width="3" fill="none" opacity=".7"/><path d="M2 44 C20 30 40 30 58 44" stroke="#fff" stroke-width="3" fill="none" opacity=".7"/></symbol>
+<symbol id="star" viewBox="0 0 40 40"><path d="M20 2 L24 15 L38 15 L27 24 L31 38 L20 30 L9 38 L13 24 L2 15 L16 15 Z" fill="currentColor"/></symbol>
+<symbol id="bubble" viewBox="0 0 40 40"><circle cx="20" cy="20" r="18" fill="currentColor" opacity=".3"/><circle cx="14" cy="13" r="5" fill="#fff" opacity=".65"/></symbol>
+<symbol id="tree" viewBox="0 0 120 160"><rect x="54" y="86" width="14" height="64" rx="5" fill="currentColor"/><path d="M60 16 C92 40 92 72 60 92 C28 72 28 40 60 16 Z" fill="currentColor"/><path d="M60 92 C40 84 40 68 52 58" stroke="currentColor" stroke-width="6" fill="none" stroke-linecap="round" opacity=".7"/></symbol>
+<symbol id="moon" viewBox="0 0 60 60"><path d="M40 2 A26 26 0 1 0 58 42 A20 20 0 1 1 40 2 Z" fill="currentColor"/></symbol>
+<symbol id="sparkle" viewBox="0 0 40 40"><path d="M20 0 L24 16 L40 20 L24 24 L20 40 L16 24 L0 20 L16 16 Z" fill="currentColor"/></symbol>
+<symbol id="leaf" viewBox="0 0 30 30"><path d="M15 2 C28 9 28 21 15 28 C2 21 2 9 15 2 Z" fill="currentColor"/><path d="M15 4 L15 26" stroke="#fff" stroke-width="2" opacity=".4"/></symbol>
+<symbol id="heart" viewBox="0 0 40 40"><path d="M20 34 C9 25 3 17 3 10 C3 5 8 2 13 2 C16 2 19 4 20 7 C21 4 24 2 27 2 C32 2 37 5 37 10 C37 17 31 25 20 34 Z" fill="currentColor"/></symbol>
+<symbol id="crown" viewBox="0 0 60 44"><path d="M6 38 L2 10 L17 20 L30 4 L43 20 L58 10 L54 38 Z" fill="currentColor"/><circle cx="30" cy="22" r="3" fill="#fff"/></symbol>
+<symbol id="paw" viewBox="0 0 40 40"><ellipse cx="20" cy="27" rx="13" ry="10" fill="currentColor"/><circle cx="7" cy="13" r="5" fill="currentColor"/><circle cx="16" cy="5" r="5" fill="currentColor"/><circle cx="27" cy="5" r="5" fill="currentColor"/><circle cx="34" cy="13" r="5" fill="currentColor"/></symbol>
+<symbol id="post" viewBox="0 0 20 64"><rect x="3" y="0" width="14" height="64" rx="7" fill="currentColor"/></symbol>
+<symbol id="camera" viewBox="0 0 84 62"><rect x="4" y="16" width="76" height="42" rx="10" fill="currentColor"/><rect x="26" y="8" width="24" height="14" rx="5" fill="currentColor"/><circle cx="42" cy="37" r="15" fill="#0d0a14"/><circle cx="42" cy="37" r="8" fill="#7bd3ff"/><circle cx="38" cy="31" r="2.5" fill="#fff"/></symbol>
+<symbol id="block" viewBox="0 0 44 44"><rect x="4" y="6" width="36" height="34" rx="5" fill="currentColor"/><path d="M4 16 L22 9 L40 16" stroke="#fff" stroke-width="3" fill="none" opacity=".6"/><path d="M22 9 L22 40" stroke="#fff" stroke-width="2" opacity=".4"/></symbol>
+<symbol id="ship" viewBox="0 0 90 60"><ellipse cx="45" cy="38" rx="34" ry="16" fill="currentColor" opacity=".9"/><path d="M45 6 Q60 16 45 40 Q30 16 45 6 Z" fill="currentColor" opacity=".5"/><circle cx="30" cy="32" r="3" fill="#fff"/><circle cx="45" cy="28" r="3" fill="#fff"/><circle cx="60" cy="32" r="3" fill="#fff"/></symbol>
+</defs>
+</svg>
+
+<div id="stage"></div>
+<div id="app">
+  <div id="topbar">
+    <div class="book-title">The Upside-Down World</div>
+    <div class="page-num" id="pageNum"></div>
+  </div>
+  <div id="page"></div>
+  <div id="nav">
+    <button id="prev">← Back</button>
+    <div id="dots"></div>
+    <button id="next">Next →</button>
+  </div>
+</div>
+<script>
+const SCENES={
+'sunny-park':{bg:'linear-gradient(#8ed1f5 0%,#c9ecb0 58%,#79c06b 58%)',els:[['sun','spin',['8%','6%'],'90x90',46,'#ffd23f'],['cloud','drift',['18%','12%'],'110x55',30,'#ffffff'],['cloud','drift',['55%','22%'],'88x44',38,'#ffffff'],['tree','sway',['80%','36%'],'150x200',6,'#3e8e41'],['ball','bounce',['26%','72%'],'58x58',2.6,'#e63946']]},
+'goalie':{bg:'linear-gradient(#7ec8f2 0%,#9fdc8c 60%,#5fae54 60%)',els:[['sun','float',['82%','8%'],'80x80',7,'#ffd23f'],['cloud','drift',['12%','14%'],'100x50',26,'#fff'],['post','float',['22%','52%'],'16x50',6,'#4a86d8'],['post','float',['74%','52%'],'16x50',7,'#4a86d8'],['ball','bounce',['48%','60%'],'54x54',2.4,'#e63946']]},
+'oak-tree':{bg:'linear-gradient(#a8d8f0 0%,#cbe7b0 55%,#6fae5f 55%)',els:[['tree','sway',['30%','30%'],'240x320',7,'#2f6b2f'],['leaf','fall',['55%','0%'],'22x22',8,'#7cc069'],['leaf','fall',['70%','0%'],'18x18',11,'#9bd77a'],['ball','bounce',['34%','78%'],'46x46',2.8,'#e63946'],['bubble','pulse',['38%','58%'],'60x60',3,'#1b1b1b']]},
+'spooky-tree':{bg:'linear-gradient(#2a2438 0%,#14101f 60%,#0c0913 60%)',els:[['moon','float',['78%','10%'],'70x70',8,'#efe9d8'],['tree','sway',['30%','28%'],'260x340',9,'#0a0a10'],['sparkle','twinkle',['38%','58%'],'26x26',2.4,'#c9f25a'],['sparkle','twinkle',['46%','64%'],'20x20',3.1,'#c9f25a'],['leaf','fall',['60%','0%'],'18x18',7,'#3a2f4a'],['bubble','rise',['20%','70%'],'30x30',10,'#5a4a6a']]},
+'under-tree':{bg:'linear-gradient(#1c3a2e 0%,#0e231a 55%,#08130d 55%)',els:[['tree','sway',['20%','30%'],'260x340',8,'#07140d'],['sparkle','twinkle',['50%','55%'],'22x22',2.6,'#9fe8b0'],['sparkle','twinkle',['62%','68%'],'16x16',3.4,'#9fe8b0'],['bubble','rise',['40%','80%'],'26x26',9,'#2f6b4f'],['bubble','rise',['58%','85%'],'20x20',12,'#3f8a63']]},
+'tunnel':{bg:'radial-gradient(circle at 50% 80%, #ffd97a 0%, #ffb347 30%, #7a4a20 70%, #3a2410 100%)',els:[['sparkle','twinkle',['30%','40%'],'24x24',2,'#fff6d8'],['sparkle','twinkle',['50%','30%'],'20x20',2.8,'#fff6d8'],['sparkle','twinkle',['68%','48%'],'22x22',2.3,'#fff6d8'],['bubble','rise',['44%','80%'],'22x22',8,'#ffe9a8'],['bubble','rise',['56%','86%'],'18x18',11,'#ffe9a8'],['star','twinkle',['50%','14%'],'30x30',3,'#ffd23f']]},
+'upside-down':{bg:'linear-gradient(#f6d9e8 0%,#ffdf6e 48%,#ffb3c1 48%,#ffc9d6 100%)',els:[['sun','float',['50%','10%'],'110x110',9,'#3aa7e8'],['fish','swim',['12%','26%'],'110x55',9,'#ff9a56'],['fish','swim',['70%','34%'],'90x45',12,'#ff9a56'],['bubble','rise',['20%','80%'],'22x22',7,'#ffdf6e'],['sparkle','twinkle',['82%','20%'],'24x24',2.6,'#fff']]},
+'blue-sun-sea':{bg:'linear-gradient(#bfe6f7 0%,#ffdf6e 52%,#ffb3c1 52%)',els:[['sun','float',['50%','12%'],'120x120',9,'#2f8fd8'],['bubble','rise',['18%','78%'],'20x20',7,'#fff'],['bubble','rise',['30%','84%'],'16x16',10,'#fff'],['bubble','rise',['70%','80%'],'22x22',8,'#fff'],['sparkle','twinkle',['60%','30%'],'20x20',3,'#fff']]},
+'flying-fish':{bg:'linear-gradient(#7ec8f2 0%,#bfe6f7 55%,#ffdf6e 55%)',els:[['sun','float',['50%','8%'],'96x96',8,'#3aa7e8'],['fish','swim',['8%','28%'],'120x60',8,'#ff9a56'],['fish','swim',['30%','42%'],'96x48',11,'#5ca8ff'],['fish','swim',['64%','24%'],'108x54',9,'#ff9a56'],['whale','swim',['22%','10%'],'220x110',13,'#6a9df0'],['bubble','rise',['80%','70%'],'18x18',7,'#fff']]},
+'whale-song':{bg:'linear-gradient(#6fa8e8 0%,#9fc4ef 55%,#ffdf6e 55%)',els:[['whale','float',['30%','18%'],'260x130',7,'#6a9df0'],['bubble','ripple',['50%','50%'],'80x80',3,'#fff'],['bubble','ripple',['55%','55%'],'80x80',3.6,'#fff'],['star','twinkle',['20%','30%'],'26x26',2.4,'#ffe14d'],['star','twinkle',['78%','28%'],'22x22',3,'#ffe14d'],['bubble','rise',['10%','80%'],'18x18',8,'#fff']]},
+'tunnel-back':{bg:'radial-gradient(circle at 50% 20%, #ffd97a 0%, #ffb347 32%, #7a4a20 72%, #3a2410 100%)',els:[['sparkle','twinkle',['40%','60%'],'22x22',2.2,'#fff6d8'],['sparkle','twinkle',['60%','55%'],'20x20',2.9,'#fff6d8'],['bubble','rise',['48%','85%'],'20x20',9,'#ffe9a8'],['star','twinkle',['50%','80%'],'28x28',3,'#ffd23f']]},
+'back-park':{bg:'linear-gradient(#8ed1f5 0%,#c9ecb0 58%,#79c06b 58%)',els:[['sun','float',['80%','8%'],'90x90',7,'#ffd23f'],['cloud','drift',['25%','14%'],'104x52',30,'#fff'],['tree','sway',['20%','38%'],'150x200',6,'#3e8e41'],['ball','bounce',['60%','74%'],'56x56',2.6,'#ff8c3a'],['leaf','fall',['70%','0%'],'18x18',9,'#7cc069']]},
+'basketball':{bg:'linear-gradient(#ffd6a0 0%,#ffe8c8 55%,#79c06b 55%)',els:[['sun','float',['70%','10%'],'80x80',8,'#ffd23f'],['ball','bounce',['44%','60%'],'70x70',2.4,'#ff8c3a'],['sparkle','twinkle',['28%','40%'],'22x22',2.6,'#fff'],['sparkle','twinkle',['62%','30%'],'18x18',3.2,'#fff'],['cloud','drift',['15%','16%'],'90x45',28,'#fff']]},
+'walk-home':{bg:'linear-gradient(#5a4a7a 0%,#f0a05a 55%,#6b4a3a 55%)',els:[['moon','float',['80%','12%'],'64x64',8,'#efe9d8'],['leaf','fall',['20%','0%'],'20x20',8,'#d98a4a'],['leaf','fall',['60%','0%'],'16x16',11,'#c77a3a'],['sparkle','twinkle',['30%','70%'],'18x18',3,'#ffe9c0'],['bubble','rise',['70%','78%'],'16x16',9,'#8a7a9a']]},
+'dinner':{bg:'linear-gradient(#f7c98a 0%,#f2a860 55%,#8a4a2a 55%)',els:[['bubble','rise',['30%','70%'],'20x20',6,'#fff'],['bubble','rise',['50%','72%'],'16x16',8,'#fff'],['bubble','rise',['68%','68%'],'18x18',7,'#fff'],['heart','float',['20%','30%'],'34x34',5,'#e05a7a'],['sparkle','twinkle',['78%','24%'],'22x22',3,'#ffe9c0'],['star','twinkle',['12%','20%'],'24x24',3.4,'#fff']]},
+'secret':{bg:'linear-gradient(#4a3a5a 0%,#7a4a4a 55%,#3a2430 55%)',els:[['moon','float',['82%','10%'],'56x56',8,'#efe9d8'],['heart','float',['40%','30%'],'30x30',5,'#e05a7a'],['sparkle','wink',['30%','55%'],'22x22',2.6,'#ffe9c0'],['bubble','rise',['60%','75%'],'16x16',9,'#8a6a7a'],['star','twinkle',['70%','22%'],'20x20',3.2,'#fff']]},
+'gray-day':{bg:'linear-gradient(#b7bcc4 0%,#cdd2d8 55%,#9aa0a8 55%)',els:[['cloud','drift',['20%','18%'],'120x60',34,'#e8e8ec'],['cloud','drift',['60%','28%'],'100x50',44,'#dcdce2'],['leaf','fall',['40%','0%'],'16x16',10,'#8a8a92'],['bubble','float',['70%','74%'],'14x14',6,'#7a7a82'],['sparkle','twinkle',['20%','80%'],'14x14',3,'#f0f0f4']]},
+'camera-plan':{bg:'linear-gradient(#9fd0f0 0%,#cfe8f7 55%,#b0d0a0 55%)',els:[['sun','float',['14%','10%'],'80x80',8,'#ffd23f'],['camera','float',['50%','36%'],'120x88',6,'#3a7ad8'],['sparkle','twinkle',['30%','20%'],'24x24',2.4,'#fff'],['sparkle','twinkle',['68%','24%'],'20x20',3,'#fff'],['star','twinkle',['78%','60%'],'24x24',3.2,'#ffe14d'],['bubble','rise',['10%','78%'],'16x16',8,'#fff']]},
+'oak-tree2':{bg:'linear-gradient(#a8d8f0 0%,#cbe7b0 55%,#6fae5f 55%)',els:[['tree','sway',['32%','30%'],'240x320',7,'#2f6b2f'],['camera','float',['66%','44%'],'90x66',6,'#3a7ad8'],['leaf','fall',['55%','0%'],'20x20',8,'#7cc069'],['sparkle','twinkle',['48%','60%'],'20x20',2.6,'#fff'],['ball','bounce',['30%','76%'],'46x46',2.8,'#e63946']]},
+'busy-world':{bg:'linear-gradient(#7ec8f2 0%,#b7d9f7 50%,#ffdf6e 50%,#ffb3c1 50%)',els:[['fish','swim',['10%','24%'],'110x55',8,'#ff9a56'],['fish','swim',['70%','30%'],'96x48',11,'#5ca8ff'],['heart','float',['20%','42%'],'28x28',5,'#ff5c8a'],['paw','float',['80%','44%'],'34x34',6,'#c98a3a'],['bubble','rise',['40%','80%'],'18x18',7,'#fff'],['sparkle','twinkle',['56%','20%'],'22x22',2.6,'#fff']]},
+'gold-pyramid':{bg:'linear-gradient(#ffdf6e 0%,#ffc94d 55%,#e0a030 55%)',els:[['block','float',['30%','40%'],'60x60',6,'#f2b63d'],['block','float',['46%','46%'],'60x60',7,'#ffd23f'],['block','float',['62%','40%'],'60x60',5.5,'#f2b63d'],['ship','drift',['20%','20%'],'80x54',20,'#cfd6e0'],['star','twinkle',['80%','24%'],'26x26',2.6,'#fff'],['sparkle','twinkle',['14%','70%'],'20x20',3,'#fff']]},
+'wolf-guards':{bg:'linear-gradient(#2a2a3a 0%,#1a1a28 55%,#0e0e18 55%)',els:[['moon','float',['76%','10%'],'72x72',8,'#e8e2cf'],['paw','float',['30%','60%'],'44x44',6,'#5a5a6a'],['paw','float',['58%','64%'],'44x44',7,'#5a5a6a'],['sparkle','twinkle',['40%','30%'],'20x20',2.8,'#c0d0f0'],['bubble','rise',['72%','76%'],'16x16',9,'#4a4a5a'],['star','twinkle',['20%','24%'],'20x20',3.2,'#c0d0f0']]},
+'pearl-ship':{bg:'linear-gradient(#9fd0f0 0%,#cfe8f7 52%,#ffdf6e 52%)',els:[['ship','float',['42%','30%'],'120x80',7,'#f4f4f8'],['bubble','rise',['20%','72%'],'18x18',7,'#fff'],['bubble','rise',['60%','76%'],'16x16',9,'#fff'],['sparkle','twinkle',['30%','20%'],'24x24',2.4,'#fff'],['star','twinkle',['78%','24%'],'26x26',3,'#fff']]},
+'throne-room':{bg:'linear-gradient(#8a7ad8 0%,#c9a8e8 55%,#f2e0c0 55%)',els:[['crown','float',['50%','16%'],'70x50',6,'#ffd23f'],['crown','float',['18%','40%'],'50x36',7,'#f2b63d'],['crown','float',['78%','42%'],'50x36',6.5,'#f2b63d'],['sparkle','twinkle',['36%','30%'],'24x24',2.4,'#fff'],['sparkle','twinkle',['64%','30%'],'20x20',3,'#fff'],['star','twinkle',['50%','60%'],'24x24',3.2,'#fff']]},
+'king':{bg:'linear-gradient(#c9e0f2 0%,#e8f0f8 55%,#d8c8f0 55%)',els:[['crown','float',['50%','14%'],'80x58',6,'#ffd23f'],['sparkle','twinkle',['24%','28%'],'26x26',2.4,'#b57cff'],['sparkle','twinkle',['70%','26%'],'22x22',3,'#5ca8ff'],['bubble','rise',['40%','80%'],'18x18',8,'#fff'],['bubble','rise',['58%','84%'],'14x14',10,'#fff'],['star','twinkle',['50%','50%'],'26x26',3.2,'#fff']]},
+'decree':{bg:'linear-gradient(#6a5aa8 0%,#8a7ad0 55%,#4a3a78 55%)',els:[['crown','float',['50%','12%'],'70x50',6,'#ffd23f'],['sparkle','twinkle',['30%','50%'],'22x22',2.6,'#fff'],['sparkle','twinkle',['66%','52%'],'20x20',3.2,'#fff'],['bubble','rise',['20%','76%'],'16x16',9,'#a89ae0'],['star','twinkle',['80%','20%'],'24x24',3,'#fff']]},
+'princess':{bg:'linear-gradient(#f2b3d8 0%,#fcd6e8 55%,#d8a8e8 55%)',els:[['crown','float',['50%','12%'],'66x48',6,'#ffd23f'],['heart','float',['24%','44%'],'34x34',5,'#ff5c8a'],['heart','float',['70%','46%'],'30x30',6,'#ff8fb0'],['sparkle','twinkle',['40%','30%'],'24x24',2.4,'#fff'],['sparkle','twinkle',['62%','26%'],'20x20',3,'#fff'],['bubble','rise',['50%','78%'],'18x18',8,'#fff']]},
+'xylia':{bg:'linear-gradient(#3a8a5a 0%,#5ab078 55%,#2a6a44 55%)',els:[['sparkle','twinkle',['30%','40%'],'24x24',2.4,'#bff2c8'],['sparkle','twinkle',['56%','48%'],'20x20',3,'#bff2c8'],['sparkle','twinkle',['72%','34%'],'22x22',2.7,'#bff2c8'],['bubble','rise',['40%','80%'],'18x18',8,'#9fe8b0'],['star','twinkle',['20%','24%'],'22x22',3.2,'#fff']]},
+'garden':{bg:'linear-gradient(#7ad8a8 0%,#a8e8c0 55%,#5ab0d8 55%)',els:[['sparkle','twinkle',['20%','40%'],'26x26',2.4,'#ffe14d'],['sparkle','twinkle',['50%','50%'],'22x22',3,'#fff'],['sparkle','twinkle',['76%','40%'],'24x24',2.7,'#b57cff'],['heart','float',['34%','60%'],'30x30',5,'#ff5c8a'],['bubble','rise',['60%','80%'],'18x18',7,'#cfe8ff'],['leaf','fall',['10%','0%'],'18x18',9,'#7cc069']]},
+'pizza':{bg:'linear-gradient(#ffc98a 0%,#ffe0b0 55%,#f2a860 55%)',els:[['heart','float',['30%','40%'],'36x36',5,'#e05a7a'],['heart','float',['64%','44%'],'30x30',6,'#ff5c8a'],['sparkle','twinkle',['48%','26%'],'24x24',2.6,'#fff'],['bubble','rise',['20%','78%'],'18x18',7,'#fff'],['star','twinkle',['80%','60%'],'24x24',3,'#ffe14d']]},
+'jellyfish':{bg:'linear-gradient(#1a2a4a 0%,#2a3a6a 55%,#4a2a5a 55%)',els:[['jelly','float',['20%','30%'],'80x120',7,'#ff8fb0'],['jelly','float',['50%','22%'],'96x144',9,'#8fd8ff'],['jelly','float',['76%','34%'],'72x108',8,'#a8f2b0'],['bubble','rise',['30%','80%'],'18x18',7,'#cfe8ff'],['bubble','rise',['60%','84%'],'16x16',9,'#cfe8ff'],['sparkle','twinkle',['50%','60%'],'22x22',2.8,'#fff']]},
+'proof':{bg:'linear-gradient(#1a2a4a 0%,#2a3a6a 55%,#4a2a5a 55%)',els:[['jelly','float',['26%','28%'],'84x126',7,'#ff8fb0'],['jelly','float',['60%','24%'],'92x138',9,'#8fd8ff'],['camera','float',['44%','56%'],'90x66',6,'#3a7ad8'],['bubble','rise',['70%','78%'],'16x16',8,'#cfe8ff'],['sparkle','twinkle',['40%','16%'],'20x20',2.6,'#fff']]},
+};
+const CH1_6=[
+{title:"The Spooky Tree", pages:[
+{s:"sunny-park", t:[`Leo kicked the bright red soccer ball hard, sending it soaring through the warm summer air. "I'm the best striker in the whole world!" he yelled, striking a pose with one foot on a mossy rock.`]},
+{s:"goalie", t:[`His little brother Sam giggled, his blond hair flopping into his eyes. "No way! I'm the best goalie! You can't get it past me!" He puffed out his six-year-old chest, standing guard in front of two backpacks they'd set up as a goal.`]},
+{s:"oak-tree", t:[`The ball arced high, too high. It sailed past Sam's reach and bounced once, twice, then disappeared into the dark space between the gnarled roots of a huge, ancient oak tree at the edge of the park.`,`"Oops," Leo said, his shoulders slumping.`]},
+{s:"spooky-tree", t:[`Sam crept toward the tree. "Leo," he whispered, his eyes wide. "That tree looks... spooky."`,`Leo was nine. He wasn't supposed to be scared of trees. "Don't be silly, Sam. It's just a tree." But he felt it too. A shiver ran down his spine, even under the warm sun. The tree was extra shady. The branches looked like long, scratchy fingers, and the hole their ball had fallen into was black and deep, like a secret the ground was keeping.`]},
+]},
+{title:"The Glowing Tunnel", pages:[
+{s:"under-tree", t:[`Together, they peered into the darkness. "I'll get it," Leo said, trying to sound brave. He got on his hands and knees and crawled under a low-hanging branch. The air suddenly felt cool and smelled like damp earth and something sweet, like honey. Sam crawled in right behind him, clutching the back of Leo's shirt.`]},
+{s:"tunnel", t:[`Inside, it wasn't dark anymore. The space between the roots opened up into a tunnel, but it wasn't made of dirt. The walls shimmered, like they were woven from light. A soft, golden glow pulsed from the other end.`,`"Whoa," Sam breathed.`,`"Come on," Leo said, his fear turning into a fizz of excitement. "Let's see."`]},
+]},
+{title:"The Upside-Down World", pages:[
+{s:"upside-down", t:[`They walked through the glowing tunnel, their sneakers making no sound on the smooth, warm floor. At the other end, they stepped out and both of them gasped.`,`The world was flipped upside down.`]},
+{s:"blue-sun-sea", t:[`The sun, hanging in a perfectly clear sky, was the deep, sparkling blue of the ocean. And the ocean below, lapping at a shore of soft, pink sand, was a bright, sunny yellow.`,`"What... what is this place?" Sam stammered.`]},
+{s:"flying-fish", t:[`But the real shock was what was flying through the blue-sun sky. Fish. Not just little fish, but huge shimmering ones with rainbow fins, flapping their tails as they soared through the air like birds. And leading them, so big it blocked out the blue sun for a moment as it passed, was a giant whale. Its tail wasn't just one color, but a swirl of every color imaginable, like a painter's swirl of all the paints in the world.`,`Sam's jaw dropped open. "Leo... the fish are flying!"`]},
+{s:"whale-song", t:[`Leo just stared, speechless. He pinched his arm. It hurt. This was real.`,`Suddenly, the great whale flipped, its multicolored tail sending ripples through the air. It opened its giant mouth and a sound came out, not a roar, but a deep, melodic song that sounded like bells and waves all mixed together.`]},
+{s:"tunnel-back", t:[`That was it. That was too much. Leo grabbed Sam's hand. "We have to go. Now!"`,`"But the whale!" Sam cried, trying to pull back.`,`"NOW, Sam!" Leo yanked him toward the glowing tunnel they had come from. The magic of the place was suddenly scary, too big and too strange. They scrambled back through the tunnel, stumbling over each other, and burst out from under the oak tree, landing in a heap on the familiar grass of the park.`]},
+]},
+{title:"Not Our Ball", pages:[
+{s:"back-park", t:[`The sun was normal yellow again. The air was warm and smelled like cut grass. They were back.`,`Leo panted, his heart thumping like a drum. Sam sat up, blinking in the bright light.`,`"Where's our ball?" Sam asked, looking around.`]},
+{s:"basketball", t:[`Leo spotted it sitting by the tree's trunk. He walked over to pick it up... and stopped. It wasn't their soccer ball anymore. It was a basketball. Orange and bumpy, with the familiar black lines.`,`Sam came up beside him. "That's... not our ball."`,`Leo looked from the basketball in his hand to the dark hole under the tree. He started to laugh. It was a nervous, shaky laugh. Sam stared at the ball, then at Leo, and then he started giggling too. Soon, they were both laughing so hard they could barely stand, a mix of amazement, fear, and pure confusion bubbling out of them.`]},
+]},
+{title:"A Lucky Trade", pages:[
+{s:"walk-home", t:[`The walk home was quiet. Every crunch of their sneakers on the pavement sounded too loud. The basketball felt heavy and strange in Leo's hands.`,`Their dog, Buster, a scruffy terrier mix, barked and wagged his tail as they opened the front door. "We're home!" their mom called from the kitchen.`]},
+{s:"dinner", t:[`Dinner was spaghetti and meatballs. Sam swirled his noodles, keeping his head down. Leo kicked him gently under the table.`,`"So, how was the park, boys?" their dad asked, twirling pasta onto his fork.`,`"It was good," Leo said quickly. "We lost the soccer ball, but... we found this basketball!" He held it up with a forced smile.`,`"Wow, what a lucky trade!" their mom said.`]},
+{s:"secret", t:[`Sam's eyes went wide. He looked like he was about to say something about the tree and the upside-down world. Leo gave him another sharper kick under the table.`,`"Ouch!" Sam yelped.`,`"Sam, don't kick your brother," their mom said, not looking up from her plate.`,`"Sorry," Sam mumbled, rubbing his shin. He shot a look at Leo, who shook his head almost invisibly. *Don't. Say. A. Word.*`]},
+]},
+{title:"Evidence", pages:[
+{s:"gray-day", t:[`The next day, the walk home from school felt longer than usual. The world seemed gray and boring after what they had seen. Sam kicked at a loose pebble on the sidewalk.`,`"Leo?" he said, looking up at his big brother with pleading eyes. "Leo, can we go back?"`,`Leo's stomach did a flip-flop. "Go back? To the spooky tree? Sam, that was... that was crazy! We can't."`]},
+{s:"camera-plan", t:[`"But the flying fish!" Sam insisted, his hands flying up to show how they soared. "And the giant rainbow whale! Don't you want to see them again? Don't you want to have an adventure?"`,`Leo hesitated. A tiny part of him, the part that had stared in wonder at the flying whale, did want to go back. The bigger part was still scared.`,`"We could take evidence," Sam whispered, as if it was a top-secret plan. "We could take my camera! We could film it, and then we'd have proof!"`,`That was it. Proof. If they had proof, it wouldn't just be a scary, crazy dream. It would be a real, amazing discovery. "Okay," Leo heard himself say. "Okay. We'll go. But we bring the camera, and we leave the second things get weird."`]},
+]},
+];
+const CH7_11=[
+{title:"The Second Visit", pages:[
+{s:"oak-tree2", t:[`Back at the park, the old oak tree looked the same. Spooky and quiet. This time, Leo carried Sam's little blue camera. They took a deep breath together and crawled under the branch.`,`The glowing tunnel was just as they remembered. They walked through, the camera held tight in Leo's hand. When they stepped out the other side, they both gasped.`,`Everything was different.`]},
+{s:"busy-world", t:[`The blue sun was still there, and the yellow sea, but the world was... busy. Little creatures that looked like hamsters with wings were zipping around, carrying tiny buckets of water. And down on the yellow sand, people were walking.`,`Only they weren't normal people.`,`Some had the faces of lions, with furry manes and whiskers. Others had long, floppy bunny ears and twitching noses. A woman with sleek, black cat eyes and pointed ears waved at them as she passed, her tail swishing behind her.`,`"Whoa," Sam whispered, fumbling for the camera. "They're... animal-people!"`]},
+{s:"gold-pyramid", t:[`"Stay behind me," Leo commanded, starting the camera. He filmed a group of lion-faced men building a pyramid out of gleaming gold blocks that seemed to float into place on their own. Then he pointed the camera at the sky, where small, silver ships with blinking lights were zipping between the flying fish.`,`"Aliens, too!" Sam squeaked with delight.`]},
+{s:"wolf-guards", t:[`Just then, two tall men with the heads of wolves, wearing shining silver armor, spotted them. They started walking toward them, their tails stiff.`,`"Oh no," Leo breathed. The men stopped in front of them, their yellow eyes serious.`,`"What are you doing here?" one wolf-man growled. "You are not from this world. You have no face-fur."`,`Sam hid behind Leo's legs. "We're... we're lost," Leo stammered.`]},
+]},
+{title:"The Pearl Ship", pages:[
+{s:"pearl-ship", t:[`The other wolf-man spoke into a small device on his wrist. "We found them. Two small ones, with pink, furless faces. At the shore."`,`Before they could say anything else, a strange floating vehicle, shaped like a giant pearl, drifted over to them. The door slid open. "Come with us," the wolf-man said. It wasn't a request.`,`Scared, Leo and Sam climbed inside. The pearl-ship floated silently over the yellow sea and towards a city made of crystal that shimmered in the blue sunlight. It landed gently in front of a massive palace.`]},
+{s:"throne-room", t:[`The wolf-men led them down long, sparkling halls. At the end was a huge throne room. On two giant thrones sat a King and a Queen.`,`The Queen was a beautiful woman with the soft, gentle face of a deer. She wore a crown of woven silver branches.`,`The King was... not from Earth.`]},
+]},
+{title:"The King's Decree", pages:[
+{s:"king", t:[`He was tall and slender, with skin that shimmered like a pearl. He had two enormous, kind eyes that swirled with all the colors of the rainbow, and no nose or mouth that Leo could see. He communicated with a series of soft, chiming sounds that filled the room. A lion-faced man standing nearby translated.`,`"The Great King asks where you came from," the lion-man announced.`,`Leo, with trembling legs, stepped forward. He explained about the park, the tree, and their soccer ball that had become a basketball. He even showed them the camera, playing back the video of the flying whale.`]},
+{s:"decree", t:[`The King swirled with colors, and the chiming sounds grew louder. The lion-man translated again. "The King says this 'tree' is a danger. It is a rip between worlds. He will order it to be removed at once. As for you," the lion-man looked at them, "you will stay here. Your adventure is not over."`,`Sam's face lit up with excitement, but Leo's heart sank. Stay here? Forever? "But our mom and dad!" he cried out.`,`"See?" he whispered angrily to Sam. "I told you we shouldn't have come back to the upside world!"`]},
+]},
+{title:"Princess Xylia", pages:[
+{s:"princess", t:[`Just then, a giggle came from behind one of the giant thrones. A girl stepped out. She looked like the King, with shimmery skin and rainbow-colored eyes, but she also had long, flowing hair and a bright, cheerful smile.`,`She couldn't have been much older than Leo. "Father, can't they stay a little while?" she said, her voice sounding like tiny bells. "I've never met a real furless-face before! I want to have an adventure with them!"`,`Before the King could reply, the alien princess grabbed Leo's hand and Sam's. "Come on!" she whispered, her eyes twinkling. "Let's go have some real fun! I know a place where the jellyfish sing!"`,`She pulled them toward a hidden passage in the wall, leaving the shocked King, Queen, and guards behind.`]},
+{s:"xylia", t:[`"My name is Xylia," she said as they snuck down a hallway lit by glowing moss. "And I've been waiting for an adventure my whole life!"`,`Leo was still trying to process everything. Stay here? An alien princess? Singing jellyfish? He pulled back a little. "Wait, we can't just... our parents will worry!"`,`Xylia giggled, a sound like wind chimes. "Worries are for grown-ups! Adventures are for kids! And you," she said, pointing at Sam, "look like you're ready for a big one."`,`Sam, who had been scared just a moment ago, was now beaming. He forgot all about their parents and the spooky tree. "A giant adventure! Are there singing jellyfish really? Do they know any songs I know?"`]},
+{s:"garden", t:[`"Probably not your songs," Xylia said, leading them through a doorway that looked like a waterfall made of liquid light. They stepped through it, sputtering and giggling, into a garden. The flowers weren't like flowers on Earth. Some had petals of crystal that chimed when the wind blew. Others glowed with a soft, pulsing light, like tiny hearts.`,`"My father is very serious about keeping the worlds separate," Xylia explained, hopping over a stream of what looked like sparkling soda pop. "He thinks it's too dangerous. But I think it's too boring! I read about your world in the star-scrolls. You have 'ice cream' and 'video games'! It sounds amazing!"`]},
+{s:"pizza", t:[`"We have pizza, too!" Sam added proudly.`,`"Pizza!" Xylia's rainbow eyes went wide. "I've always wanted to try pizza!"`,`Leo, despite himself, was starting to feel a little less scared and a little more... excited. This girl wasn't scary. She was like him and Sam, just from a different, weirder place. "Okay," he said slowly. "Okay. But we have to be careful. And we have to figure out how to get home."`,`"We will!" Xylia promised, grabbing Sam's hand to help him cross the soda stream. "But first, the jellyfish concert!"`]},
+]},
+{title:"The Jellyfish Concert", pages:[
+{s:"jellyfish", t:[`She led them to the edge of the yellow sea. There, floating just above the water, were giant, translucent jellyfish. They glowed from within, shifting from pink to green to blue. As they pulsed, a beautiful, humming melody filled the air. It was the whale's song, but softer, a chorus of gentle, glowing notes.`,`Sam sat down in the pink sand, completely mesmerized. "It's even better than my music box," he whispered.`]},
+{s:"proof", t:[`Leo took out the camera. "I have to film this." He pressed record, capturing the impossible sight for proof. For a second, he almost forgot they were trapped in another world.`]},
+]},
+];
+const BOOK=[...CH1_6, ...CH7_11];
+const PAGES=[{cover:true}];
+let cn=0;
+BOOK.forEach(function(ch){cn++;ch.pages.forEach(function(p){PAGES.push({chapter:ch.title,num:cn,s:p.s,t:p.t});});});
+PAGES.push({end:true});
+
+let i=0;
+const stage=document.getElementById('stage');
+const page=document.getElementById('page');
+const pageNum=document.getElementById('pageNum');
+const dots=document.getElementById('dots');
+const prev=document.getElementById('prev');
+const next=document.getElementById('next');
+
+function sceneHTML(key){
+  const s=SCENES[key]||SCENES['sunny-park'];
+  const els=(s.els||[]).map(function(e){
+    const sym=e[0],cls=e[1],pos=e[2],size=e[3],dur=e[4],color=e[5];
+    const wh=size.split('x');
+    return '<svg class="el '+cls+'" style="left:'+pos[0]+';top:'+pos[1]+';width:'+wh[0]+'px;height:'+wh[1]+'px;color:'+color+';animation-duration:'+dur+'s"><use href="#'+sym+'"/></svg>';
+  }).join('');
+  return '<div class="scene" style="background:'+s.bg+'">'+els+'</div>';
+}
+function italics(t){return t.replace(/\*(.*?)\*/g,'<em>$1</em>');}
+
+function render(){
+  const p=PAGES[i];
+  let bgKey, card;
+  if(p.cover){
+    bgKey='upside-down';
+    card='<div class="card cover"><h1>The Upside-Down World<span class="sub">A story of Leo &amp; Sam</span></h1><div class="byline">A magical tree, flying fish, and the strangest game of soccer ever.</div><button id="start">Start Reading</button></div>';
+  }else if(p.end){
+    bgKey='jellyfish';
+    card='<div class="card cover end"><h1>The End</h1><div class="byline">...but was it really over?</div><button id="again">Read Again</button></div>';
+  }else{
+    bgKey=p.s;
+    const paras=p.t.map(function(t){return '<p>'+italics(t)+'</p>';}).join('');
+    card='<div class="card"><div class="chapter">Chapter '+p.num+' &mdash; '+p.chapter+'</div><div class="text">'+paras+'</div></div>';
+  }
+  stage.innerHTML=sceneHTML(bgKey);
+  page.innerHTML=card;
+  pageNum.textContent = (p.cover||p.end) ? '' : ('Chapter '+p.num+' of '+BOOK.length);
+  dots.textContent = (p.cover||p.end) ? '' : ('Page '+(i)+' of '+(PAGES.length-2));
+  prev.disabled = (i===0);
+  next.disabled = (i===PAGES.length-1);
+  const st=document.getElementById('start'); if(st) st.onclick=function(){go(1);};
+  const ag=document.getElementById('again'); if(ag) ag.onclick=function(){go(0);};
+}
+function go(n){
+  i=Math.max(0,Math.min(PAGES.length-1,n));
+  render();
+  const pg=document.getElementById('page'); if(pg) pg.scrollTop=0;
+}
+prev.onclick=function(){go(i-1);};
+next.onclick=function(){go(i+1);};
+document.addEventListener('keydown',function(e){if(e.key==='ArrowRight')go(i+1);if(e.key==='ArrowLeft')go(i-1);});
+let x0=null;
+document.addEventListener('touchstart',function(e){x0=e.touches[0].clientX;},{passive:true});
+document.addEventListener('touchend',function(e){if(x0===null)return;const dx=e.changedTouches[0].clientX-x0;if(dx<-50)go(i+1);else if(dx>50)go(i-1);x0=null;},{passive:true});
+render();
+</script>
+</body>
+</html>
