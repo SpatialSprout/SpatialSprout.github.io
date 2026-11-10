@@ -4,7 +4,7 @@ window.STORY={title:"The Upside-Down World",author:"M. A. Mafodh",pages:[
 {img:"cover",cover:true,box:[360,200,560,462],parts:["The Upside-Down World. Written by M. A. Mafodh."]},
 {img:"p01",sprite:"p01",box:[362,190,700,415],parts:[
  "Leo kicked the bright red soccer ball hard, sending it soaring through the warm summer air. \"I'm the best striker in the whole world!\" he yelled, striking a pose with one foot on a mossy rock."]},
-{img:"p02",box:[362,190,700,405],parts:[
+{img:"p02",sprite:"p02",box:[362,190,700,405],parts:[
  "His little brother Sam giggled, his blond hair flopping into his eyes. \"No way! I'm the best goalie! You can't get it past me!\" He puffed out his six-year-old chest, standing guard in front of two backpacks they'd set up as a goal."]},
 {img:"p03",box:[362,190,628,385],parts:[
  "The ball arced high, too high. It sailed past Sam's reach and bounced once, twice, then disappeared into the dark space between the gnarled roots of a huge, ancient oak tree at the edge of the park.",
