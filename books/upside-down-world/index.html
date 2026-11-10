@@ -87,7 +87,7 @@ body.narrow #bar{gap:6px;padding-top:8px}body.narrow #bar button{padding:0 12px;
   <button id="next" aria-label="Next page">&#8594;</button>
 </div>
 <script src="story.js"></script>
-<script src="sprite.js?v=6"></script>
+<script src="sprite.js?v=7"></script>
 <script src="voice.js"></script>
 <script src="vtime.js"></script>
 <script>
@@ -153,7 +153,7 @@ const vids={};let blackT=null;
 function black(){if(!blackT&&gl){blackT=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,blackT);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGB,1,1,0,gl.RGB,gl.UNSIGNED_BYTE,new Uint8Array([0,0,0]));}return {ready:true,t:blackT};}
 function loadVid(name){if(vids[name])return vids[name];const v=document.createElement('video');v.muted=true;v.defaultMuted=true;v.loop=true;v.playsInline=true;v.setAttribute('playsinline','');v.setAttribute('muted','');v.preload='auto';v.crossOrigin='anonymous';v.src='img/'+name+'.mp4';
   const o={v,t:null,ok:false};v.addEventListener('playing',()=>{o.ok=true;});vids[name]=o;return o;}
-function pageTex(p){if(p.video)return {c:loadTex('img/'+p.img+'.webp'),d:black(),vid:loadVid(p.video)};return {c:loadTex('img/'+p.img+'.webp'),d:loadTex('img/'+p.img+'-d.webp')};}
+function pageTex(p){if(p.video)return {c:loadTex('img/'+p.img+'.webp'),d:p.relief?loadTex('img/'+p.img+'-d.webp'):black(),vid:loadVid(p.video)};return {c:loadTex('img/'+p.img+'.webp'),d:loadTex('img/'+p.img+'-d.webp')};}
 const ORIGIN={kb:[.72,.55],shade:[.80,.74]};
 function kbScale(p,el){const dur=40,x=Math.min(1,el/dur),e=1-Math.pow(1-x,2);return 1+(p.fx==='shade'?.065:.045)*e;}
 
@@ -266,6 +266,16 @@ const SPR={};let curPar=[0,0],curS=1,sprA=0,sprName=null,hist=[],sparks=[];
 function loadSpr(n){if(SPR[n])return SPR[n];const d=(window.SPRITES||{})[n];if(!d)return null;let im=null;if(d.img){im=new Image();im.src=d.img;}(d.rig||[]).forEach(r=>{r.im=new Image();r.im.src=r.img;});return SPR[n]=Object.assign({im},d);}
 const CY={rest:1.6,fly:2.4,hold:.6};
 function sprState(d,tt){
+  if(d.kind==='hops'){
+    const R0=1.2,V=.5,Z=.9,A=.6,DU=[.8,.45,.32],FT=DU[0]+DU[1]+DU[2],T=R0+FT+V+Z+A;tt=((tt%T)+T)%T;const s0=d.start,ex=(a,b,u)=>a+(b-a)*u,L=d.hops[d.hops.length-1];
+    let x=s0[0],y=s0[1],r=s0[2],ang=0,mv=false,al=1,puff=null,rest=false,lift=0,gy=s0[1];
+    if(tt<R0){rest=true;y+=Math.sin(tt*2.6)*1.5;gy=s0[1]+24;lift=24;}
+    else if(tt<R0+FT){let u=tt-R0,i=0;while(i<2&&u>DU[i]){u-=DU[i];i++;}u/=DU[i];const a=i?d.hops[i-1]:s0,b=d.hops[i],k=4*u*(1-u);
+      const g0=i?a[1]:a[1]+24;gy=ex(g0,b[1],u);lift=b[3]*k+(i?0:24*(1-u));x=ex(a[0],b[0],u);y=gy-lift;r=ex(a[2],b[2],u);ang=(i+u)*2.2;mv=true;}
+    else if(tt<R0+FT+V){const v=(tt-R0-FT)/V;x=L[0];gy=L[1];y=L[1]+5*v;r=L[2]*(1-.7*v);al=1-v;puff=v*V;ang=6.6;}
+    else if(tt<R0+FT+V+Z){al=0;x=L[0];y=L[1];gy=y;r=1;}
+    else{const v=(tt-R0-FT-V-Z)/A;al=v*v*(3-2*v);gy=y+24;lift=24;}
+    return {x,y,r,ang,mv,rest,hit:null,al,puff,sh:[x+r*.15,gy+r*.62,Math.max(0,1-lift/230)]};}
   if(d.kind==='lob'){
     const R0=2.1,F=1.9,V=.6,Z=1.0,A=.7,T=R0+F+V+Z+A;tt=((tt%T)+T)%T;const f=d.from,e=d.to,ex=(a,b,u)=>a+(b-a)*u;
     let x=f[0],y=f[1],r=f[2],ang=0,mv=false,al=1,puff=null,rest=false,lift=0,gy=f[1];
