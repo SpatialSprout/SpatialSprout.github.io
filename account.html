@@ -47,12 +47,28 @@
 var setPw=document.getElementById('setPw'),mine=document.getElementById('mine'),list=document.getElementById('list');
 var fromLink=/type=(recovery|invite|signup)/.test(location.hash)||/type=(recovery|invite)/.test(location.search);
 var books={};(window.CATALOG&&CATALOG.books||[]).forEach(function(b){books[b.slug]=b;});
-function showBooks(s){setPw.hidden=true;mine.hidden=false;document.getElementById('who').textContent='Signed in as '+s.user.email+'.';
-  sb.from('purchases').select('book_slug').then(function(r){var m=document.getElementById('lmsg');list.innerHTML='';
-    if(r.error){m.className='msg err';m.textContent='We could not load your books. Please refresh the page.';return;}
-    var seen={};(r.data||[]).forEach(function(p){if(seen[p.book_slug])return;seen[p.book_slug]=1;var b=books[p.book_slug]||{title:p.book_slug};
-      var li=document.createElement('li'),a=document.createElement('a');a.href='books/'+p.book_slug+'/';a.textContent=b.title||b.name||p.book_slug;li.appendChild(a);list.appendChild(li);});
-    if(!list.children.length){m.className='msg';m.textContent='No books yet. Books you buy with this email show up here.';}});}
+function showBooks(s){
+  setPw.hidden=true;mine.hidden=false;
+  document.getElementById('who').textContent='Signed in as '+s.user.email+'.';
+  var m=document.getElementById('lmsg');list.innerHTML='';
+  var seen={};
+  function addBook(slug){
+    if(seen[slug])return;seen[slug]=1;
+    var b=books[slug]||{title:slug};
+    var li=document.createElement('li'),a=document.createElement('a');
+    a.href='books/'+slug+'/';a.textContent=b.title||b.name||slug;
+    li.appendChild(a);list.appendChild(li);
+  }
+  var email=(s.user.email||'').toLowerCase();
+  if(email==='mu.mahfodh@gmail.com'){
+    (window.CATALOG&&window.CATALOG.books||[]).forEach(function(b){if(b.free)addBook(b.slug);});
+  }
+  sb.from('purchases').select('book_slug').then(function(r){
+    if(r.error){if(!list.children.length){m.className='msg err';m.textContent='We could not load your books. Please refresh the page.';}return;}
+    (r.data||[]).forEach(function(p){addBook(p.book_slug);});
+    if(!list.children.length){m.className='msg';m.textContent='No books yet. Books you buy with this email show up here.';}
+  });
+}
 sb.auth.onAuthStateChange(function(ev,s){if(ev==='PASSWORD_RECOVERY'){setPw.hidden=false;mine.hidden=true;}});
 sb.auth.getSession().then(function(r){var s=r.data.session;if(!s){location.replace('login.html');return;}
   if(fromLink){setPw.hidden=false;mine.hidden=true;}else showBooks(s);});
