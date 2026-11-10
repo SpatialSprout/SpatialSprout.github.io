@@ -110,7 +110,7 @@ def main():
         start = th.find(lid + ":[")
         if start < 0:
             continue
-        nxt = re.search(r"\n \w+:\[", th[start + len(lid) + 2:])
+        nxt = re.search(r"\n/\*", th[start + len(lid) + 2:])
         end = start + len(lid) + 2 + nxt.start() if nxt else len(th)
         block = th[start:end]
         for sm in re.finditer(r"speech:" + sq, block):

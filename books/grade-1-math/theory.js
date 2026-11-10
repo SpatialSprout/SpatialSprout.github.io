@@ -21,14 +21,14 @@ var col=function(c){return function(){return P.spot.pick({c:c,u:'self'});};};
 var txt=function(t){return {t:t,exact:true,only:true};};
 P.theory={
 /* 1 */ compare1:[
- {say:'big, bigger, biggest',demo:'size',speech:'Look at the three balls. Ball A is big. Ball B is bigger. Ball C is the biggest of all!',
-  cues:[{w:'ball a is big',p:item(0),l:'big'},{w:'bigger',p:item(1),l:'bigger'},{w:'biggest',p:item(2),l:'biggest'}]},
- {say:'tall, taller, tallest',demo:'height',speech:'Now look at the towers. Tower B is taller than tower A. Tower C is the tallest. Tower A is the shortest.',
-  cues:[{w:'taller',p:item(1),l:'taller'},{w:'the tallest',p:item(2),l:'tallest'},{w:'shortest',p:item(0),l:'shortest'}]},
- {say:'-er for 2, -est for 3 or more',demo:'two',speech:'When we compare two things, we use words like taller or longer. When we compare three or more things, we use words like tallest or longest.',
+ {say:'big, bigger, biggest',demo:'size',speech:'Let us look at these three balls. This ball is big. This one is bigger. And this one is the biggest of all!',
+  cues:[{w:'this ball is big',p:item(0),l:'big'},{w:'this one is bigger',p:item(1),l:'bigger'},{w:'the biggest of all',p:item(2),l:'biggest'}]},
+ {say:'tall, taller, tallest',demo:'height',speech:'Now let us look at these towers. This tower is the shortest. This one is taller. And this one is the tallest!',
+  cues:[{w:'the shortest',p:item(0),l:'shortest'},{w:'this one is taller',p:item(1),l:'taller'},{w:'the tallest',p:item(2),l:'tallest'}]},
+ {say:'-er for 2, -est for 3 or more',demo:'two',speech:'Here is a little trick. When we compare two things, we say taller. When we compare three or more things, we say tallest.',
   cues:[{w:'two things',p:function(r){return item(0)(r).concat(item(1)(r));},l:'2 things: taller',hl:'2 things: use -er'},{w:'three or more',demo:'height',p:item(2),l:'3 or more: tallest',hl:'3 or more: use -est'}]},
- {say:'Line up the ends!',demo:'ordered',speech:'To compare length, line up the ends on one side. Ribbon B is the shortest. Then comes C. Ribbon A is the longest. In order: B, C, A.',
-  cues:[{w:'line up the ends',p:function(r){return item(0)(r).concat(item(1)(r),item(2)(r));},l:'ends lined up'},{w:'ribbon b is the shortest',p:item(1),l:'shortest'},{w:'then comes c',p:item(2),l:'next'},{w:'ribbon a is the longest',p:item(0),l:'longest'}]}],
+ {say:'Line up the ends!',demo:'ordered',speech:'Now let us compare length. First, we line up the ends on one side. This ribbon is the shortest. Then comes this one. And this ribbon is the longest. Now let us do it together: which one is the longest?',
+  cues:[{w:'line up the ends',p:function(r){return item(0)(r).concat(item(1)(r),item(2)(r));},l:'ends lined up'},{w:'this ribbon is the shortest',p:item(1),l:'shortest'},{w:'then comes this one',p:item(2),l:'next'},{w:'this ribbon is the longest',p:item(0),l:'longest'}]}],
 /* 2 */ compare2:[
  {say:'wide, narrow',demo:'width',speech:'Look at the three paths. Path B is the widest. Path A is the narrowest. Path C is wider than A, but narrower than B.',
   cues:[{w:'widest',p:item(1),l:'widest'},{w:'narrowest',p:item(0),l:'narrowest'},{w:'path c',p:item(2),l:'in between'}]},

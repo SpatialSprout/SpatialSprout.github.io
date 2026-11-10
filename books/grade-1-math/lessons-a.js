@@ -33,7 +33,7 @@ function numBadge(it,n){if(it.userData.nb){it.remove(it.userData.nb);it.userData
 P.lesson({id:'compare1',title:'Comparing: bigger, taller, longer',strand:'Spatial Sense',codes:['E2.1','E2.2'],
  guide:{goal:'Compare and order objects by size, height and length, using words like bigger, biggest, taller, tallest, longer and longest.',words:'big, bigger, biggest, small, smaller, smallest, tall, taller, tallest, short, shorter, shortest, long, longer, longest, same',
   ask:['Which is taller, you or the door?','How can you tell which ribbon is longer?','When do we say "taller" and when do we say "tallest"?'],home:'Line up three shoes from shortest to longest. Then line up three spoons from smallest to biggest.'},
- learn:[{say:'Watch: line them up!',speech:'Watch the model. To compare length, we line up the ends first. Then we can see which one is longest.',view:'model',demo:'lineup'}],
+ learn:[{say:'Watch: line them up!',speech:'Let us watch. To compare length, we line up the ends first. Then we can see which one is the longest.',view:'model',demo:'lineup'}],
  fig:'Things to compare: balls, towers and ribbons.',rz:.45,
  explore:['Press *Size*, *Height* or *Length*.','*Tap* a thing to hear its letter.','Press *New* for different things.'],
  howTo:'Read the question. Tap the right thing on the model. To put things in order, tap them one by one.',
