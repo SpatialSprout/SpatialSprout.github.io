@@ -87,7 +87,7 @@ body.narrow #bar{gap:6px;padding-top:8px}body.narrow #bar button{padding:0 12px;
   <button id="next" aria-label="Next page">&#8594;</button>
 </div>
 <script src="story.js"></script>
-<script src="sprite.js?v=3"></script>
+<script src="sprite.js?v=4"></script>
 <script src="voice.js"></script>
 <script src="vtime.js"></script>
 <script>
@@ -259,6 +259,16 @@ const SPR={};let curPar=[0,0],curS=1,sprA=0,sprName=null,hist=[],sparks=[];
 function loadSpr(n){if(SPR[n])return SPR[n];const d=(window.SPRITES||{})[n];if(!d)return null;const im=new Image();im.src=d.img;return SPR[n]=Object.assign({im},d);}
 const CY={rest:1.6,fly:2.4,hold:.6};
 function sprState(d,tt){
+  if(d.kind==='lob'){
+    const R0=1.4,F=1.9,V=.6,Z=1.0,A=.7,T=R0+F+V+Z+A;tt=((tt%T)+T)%T;const f=d.from,e=d.to,ex=(a,b,u)=>a+(b-a)*u;
+    let x=f[0],y=f[1],r=f[2],ang=0,mv=false,al=1,puff=null,rest=false,lift=0,gy=f[1];
+    if(tt<R0){rest=true;y+=Math.sin(tt*2.2)*1.2;gy=y;}
+    else if(tt<R0+F){const u=(tt-R0)/F,p=1-Math.pow(1-u,1.25),k=4*p*(1-p);lift=d.apex*k;
+      x=ex(f[0],e[0],p);gy=ex(f[1],e[1],p);y=gy-lift;r=ex(f[2],e[2],p)*(1+.5*k);ang=p*6;mv=true;}
+    else if(tt<R0+F+V){const v=(tt-R0-F)/V;x=e[0];gy=e[1];y=e[1]+7*v;r=e[2]*(1-.7*v);al=1-v;ang=6+v*1.5;puff=v*V;}
+    else if(tt<R0+F+V+Z){al=0;x=e[0];y=e[1];gy=y;r=1;}
+    else{const v=(tt-R0-F-V-Z)/A;al=v*v*(3-2*v);r=f[2]*(.55+.45*al);gy=y;}
+    return {x,y,r,ang,mv,rest,hit:null,al,puff,sh:[x+r*.15,gy+r*.62,Math.max(0,1-lift/230)]};}
   if(d.kind==='kick'){
     const R0=1.4,K=.95,I=.28,B=1.4,T=R0+K+I+B+.9;tt=((tt%T)+T)%T;const f=d.from,hh=d.hit,ex=(a,b,u)=>a+(b-a)*u;
     let x=f[0],y=f[1],r=f[2],ang=0,mv=false,hit=null,rest=false,u;
@@ -302,9 +312,15 @@ function drawSprite(c,now,dt,w,h,t){
     c.lineWidth=Math.max(1,2*ps*fa);c.strokeStyle='rgba(255,240,190,'+(.7*fa)+')';
     for(let j=0;j<8;j++){const a=j*Math.PI/4+.3,r1=rr*.45,r2=rr*(.75+.35*(j%2));c.beginPath();c.moveTo(H2[0]+Math.cos(a)*r1,H2[1]+Math.sin(a)*r1);c.lineTo(H2[0]+Math.cos(a)*r2,H2[1]+Math.sin(a)*r2);c.stroke();}}
   else d._b=false;
+  const al=st.al==null?1:st.al;
+  if(st.puff!=null){if(!d._p){d._p=true;for(let j=0;j<20;j++){const a=Math.random()*6.28,v=25+Math.random()*90;sparks.push({x:d.to[0],y:d.to[1],vx:Math.cos(a)*v,vy:Math.sin(a)*v-18,life:0,max:.6+Math.random()*.9,s:.9+Math.random()*1.8});}}
+    const fa=Math.max(0,1-st.puff/.6),H2=pm(d.to[0],d.to[1]),rr=(10+st.puff*70)*ps,gs=c.createRadialGradient(H2[0],H2[1],0,H2[0],H2[1],rr);gs.addColorStop(0,'rgba(255,246,206,'+(.65*fa)+')');gs.addColorStop(1,'rgba(255,200,100,0)');c.fillStyle=gs;c.fillRect(H2[0]-rr,H2[1]-rr,rr*2,rr*2);}
+  else d._p=false;
   const B=pm(st.x,st.y),R=st.r*ps,gl2=c.createRadialGradient(B[0],B[1],R*.6,B[0],B[1],R*2.1);
-  gl2.addColorStop(0,'rgba(255,200,110,'+(st.rest?.10:.26)+')');gl2.addColorStop(1,'rgba(255,200,110,0)');c.fillStyle=gl2;c.fillRect(B[0]-R*2.2,B[1]-R*2.2,R*4.4,R*4.4);
-  c.globalCompositeOperation='source-over';c.translate(B[0],B[1]);c.rotate(st.ang);const sz=d.size/d.rs*R;c.drawImage(d.im,-sz/2,-sz/2,sz,sz);
+  gl2.addColorStop(0,'rgba(255,200,110,'+(st.rest?.10:.26)*al+')');gl2.addColorStop(1,'rgba(255,200,110,0)');c.fillStyle=gl2;c.fillRect(B[0]-R*2.2,B[1]-R*2.2,R*4.4,R*4.4);
+  c.globalCompositeOperation='source-over';
+  if(st.sh&&al>.02){const S2=pm(st.sh[0],st.sh[1]),sr=st.r*ps*1.3;c.save();c.translate(S2[0],S2[1]);c.scale(1,.42);const sg=c.createRadialGradient(0,0,0,0,0,sr);sg.addColorStop(0,'rgba(10,22,0,'+(.5*al*st.sh[2])+')');sg.addColorStop(1,'rgba(10,22,0,0)');c.fillStyle=sg;c.fillRect(-sr,-sr,sr*2,sr*2);c.restore();}
+  c.globalAlpha=sprA*al;c.translate(B[0],B[1]);c.rotate(st.ang);const sz=d.size/d.rs*R;c.drawImage(d.im,-sz/2,-sz/2,sz,sz);
   c.restore();}
 /* ---------- golden motes ---------- */
 let mode={dim:0,blue:0};const motes=[];
