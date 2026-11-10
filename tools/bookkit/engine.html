@@ -589,7 +589,7 @@ const READ={on:false,collect:null,g:null,n:0,cur:-1};PM.READ=READ;
 let readPage=null;
 function theoryText(sp){if(sp._theory)return sp._theory;if(!readPage){const c=document.createElement('canvas');c.width=CW*PS;c.height=CH*PS;readPage={c,g:c.getContext('2d'),t:{},hot:[],flaps:[]};}
   const p=readPage;p.hot=[];p.flaps=[];const S=ensure(sp);READ.collect=[];READ.n=0;READ.g=p.g;const hl=HLon;HLon=false;ACC=sp.color;paperBase(p);try{sp.left(p,S);}catch(e){console.error(e);}HLon=hl;
-  const words=READ.collect;READ.collect=null;READ.g=null;sp._theory={words,speech:words.join(' ')};return sp._theory;}
+  const words=READ.collect;READ.collect=null;READ.g=null;const own=(BK.readSpeech||{})[sp.L&&sp.L.id];sp._theory={words,speech:(sp.kind!=='play'&&own)||words.join(' ')};return sp._theory;}
 PM.theoryText=i=>theoryText(SP[i]);
 function readTick(dt){if(!READ.on||!READ.sp)return;const T0=READ.sp._theory;if(!T0)return;const n=T0.words.length;READ.t+=dt;let wi=-1;const vc=voClock&&voClock.tok===voTok?voClock:null;
   const VT=(window.VTIME||{})[vhash(T0.speech)];
