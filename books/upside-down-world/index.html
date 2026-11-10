@@ -87,7 +87,7 @@ body.narrow #bar{gap:6px;padding-top:8px}body.narrow #bar button{padding:0 12px;
   <button id="next" aria-label="Next page">&#8594;</button>
 </div>
 <script src="story.js"></script>
-<script src="sprite.js?v=4"></script>
+<script src="sprite.js?v=5"></script>
 <script src="voice.js"></script>
 <script src="vtime.js"></script>
 <script>
@@ -263,15 +263,15 @@ stage.addEventListener('pointerleave',()=>{ptr=[0,0];});
 window.addEventListener('deviceorientation',e=>{if(e.gamma==null)return;ptr=[Math.max(-1,Math.min(1,e.gamma/25)),Math.max(-1,Math.min(1,(e.beta-45)/25))];});
 /* ---------- a flying object over a still page (the ball on page 1): a cut-out sprite on a tracked path, with a live golden trail ---------- */
 const SPR={};let curPar=[0,0],curS=1,sprA=0,sprName=null,hist=[],sparks=[];
-function loadSpr(n){if(SPR[n])return SPR[n];const d=(window.SPRITES||{})[n];if(!d)return null;const im=new Image();im.src=d.img;return SPR[n]=Object.assign({im},d);}
+function loadSpr(n){if(SPR[n])return SPR[n];const d=(window.SPRITES||{})[n];if(!d)return null;let im=null;if(d.img){im=new Image();im.src=d.img;}(d.rig||[]).forEach(r=>{r.im=new Image();r.im.src=r.img;});return SPR[n]=Object.assign({im},d);}
 const CY={rest:1.6,fly:2.4,hold:.6};
 function sprState(d,tt){
   if(d.kind==='lob'){
-    const R0=1.4,F=1.9,V=.6,Z=1.0,A=.7,T=R0+F+V+Z+A;tt=((tt%T)+T)%T;const f=d.from,e=d.to,ex=(a,b,u)=>a+(b-a)*u;
+    const R0=2.1,F=1.9,V=.6,Z=1.0,A=.7,T=R0+F+V+Z+A;tt=((tt%T)+T)%T;const f=d.from,e=d.to,ex=(a,b,u)=>a+(b-a)*u;
     let x=f[0],y=f[1],r=f[2],ang=0,mv=false,al=1,puff=null,rest=false,lift=0,gy=f[1];
     if(tt<R0){rest=true;y+=Math.sin(tt*2.2)*1.2;gy=y;}
     else if(tt<R0+F){const u=(tt-R0)/F,p=1-Math.pow(1-u,1.25),k=4*p*(1-p);lift=d.apex*k;
-      x=ex(f[0],e[0],p);gy=ex(f[1],e[1],p);y=gy-lift;r=ex(f[2],e[2],p)*(1+.5*k);ang=p*6;mv=true;}
+      x=ex(f[0],e[0],p);gy=ex(f[1],e[1],p);y=gy-lift;r=ex(f[2],e[2],p)*(1+.38*k);ang=p*6;mv=true;}
     else if(tt<R0+F+V){const v=(tt-R0-F)/V;x=e[0];gy=e[1];y=e[1]+7*v;r=e[2]*(1-.7*v);al=1-v;ang=6+v*1.5;puff=v*V;}
     else if(tt<R0+F+V+Z){al=0;x=e[0];y=e[1];gy=y;r=1;}
     else{const v=(tt-R0-F-V-Z)/A;al=v*v*(3-2*v);r=f[2]*(.55+.45*al);gy=y;}
@@ -296,11 +296,45 @@ function sprState(d,tt){
   const i=Math.min(N-2,Math.floor(f)),k=f-i,a=d.path[i],b=d.path[i+1];
   const bob=mv?0:Math.sin(tt*2.2)*1.6;
   return {x:a[0]+(b[0]-a[0])*k,y:a[1]+(b[1]-a[1])*k+bob,r:a[2]+(b[2]-a[2])*k,ang:f/(N-1)*1.6,mv,rest:f<.5};}
+const sm3=(a,b,x)=>{const k=Math.max(0,Math.min(1,(x-a)/(b-a)));return k*k*(3-2*k);},ease=k=>k*k*(3-2*k);
+function shiftAt(qx,qy,rl,t){const m=sm3(.30,.40,qx)*sm3(.97,.90,qx)*sm3(.95,.85,qy);
+  return [(curPar[0]*.011*(.35+.65*m)+m*Math.sin(t*.85+qy*9+qx*2)*.0022)*rl,(curPar[1]*.011*(.35+.65*m)+m*Math.cos(t*.67+qx*7)*.0022)*rl];}
+const DEP={};function depthAt(img,x,y){let o=DEP[img];if(!o){o=DEP[img]={c:null};const im=new Image();im.onload=()=>{const cv2=document.createElement('canvas');cv2.width=im.naturalWidth;cv2.height=im.naturalHeight;const cx=cv2.getContext('2d');cx.drawImage(im,0,0);o.c=cx;o.w=cv2.width;o.h=cv2.height;};im.src='img/'+img+'-d.webp';}
+  if(!o.c)return .85;try{const v=o.c.getImageData(Math.min(o.w-1,Math.round(x/W*o.w)),Math.min(o.h-1,Math.round(y/H*o.h)),1,1).data[0]/255;return sm3(.14,1,v);}catch(e){return .85;}}
+/* body-part motions: rot (rad, + = clockwise on screen), sx, sy scale about the pivot, dx, dy in picture px */
+const MOT={
+  leg(tt){const T=6.3;tt=((tt%T)+T)%T;let rot=Math.sin(tt*1.7)*.02,sy=1,dy=0;
+    if(tt>=1.4&&tt<2.0){const u=ease((tt-1.4)/.6);rot=.46*u;sy=1+.14*u;dy=1.5*u;}
+    else if(tt>=2.0&&tt<2.1){const u=ease((tt-2.0)/.1);rot=.46-1.02*u;sy=1.14-.28*u;dy=1.5-1.5*u;}
+    else if(tt>=2.1&&tt<2.8){const u=(tt-2.1)/.7,e=1-Math.pow(1-u,2.4);rot=-.56*(1-e)+Math.sin(u*9)*.05*(1-u);sy=.86+.14*e;}
+    return {rot,sx:1,sy,dx:0,dy};},
+  head(tt,dir,lag){const T=8;tt=((tt-lag)%T+T)%T;let k=0;
+    if(tt>=.8&&tt<1.9)k=ease((tt-.8)/1.1);else if(tt>=1.9&&tt<4.8)k=1;else if(tt>=4.8&&tt<5.9)k=1-ease((tt-4.8)/1.1);
+    const hold=(tt>=1.9&&tt<4.8)?Math.sin(tt*1.4)*.035:0,idle=Math.sin(tt*1.1)*.02*(1-k);
+    return {rot:dir*(.40*k+hold*k)+idle,sx:1-.09*k,sy:1,dx:dir*2.4*k,dy:-.6*k};}
+};
+function drawRig(c,d,L,now,dt,w,h,t,ps,o){
+  const p=L._p,dim=p.fx==='shade'?dimS:0;
+  (d.rig||[]).forEach(r=>{if(!r.im||!r.im.complete||!r.im.naturalWidth)return;
+    const tt=reduce?0:(now-pageT0)/1000;
+    const M=r.motion==='leg'?MOT.leg(tt):r.motion==='headL'?MOT.head(tt,1,0):MOT.head(tt,-1,.18);
+    const rl=depthAt(p.img,r.depth[0],r.depth[1]),qx=r.pivot[0]/W,qy=r.pivot[1]/H,s2=shiftAt(qx,qy,rl,t),
+      px=(o[0]+(qx-o[0])*curS+s2[0])*w,py=(o[1]+(qy-o[1])*curS+s2[1])*h;
+    const sh=sm3(.30,.40,qx)*sm3(.97,.90,qx)*sm3(.95,.85,qy)*rl*(.055*Math.sin(t*1.6+qx*13+qy*6)+.035*Math.sin(t*2.7-qy*17)),f=(1+sh)*(1-dim*.25);
+    const bw=r.box[2]*ps,bh=r.box[3]*ps,ox=(r.box[0]-r.pivot[0])*ps,oy=(r.box[1]-r.pivot[1])*ps;
+    c.save();c.globalAlpha=sprA;c.translate(px,py);c.translate(M.dx*ps,M.dy*ps);c.rotate(M.rot);c.scale(M.sx,M.sy);c.imageSmoothingQuality='high';
+    if(Math.abs(f-1)>.008){const cw=Math.ceil(bw)+2,ch=Math.ceil(bh)+2;let oc=r._oc;if(!oc||oc.width!==cw||oc.height!==ch){oc=r._oc=document.createElement('canvas');oc.width=cw;oc.height=ch;}
+      const x2=oc.getContext('2d');x2.globalCompositeOperation='source-over';x2.clearRect(0,0,cw,ch);x2.drawImage(r.im,0,0,bw,bh);x2.globalCompositeOperation='source-atop';
+      x2.fillStyle=f<1?'rgba(0,0,0,'+(1-f)+')':'rgba(255,255,255,'+Math.min(.5,(f-1)*.6)+')';x2.fillRect(0,0,cw,ch);c.drawImage(oc,ox,oy);}
+    else c.drawImage(r.im,ox,oy,bw,bh);
+    c.restore();});}
 function drawSprite(c,now,dt,w,h,t){
   const L=layers[cur],name=L&&L._p.sprite;if(name)sprName=name;
   sprA+=((name?1:0)-sprA)*Math.min(1,dt*4);if(sprA<.01||!sprName)return;
-  const d=loadSpr(sprName);if(!d||!d.im.complete||!d.im.naturalWidth)return;
-  const o=ORIGIN.kb,pm=(x,y)=>[(o[0]+(x/W-o[0])*curS+curPar[0]*.0095)*w,(o[1]+(y/H-o[1])*curS+curPar[1]*.0095)*h],ps=curS*w/W;
+  const d=loadSpr(sprName);if(!d)return;
+  const o=ORIGIN[layers[cur]._p.fx==='shade'?'shade':'kb'],tN=reduce?0:now/1000,ps=curS*w/W,pm=(x,y)=>{const s2=shiftAt(x/W,y/H,.86,tN);return [(o[0]+(x/W-o[0])*curS+s2[0])*w,(o[1]+(y/H-o[1])*curS+s2[1])*h];};
+  drawRig(c,d,layers[cur],now,dt,w,h,tN,ps,o);
+  if(!d.im||!d.im.complete||!d.im.naturalWidth)return;
   const st=sprState(d,reduce?0:(now-pageT0)/1000);
   if(!reduce&&st.mv){hist.push({x:st.x,y:st.y,r:st.r,t:now});for(let j=0;j<3;j++){const a=Math.random()*6.28,q=st.r*(.3+Math.random()*.8);
       sparks.push({x:st.x+Math.cos(a)*q,y:st.y+Math.sin(a)*q,vx:(Math.random()-.5)*50,vy:(Math.random()-.5)*50-8,life:0,max:.5+Math.random()*.9,s:.8+Math.random()*1.8});}}

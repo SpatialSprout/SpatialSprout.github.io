@@ -9,7 +9,7 @@ window.STORY={title:"The Upside-Down World",author:"M. A. Mafodh",pages:[
 {img:"p03",box:[362,190,628,385],parts:[
  "The ball arced high, too high. It sailed past Sam's reach and bounced once, twice, then disappeared into the dark space between the gnarled roots of a huge, ancient oak tree at the edge of the park.",
  "\"Oops,\" Leo said, his shoulders slumping. Sam crept toward the tree. \"Leo,\" he whispered, his eyes wide. \"That tree looks... spooky.\""]},
-{img:"p03",fx:"shade",box:[362,190,628,385],parts:[
+{img:"p03b",fx:"shade",sprite:"p03",box:[362,190,628,385],parts:[
  "Leo was nine. He wasn't supposed to be scared of trees. \"Don't be silly, Sam. It's just a tree.\" But he felt it too. A shiver ran down his spine, even under the warm sun.",
  "The tree was extra shady. The branches looked like long, scratchy fingers, and the hole their ball had fallen into was black and deep, like a secret the ground was keeping."]},
 {img:"p05",box:[362,190,628,390],parts:[
