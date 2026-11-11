@@ -879,6 +879,21 @@ window.CATALOG = {
       blurb: "A magical tree, flying fish and the strangest game of soccer ever. Leo and Sam crawl under an old oak tree and tumble into an upside-down world — where the sun is blue, the sea is yellow, and the fish fly through the sky. An illustrated storybook to read together.",
       strands: { "Storybook": { letter: "S", color: "#7c4dff" } },
       lessons: []
+    },
+    {
+      grade: "Storybooks",
+      name: "The Alphabet Song",
+      subject: "Song",
+      status: "live",
+      free: true,
+      colors: ["#7fd8f0", "#ff8fab", "#b97cff"],
+      slug: "alphabet-song",
+      tiles: ["A", "Z"],
+      title: "The Alphabet Song",
+      author: "M. A. Mafodh",
+      blurb: "A holographic pop-up diorama that sings the alphabet A to Z. Cute characters pop up for every letter as bright, glowing 3D cards. Watch it play itself — no buttons needed.",
+      strands: { "Song": { letter: "S", color: "#7fd8f0" } },
+      lessons: []
     }
   ],
   moreSubjects: ["English, Science and Social Studies for Grades 3 to 8", "History and Geography"]
