@@ -404,6 +404,11 @@ const MOT={
   /* page 13: Sam points at the strange ball and gasps, twice per 14 s cycle */
   p13(tt){const T=14;tt=((tt%T)+T)%T;const on=(s,e)=>tt<s||tt>e+.45?0:tt<s+.4?ease((tt-s)/.4):tt<e?1:1-ease((tt-e)/.45);
     return {dx:0,dy:0,rot:0,sx:1,sy:1,a:Math.max(on(2.5,6),on(9,11.5))};},
+  /* page 14: stare -> nervous smile -> laughing fit (giggles flicker between smile and laugh) -> calm (16 s) */
+  p14(tt,j){const T=16;tt=((tt%T)+T)%T;const on=(s,e,f)=>tt<s||tt>e+f?0:tt<s+f?ease((tt-s)/f):tt<e?1:1-ease((tt-e)/f);
+    if(j===1)return {dx:0,dy:0,rot:0,sx:1,sy:1,a:on(2.5,13.2,.5)};
+    let a=on(5,12,.45);if(tt>6&&tt<11.5)a*=.62+.38*(.5+.5*Math.cos((tt-6)*Math.PI*2/.55));
+    return {dx:0,dy:0,rot:0,sx:1,sy:1,a};},
   hide(tt){const T=16;tt=((tt%T)+T)%T;const S=7.0,E=11.6+.85;return {dx:0,dy:0,rot:0,sx:1,sy:1,a:Math.max(0,Math.min(1,(tt-S)/.12,(E-tt)/.12))};},
   head(tt,dir,lag){const T=16;tt=((tt-lag)%T+T)%T;let k=0;
     if(tt>=.8&&tt<1.9)k=ease((tt-.8)/1.1);else if(tt>=1.9&&tt<4.8)k=1;else if(tt>=4.8&&tt<5.9)k=1-ease((tt-4.8)/1.1);
@@ -414,7 +419,7 @@ function drawRig(c,d,L,now,dt,w,h,t,ps,o){
   const p=L._p,dim=p.fx==='shade'?dimS:0;
   (d.rig||[]).forEach(r=>{if(!r.im||!r.im.complete||!r.im.naturalWidth)return;
     const tt=reduce?0:(now-pageT0)/1000;
-    const M=r.motion==='p13'?MOT.p13(tt):r.motion==='p12a'?MOT.p12(tt,1):r.motion==='p12b'?MOT.p12(tt,2):r.motion==='flip10'?MOT.flip10(tt):r.motion==='stride'?MOT.stride(tt):r.motion==='song11'?MOT.song11(tt):r.motion==='p9'?MOT.p9(tt):r.motion==='p8a'?MOT.p8(tt,1):r.motion==='p8b'?MOT.p8(tt,2):r.motion==='walk7'?MOT.walk7(tt):r.motion&&r.motion.startsWith('kf')?MOT.kf(tt,+r.motion[2]):r.motion==='point2'?MOT.point2(tt):r.motion==='point'?MOT.point(tt):r.motion==='hide'?MOT.hide(tt):r.motion==='turn'?MOT.turn(tt):r.motion==='leg'?MOT.leg(tt):r.motion==='headL'?MOT.head(tt,1,0):MOT.head(tt,-1,.18);
+    const M=r.motion==='p14a'?MOT.p14(tt,1):r.motion==='p14b'?MOT.p14(tt,2):r.motion==='p13'?MOT.p13(tt):r.motion==='p12a'?MOT.p12(tt,1):r.motion==='p12b'?MOT.p12(tt,2):r.motion==='flip10'?MOT.flip10(tt):r.motion==='stride'?MOT.stride(tt):r.motion==='song11'?MOT.song11(tt):r.motion==='p9'?MOT.p9(tt):r.motion==='p8a'?MOT.p8(tt,1):r.motion==='p8b'?MOT.p8(tt,2):r.motion==='walk7'?MOT.walk7(tt):r.motion&&r.motion.startsWith('kf')?MOT.kf(tt,+r.motion[2]):r.motion==='point2'?MOT.point2(tt):r.motion==='point'?MOT.point(tt):r.motion==='hide'?MOT.hide(tt):r.motion==='turn'?MOT.turn(tt):r.motion==='leg'?MOT.leg(tt):r.motion==='headL'?MOT.head(tt,1,0):MOT.head(tt,-1,.18);
     const rl=depthAt(p.img,r.depth[0],r.depth[1]),qx=r.pivot[0]/W,qy=r.pivot[1]/H,s2=shiftAt(qx,qy,rl,t),
       px=(o[0]+(qx-o[0])*curS+s2[0])*w,py=(o[1]+(qy-o[1])*curS+s2[1])*h;
     const sh=sm3(.30,.40,qx)*sm3(.97,.90,qx)*sm3(.95,.85,qy)*rl*(.055*Math.sin(t*1.6+qx*13+qy*6)+.035*Math.sin(t*2.7-qy*17)),f=(1+sh)*(1-dim*.25);

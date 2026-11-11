@@ -40,7 +40,7 @@ window.STORY={title:"The Upside-Down World",author:"M. A. Mafodh",pages:[
 {img:"p11",sprite:"p13k",wind:-1.3,swirl:[1093,85,.004],dust:true,box:[305,425,700,600],parts:[
  "\"Where's our ball?\" Sam asked, looking around. Leo spotted it sitting by the tree's trunk. He walked over to pick it up... and stopped.",
  "It wasn't their soccer ball anymore. It was a basketball. Orange and bumpy, with the familiar black lines. Sam came up beside him. \"That's... not our ball.\""]},
-{img:"p12",box:[362,190,628,395],parts:[
+{img:"p12",sprite:"p14k",wind:-1.3,swirl:[1093,85,.004],dust:true,box:[300,418,670,602],parts:[
  "Leo looked from the basketball in his hand to the dark hole under the tree. He started to laugh. It was a nervous, shaky laugh. Sam stared at the ball, then at Leo, and then he started giggling too.",
  "Soon, they were both laughing so hard they could barely stand, a mix of amazement, fear, and pure confusion bubbling out of them.",
  "The End."]}
