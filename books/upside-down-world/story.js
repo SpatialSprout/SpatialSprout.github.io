@@ -20,7 +20,7 @@ window.STORY={title:"The Upside-Down World",author:"M. A. Mafodh",pages:[
  "Inside, it wasn't dark anymore. The space between the roots opened up into a tunnel, but it wasn't made of dirt. The walls shimmered, like they were woven from light. A soft, golden glow pulsed from the other end.",
  "\"Whoa,\" Sam breathed. \"Come on,\" Leo said, his fear turning into a fizz of excitement. \"Let's see.\"",
  "They walked through the glowing tunnel, their sneakers making no sound on the smooth, warm floor. At the other end, they stepped out and both of them gasped."]},
-{img:"p07",box:[362,190,700,395],parts:[
+{img:"p07",sprite:"p08k",swirl:[952,150,.03,.26],dust:true,box:[362,190,700,395],parts:[
  "The world was flipped upside down. The sun, hanging in a perfectly clear sky, was the deep, sparkling blue of the ocean.",
  "And the ocean below, lapping at a shore of soft, pink sand, was a bright, sunny yellow. \"What... what is this place?\" Sam stammered."]},
 {img:"cover",box:[360,200,560,462],parts:[

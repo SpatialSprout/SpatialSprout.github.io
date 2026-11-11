@@ -131,11 +131,11 @@ vec3 live(sampler2D tx,sampler2D dx,vec2 uv,float s,vec2 o,float dim,float wind,
   /* light-tunnel swirl: the streaks ripple around the bright core in slow waves; the core breathes */
   float gp=0.;
   if(sw.z>0.){vec2 d=q-sw.xy;d.x*=1.833;float r=length(d);
-    float fall=smoothstep(.03,.12,r)*smoothstep(.62,.32,r);
+    float ro=sw.w>0.?sw.w:.62;float fall=smoothstep(.03,.12,r)*smoothstep(ro,ro*.52,r);
     float th=sw.z*(sin(t*.55-r*16.)+.45*sin(t*.9-r*31.+1.7))*fall;
     vec2 dr=vec2(d.x*cos(th)-d.y*sin(th),d.x*sin(th)+d.y*cos(th));w+=vec2((d.x-dr.x)/1.833,d.y-dr.y);
     gp=exp(-r*r/.0035)*(.10+.07*sin(t*1.25)+.03*sin(t*3.1+1.));}
-  vec3 c=texture2D(tx,q2-w).rgb;c+=vec3(1.,.8,.48)*gp;
+  vec3 c=texture2D(tx,q2-w).rgb;c+=(sw.w>0.?vec3(.45,.72,1.)*1.4:vec3(1.,.8,.48))*gp;
   float sh=m*r2*(.055*sin(t*1.6+q.x*13.+q.y*6.)+.035*sin(t*2.7-q.y*17.));
   c*=1.+sh;c*=1.-dim*.25*smoothstep(.40,.56,q.x);
   return c;}
@@ -167,7 +167,7 @@ function loadVid(name){if(vids[name])return vids[name];const v=document.createEl
   const o={v,t:null,ok:false};v.addEventListener('playing',()=>{o.ok=true;});vids[name]=o;return o;}
 function pageTex(p){if(p.video)return {c:loadTex('img/'+p.img+'.webp'),d:p.relief?loadTex('img/'+p.img+'-d.webp'):black(),vid:loadVid(p.video)};return {c:loadTex('img/'+p.img+'.webp'),d:loadTex('img/'+p.img+'-d.webp')};}
 const ORIGIN={kb:[.72,.55],shade:[.80,.74]};
-function swv(p){return p.swirl?[p.swirl[0]/1408,p.swirl[1]/768,p.swirl[2],0]:[0,0,0,0];}
+function swv(p){return p.swirl?[p.swirl[0]/1408,p.swirl[1]/768,p.swirl[2],p.swirl[3]||0]:[0,0,0,0];}
 function kbScale(p,el){const dur=40,x=Math.min(1,el/dur),e=1-Math.pow(1-x,2);return 1+(p.fx==='shade'?.065:.045)*e;}
 
 /* ---------- layout ---------- */
@@ -372,6 +372,11 @@ const MOT={
     const x=P[i][0]+(P[i+1][0]-P[i][0])*e,y=P[i][1]+(P[i+1][1]-P[i][1])*e,sc=S[i]+(S[i+1]-S[i])*e,al=AL[i]+(AL[i+1]-AL[i])*e;
     const step=tt>=1.2?Math.abs(Math.sin(tt*Math.PI*1.7)):0;
     return {dx:x-P[0][0],dy:y-P[0][1]-step*1.6*sc,rot:Math.sin(tt*Math.PI*.85)*.022*(tt>=1.2?1:.3),sx:sc,sy:sc,a:al*(tt>14?fin:1)};},
+  /* page 8: standing and looking up -> crouch -> kneel and touch the pink sand -> stand again (16 s) */
+  p8(tt,j){const T=16;tt=((tt%T)+T)%T;const f=(x,d)=>{x=Math.max(0,Math.min(1,x/d));return x*x*(3-2*x);};
+    let a=0;if(j===1)a=tt<4?0:tt<4.5?f(tt-4,.5):tt<8.15?1:tt<8.45?1-f(tt-8.15,.3):0;
+    else a=tt<7.7?0:tt<8.2?f(tt-7.7,.5):tt<12?1:tt<12.55?1-f(tt-12,.55):0;
+    const br=Math.sin(tt*1.6)*.004;return {dx:0,dy:0,rot:0,sx:1,sy:1+br,a};},
   hide(tt){const T=16;tt=((tt%T)+T)%T;const S=7.0,E=11.6+.85;return {dx:0,dy:0,rot:0,sx:1,sy:1,a:Math.max(0,Math.min(1,(tt-S)/.12,(E-tt)/.12))};},
   head(tt,dir,lag){const T=16;tt=((tt-lag)%T+T)%T;let k=0;
     if(tt>=.8&&tt<1.9)k=ease((tt-.8)/1.1);else if(tt>=1.9&&tt<4.8)k=1;else if(tt>=4.8&&tt<5.9)k=1-ease((tt-4.8)/1.1);
@@ -382,7 +387,7 @@ function drawRig(c,d,L,now,dt,w,h,t,ps,o){
   const p=L._p,dim=p.fx==='shade'?dimS:0;
   (d.rig||[]).forEach(r=>{if(!r.im||!r.im.complete||!r.im.naturalWidth)return;
     const tt=reduce?0:(now-pageT0)/1000;
-    const M=r.motion==='walk7'?MOT.walk7(tt):r.motion&&r.motion.startsWith('kf')?MOT.kf(tt,+r.motion[2]):r.motion==='point2'?MOT.point2(tt):r.motion==='point'?MOT.point(tt):r.motion==='hide'?MOT.hide(tt):r.motion==='turn'?MOT.turn(tt):r.motion==='leg'?MOT.leg(tt):r.motion==='headL'?MOT.head(tt,1,0):MOT.head(tt,-1,.18);
+    const M=r.motion==='p8a'?MOT.p8(tt,1):r.motion==='p8b'?MOT.p8(tt,2):r.motion==='walk7'?MOT.walk7(tt):r.motion&&r.motion.startsWith('kf')?MOT.kf(tt,+r.motion[2]):r.motion==='point2'?MOT.point2(tt):r.motion==='point'?MOT.point(tt):r.motion==='hide'?MOT.hide(tt):r.motion==='turn'?MOT.turn(tt):r.motion==='leg'?MOT.leg(tt):r.motion==='headL'?MOT.head(tt,1,0):MOT.head(tt,-1,.18);
     const rl=depthAt(p.img,r.depth[0],r.depth[1]),qx=r.pivot[0]/W,qy=r.pivot[1]/H,s2=shiftAt(qx,qy,rl,t),
       px=(o[0]+(qx-o[0])*curS+s2[0])*w,py=(o[1]+(qy-o[1])*curS+s2[1])*h;
     const sh=sm3(.30,.40,qx)*sm3(.97,.90,qx)*sm3(.95,.85,qy)*rl*(.055*Math.sin(t*1.6+qx*13+qy*6)+.035*Math.sin(t*2.7-qy*17)),f=(1+sh)*(1-dim*.25);
