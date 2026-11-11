@@ -23,7 +23,7 @@ window.STORY={title:"The Upside-Down World",author:"M. A. Mafodh",pages:[
 {img:"p07",sprite:"p08k",swirl:[952,150,.03,.26],dust:true,box:[362,190,700,395],parts:[
  "The world was flipped upside down. The sun, hanging in a perfectly clear sky, was the deep, sparkling blue of the ocean.",
  "And the ocean below, lapping at a shore of soft, pink sand, was a bright, sunny yellow. \"What... what is this place?\" Sam stammered."]},
-{img:"cover",box:[360,200,560,462],parts:[
+{img:"p08",sprite:"p09k",swirl:[952,150,.03,.22],whale:[900,265,320,170],dust:true,box:[290,205,528,455],parts:[
  "But the real shock was what was flying through the blue-sun sky. Fish. Not just little fish, but huge shimmering ones with rainbow fins, flapping their tails as they soared through the air like birds.",
  "And leading them, so big it blocked out the blue sun for a moment as it passed, was a giant whale. Its tail wasn't just one color, but a swirl of every color imaginable, like a painter's swirl of all the paints in the world.",
  "Sam's jaw dropped open. \"Leo... the fish are flying!\" Leo just stared, speechless. He pinched his arm. It hurt. This was real."]},
