@@ -318,6 +318,9 @@ const DEP={};function depthAt(img,x,y){let o=DEP[img];if(!o){o=DEP[img]={c:null}
   if(!o.c)return .85;try{const v=o.c.getImageData(Math.min(o.w-1,Math.round(x/W*o.w)),Math.min(o.h-1,Math.round(y/H*o.h)),1,1).data[0]/255;return sm3(.14,1,v);}catch(e){return .85;}}
 /* body-part motions: rot (rad, + = clockwise on screen), sx, sy scale about the pivot, dx, dy in picture px */
 const MOT={
+  /* the kids turn to face each other twice per 16 s cycle, with a quiet gap between turns */
+  turn(tt){const T=16;tt=((tt%T)+T)%T;const on=(s,e)=>tt<s||tt>e+.45?0:tt<s+.45?ease((tt-s)/.45):tt<e?1:1-ease((tt-e)/.45);
+    return {dx:0,dy:0,rot:0,sx:1,sy:1,a:Math.max(on(2.6,5.0),on(9.6,12.0))};},
   leg(tt){const T=6.3;tt=((tt%T)+T)%T;let rot=Math.sin(tt*1.7)*.02,sy=1,dy=0;
     if(tt>=1.4&&tt<2.0){const u=ease((tt-1.4)/.6);rot=.46*u;sy=1+.14*u;dy=1.5*u;}
     else if(tt>=2.0&&tt<2.1){const u=ease((tt-2.0)/.1);rot=.46-1.31*u;sy=1.14-.52*u;dy=1.5-1.5*u;}
@@ -332,12 +335,12 @@ function drawRig(c,d,L,now,dt,w,h,t,ps,o){
   const p=L._p,dim=p.fx==='shade'?dimS:0;
   (d.rig||[]).forEach(r=>{if(!r.im||!r.im.complete||!r.im.naturalWidth)return;
     const tt=reduce?0:(now-pageT0)/1000;
-    const M=r.motion==='leg'?MOT.leg(tt):r.motion==='headL'?MOT.head(tt,1,0):MOT.head(tt,-1,.18);
+    const M=r.motion==='turn'?MOT.turn(tt):r.motion==='leg'?MOT.leg(tt):r.motion==='headL'?MOT.head(tt,1,0):MOT.head(tt,-1,.18);
     const rl=depthAt(p.img,r.depth[0],r.depth[1]),qx=r.pivot[0]/W,qy=r.pivot[1]/H,s2=shiftAt(qx,qy,rl,t),
       px=(o[0]+(qx-o[0])*curS+s2[0])*w,py=(o[1]+(qy-o[1])*curS+s2[1])*h;
     const sh=sm3(.30,.40,qx)*sm3(.97,.90,qx)*sm3(.95,.85,qy)*rl*(.055*Math.sin(t*1.6+qx*13+qy*6)+.035*Math.sin(t*2.7-qy*17)),f=(1+sh)*(1-dim*.25);
     const bw=r.box[2]*ps,bh=r.box[3]*ps,ox=(r.box[0]-r.pivot[0])*ps,oy=(r.box[1]-r.pivot[1])*ps;
-    c.save();c.globalAlpha=sprA;c.translate(px,py);c.translate(M.dx*ps,M.dy*ps);c.rotate(M.rot);c.scale(M.sx,M.sy);c.imageSmoothingQuality='high';
+    const ma=M.a==null?1:M.a;if(ma<.01)return;c.save();c.globalAlpha=sprA*ma;c.translate(px,py);c.translate(M.dx*ps,M.dy*ps);c.rotate(M.rot);c.scale(M.sx,M.sy);c.imageSmoothingQuality='high';
     if(Math.abs(f-1)>.008){const cw=Math.ceil(bw)+2,ch=Math.ceil(bh)+2;let oc=r._oc;if(!oc||oc.width!==cw||oc.height!==ch){oc=r._oc=document.createElement('canvas');oc.width=cw;oc.height=ch;}
       const x2=oc.getContext('2d');x2.globalCompositeOperation='source-over';x2.clearRect(0,0,cw,ch);x2.drawImage(r.im,0,0,bw,bh);x2.globalCompositeOperation='source-atop';
       x2.fillStyle=f<1?'rgba(0,0,0,'+(1-f)+')':'rgba(255,255,255,'+Math.min(.5,(f-1)*.6)+')';x2.fillRect(0,0,cw,ch);c.drawImage(oc,ox,oy);}
