@@ -119,10 +119,15 @@ vec3 live(sampler2D tx,sampler2D dx,vec2 uv,float s,vec2 o,float dim,float wind,
   /* wind in the foliage (dark green, raised) and a flutter in a small patch of hair */
   vec3 c0=texture2D(tx,q2).rgb;float lm=dot(c0,vec3(.3,.55,.15));
   float fol=smoothstep(.0,.05,c0.g-max(c0.r*.9,c0.b*1.1))*(1.-smoothstep(.36,.52,lm));
-  float gs=wind>1.5?(.7+.45*sin(t*.45)+.25*sin(t*1.1+1.3)):1.;float fm=wind*gs*fol*smoothstep(.22,.6,rl);
+  float gs=wind>1.5?(.7+.45*sin(t*.45)+.25*sin(t*1.1+1.3)):1.;float fm=max(wind,0.)*gs*fol*smoothstep(.22,.6,rl);
   vec2 w=vec2(sin(t*1.9+q.y*38.+q.x*21.)*.0016+sin(t*3.3+q.x*57.+q.y*11.)*.0010+sin(t*.7+q.x*6.)*.0014,cos(t*1.6+q.x*33.)*.0010)*fm;
   vec2 hd=(q-hair.xy)/hair.zw;float hf=exp(-dot(hd,hd)*1.2)*smoothstep(.7,-.8,hd.y)*step(0.,hair.z);
   w+=vec2(sin(t*3.4+q.x*90.)*.0034+sin(t*5.3+q.y*70.)*.0016,cos(t*2.7+q.x*80.)*.0015)*hf*max(1.,wind*gs*.75);
+  /* spooky mode (wind<0): raised branches writhe slowly in gusts, roots and kids stay still */
+  float sp=step(wind,-.5)*(-wind);
+  if(sp>0.){float fs=sp*smoothstep(.25,.75,rl)*smoothstep(.60,.46,q.y)*smoothstep(.42,.5,q.x)*smoothstep(.93,.86,q.x);
+    float gq=max(.15,.55+.5*sin(t*.38)+.3*sin(t*1.25+2.));
+    w+=vec2(sin(t*.9+q.y*14.+q.x*5.)*.0030+sin(t*1.8+q.x*26.+q.y*9.)*.0012,cos(t*.75+q.x*12.+q.y*4.)*.0024+sin(t*1.5+q.y*21.)*.0010)*fs*gq;}
   vec3 c=texture2D(tx,q2-w).rgb;
   float sh=m*r2*(.055*sin(t*1.6+q.x*13.+q.y*6.)+.035*sin(t*2.7-q.y*17.));
   c*=1.+sh;c*=1.-dim*.25;
