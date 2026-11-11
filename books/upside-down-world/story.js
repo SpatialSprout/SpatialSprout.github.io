@@ -34,7 +34,7 @@ window.STORY={title:"The Upside-Down World",author:"M. A. Mafodh",pages:[
  "That was it. That was too much. Leo grabbed Sam's hand. \"We have to go. Now!\"",
  "\"But the whale!\" Sam cried, trying to pull back. \"NOW, Sam!\" Leo yanked him toward the glowing tunnel they had come from.",
  "The magic of the place was suddenly scary, too big and too strange."]},
-{img:"p10",box:[362,190,628,405],parts:[
+{img:"p10",sprite:"p12k",wind:-1.3,swirl:[1090,85,.004],dust:true,box:[362,190,628,405],parts:[
  "They scrambled back through the tunnel, stumbling over each other, and burst out from under the oak tree, landing in a heap on the familiar grass of the park.",
  "The sun was normal yellow again. The air was warm and smelled like cut grass. They were back. Leo panted, his heart thumping like a drum. Sam sat up, blinking in the bright light."]},
 {img:"p11",box:[305,425,700,600],parts:[
