@@ -6,7 +6,7 @@ window.STORY={title:"The Upside-Down World",author:"M. A. Mafodh",pages:[
  "Leo kicked the bright red soccer ball hard, sending it soaring through the warm summer air. \"I'm the best striker in the whole world!\" he yelled."]},
 {img:"p02",wind:2.3,dust:true,hair:[925,236,28,19],box:[362,190,700,405],parts:[
  "His little brother Sam giggled, his blond hair flopping into his eyes. \"No way! I'm the best goalie! You can't get it past me!\" He puffed out his six-year-old chest, standing guard in front of the goal post."]},
-{img:"p03s",sprite:"p03s",wind:true,box:[362,190,700,405],parts:[
+{img:"p03s",sprite:"p03s",wind:true,dust:true,box:[362,190,700,405],parts:[
  "The ball arced high, too high. It sailed past Sam's reach and bounced once, twice, then disappeared into the dark space between the gnarled roots of a huge, ancient oak tree at the edge of the park."]},
 {img:"p03",box:[362,190,628,385],parts:[
  "\"Oops,\" Leo said, his shoulders slumping. Sam crept toward the tree. \"Leo,\" he whispered, his eyes wide. \"That tree looks... spooky.\""]},

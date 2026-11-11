@@ -267,14 +267,14 @@ function loadSpr(n){if(SPR[n])return SPR[n];const d=(window.SPRITES||{})[n];if(!
 const CY={rest:1.6,fly:2.4,hold:.6};
 function sprState(d,tt){
   if(d.kind==='hops'){
-    const R0=1.2,V=.5,Z=.9,A=.6,DU=[.8,.45,.32],FT=DU[0]+DU[1]+DU[2],T=R0+FT+V+Z+A;tt=((tt%T)+T)%T;const s0=d.start,ex=(a,b,u)=>a+(b-a)*u,L=d.hops[d.hops.length-1];
+    const R0=d.rest||1.2,V=.5,Z=.9,A=.6,DU=d.du||[.8,.45,.32],G=d.ground?0:24,GR=d.grow||0,FT=DU[0]+DU[1]+DU[2],T=R0+FT+V+Z+A;tt=((tt%T)+T)%T;const s0=d.start,ex=(a,b,u)=>a+(b-a)*u,L=d.hops[d.hops.length-1];
     let x=s0[0],y=s0[1],r=s0[2],ang=0,mv=false,al=1,puff=null,rest=false,lift=0,gy=s0[1];
-    if(tt<R0){rest=true;y+=Math.sin(tt*2.6)*1.5;gy=s0[1]+24;lift=24;}
+    if(tt<R0){rest=true;if(!d.ground)y+=Math.sin(tt*2.6)*1.5;gy=s0[1]+G;lift=G;}
     else if(tt<R0+FT){let u=tt-R0,i=0;while(i<2&&u>DU[i]){u-=DU[i];i++;}u/=DU[i];const a=i?d.hops[i-1]:s0,b=d.hops[i],k=4*u*(1-u);
-      const g0=i?a[1]:a[1]+24;gy=ex(g0,b[1],u);lift=b[3]*k+(i?0:24*(1-u));x=ex(a[0],b[0],u);y=gy-lift;r=ex(a[2],b[2],u);ang=(i+u)*2.2;mv=true;}
+      const g0=i?a[1]:a[1]+G;gy=ex(g0,b[1],u);lift=b[3]*k+(i?0:G*(1-u));x=ex(a[0],b[0],u)+(i?0:(d.bend||0)*k);y=gy-lift;r=ex(a[2],b[2],u)*(1+(i?0:GR*k));ang=(i+u)*2.2;mv=true;}
     else if(tt<R0+FT+V){const v=(tt-R0-FT)/V;x=L[0];gy=L[1];y=L[1]+5*v;r=L[2]*(1-.7*v);al=1-v;puff=v*V;ang=6.6;}
     else if(tt<R0+FT+V+Z){al=0;x=L[0];y=L[1];gy=y;r=1;}
-    else{const v=(tt-R0-FT-V-Z)/A;al=v*v*(3-2*v);gy=y+24;lift=24;}
+    else{const v=(tt-R0-FT-V-Z)/A;al=v*v*(3-2*v);gy=y+G;lift=G;}
     return {x,y,r,ang,mv,rest,hit:null,al,puff,sh:[x+r*.15,gy+r*.62,Math.max(0,1-lift/230)]};}
   if(d.kind==='lob'){
     const R0=2.1,F=1.9,V=.6,Z=1.0,A=.7,T=R0+F+V+Z+A;tt=((tt%T)+T)%T;const f=d.from,e=d.to,ex=(a,b,u)=>a+(b-a)*u;
