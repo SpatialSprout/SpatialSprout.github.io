@@ -27,8 +27,9 @@ window.STORY={title:"The Upside-Down World",author:"M. A. Mafodh",pages:[
  "But the real shock was what was flying through the blue-sun sky. Fish. Not just little fish, but huge shimmering ones with rainbow fins, flapping their tails as they soared through the air like birds.",
  "And leading them, so big it blocked out the blue sun for a moment as it passed, was a giant whale. Its tail wasn't just one color, but a swirl of every color imaginable, like a painter's swirl of all the paints in the world.",
  "Sam's jaw dropped open. \"Leo... the fish are flying!\" Leo just stared, speechless. He pinched his arm. It hurt. This was real."]},
-{img:"p09",box:[300,462,700,600],song:[0,1],parts:[
- "Suddenly, the great whale flipped, its multicolored tail sending ripples through the air.",
+{img:"p09",sprite:"p10k",swirl:[1090,85,.004,.12],dust:true,box:[362,185,700,295],parts:[
+ "Suddenly, the great whale flipped, its multicolored tail sending ripples through the air."]},
+{img:"p09",sprite:"p11k",swirl:[1090,85,.004,.12],dust:true,box:[300,466,712,588],parts:[
  "It opened its giant mouth and a sound came out, not a roar, but a deep, melodic song that sounded like bells and waves all mixed together.",
  "That was it. That was too much. Leo grabbed Sam's hand. \"We have to go. Now!\"",
  "\"But the whale!\" Sam cried, trying to pull back. \"NOW, Sam!\" Leo yanked him toward the glowing tunnel they had come from.",
