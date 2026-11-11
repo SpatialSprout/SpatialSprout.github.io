@@ -13,7 +13,7 @@ window.STORY={title:"The Upside-Down World",author:"M. A. Mafodh",pages:[
 {img:"p03",fx:"shade",sprite:"p05p",box:[362,190,628,385],parts:[
  "Leo was nine. He wasn't supposed to be scared of trees. \"Don't be silly, Sam. It's just a tree.\" But he felt it too. A shiver ran down his spine, even under the warm sun.",
  "The tree was extra shady. The branches looked like long, scratchy fingers, and the hole their ball had fallen into was black and deep, like a secret the ground was keeping."]},
-{img:"p05",box:[362,190,628,390],parts:[
+{img:"p05",sprite:"p06k",box:[362,190,628,390],parts:[
  "Together, they peered into the darkness. \"I'll get it,\" Leo said, trying to sound brave. He got on his hands and knees and crawled under a low-hanging branch.",
  "The air suddenly felt cool and smelled like damp earth and something sweet, like honey. Sam crawled in right behind him, clutching the back of Leo's shirt."]},
 {img:"p06",box:[362,190,700,375],parts:[
