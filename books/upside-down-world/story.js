@@ -16,7 +16,7 @@ window.STORY={title:"The Upside-Down World",author:"M. A. Mafodh",pages:[
 {img:"p05",sprite:"p06k",box:[362,190,628,390],parts:[
  "Together, they peered into the darkness. \"I'll get it,\" Leo said, trying to sound brave. He got on his hands and knees and crawled under a low-hanging branch.",
  "The air suddenly felt cool and smelled like damp earth and something sweet, like honey. Sam crawled in right behind him, clutching the back of Leo's shirt."]},
-{img:"p06",box:[362,190,700,375],parts:[
+{img:"p06",sprite:"p07k",swirl:[1003,268,.035],dust:true,box:[362,190,700,375],parts:[
  "Inside, it wasn't dark anymore. The space between the roots opened up into a tunnel, but it wasn't made of dirt. The walls shimmered, like they were woven from light. A soft, golden glow pulsed from the other end.",
  "\"Whoa,\" Sam breathed. \"Come on,\" Leo said, his fear turning into a fizz of excitement. \"Let's see.\"",
  "They walked through the glowing tunnel, their sneakers making no sound on the smooth, warm floor. At the other end, they stepped out and both of them gasped."]},

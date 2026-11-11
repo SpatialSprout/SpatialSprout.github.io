@@ -108,9 +108,9 @@ const audio=new Audio();audio.preload='auto';
    adds a gentle breathing sway to the raised parts, and shimmers their light. */
 const VS='attribute vec2 p;varying vec2 v;void main(){v=p*.5+.5;v.y=1.-v.y;gl_Position=vec4(p,0.,1.);}';
 const FS=`precision highp float;varying vec2 v;
-uniform sampler2D tA,dA,tB,dB;uniform float mixv,t,sA,sB,dimA,dimB,windA,windB;uniform vec2 par,oA,oB;uniform vec4 hairA,hairB;
+uniform sampler2D tA,dA,tB,dB;uniform float mixv,t,sA,sB,dimA,dimB,windA,windB;uniform vec2 par,oA,oB;uniform vec4 hairA,hairB,swA,swB;
 float mask(vec2 q){return smoothstep(.30,.40,q.x)*smoothstep(.97,.90,q.x)*smoothstep(.95,.85,q.y);}
-vec3 live(sampler2D tx,sampler2D dx,vec2 uv,float s,vec2 o,float dim,float wind,vec4 hair){
+vec3 live(sampler2D tx,sampler2D dx,vec2 uv,float s,vec2 o,float dim,float wind,vec4 hair,vec4 sw){
   vec2 q=o+(uv-o)/s;
   float m=mask(q);vec2 dir=par*.011*(.35+.65*m)+m*vec2(sin(t*.85+q.y*9.+q.x*2.),cos(t*.67+q.x*7.))*.0022;
   float rl=smoothstep(.14,1.,texture2D(dx,q).r);
@@ -128,11 +128,18 @@ vec3 live(sampler2D tx,sampler2D dx,vec2 uv,float s,vec2 o,float dim,float wind,
   if(sp>0.){float fs=sp*smoothstep(.25,.75,rl)*smoothstep(.60,.46,q.y)*smoothstep(.42,.5,q.x)*smoothstep(.93,.86,q.x);
     float gq=max(.15,.55+.5*sin(t*.38)+.3*sin(t*1.25+2.));
     w+=vec2(sin(t*.9+q.y*14.+q.x*5.)*.0030+sin(t*1.8+q.x*26.+q.y*9.)*.0012,cos(t*.75+q.x*12.+q.y*4.)*.0024+sin(t*1.5+q.y*21.)*.0010)*fs*gq;}
-  vec3 c=texture2D(tx,q2-w).rgb;
+  /* light-tunnel swirl: the streaks ripple around the bright core in slow waves; the core breathes */
+  float gp=0.;
+  if(sw.z>0.){vec2 d=q-sw.xy;d.x*=1.833;float r=length(d);
+    float fall=smoothstep(.03,.12,r)*smoothstep(.62,.32,r);
+    float th=sw.z*(sin(t*.55-r*16.)+.45*sin(t*.9-r*31.+1.7))*fall;
+    vec2 dr=vec2(d.x*cos(th)-d.y*sin(th),d.x*sin(th)+d.y*cos(th));w+=vec2((d.x-dr.x)/1.833,d.y-dr.y);
+    gp=exp(-r*r/.0035)*(.10+.07*sin(t*1.25)+.03*sin(t*3.1+1.));}
+  vec3 c=texture2D(tx,q2-w).rgb;c+=vec3(1.,.8,.48)*gp;
   float sh=m*r2*(.055*sin(t*1.6+q.x*13.+q.y*6.)+.035*sin(t*2.7-q.y*17.));
   c*=1.+sh;c*=1.-dim*.25*smoothstep(.40,.56,q.x);
   return c;}
-void main(){vec3 a=live(tA,dA,v,sA,oA,dimA,windA,hairA);vec3 b=live(tB,dB,v,sB,oB,dimB,windB,hairB);
+void main(){vec3 a=live(tA,dA,v,sA,oA,dimA,windA,hairA,swA);vec3 b=live(tB,dB,v,sB,oB,dimB,windB,hairB,swB);
   vec3 c=mix(a,b,smoothstep(0.,1.,mixv));c+=vec3(1.,.82,.5)*.10*sin(3.14159*mixv);
   gl_FragColor=vec4(c,1.);}`;
 let gl=null,prog=null,U={},tex={},slotA=null,slotB=null,fadeT0=0,fading=false;
@@ -141,7 +148,7 @@ function sh(type,src){const s=gl.createShader(type);gl.shaderSource(s,src);gl.co
 if(gl){try{prog=gl.createProgram();gl.attachShader(prog,sh(gl.VERTEX_SHADER,VS));gl.attachShader(prog,sh(gl.FRAGMENT_SHADER,FS));gl.linkProgram(prog);gl.useProgram(prog);
   const b=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,b);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
   const loc=gl.getAttribLocation(prog,'p');gl.enableVertexAttribArray(loc);gl.vertexAttribPointer(loc,2,gl.FLOAT,false,0,0);
-  ['tA','dA','tB','dB','mixv','t','sA','sB','dimA','dimB','par','oA','oB','windA','windB','hairA','hairB'].forEach(n=>U[n]=gl.getUniformLocation(prog,n));
+  ['tA','dA','tB','dB','mixv','t','sA','sB','dimA','dimB','par','oA','oB','windA','windB','hairA','hairB','swA','swB'].forEach(n=>U[n]=gl.getUniformLocation(prog,n));
   [0,1,2,3].forEach(i=>gl.uniform1i(U[['tA','dA','tB','dB'][i]],i));}catch(e){console.warn(e);gl=null;}}
 if(!gl)document.body.classList.add('nogl');
 function loadTex(src){
@@ -160,6 +167,7 @@ function loadVid(name){if(vids[name])return vids[name];const v=document.createEl
   const o={v,t:null,ok:false};v.addEventListener('playing',()=>{o.ok=true;});vids[name]=o;return o;}
 function pageTex(p){if(p.video)return {c:loadTex('img/'+p.img+'.webp'),d:p.relief?loadTex('img/'+p.img+'-d.webp'):black(),vid:loadVid(p.video)};return {c:loadTex('img/'+p.img+'.webp'),d:loadTex('img/'+p.img+'-d.webp')};}
 const ORIGIN={kb:[.72,.55],shade:[.80,.74]};
+function swv(p){return p.swirl?[p.swirl[0]/1408,p.swirl[1]/768,p.swirl[2],0]:[0,0,0,0];}
 function kbScale(p,el){const dur=40,x=Math.min(1,el/dur),e=1-Math.pow(1-x,2);return 1+(p.fx==='shade'?.065:.045)*e;}
 
 /* ---------- layout ---------- */
@@ -354,6 +362,16 @@ const MOT={
     if(tt<12.8){if(i!==0)return no;const u=(tt-10.4)/2.4,p=sm(u);return {dx:-3*p,dy:-12*p-Math.abs(Math.sin(tt*4))*(1-p),rot:sw*.6,sx:1-.16*p,sy:1-.16*p,a:1-sm((u-.2)/.8)};}
     if(tt>14.1)return i===2?{dx:0,dy:bob,rot:sw,sx:1,sy:1,a:sm((tt-14.1)/.9)}:no;
     return no;},
+  /* page 7: the kids walk up the glowing path and melt into the light (feet follow the path curve) */
+  walk7(tt){const T=15;tt=((tt%T)+T)%T;const P=[[910,404],[922,380],[940,356],[960,330],[978,308],[993,289]],S=[1,.84,.71,.6,.51,.44],AL=[1,1,.96,.82,.5,0];
+    const sm=x=>{x=Math.max(0,Math.min(1,x));return x*x*(3-2*x);};
+    const fin=tt>14?sm((tt-14)/1):1;
+    if(tt>11.5&&tt<=14)return {dx:0,dy:0,rot:0,sx:1,sy:1,a:0};
+    const u=tt>=14?0:Math.min(1,Math.max(0,(tt-1.2)/10.3));
+    const f=u*(P.length-1),i=Math.min(P.length-2,Math.floor(f)),k=f-i,e=k*k*(3-2*k)*.35+k*.65;
+    const x=P[i][0]+(P[i+1][0]-P[i][0])*e,y=P[i][1]+(P[i+1][1]-P[i][1])*e,sc=S[i]+(S[i+1]-S[i])*e,al=AL[i]+(AL[i+1]-AL[i])*e;
+    const step=tt>=1.2?Math.abs(Math.sin(tt*Math.PI*1.7)):0;
+    return {dx:x-P[0][0],dy:y-P[0][1]-step*1.6*sc,rot:Math.sin(tt*Math.PI*.85)*.022*(tt>=1.2?1:.3),sx:sc,sy:sc,a:al*(tt>14?fin:1)};},
   hide(tt){const T=16;tt=((tt%T)+T)%T;const S=7.0,E=11.6+.85;return {dx:0,dy:0,rot:0,sx:1,sy:1,a:Math.max(0,Math.min(1,(tt-S)/.12,(E-tt)/.12))};},
   head(tt,dir,lag){const T=16;tt=((tt-lag)%T+T)%T;let k=0;
     if(tt>=.8&&tt<1.9)k=ease((tt-.8)/1.1);else if(tt>=1.9&&tt<4.8)k=1;else if(tt>=4.8&&tt<5.9)k=1-ease((tt-4.8)/1.1);
@@ -364,7 +382,7 @@ function drawRig(c,d,L,now,dt,w,h,t,ps,o){
   const p=L._p,dim=p.fx==='shade'?dimS:0;
   (d.rig||[]).forEach(r=>{if(!r.im||!r.im.complete||!r.im.naturalWidth)return;
     const tt=reduce?0:(now-pageT0)/1000;
-    const M=r.motion&&r.motion.startsWith('kf')?MOT.kf(tt,+r.motion[2]):r.motion==='point2'?MOT.point2(tt):r.motion==='point'?MOT.point(tt):r.motion==='hide'?MOT.hide(tt):r.motion==='turn'?MOT.turn(tt):r.motion==='leg'?MOT.leg(tt):r.motion==='headL'?MOT.head(tt,1,0):MOT.head(tt,-1,.18);
+    const M=r.motion==='walk7'?MOT.walk7(tt):r.motion&&r.motion.startsWith('kf')?MOT.kf(tt,+r.motion[2]):r.motion==='point2'?MOT.point2(tt):r.motion==='point'?MOT.point(tt):r.motion==='hide'?MOT.hide(tt):r.motion==='turn'?MOT.turn(tt):r.motion==='leg'?MOT.leg(tt):r.motion==='headL'?MOT.head(tt,1,0):MOT.head(tt,-1,.18);
     const rl=depthAt(p.img,r.depth[0],r.depth[1]),qx=r.pivot[0]/W,qy=r.pivot[1]/H,s2=shiftAt(qx,qy,rl,t),
       px=(o[0]+(qx-o[0])*curS+s2[0])*w,py=(o[1]+(qy-o[1])*curS+s2[1])*h;
     const sh=sm3(.30,.40,qx)*sm3(.97,.90,qx)*sm3(.95,.85,qy)*rl*(.055*Math.sin(t*1.6+qx*13+qy*6)+.035*Math.sin(t*2.7-qy*17)),f=(1+sh)*(1-dim*.25);
@@ -438,7 +456,7 @@ function drawGL(now){
   gl.uniform2f(U.oA,oa[0],oa[1]);gl.uniform2f(U.oB,ob[0],ob[1]);gl.uniform2f(U.par,par[0],par[1]);
   dimS+=((slotB.p.fx==='shade'?1:0)-dimS)*.01;gl.uniform1f(U.dimA,A.p.fx==='shade'?dimS:0);gl.uniform1f(U.dimB,slotB.p.fx==='shade'?dimS:0);
   const hv=p=>p.hair?[p.hair[0]/W,p.hair[1]/H,p.hair[2]/W,p.hair[3]/H]:[0,0,-1,-1];
-  gl.uniform1f(U.windA,A.p.wind?(+A.p.wind||1):0);gl.uniform1f(U.windB,slotB.p.wind?(+slotB.p.wind||1):0);gl.uniform4fv(U.hairA,hv(A.p));gl.uniform4fv(U.hairB,hv(slotB.p));
+  gl.uniform1f(U.windA,A.p.wind?(+A.p.wind||1):0);gl.uniform1f(U.windB,slotB.p.wind?(+slotB.p.wind||1):0);gl.uniform4fv(U.hairA,hv(A.p));gl.uniform4fv(U.hairB,hv(slotB.p));gl.uniform4fv(U.swA,swv(A.p));gl.uniform4fv(U.swB,swv(slotB.p));
   curPar=par;curS=sb;
   gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
   const L=layers[cur];if(L&&L._kb)L._kb.style.transform='scale('+sb+')';
