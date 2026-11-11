@@ -237,17 +237,63 @@ story('e17',sc=>{D.base(sc,'#2f3a5c');put(sc,P.mk(new THREE.BoxGeometry(4,.012,2
   at(sc,'proud',()=>{mode(sc,sis,'cheer');mode(sc,me,'cheer');boom(mom);});
   card(sc,'Learning is for everyone!',0,-1.65,{on:'Learning',h:.18,col:'#2b8a3e'});
 });
-/* e18 · The Giant Turnip */
-story('e18',sc=>{D.base(sc,'#c9d99a');put(sc,S.fence(3.9),0,-3.6);put(sc,S.house({w:.8,h:.5,d:.55}),-1.6,-3.2);
-  for(let r=0;r<3;r++)put(sc,P.mk(new THREE.BoxGeometry(2.6,.04,.18),P.paper('#8a6a4a',{mix:.2})),.4,-3.2+r*.4,{y:.02});
-  const tn=sc.prop('turnip',1.3,-2.6,{s:.5});tn.position.y=-.1;
-  at(sc,'planted',()=>{ST().alive(tn,true);});at(sc,'grew and grew',()=>{tween(2,k=>tn.scale.setScalar(.5+k*.6));});
-  const line=[person(sc,'grandpa',.85,-2.6,{ry:Math.PI/2}),person(sc,'grandma',.45,-2.6,{ry:Math.PI/2,on:'Grandma helped'}),person(sc,'girl',.1,-2.6,{ry:Math.PI/2,on:'the girl'}),prop(sc,'dog',-.2,-2.6,{s:.4,on:'the dog'}),prop(sc,'cat',-.45,-2.6,{s:.32,on:'the cat'})];
-  at(sc,'He pulled',()=>{mode(sc,line[0],'pull');say(sc,line[0],'Heave!',1500);});
-  at(sc,'would not come out',()=>say(sc,line[0],'It is stuck!',1800));
-  at(sc,'pulled together',()=>{line.forEach(k=>{if(k.userData.actor)k.userData.mode='pull';});sc.tick((dt,t)=>{line.forEach((k,i)=>{k.position.x=[.85,.45,.1,-.2,-.45][i]+Math.sin(t*6)*.04;});});});
-  at(sc,'Pop',()=>{card(sc,'POP!',1.3,-3.1,{h:.3,col:'#e03131'}).visible=true;rise(tn,.5,.5);line.forEach((k,i)=>sc.later(()=>{if(k.userData.actor){tween(.4,q=>{k.rotation.x=-q*.9;});}else sc.move(k,k.position.x-.4,-2.6,.4);},i*80));boom(tn);});
-  at(sc,'more together',()=>line.forEach(k=>{k.rotation.x=0;if(k.userData.actor)k.userData.mode='cheer';}));
+/* e18 · The Giant Turnip: a pop-up diorama of detailed character art (dio/*.webp) standing on a painted garden */
+story('e18',sc=>{D.base(sc,'#b9d68a');const U=404,TILT=-.45,TL=new THREE.TextureLoader();
+  const cv=(w,h,f)=>{const c=document.createElement('canvas');c.width=w;c.height=h;f(c.getContext('2d'),w,h);const t=new THREE.CanvasTexture(c);t.anisotropy=8;return t;};
+  const flat=(tex,w,d,x,z,y,ro)=>{const m=new THREE.Mesh(new THREE.PlaneGeometry(w,d),new THREE.MeshBasicMaterial({map:tex,transparent:true,depthWrite:false}));m.rotation.x=-Math.PI/2;m.position.set(x,y,z);m.renderOrder=ro||0;sc.g.add(m);return m;};
+  /* painted ground: grass with four soft furrows of soil */
+  flat(cv(1024,576,(c,w,h)=>{const g=c.createLinearGradient(0,0,0,h);g.addColorStop(0,'#a9cf7c');g.addColorStop(1,'#c3dd92');c.fillStyle=g;c.fillRect(0,0,w,h);
+    let sd=7;const R=()=>(sd=(sd*16807)%2147483647)/2147483647;
+    for(let i=0;i<4;i++){const y=150+i*98,x0=150,x1=w-40,hh=58;const f=c.createLinearGradient(0,y,0,y+hh);f.addColorStop(0,'#a9794f');f.addColorStop(.45,'#8d5f3b');f.addColorStop(1,'#6f4729');
+      c.fillStyle='rgba(60,40,20,.18)';c.beginPath();c.roundRect(x0-4,y+8,x1-x0+8,hh,30);c.fill();c.fillStyle=f;c.beginPath();c.roundRect(x0,y,x1-x0,hh,29);c.fill();
+      c.fillStyle='rgba(255,225,180,.16)';c.beginPath();c.roundRect(x0+14,y+6,x1-x0-28,12,6);c.fill();
+      for(let k=0;k<26;k++){c.fillStyle=R()<.5?'rgba(70,42,22,.5)':'rgba(205,165,120,.5)';c.beginPath();c.ellipse(x0+20+R()*(x1-x0-40),y+12+R()*(hh-22),3+R()*4,2+R()*2,0,0,7);c.fill();}}
+    for(let k=0;k<150;k++){const x=R()*w,y=R()*h;c.strokeStyle=R()<.5?'#7fae55':'#d6ecaa';c.lineWidth=2;c.beginPath();c.moveTo(x,y);c.lineTo(x-3+R()*6,y-7-R()*6);c.stroke();}}),4.05,2.28,0,-2.5,.022,0);
+  const blob=cv(128,128,(c)=>{const g=c.createRadialGradient(64,64,4,64,64,62);g.addColorStop(0,'rgba(40,25,10,.42)');g.addColorStop(1,'rgba(40,25,10,0)');c.fillStyle=g;c.fillRect(0,0,128,128);});
+  /* a standee: art cut-outs leaning back on a hinge at their feet; several poses can share one hinge */
+  const stand=(poses,x,z,o)=>{o=o||{};const h=new THREE.Group();h.position.set(x,o.y||0,z);const pv=new THREE.Group();pv.rotation.x=TILT;h.add(pv);const sk=o.k||1;const ms={};let ww=0;
+    Object.keys(poses).forEach((n,i)=>{const [pw,ph,ox]=poses[n];const w=pw/U*sk,hh=ph/U*sk;ww=ww||w;const g=new THREE.PlaneGeometry(w,hh);g.translate((ox||0)/U*sk,hh/2,0);
+      const m=new THREE.Mesh(g,new THREE.MeshBasicMaterial({map:TL.load('dio/'+n+'.webp'),transparent:true,depthWrite:false,side:THREE.DoubleSide}));m.renderOrder=o.ro||5;m.visible=i===0;pv.add(m);ms[n]=m;});
+    if(o.shadow!==false){const sh=flat(blob,ww*1.05,.3*sk,0,0,.026,1);sc.g.remove(sh);sh.position.set(0,.004,.03);h.add(sh);}
+    sc.g.add(h);h.userData.pv=pv;h.userData.ms=ms;h.userData.x0=x;h.userData.pose=n=>Object.keys(ms).forEach(k=>ms[k].visible=k===n);return h;};
+  /* backdrop: fence and cottage */
+  const fence=new THREE.Mesh(new THREE.PlaneGeometry(3.9,.4),new THREE.MeshBasicMaterial({transparent:true,depthWrite:false,map:cv(1560,160,(c,w,h)=>{c.lineJoin='round';
+    c.fillStyle='#d9b98a';c.strokeStyle='#8a6238';c.lineWidth=4;[52,104].forEach(y=>{c.beginPath();c.roundRect(4,y,w-8,16,6);c.fill();c.stroke();});
+    for(let x=10;x<w-40;x+=52){const g=c.createLinearGradient(x,0,x+36,0);g.addColorStop(0,'#f1dcb4');g.addColorStop(1,'#d8b98a');c.fillStyle=g;c.beginPath();c.moveTo(x,h-4);c.lineTo(x,34);c.lineTo(x+18,8);c.lineTo(x+36,34);c.lineTo(x+36,h-4);c.closePath();c.fill();c.stroke();}})}));
+  fence.geometry.translate(0,.2,0);fence.rotation.x=TILT;fence.position.set(.05,0,-3.58);fence.renderOrder=2;sc.g.add(fence);
+  stand({house:[347,422]},-1.5,-3.25,{ro:3,k:.85});
+  /* the turnip sits in a mound of soil; its origin is the bottom of the bulb */
+  const tn=stand({turnip:[822,1161,99]},1.45,-2.56,{ro:4,k:.72,shadow:false,y:-.12});flat(blob,1.9,.75,1.45,-2.5,.027,1);
+  const mound=new THREE.Mesh(new THREE.PlaneGeometry(1.56,.36),new THREE.MeshBasicMaterial({transparent:true,depthWrite:false,map:cv(500,120,(c,w,h)=>{const g=c.createLinearGradient(0,0,0,h);g.addColorStop(0,'#9a6a42');g.addColorStop(1,'#6f4729');c.fillStyle=g;c.strokeStyle='#5a3a20';c.lineWidth=4;
+    c.beginPath();c.moveTo(6,h);c.bezierCurveTo(40,30,120,10,170,34);c.bezierCurveTo(220,6,290,8,330,36);c.bezierCurveTo(380,10,470,40,494,h);c.closePath();c.fill();c.stroke();})}));
+  mound.geometry.translate(0,.18,0);mound.rotation.x=TILT;mound.position.set(1.45,0,-2.44);mound.renderOrder=6;sc.g.add(mound);
+  tn.scale.setScalar(.5);tn.userData.s0=null;
+  at(sc,'planted',()=>{tween(.9,k=>{tn.userData.pv.rotation.z=Math.sin(k*Math.PI*4)*.08*(1-k);});});
+  at(sc,'grew and grew',()=>{tween(2.2,k=>tn.scale.setScalar(.5+.5*(k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2)));});
+  /* the line: everyone holds on in single file */
+  const gp=stand({grandpa:[356,477],grandpa2:[357,476]},.55,-2.5,{ro:9});
+  const hide=(k,w)=>{k.visible=false;at(sc,w,()=>{D.grow(k);});return k;};
+  const gm=hide(stand({grandma:[269,435],grandma2:[371,320]},-.54,-2.52,{ro:7}),'Grandma helped');
+  const gi=hide(stand({girl:[357,410],girl2:[391,407]},.05,-2.48,{ro:8}),'the girl');
+  const dg=hide(stand({dog:[229,227]},-1.1,-2.46,{ro:8}),'the dog');
+  const ct=hide(stand({cat:[256,222]},-1.58,-2.44,{ro:9}),'the cat');
+  const line=[gp,gi,gm,dg,ct];let phase='idle';
+  sc.tick((dt,t)=>{line.forEach((k,i)=>{const pv=k.userData.pv,u=k.userData;
+    if(u.pull){const w=.5+.5*Math.sin(t*5.2-i*.25);pv.rotation.z=.05+.07*w;k.position.x=u.x0-.035*w;pv.scale.y=1-.02*w;}
+    else if(u.cheer){const j=Math.abs(Math.sin(t*5+i*.9));k.position.y=.1*j;pv.rotation.z=Math.sin(t*5+i)*.05;pv.scale.y=1;}
+    else{pv.scale.y=1+Math.sin(t*2+i)*.012;}});
+    if(phase==='pull')tn.userData.pv.rotation.z=Math.sin(t*5.2)*.035;else if(phase==='out')tn.userData.pv.rotation.z=Math.sin(t*2.2)*.06;});
+  at(sc,'He pulled',()=>{gp.userData.pull=true;say(sc,gp,'Heave!',1500);});
+  at(sc,'would not come out',()=>say(sc,gp,'It is stuck!',1800));
+  at(sc,'She pulled',()=>{gm.userData.pull=true;});
+  at(sc,'pulled together',()=>{phase='pull';line.forEach(k=>{k.visible=true;k.userData.pull=true;});});
+  at(sc,'Pop',()=>{phase='out';card(sc,'POP!',-.45,-3.3,{h:.32,col:'#e03131'}).visible=true;
+    const y0=tn.position.y;tween(.55,k=>{const e=1-Math.pow(1-k,3);tn.position.y=y0+.42*e;});boom(tn);
+    for(let i=0;i<14;i++){const c=P.mk(new THREE.SphereGeometry(.03+Math.random()*.03,8,6),P.paper('#7a5232',{mix:.1}),0);const a=Math.random()*6.28,r=.5+Math.random()*.7,x0=1.45,z0=-2.45;c.position.set(x0,.1,z0);sc.g.add(c);
+      tween(.7+Math.random()*.4,k=>{c.position.set(x0+Math.cos(a)*r*k,.1+Math.sin(k*Math.PI)*(.5+Math.random()*.02),z0+Math.sin(a)*r*.6*k);});}
+    line.forEach((k,i)=>{k.userData.pull=false;const pv=k.userData.pv,x=k.userData.x0;if(i<3)k.userData.pose(['grandpa2','girl2','grandma2'][i]);
+      tween(.45,q=>{const e=1-Math.pow(1-q,2);k.position.x=x-.16*e;k.position.y=Math.sin(q*Math.PI)*.16;pv.rotation.z=.05*(1-q)+(i===2?.0:.0);}).then(()=>{k.userData.x0=x-.16;});});});
+  at(sc,'more together',()=>line.forEach(k=>{k.userData.cheer=true;}));
 });
 /* e19 · Mr. Music's Band */
 story('e19',sc=>{D.base(sc,'#f3e3c3');const stage0=put(sc,P.mk(new THREE.BoxGeometry(2.4,.12,1.0),P.paper('#c99a6a')),0,-3.05,{y:.06});
