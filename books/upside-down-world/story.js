@@ -37,7 +37,7 @@ window.STORY={title:"The Upside-Down World",author:"M. A. Mafodh",pages:[
 {img:"p10",sprite:"p12k",wind:-1.3,swirl:[1090,85,.004],dust:true,box:[362,190,628,405],parts:[
  "They scrambled back through the tunnel, stumbling over each other, and burst out from under the oak tree, landing in a heap on the familiar grass of the park.",
  "The sun was normal yellow again. The air was warm and smelled like cut grass. They were back. Leo panted, his heart thumping like a drum. Sam sat up, blinking in the bright light."]},
-{img:"p11",box:[305,425,700,600],parts:[
+{img:"p11",sprite:"p13k",wind:-1.3,swirl:[1093,85,.004],dust:true,box:[305,425,700,600],parts:[
  "\"Where's our ball?\" Sam asked, looking around. Leo spotted it sitting by the tree's trunk. He walked over to pick it up... and stopped.",
  "It wasn't their soccer ball anymore. It was a basketball. Orange and bumpy, with the familiar black lines. Sam came up beside him. \"That's... not our ball.\""]},
 {img:"p12",box:[362,190,628,395],parts:[
