@@ -32,6 +32,12 @@ body.nogl .layer.on .fb{opacity:1}
 .txt .ink{color:var(--ink);mix-blend-mode:multiply;text-shadow:0 -.02em .03em rgba(60,30,8,.45);filter:blur(.15px)}
 .txt .w{transition:color .3s,text-shadow .3s}
 .txt .ink .w.now{color:#9a4a00;text-shadow:0 0 .35em rgba(255,200,90,.9)}
+.txt.bk{justify-content:flex-start;text-align:justify;hyphens:auto;-webkit-hyphens:auto;font-kerning:normal;font-feature-settings:'liga','kern'}
+.txt.bk .lip,.txt.bk .ink{justify-content:flex-start}
+.txt.bk p{margin:0 0 .5em;text-indent:1.4em}
+.txt.bk p.dropcap{text-indent:0}
+.txt.bk .ink{color:#2b1a0d;text-shadow:0 -.03em .02em rgba(35,15,2,.55),0 0 .5px rgba(35,15,2,.35);filter:blur(.1px)}
+.txt.bk .lip{color:rgba(255,244,218,.7);transform:translate(0,.07em)}
 .txt.cover{text-align:center}
 .txt.cover .ink,.txt.cover .lip{align-items:center}
 .txt h1,#panel h1{font-family:'IM Fell English SC',serif;font-weight:400;line-height:1.05;letter-spacing:.02em}
@@ -86,7 +92,7 @@ body.narrow #bar{gap:6px;padding-top:8px}body.narrow #bar button{padding:0 12px;
   <button id="auto" aria-pressed="true" title="Turn the pages by itself">Auto turn</button>
   <button id="next" aria-label="Next page">&#8594;</button>
 </div>
-<script src="story.js?v=5"></script>
+<script src="story.js?v=6"></script>
 <script src="sprite.js?v=10"></script>
 <script src="voice.js"></script>
 <script src="vtime.js"></script>
@@ -199,14 +205,14 @@ function makeLayer(i){
   if(!gl){let im;if(p.video){im=loadVid(p.video).v;im.poster='img/'+p.img+'.webp';}else{im=new Image();im.src='img/'+p.img+'.webp';im.alt='';}im.className='fb';kb.appendChild(im);}
   if(p.fx==='shade'){const s=document.createElement('div');s.className='shade';kb.appendChild(s);L._shade=s;}
   if(p.song){const r=document.createElement('div');r.className='rings';r.style.cssText='left:'+(650/W*100)+'%;top:'+(55/H*100)+'%;width:'+(130/W*100)+'%;height:'+(130/H*100)+'%';r.innerHTML='<i></i><i></i><i></i><i></i>';kb.appendChild(r);L._rings=r;}
-  const t=document.createElement('div');t.className='txt'+(p.cover?' cover':'');const b=p.box;
+  const t=document.createElement('div');t.className='txt'+(p.cover?' cover':'')+(p.book?' bk':'');const b=p.box;
   t.style.cssText='left:'+(b[0]/W*100)+'%;top:'+(b[1]/H*100)+'%;width:'+((b[2]-b[0])/W*100)+'%;height:'+((b[3]-b[1])/H*100)+'%';
   kb.appendChild(t);L._t=t;L._p=p;L._kb=kb;L.appendChild(kb);stage.insertBefore(L,cv);layers[i]=L;pageTex(p);return L;
 }
 function words(s){return curly(s).split(' ').map(w=>'<span class="w">'+w+'</span>').join(' ');}
 function coverHTML(){return '<h1>'+S.title.replace('Upside-Down','Upside&#8209;Down')+'</h1><div class="orn">&#10022; &#10022; &#10022;</div><div class="by">by '+S.author+'</div>';}
 function setText(L,k){
-  const p=L._p,t=L._t,html=p.cover?coverHTML():'<p class="'+(k===0?'dropcap':'')+'">'+words(p.parts[k])+'</p>';
+  const p=L._p,t=L._t,html=p.cover?coverHTML():p.book?p.parts[0].split('\n').map((x,i)=>'<p class="'+(i===0?'dropcap':'')+'">'+words(x)+'</p>').join(''):'<p class="'+(k===0?'dropcap':'')+'">'+words(p.parts[k])+'</p>';
   t.innerHTML='<div class="lip" aria-hidden="true">'+html+'</div><div class="ink">'+html+'</div>';
   if(L===layers[cur]){pp.className='pp'+(p.cover?' cover':'');pp.innerHTML=p.cover?coverHTML():words(p.parts[k]);}
   sizeText(L);
