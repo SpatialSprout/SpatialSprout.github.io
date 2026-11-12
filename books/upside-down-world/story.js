@@ -46,6 +46,6 @@ window.STORY={title:"The Upside-Down World",author:"M. A. Mafodh",pages:[
 /* ---- Chapter 2 (no narration: pages turn on reading time) ---- */
 {img:"p15",sprite:"p15k",dust:true,box:[350,195,578,545],parts:[
  "Back at home their dog, Roma, a scruffy Husky, barked and wagged his tail as they opened the front door. \"We're home!\" their mom called from the kitchen."]},
-{img:"p16",sprite:"p16k",dust:true,box:[95,165,320,585],parts:[
+{img:"p16",sprite:"p16k",dust:true,box:[390,168,700,292],parts:[
  "Dinner was spaghetti and meatballs. Sam swirled his noodles, keeping his head down. Leo kicked him gently under the table."]}
 ]};
