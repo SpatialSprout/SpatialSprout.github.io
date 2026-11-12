@@ -42,6 +42,9 @@ window.STORY={title:"The Upside-Down World",author:"M. A. Mafodh",pages:[
  "It wasn't their soccer ball anymore. It was a basketball. Orange and bumpy, with the familiar black lines. Sam came up beside him. \"That's... not our ball.\""]},
 {img:"p12",sprite:"p14k",wind:-1.3,swirl:[1093,85,.004],dust:true,box:[300,418,670,602],parts:[
  "Leo looked from the basketball in his hand to the dark hole under the tree. He started to laugh. It was a nervous, shaky laugh. Sam stared at the ball, then at Leo, and then he started giggling too.",
- "Soon, they were both laughing so hard they could barely stand, a mix of amazement, fear, and pure confusion bubbling out of them.",
- "The End."]}
+ "Soon, they were both laughing so hard they could barely stand, a mix of amazement, fear, and pure confusion bubbling out of them."]},
+/* ---- Chapter 2 (no narration: pages turn on reading time) ---- */
+{img:"p15",sprite:"p15k",dust:true,box:[350,195,578,545],parts:[
+ "Back at home their dog, Roma, a scruffy Husky, barked and wagged his tail as they opened the front door. \"We're home!\" their mom called from the kitchen.",
+ "Dinner was spaghetti and meatballs. Sam swirled his noodles, keeping his head down. Leo kicked him gently under the table."]}
 ]};

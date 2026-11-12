@@ -86,8 +86,8 @@ body.narrow #bar{gap:6px;padding-top:8px}body.narrow #bar button{padding:0 12px;
   <button id="auto" aria-pressed="true" title="Turn the pages by itself">Auto turn</button>
   <button id="next" aria-label="Next page">&#8594;</button>
 </div>
-<script src="story.js"></script>
-<script src="sprite.js?v=7"></script>
+<script src="story.js?v=2"></script>
+<script src="sprite.js?v=8"></script>
 <script src="voice.js"></script>
 <script src="vtime.js"></script>
 <script>
@@ -404,6 +404,10 @@ const MOT={
   /* page 13: Sam points at the strange ball and gasps, twice per 14 s cycle */
   p13(tt){const T=14;tt=((tt%T)+T)%T;const on=(s,e)=>tt<s||tt>e+.45?0:tt<s+.4?ease((tt-s)/.4):tt<e?1:1-ease((tt-e)/.45);
     return {dx:0,dy:0,rot:0,sx:1,sy:1,a:Math.max(on(2.5,6),on(9,11.5))};},
+  /* chapter 2, page 1: Roma jumps at the door -> the boys sit and pet him -> they sit talking while Roma sits up -> back to the door (18 s). Soft pose fades. */
+  p15(tt,j){const T=18;tt=((tt%T)+T)%T;
+    const a=j===1?(tt<3.4?0:tt<5.1?ease((tt-3.4)/1.7):tt<11.4?1:0):(tt<9.6?0:tt<11.2?ease((tt-9.6)/1.6):tt<15.2?1:tt<16.9?1-ease((tt-15.2)/1.7):0);
+    return {dx:0,dy:0,rot:0,sx:1,sy:1,a};},
   /* page 14: stare -> nervous smile -> laughing fit (giggles flicker between smile and laugh) -> calm (16 s) */
   p14(tt,j){const T=16;tt=((tt%T)+T)%T;const on=(s,e,f)=>tt<s||tt>e+f?0:tt<s+f?ease((tt-s)/f):tt<e?1:1-ease((tt-e)/f);
     if(j===1)return {dx:0,dy:0,rot:0,sx:1,sy:1,a:on(2.5,13.2,.5)};
@@ -419,7 +423,7 @@ function drawRig(c,d,L,now,dt,w,h,t,ps,o){
   const p=L._p,dim=p.fx==='shade'?dimS:0;
   (d.rig||[]).forEach(r=>{if(!r.im||!r.im.complete||!r.im.naturalWidth)return;
     const tt=reduce?0:(now-pageT0)/1000;
-    const M=r.motion==='p14a'?MOT.p14(tt,1):r.motion==='p14b'?MOT.p14(tt,2):r.motion==='p13'?MOT.p13(tt):r.motion==='p12a'?MOT.p12(tt,1):r.motion==='p12b'?MOT.p12(tt,2):r.motion==='flip10'?MOT.flip10(tt):r.motion==='stride'?MOT.stride(tt):r.motion==='song11'?MOT.song11(tt):r.motion==='p9'?MOT.p9(tt):r.motion==='p8a'?MOT.p8(tt,1):r.motion==='p8b'?MOT.p8(tt,2):r.motion==='walk7'?MOT.walk7(tt):r.motion&&r.motion.startsWith('kf')?MOT.kf(tt,+r.motion[2]):r.motion==='point2'?MOT.point2(tt):r.motion==='point'?MOT.point(tt):r.motion==='hide'?MOT.hide(tt):r.motion==='turn'?MOT.turn(tt):r.motion==='leg'?MOT.leg(tt):r.motion==='headL'?MOT.head(tt,1,0):MOT.head(tt,-1,.18);
+    const M=r.motion==='p15a'?MOT.p15(tt,1):r.motion==='p15b'?MOT.p15(tt,2):r.motion==='p14a'?MOT.p14(tt,1):r.motion==='p14b'?MOT.p14(tt,2):r.motion==='p13'?MOT.p13(tt):r.motion==='p12a'?MOT.p12(tt,1):r.motion==='p12b'?MOT.p12(tt,2):r.motion==='flip10'?MOT.flip10(tt):r.motion==='stride'?MOT.stride(tt):r.motion==='song11'?MOT.song11(tt):r.motion==='p9'?MOT.p9(tt):r.motion==='p8a'?MOT.p8(tt,1):r.motion==='p8b'?MOT.p8(tt,2):r.motion==='walk7'?MOT.walk7(tt):r.motion&&r.motion.startsWith('kf')?MOT.kf(tt,+r.motion[2]):r.motion==='point2'?MOT.point2(tt):r.motion==='point'?MOT.point(tt):r.motion==='hide'?MOT.hide(tt):r.motion==='turn'?MOT.turn(tt):r.motion==='leg'?MOT.leg(tt):r.motion==='headL'?MOT.head(tt,1,0):MOT.head(tt,-1,.18);
     const rl=depthAt(p.img,r.depth[0],r.depth[1]),qx=r.pivot[0]/W,qy=r.pivot[1]/H,s2=shiftAt(qx,qy,rl,t),
       px=(o[0]+(qx-o[0])*curS+s2[0])*w,py=(o[1]+(qy-o[1])*curS+s2[1])*h;
     const sh=sm3(.30,.40,qx)*sm3(.97,.90,qx)*sm3(.95,.85,qy)*rl*(.055*Math.sin(t*1.6+qx*13+qy*6)+.035*Math.sin(t*2.7-qy*17)),f=(1+sh)*(1-dim*.25);
