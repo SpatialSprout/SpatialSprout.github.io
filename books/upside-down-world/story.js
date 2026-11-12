@@ -2,7 +2,7 @@
    Each page has one picture and one or more text parts; the narrator reads one part at a time. */
 window.STORY={title:"The Upside-Down World",author:"M. A. Mafodh",pages:[
 {img:"cover",cover:true,box:[360,200,560,462],parts:["The Upside-Down World. Written by M. A. Mafodh."]},
-{img:"p01",sprite:"p01",box:[362,190,700,415],parts:[
+{ch:"Chapter One",img:"p01",sprite:"p01",box:[362,190,700,415],parts:[
  "Leo kicked the bright red soccer ball hard, sending it soaring through the warm summer air. \"I'm the best striker in the whole world!\" he yelled."]},
 {img:"p02",wind:2.3,dust:true,hair:[925,236,28,19],box:[362,190,700,405],parts:[
  "His little brother Sam giggled, his blond hair flopping into his eyes. \"No way! I'm the best goalie! You can't get it past me!\" He puffed out his six-year-old chest, standing guard in front of the goal post."]},
@@ -44,7 +44,7 @@ window.STORY={title:"The Upside-Down World",author:"M. A. Mafodh",pages:[
  "Leo looked from the basketball in his hand to the dark hole under the tree. He started to laugh. It was a nervous, shaky laugh. Sam stared at the ball, then at Leo, and then he started giggling too.",
  "Soon, they were both laughing so hard they could barely stand, a mix of amazement, fear, and pure confusion bubbling out of them."]},
 /* ---- Chapter 2 (no narration: pages turn on reading time) ---- */
-{img:"p15",sprite:"p15k",dust:true,box:[350,195,578,545],parts:[
+{ch:"Chapter Two",img:"p15",sprite:"p15k",dust:true,box:[350,195,578,545],parts:[
  "Back at home their dog, Roma, a scruffy Husky, barked and wagged his tail as they opened the front door. \"We're home!\" their mom called from the kitchen."]},
 {img:"p16",sprite:"p16k",dust:true,book:true,box:[374,170,706,616],parts:[
  "Dinner was spaghetti and meatballs. Sam swirled his noodles, keeping his head down.\n\"So, how was the park, boys?\" their dad asked, twirling pasta onto his fork.\n\"It was good,\" Leo said quickly. \"We lost the soccer ball, but... we found this basketball!\" He held it up with a forced smile.\n\"Wow, what a lucky trade!\" their mom said."]},
