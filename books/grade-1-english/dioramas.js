@@ -32,23 +32,14 @@ const turn=(o,a,dur)=>{const r0=o.rotation.y;return tween(dur||.5,k=>{o.rotation
 const tint=(o,c)=>o.traverse(m=>{if(m.isMesh&&m.material&&!m.userData.ink&&!Array.isArray(m.material))m.material=P.paper(c,{mix:.15});});
 const row=(n,x0,x1,f)=>{for(let i=0;i<n;i++)f(n>1?x0+(x1-x0)*i/(n-1):x0,i);};
 
-/* e01 · Bella the Busy Bee: the bee buzzes to the barn, the bear bangs a drum, the goat eats a pear, the duck dives, Bella sleeps on a sunflower */
-story('e01',sc=>{D.base(sc,'#c9e3a0');
-  put(sc,S.barn?S.barn():P.PROP3.barn(),1.55,-3.25,{s:.85});put(sc,S.tree({s:.85}),-1.95,-3.2);put(sc,S.fence(3.6),0,-3.65);
-  const lake=put(sc,S.pond(.5),-1.4,-1.85);
-  const bee=prop(sc,'bee',-1.9,-2.6,{s:.32});bee.position.y=.75;sc.tick((dt,t)=>{bee.rotation.z=Math.sin(t*18)*.12;});
-  at(sc,'buzzed to the barn',()=>{fly(bee,1.0,.9,-2.75,.35,2.2);card(sc,'bzzz',.1,-2.75,{h:.16,col:'#b8860b'}).visible=true;});
-  const bear=prop(sc,'bear',.35,-2.75,{s:.62,on:'big bear'});const drum=prop(sc,'drum',.8,-2.55,{s:.32,on:'big bear'});
-  at(sc,'banged a drum',()=>{ST().alive(bear,true);sc.tick((dt,t)=>{drum.position.y=Math.abs(Math.sin(t*7))*.06;});});
-  at(sc,'boom, boom',()=>{card(sc,'BOOM!',.8,-2.25,{h:.2,col:'#e8505b'}).visible=true;boom(drum);});
-  const goat=prop(sc,'goat',-.6,-2.35,{s:.55,on:'a goat'});const pear=prop(sc,'pear',-.25,-2.15,{s:.22,on:'a goat'});
-  at(sc,'green pear',()=>{ST().alive(goat);tween(1.2,k=>{pear.scale.setScalar(Math.max(.01,1-k));});});
-  const duck=prop(sc,'duck',-1.0,-2.0,{s:.4,on:'a duck'});
-  at(sc,'dove into the lake',()=>{fly(duck,-1.4,.0,-1.85,.4,1.0);L2(()=>boom(lake),900);});
-  const sf=prop(sc,'sunflower',1.7,-1.8,{s:.7,on:'sunflower'});
-  at(sc,'landed on a sunflower',()=>{fly(bee,1.65,1.05,-1.8,.4,1.8);});
-  at(sc,'went to sleep',()=>{card(sc,'z z z',1.65,-1.55,{h:.16,col:'#6c5ce7'}).visible=true;});
-});
+/* e01 · Leo's Lunchbox: pop-up of the user's art (dio/e01-*.webp); Leo pulls a carrot and a banana out of his lunchbox, then the sandwich */
+story('e01',sc=>popScene(sc,{bg:'#c9e3a0',U:700,ground:{rows:0,grass0:'#9fbe68',grass1:'#b5cf7c',path:[190,200,300,330,420,300,560,380],flowers:46},fence:{white:true},
+  props:[{id:'school',img:{'e01-school':[598,861]},x:-1.42,z:-2.95,k:.95},{img:{'e01-sunflower':[153,180]},x:1.72,z:-1.72,k:2.3},{img:{'e01-rock':[87,58]},x:-1.5,z:-1.7,k:2.2,shadow:false}],
+  line:[{id:'leo',img:{'e01-leo0':[666,918],'e01-leo1':[666,919],'e01-leo2':[666,918]},x:.72,z:-2.3,k:1.45,ro:9,box:[-24,412],
+    layers:{'e01-carrot':[215,167,-108,588],'e01-banana':[247,321,-102,634],'e01-sandwich':[123,92,-8,404]}}],
+  cues:[['lunchtime at school','wobble:school'],['opens his blue lunchbox','hop:leo'],['crunchy carrot','rise:leo:e01-carrot:e01-leo1'],['says the c','letter:c:-.35:-2.55:#e8590c'],
+    ['bright banana','rise:leo:e01-banana:e01-leo2'],['says the b','letter:b:-.35:-2.55:#e0a800'],['soft sandwich',['pulse:leo:e01-sandwich','letter:s:-.35:-2.55:#a0702a']],
+    ['time to eat',['yay:leo','say:leo:Yum!:2200']]]}));
 /* e02 · The Bumpy Bus: the bus drives in, the cat and the pig climb on, a bump sends everyone up */
 story('e02',sc=>{D.base(sc,'#d5e8b8');
   const road=disc(sc,0,-2.35,0,'#8d99ae');road.visible=false;
@@ -257,28 +248,32 @@ const popScene=(sc,SP)=>{D.base(sc,SP.bg||'#b9d68a');const U=SP.U||404,TILT=-.45
       c.fillStyle='rgba(60,40,20,.18)';c.beginPath();c.roundRect(x0-4,y+8,x1-x0+8,hh,30);c.fill();c.fillStyle=f;c.beginPath();c.roundRect(x0,y,x1-x0,hh,29);c.fill();
       c.fillStyle='rgba(255,225,180,.16)';c.beginPath();c.roundRect(x0+14,y+6,x1-x0-28,12,6);c.fill();
       for(let k=0;k<26;k++){c.fillStyle=R()<.5?'rgba(70,42,22,.5)':'rgba(205,165,120,.5)';c.beginPath();c.ellipse(x0+20+R()*(x1-x0-40),y+12+R()*(hh-22),3+R()*4,2+R()*2,0,0,7);c.fill();}}
+    if(GR.path){c.lineCap='round';const pp=GR.path;[[46,'rgba(150,115,70,.12)'],[26,'rgba(170,135,85,.16)']].forEach(([lw,col])=>{c.strokeStyle=col;c.lineWidth=lw;c.beginPath();c.moveTo(pp[0],pp[1]);c.bezierCurveTo(pp[2],pp[3],pp[4],pp[5],pp[6],pp[7]);c.stroke();});}
+    if(GR.flowers)for(let k=0;k<GR.flowers;k++){const x=R()*w,y=R()*h,col=['#ffffff','#ffd43b','#ff8fab','#c084fc','#ffa94d'][k%5];c.fillStyle=col;for(let q=0;q<5;q++){c.beginPath();c.arc(x+Math.cos(q*1.26)*3.2,y+Math.sin(q*1.26)*2.4,2.4,0,7);c.fill();}c.fillStyle='#f59f00';c.beginPath();c.arc(x,y,1.6,0,7);c.fill();}
     for(let k=0;k<150;k++){const x=R()*w,y=R()*h;c.strokeStyle=R()<.5?'#7fae55':'#d6ecaa';c.lineWidth=2;c.beginPath();c.moveTo(x,y);c.lineTo(x-3+R()*6,y-7-R()*6);c.stroke();}}),4.05,2.28,0,-2.5,.022,0);
   const blob=cv(128,128,(c)=>{const g=c.createRadialGradient(64,64,4,64,64,62);g.addColorStop(0,'rgba(40,25,10,.42)');g.addColorStop(1,'rgba(40,25,10,0)');c.fillStyle=g;c.fillRect(0,0,128,128);});
   /* a standee: art cut-outs leaning back on a hinge at their feet; several poses can share one hinge */
   const stand=(poses,x,z,o)=>{o=o||{};const h=new THREE.Group();h.position.set(x,o.y||0,z);const pv=new THREE.Group();pv.rotation.x=TILT;h.add(pv);const sk=o.k||1;const ms={};let ww=0;
     Object.keys(poses).forEach((n,i)=>{const [pw,ph,ox]=poses[n];const w=pw/U*sk,hh=ph/U*sk;ww=ww||w;const g=new THREE.PlaneGeometry(w,hh);g.translate((ox||0)/U*sk,hh/2,0);
       const m=new THREE.Mesh(g,new THREE.MeshBasicMaterial({map:TL.load('dio/'+n+'.webp'),transparent:true,depthWrite:false,side:THREE.DoubleSide}));m.renderOrder=o.ro||5;m.visible=i===0;pv.add(m);ms[n]=m;});
+    const LY={};Object.keys(o.layers||{}).forEach(n=>{const [pw,ph,dx,dy]=o.layers[n];const m=new THREE.Mesh(new THREE.PlaneGeometry(pw/U*sk,ph/U*sk),new THREE.MeshBasicMaterial({map:TL.load('dio/'+n+'.webp'),transparent:true,depthWrite:false,side:THREE.DoubleSide}));
+      m.userData.home=[dx/U*sk,dy/U*sk];m.position.set(m.userData.home[0],m.userData.home[1],.02);m.renderOrder=(o.ro||5)+1;m.visible=false;pv.add(m);LY[n]=m;});
     if(o.shadow!==false){const sh=flat(blob,ww*1.05,.3*sk,0,0,.026,1);sc.g.remove(sh);sh.position.set(0,.004,.03);h.add(sh);}
-    sc.g.add(h);h.userData.pv=pv;h.userData.ms=ms;h.userData.x0=x;h.userData.pose=n=>Object.keys(ms).forEach(k=>ms[k].visible=k===n);return h;};
+    sc.g.add(h);h.userData.pv=pv;h.userData.ms=ms;h.userData.LY=LY;h.userData.sk=sk;h.userData.x0=x;h.userData.pose=n=>Object.keys(ms).forEach(k=>ms[k].visible=k===n);return h;};
   /* backdrop: fence, then scenery */
-  if(SP.fence!==false){const fence=new THREE.Mesh(new THREE.PlaneGeometry(3.9,.4),new THREE.MeshBasicMaterial({transparent:true,depthWrite:false,map:cv(1560,160,(c,w,h)=>{c.lineJoin='round';
-    c.fillStyle='#d9b98a';c.strokeStyle='#8a6238';c.lineWidth=4;[52,104].forEach(y=>{c.beginPath();c.roundRect(4,y,w-8,16,6);c.fill();c.stroke();});
-    for(let x=10;x<w-40;x+=52){const g=c.createLinearGradient(x,0,x+36,0);g.addColorStop(0,'#f1dcb4');g.addColorStop(1,'#d8b98a');c.fillStyle=g;c.beginPath();c.moveTo(x,h-4);c.lineTo(x,34);c.lineTo(x+18,8);c.lineTo(x+36,34);c.lineTo(x+36,h-4);c.closePath();c.fill();c.stroke();}})}));
+  const FW=SP.fence&&SP.fence.white;if(SP.fence!==false){const fence=new THREE.Mesh(new THREE.PlaneGeometry(3.9,.4),new THREE.MeshBasicMaterial({transparent:true,depthWrite:false,map:cv(1560,160,(c,w,h)=>{c.lineJoin='round';
+    c.fillStyle=FW?'#e4e0d8':'#d9b98a';c.strokeStyle=FW?'#8f897f':'#8a6238';c.lineWidth=4;[52,104].forEach(y=>{c.beginPath();c.roundRect(4,y,w-8,16,6);c.fill();c.stroke();});
+    for(let x=10;x<w-40;x+=52){const g=c.createLinearGradient(x,0,x+36,0);g.addColorStop(0,FW?'#ffffff':'#f1dcb4');g.addColorStop(1,FW?'#d6d2c9':'#d8b98a');c.fillStyle=g;c.beginPath();c.moveTo(x,h-4);c.lineTo(x,34);c.lineTo(x+18,8);c.lineTo(x+36,34);c.lineTo(x+36,h-4);c.closePath();c.fill();c.stroke();}})}));
     fence.geometry.translate(0,.2,0);fence.rotation.x=TILT;fence.position.set(.05,0,-3.58);fence.renderOrder=2;sc.g.add(fence);}
-  (SP.props||[]).forEach(p=>stand(p.img,p.x,p.z,{ro:p.ro||3,k:p.k,y:p.y}));
+  const K={};(SP.props||[]).forEach(p=>{const k=stand(p.img,p.x,p.z,{ro:p.ro||3,k:p.k,y:p.y,shadow:p.shadow});if(p.id)K[p.id]=k;});
   /* the target sits in a mound of soil; its origin is the bottom of the thing */
-  const T=SP.target,tn=stand(T.img,T.x,T.z,{ro:T.ro||4,k:T.k,shadow:false,y:T.y});flat(blob,1.9,.75,T.x,T.z+.06,.027,1);
+  const T=SP.target||{img:{},x:0,z:-2.5,mound:false,shadow:false},tn=stand(T.img,T.x,T.z,{ro:T.ro||4,k:T.k,shadow:false,y:T.y});if(SP.target)flat(blob,1.9,.75,T.x,T.z+.06,.027,1);
   if(T.mound!==false){const mound=new THREE.Mesh(new THREE.PlaneGeometry(1.56,.36),new THREE.MeshBasicMaterial({transparent:true,depthWrite:false,map:cv(500,120,(c,w,h)=>{const g=c.createLinearGradient(0,0,0,h);g.addColorStop(0,'#9a6a42');g.addColorStop(1,'#6f4729');c.fillStyle=g;c.strokeStyle='#5a3a20';c.lineWidth=4;
     c.beginPath();c.moveTo(6,h);c.bezierCurveTo(40,30,120,10,170,34);c.bezierCurveTo(220,6,290,8,330,36);c.bezierCurveTo(380,10,470,40,494,h);c.closePath();c.fill();c.stroke();})}));
     mound.geometry.translate(0,.18,0);mound.rotation.x=TILT;mound.position.set(T.x,0,T.z+.12);mound.renderOrder=6;sc.g.add(mound);}
   const s0=T.start==null?.5:T.start;tn.scale.setScalar(s0);
   /* the line: everyone holds on in single file */
-  const K={},line=(SP.line||[]).map(L=>{const k=stand(L.img,L.x,L.z,{ro:L.ro||8});K[L.id]=k;k.userData.laugh=L.laugh;if(L.show){k.visible=false;at(sc,L.show,()=>D.grow(k));}return k;});
+  const line=(SP.line||[]).map(L=>{const k=stand(L.img,L.x,L.z,{ro:L.ro||8,k:L.k,layers:L.layers});k.userData.box=L.box||[0,0];K[L.id]=k;k.userData.laugh=L.laugh;if(L.show){k.visible=false;at(sc,L.show,()=>D.grow(k));}return k;});
   let phase='idle';
   sc.tick((dt,t)=>{line.forEach((k,i)=>{const pv=k.userData.pv,u=k.userData;
     if(u.pull){const w=.5+.5*Math.sin(t*5.2-i*.25);pv.rotation.z=.05+.07*w;k.position.x=u.x0-.035*w;pv.scale.y=1-.02*w;}
@@ -286,7 +281,16 @@ const popScene=(sc,SP)=>{D.base(sc,SP.bg||'#b9d68a');const U=SP.U||404,TILT=-.45
     else{pv.scale.y=1+Math.sin(t*2+i)*.012;}});
     if(phase==='pull')tn.userData.pv.rotation.z=Math.sin(t*5.2)*.035;else if(phase==='out')tn.userData.pv.rotation.z=Math.sin(t*2.2)*.06;});
   const ACT={
-    wobble:()=>tween(.9,k=>{tn.userData.pv.rotation.z=Math.sin(k*Math.PI*4)*.08*(1-k);}),
+    wobble:id=>{const o=id?K[id]:tn;tween(1.1,k=>{o.userData.pv.rotation.z=Math.sin(k*Math.PI*5)*.07*(1-k);});},
+    pose:(id,n)=>K[id].userData.pose(n),
+    hop:id=>{const o=K[id];tween(.5,q=>{o.position.y=Math.sin(q*Math.PI)*.14;});},
+    letter:(t,x,z,col)=>{if(ACT._l)ACT._l.visible=false;const c=card(sc,t,+x,+z,{h:.6,col:col||'#e03131'});c.visible=true;D.grow(c);ACT._l=c;},
+    rise:(id,ly,n)=>{const o=K[id],m=o.userData.LY[ly],b=o.userData.box,sk=o.userData.sk,h=m.userData.home,fx=b[0]/U*sk,fy=b[1]/U*sk;m.visible=true;
+      tween(.8,q=>{const e=1-Math.pow(1-q,3);m.position.set(fx+(h[0]-fx)*e,fy+(h[1]-fy)*e+Math.sin(q*Math.PI)*.18,.02);m.scale.setScalar(.45+.55*e);m.rotation.z=Math.sin(q*Math.PI*2)*.25*(1-q);})
+        .then(()=>{if(n){o.userData.pose(n);m.visible=false;}});boom(o);},
+    pulse:(id,ly)=>{const o=K[id],m=o.userData.LY[ly],h=m.userData.home;m.visible=true;
+      tween(2.4,q=>{const u=Math.sin(Math.min(1,q*1.25)*Math.PI);m.position.set(h[0],h[1]+.16*u,.03);m.scale.setScalar(1+.45*u);m.rotation.z=Math.sin(q*Math.PI*6)*.08*u;}).then(()=>{m.visible=false;});},
+    yay:id=>{K[id].userData.cheer=true;},
     grow:()=>tween(2.2,k=>tn.scale.setScalar(s0+(1-s0)*(k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2))),
     pull:id=>{K[id].userData.pull=true;},
     pullAll:()=>{phase='pull';line.forEach(k=>{k.visible=true;k.userData.pull=true;});},
@@ -298,7 +302,8 @@ const popScene=(sc,SP)=>{D.base(sc,SP.bg||'#b9d68a');const U=SP.U||404,TILT=-.45
         tween(.7+Math.random()*.4,k=>{c.position.set(x0+Math.cos(a)*r*k,.1+Math.sin(k*Math.PI)*(.5+Math.random()*.02),z0+Math.sin(a)*r*.6*k);});}
       line.forEach(k=>{k.userData.pull=false;const pv=k.userData.pv,x=k.userData.x0;if(k.userData.laugh)k.userData.pose(k.userData.laugh);
         tween(.45,q=>{const e=1-Math.pow(1-q,2);k.position.x=x-.16*e;k.position.y=Math.sin(q*Math.PI)*.16;pv.rotation.z=.05*(1-q);}).then(()=>{k.userData.x0=x-.16;});});}};
-  (SP.cues||[]).forEach(([w,a])=>at(sc,w,()=>[].concat(a).forEach(s=>{const p=s.split(':');ACT[p[0]].apply(null,p.slice(1));})));
+  sc.pop={K,ACT,log:[]};
+  (SP.cues||[]).forEach(([w,a])=>at(sc,w,()=>{sc.pop.log.push(w);[].concat(a).forEach(s=>{const p=s.split(':');ACT[p[0]].apply(null,p.slice(1));});}));
 };
 /* e18 · The Giant Turnip */
 story('e18',sc=>popScene(sc,{bg:'#b9d68a',ground:{rows:4},
