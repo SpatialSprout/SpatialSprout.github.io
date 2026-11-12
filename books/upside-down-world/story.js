@@ -47,5 +47,9 @@ window.STORY={title:"The Upside-Down World",author:"M. A. Mafodh",pages:[
 {img:"p15",sprite:"p15k",dust:true,box:[350,195,578,545],parts:[
  "Back at home their dog, Roma, a scruffy Husky, barked and wagged his tail as they opened the front door. \"We're home!\" their mom called from the kitchen."]},
 {img:"p16",sprite:"p16k",dust:true,box:[390,168,700,292],parts:[
- "Dinner was spaghetti and meatballs. Sam swirled his noodles, keeping his head down. Leo kicked him gently under the table."]}
+ "Dinner was spaghetti and meatballs. Sam swirled his noodles, keeping his head down.",
+ "\"So, how was the park, boys?\" their dad asked, twirling pasta onto his fork.",
+ "\"It was good,\" Leo said quickly. \"We lost the soccer ball, but... we found this basketball!\" He held it up with a forced smile.",
+ "\"Wow, what a lucky trade!\" their mom said.",
+ "Sam's eyes went wide. He looked like he was about to say something about the tree and the upside-down world."]}
 ]};
