@@ -33,6 +33,14 @@ body.nogl .layer.on .fb{opacity:1}
 .txt .w{transition:color .3s,text-shadow .3s}
 .txt .ink .w.now{color:#9a4a00;text-shadow:0 0 .35em rgba(255,200,90,.9)}
 .txt.bk{justify-content:flex-start;text-align:justify;hyphens:auto;-webkit-hyphens:auto;font-kerning:normal;font-feature-settings:'liga','kern'}
+.txt.sc .lip{visibility:hidden}
+.txt.sc .ink{mix-blend-mode:normal;filter:none;justify-content:flex-start;text-shadow:none;color:#2b1a0d}
+.txt.sc figure{margin:0;display:flex;flex-direction:column;align-items:center;gap:.5em;width:100%}
+.txt.sc img,.txt.sc .ph{width:100%;aspect-ratio:1/1;display:block;border-radius:3px;box-shadow:0 0 0 .08em rgba(60,35,10,.55),0 .25em .7em rgba(40,20,5,.45)}
+.txt.sc figcaption{display:flex;flex-direction:column;align-items:center;text-align:center;gap:.15em;line-height:1.15}
+.txt.sc figcaption b{font-size:1em;white-space:nowrap;letter-spacing:.02em}
+.txt.sc figcaption span{font-size:.8em;font-style:italic}
+.txt.sc figcaption i{font-size:.7em;opacity:.8;margin-top:.2em}
 .txt.bk .lip,.txt.bk .ink{justify-content:flex-start}
 .txt.bk p{margin:0 0 .5em;text-indent:1.4em}
 .txt.bk p.dropcap{text-indent:0}
@@ -107,8 +115,8 @@ body.narrow #bar{gap:6px;padding-top:8px}body.narrow #bar button{padding:0 12px;
   <button id="auto" aria-pressed="true" title="Turn the pages by itself">Auto turn</button>
   <button id="next" aria-label="Next page">&#8594;</button>
 </div>
-<script src="story.js?v=27"></script>
-<script src="sprite.js?v=30"></script>
+<script src="story.js?v=28"></script>
+<script src="sprite.js?v=31"></script>
 <script src="voice.js"></script>
 <script src="vtime.js"></script>
 <script>
@@ -220,15 +228,16 @@ function makeLayer(i){
   if(!gl){let im;if(p.video){im=loadVid(p.video).v;im.poster='img/'+p.img+'.webp';}else{im=new Image();im.src='img/'+p.img+'.webp';im.alt='';}im.className='fb';kb.appendChild(im);}
   if(p.fx==='shade'){const s=document.createElement('div');s.className='shade';kb.appendChild(s);L._shade=s;}
   if(p.song){const r=document.createElement('div');r.className='rings';r.style.cssText='left:'+(650/W*100)+'%;top:'+(55/H*100)+'%;width:'+(130/W*100)+'%;height:'+(130/H*100)+'%';r.innerHTML='<i></i><i></i><i></i><i></i>';kb.appendChild(r);L._rings=r;}
-  const t=document.createElement('div');t.className='txt'+(p.cover?' cover':'')+(p.book?' bk':'');const b=p.box;
+  const t=document.createElement('div');t.className='txt'+(p.cover?' cover':'')+(p.book?' bk':'')+(p.songcard?' sc':'');const b=p.box;
   t.style.cssText='left:'+(b[0]/W*100)+'%;top:'+(b[1]/H*100)+'%;width:'+((b[2]-b[0])/W*100)+'%;height:'+((b[3]-b[1])/H*100)+'%';
   kb.appendChild(t);L._t=t;L._p=p;L._kb=kb;L.appendChild(kb);stage.insertBefore(L,cv);layers[i]=L;pageTex(p);return L;
 }
 function words(s){return curly(s).split(' ').map(w=>'<span class="w">'+w+'</span>').join(' ');}
 function coverHTML(){return '<h1>'+S.title.replace('Upside-Down','Upside&#8209;Down')+'</h1><div class="orn">&#10022; &#10022; &#10022;</div><div class="by">by '+S.author+'</div>';}
+function songHTML(img){return '<figure class="sc">'+(img?'<img src="img/song-cover.webp" alt="Swim in the Stars cover art">':'<div class="ph"></div>')+'<figcaption><b>Swim in the Stars</b><span>Upside World &middot; Vol. 2</span><i>&#9835; A special song</i></figcaption></figure>';}
 function setText(L,k){
-  const p=L._p,t=L._t,html=p.cover?coverHTML():p.book?p.parts[0].split('\n').map((x,i)=>'<p class="'+(i===0?'dropcap':'')+'">'+words(x)+'</p>').join(''):'<p class="'+(k===0?'dropcap':'')+'">'+words(p.parts[k])+'</p>';
-  t.innerHTML='<div class="lip" aria-hidden="true">'+html+'</div><div class="ink">'+html+'</div>';
+  const p=L._p,t=L._t,html=p.songcard?songHTML(false):p.cover?coverHTML():p.book?p.parts[0].split('\n').map((x,i)=>'<p class="'+(i===0?'dropcap':'')+'">'+words(x)+'</p>').join(''):'<p class="'+(k===0?'dropcap':'')+'">'+words(p.parts[k])+'</p>';
+  t.innerHTML='<div class="lip" aria-hidden="true">'+html+'</div><div class="ink">'+(p.songcard?songHTML(true):html)+'</div>';
   if(L===layers[cur]){pp.className='pp'+(p.cover?' cover':'');pp.innerHTML=p.cover?coverHTML():words(p.parts[k]);}
   sizeText(L);
 }
@@ -442,6 +451,9 @@ const MOT={
   p32(tt,n){const T=24;tt=((tt%T)+T)%T;const w=(a,b,c,d)=>tt<a?0:tt<b?ease((tt-a)/(b-a)):tt<c?1:tt<d?1-ease((tt-c)/(d-c)):0;
     const a=n==='a'?w(1.5,3,4.5,6):n==='b'?w(4.5,6.5,11.5,13):w(11.5,13,19,21);
     return {dx:0,dy:0,rot:0,sx:1,sy:1,a};},
+  p33(tt,n){const T=36;tt=((tt%T)+T)%T;const w=(a,b,c,d)=>tt<a?0:tt<b?ease((tt-a)/(b-a)):tt<c?1:tt<d?1-ease((tt-c)/(d-c)):0;
+    const k='abcde'.indexOf(n),s0=2+k*6.2;
+    return {dx:0,dy:0,rot:0,sx:1,sy:1,a:w(s0,s0+2,s0+5.2,s0+7.2)};},
   p17(tt,n){const T=15;tt=((tt%T)+T)%T;const a=n==='b'?(tt<3?0:tt<4.6?ease((tt-3)/1.6):tt<8.2?1:0):(tt<7.6?0:tt<9.2?ease((tt-7.6)/1.6):tt<12.2?1:tt<13.8?1-ease((tt-12.2)/1.6):0);
     return {dx:0,dy:0,rot:0,sx:1,sy:1,a};},
   /* page 16 (dinner): everyone sways and nods a little out of step; Roma breathes under the table */
@@ -464,7 +476,7 @@ function drawRig(c,d,L,now,dt,w,h,t,ps,o){
   const p=L._p,dim=p.fx==='shade'?dimS:0;
   (d.rig||[]).forEach(r=>{if(!r.im||!r.im.complete||!r.im.naturalWidth)return;
     const tt=reduce?0:(now-pageT0)/1000;
-    const M=r.motion&&r.motion.startsWith('p32')?MOT.p32(tt,r.motion.slice(3)):r.motion&&r.motion.startsWith('p17')?MOT.p17(tt,r.motion.slice(3)):r.motion&&r.motion.startsWith('p16')?MOT.p16(tt,r.motion.slice(3)):r.motion==='p15a'?MOT.p15(tt,1):r.motion==='p15b'?MOT.p15(tt,2):r.motion==='p14a'?MOT.p14(tt,1):r.motion==='p14b'?MOT.p14(tt,2):r.motion==='p13'?MOT.p13(tt):r.motion==='p12a'?MOT.p12(tt,1):r.motion==='p12b'?MOT.p12(tt,2):r.motion==='flip10'?MOT.flip10(tt):r.motion==='stride'?MOT.stride(tt):r.motion==='song11'?MOT.song11(tt):r.motion==='p9'?MOT.p9(tt):r.motion==='p8a'?MOT.p8(tt,1):r.motion==='p8b'?MOT.p8(tt,2):r.motion==='walk7'?MOT.walk7(tt):r.motion&&r.motion.startsWith('kf')?MOT.kf(tt,+r.motion[2]):r.motion==='point2'?MOT.point2(tt):r.motion==='point'?MOT.point(tt):r.motion==='hide'?MOT.hide(tt):r.motion==='turn'?MOT.turn(tt):r.motion==='leg'?MOT.leg(tt):r.motion==='headL'?MOT.head(tt,1,0):MOT.head(tt,-1,.18);
+    const M=r.motion&&r.motion.startsWith('p33')?MOT.p33(tt,r.motion.slice(3)):r.motion&&r.motion.startsWith('p32')?MOT.p32(tt,r.motion.slice(3)):r.motion&&r.motion.startsWith('p17')?MOT.p17(tt,r.motion.slice(3)):r.motion&&r.motion.startsWith('p16')?MOT.p16(tt,r.motion.slice(3)):r.motion==='p15a'?MOT.p15(tt,1):r.motion==='p15b'?MOT.p15(tt,2):r.motion==='p14a'?MOT.p14(tt,1):r.motion==='p14b'?MOT.p14(tt,2):r.motion==='p13'?MOT.p13(tt):r.motion==='p12a'?MOT.p12(tt,1):r.motion==='p12b'?MOT.p12(tt,2):r.motion==='flip10'?MOT.flip10(tt):r.motion==='stride'?MOT.stride(tt):r.motion==='song11'?MOT.song11(tt):r.motion==='p9'?MOT.p9(tt):r.motion==='p8a'?MOT.p8(tt,1):r.motion==='p8b'?MOT.p8(tt,2):r.motion==='walk7'?MOT.walk7(tt):r.motion&&r.motion.startsWith('kf')?MOT.kf(tt,+r.motion[2]):r.motion==='point2'?MOT.point2(tt):r.motion==='point'?MOT.point(tt):r.motion==='hide'?MOT.hide(tt):r.motion==='turn'?MOT.turn(tt):r.motion==='leg'?MOT.leg(tt):r.motion==='headL'?MOT.head(tt,1,0):MOT.head(tt,-1,.18);
     const rl=depthAt(p.img,r.depth[0],r.depth[1]),qx=r.pivot[0]/W,qy=r.pivot[1]/H,s2=shiftAt(qx,qy,rl,t),
       px=(o[0]+(qx-o[0])*curS+s2[0])*w,py=(o[1]+(qy-o[1])*curS+s2[1])*h;
     const sh=sm3(.30,.40,qx)*sm3(.97,.90,qx)*sm3(.95,.85,qy)*rl*(.055*Math.sin(t*1.6+qx*13+qy*6)+.035*Math.sin(t*2.7-qy*17)),f=(1+sh)*(1-dim*.25);
