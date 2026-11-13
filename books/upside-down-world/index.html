@@ -107,8 +107,8 @@ body.narrow #bar{gap:6px;padding-top:8px}body.narrow #bar button{padding:0 12px;
   <button id="auto" aria-pressed="true" title="Turn the pages by itself">Auto turn</button>
   <button id="next" aria-label="Next page">&#8594;</button>
 </div>
-<script src="story.js?v=26"></script>
-<script src="sprite.js?v=29"></script>
+<script src="story.js?v=27"></script>
+<script src="sprite.js?v=30"></script>
 <script src="voice.js"></script>
 <script src="vtime.js"></script>
 <script>
@@ -440,7 +440,7 @@ const MOT={
     return {dx:0,dy:0,rot:0,sx:1,sy:1,a};},
   /* page 17 (the kick): Sam's yelp pose fades in over the start, then the calm dinner pose, then back (15 s) */
   p32(tt,n){const T=24;tt=((tt%T)+T)%T;const w=(a,b,c,d)=>tt<a?0:tt<b?ease((tt-a)/(b-a)):tt<c?1:tt<d?1-ease((tt-c)/(d-c)):0;
-    const a=n==='a'?w(2,4,8,10):n==='b'?w(8,10,13,14.5):w(12.5,14,17,19);
+    const a=n==='a'?w(1.5,3,4.5,6):n==='b'?w(4.5,6.5,11.5,13):w(11.5,13,19,21);
     return {dx:0,dy:0,rot:0,sx:1,sy:1,a};},
   p17(tt,n){const T=15;tt=((tt%T)+T)%T;const a=n==='b'?(tt<3?0:tt<4.6?ease((tt-3)/1.6):tt<8.2?1:0):(tt<7.6?0:tt<9.2?ease((tt-7.6)/1.6):tt<12.2?1:tt<13.8?1-ease((tt-12.2)/1.6):0);
     return {dx:0,dy:0,rot:0,sx:1,sy:1,a};},
