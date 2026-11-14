@@ -124,8 +124,8 @@ body.narrow #bar{gap:6px;padding-top:8px}body.narrow #bar button{padding:0 12px;
   <button id="auto" aria-pressed="true" title="Turn the pages by itself">Auto turn</button>
   <button id="next" aria-label="Next page">&#8594;</button>
 </div>
-<script src="story.js?v=34"></script>
-<script src="sprite.js?v=35"></script>
+<script src="story.js?v=35"></script>
+<script src="sprite.js?v=36"></script>
 <script src="lyrics.js?v=2"></script>
 <script src="voice.js?v=2"></script>
 <script src="vtime.js"></script>
@@ -483,6 +483,9 @@ const MOT={
   p36(tt,n){const T=16;tt=((tt%T)+T)%T;const w=(a,b,c,d)=>tt<a?0:tt<b?ease((tt-a)/(b-a)):tt<c?1:tt<d?1-ease((tt-c)/(d-c)):0;
     const a=n==='a'?w(3,3.9,8.3,9.1):w(8.3,9.1,13.3,14.1);
     return {dx:0,dy:0,rot:0,sx:1,sy:1,a};},
+  p37(tt,n){const T=16;tt=((tt%T)+T)%T;const w=(a,b,c,d)=>tt<a?0:tt<b?ease((tt-a)/(b-a)):tt<c?1:tt<d?1-ease((tt-c)/(d-c)):0;
+    const a=n==='a'?w(2,3,6,7.5):w(7,8.5,13.5,15);
+    return {dx:0,dy:0,rot:0,sx:1,sy:1,a};},
   p17(tt,n){const T=15;tt=((tt%T)+T)%T;const a=n==='b'?(tt<3?0:tt<4.6?ease((tt-3)/1.6):tt<8.2?1:0):(tt<7.6?0:tt<9.2?ease((tt-7.6)/1.6):tt<12.2?1:tt<13.8?1-ease((tt-12.2)/1.6):0);
     return {dx:0,dy:0,rot:0,sx:1,sy:1,a};},
   /* page 16 (dinner): everyone sways and nods a little out of step; Roma breathes under the table */
@@ -505,7 +508,7 @@ function drawRig(c,d,L,now,dt,w,h,t,ps,o){
   const p=L._p,dim=p.fx==='shade'?dimS:0;
   (d.rig||[]).forEach(r=>{if(!r.im||!r.im.complete||!r.im.naturalWidth)return;
     const tt=reduce?0:(now-pageT0)/1000;
-    const M=r.motion&&r.motion.startsWith('p36')?MOT.p36(tt,r.motion.slice(3)):r.motion&&r.motion.startsWith('p35')?MOT.p35(tt,r.motion.slice(3)):r.motion&&r.motion.startsWith('p34')?MOT.p34(tt,r.motion.slice(3)):r.motion&&r.motion.startsWith('p33')?MOT.p33(tt,r.motion.slice(3)):r.motion&&r.motion.startsWith('p32')?MOT.p32(tt,r.motion.slice(3)):r.motion&&r.motion.startsWith('p17')?MOT.p17(tt,r.motion.slice(3)):r.motion&&r.motion.startsWith('p16')?MOT.p16(tt,r.motion.slice(3)):r.motion==='p15a'?MOT.p15(tt,1):r.motion==='p15b'?MOT.p15(tt,2):r.motion==='p14a'?MOT.p14(tt,1):r.motion==='p14b'?MOT.p14(tt,2):r.motion==='p13'?MOT.p13(tt):r.motion==='p12a'?MOT.p12(tt,1):r.motion==='p12b'?MOT.p12(tt,2):r.motion==='flip10'?MOT.flip10(tt):r.motion==='stride'?MOT.stride(tt):r.motion==='song11'?MOT.song11(tt):r.motion==='p9'?MOT.p9(tt):r.motion==='p8a'?MOT.p8(tt,1):r.motion==='p8b'?MOT.p8(tt,2):r.motion==='walk7'?MOT.walk7(tt):r.motion&&r.motion.startsWith('kf')?MOT.kf(tt,+r.motion[2]):r.motion==='point2'?MOT.point2(tt):r.motion==='point'?MOT.point(tt):r.motion==='hide'?MOT.hide(tt):r.motion==='turn'?MOT.turn(tt):r.motion==='leg'?MOT.leg(tt):r.motion==='headL'?MOT.head(tt,1,0):MOT.head(tt,-1,.18);
+    const M=r.motion&&r.motion.startsWith('p37')?MOT.p37(tt,r.motion.slice(3)):r.motion&&r.motion.startsWith('p36')?MOT.p36(tt,r.motion.slice(3)):r.motion&&r.motion.startsWith('p35')?MOT.p35(tt,r.motion.slice(3)):r.motion&&r.motion.startsWith('p34')?MOT.p34(tt,r.motion.slice(3)):r.motion&&r.motion.startsWith('p33')?MOT.p33(tt,r.motion.slice(3)):r.motion&&r.motion.startsWith('p32')?MOT.p32(tt,r.motion.slice(3)):r.motion&&r.motion.startsWith('p17')?MOT.p17(tt,r.motion.slice(3)):r.motion&&r.motion.startsWith('p16')?MOT.p16(tt,r.motion.slice(3)):r.motion==='p15a'?MOT.p15(tt,1):r.motion==='p15b'?MOT.p15(tt,2):r.motion==='p14a'?MOT.p14(tt,1):r.motion==='p14b'?MOT.p14(tt,2):r.motion==='p13'?MOT.p13(tt):r.motion==='p12a'?MOT.p12(tt,1):r.motion==='p12b'?MOT.p12(tt,2):r.motion==='flip10'?MOT.flip10(tt):r.motion==='stride'?MOT.stride(tt):r.motion==='song11'?MOT.song11(tt):r.motion==='p9'?MOT.p9(tt):r.motion==='p8a'?MOT.p8(tt,1):r.motion==='p8b'?MOT.p8(tt,2):r.motion==='walk7'?MOT.walk7(tt):r.motion&&r.motion.startsWith('kf')?MOT.kf(tt,+r.motion[2]):r.motion==='point2'?MOT.point2(tt):r.motion==='point'?MOT.point(tt):r.motion==='hide'?MOT.hide(tt):r.motion==='turn'?MOT.turn(tt):r.motion==='leg'?MOT.leg(tt):r.motion==='headL'?MOT.head(tt,1,0):MOT.head(tt,-1,.18);
     const rl=depthAt(p.img,r.depth[0],r.depth[1]),qx=r.pivot[0]/W,qy=r.pivot[1]/H,s2=shiftAt(qx,qy,rl,t),
       px=(o[0]+(qx-o[0])*curS+s2[0])*w,py=(o[1]+(qy-o[1])*curS+s2[1])*h;
     const sh=sm3(.30,.40,qx)*sm3(.97,.90,qx)*sm3(.95,.85,qy)*rl*(.055*Math.sin(t*1.6+qx*13+qy*6)+.035*Math.sin(t*2.7-qy*17)),f=(1+sh)*(1-dim*.25);
