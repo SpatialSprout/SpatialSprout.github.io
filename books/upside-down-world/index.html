@@ -33,10 +33,13 @@ body.nogl .layer.on .fb{opacity:1}
 .txt .w{transition:color .3s,text-shadow .3s}
 .txt .ink .w.now{color:#9a4a00;text-shadow:0 0 .35em rgba(255,200,90,.9)}
 .txt.bk{justify-content:flex-start;text-align:justify;hyphens:auto;-webkit-hyphens:auto;font-kerning:normal;font-feature-settings:'liga','kern'}
-.txt.sc .lip{visibility:hidden}
-.txt.sc .ink{mix-blend-mode:normal;filter:none;justify-content:flex-start;text-shadow:none;color:#2b1a0d}
+.txt.sc .lip{justify-content:flex-start;color:rgba(255,241,212,.55)}
+.txt.sc .lip img{filter:grayscale(1) brightness(1.7) blur(.5px);opacity:.55;box-shadow:none}
+.txt.sc .lip figcaption{opacity:1}
+.txt.sc .ink{mix-blend-mode:multiply;filter:contrast(1.12) saturate(1.1) blur(.2px);justify-content:flex-start;text-shadow:0 -.02em .03em rgba(60,30,8,.45);color:#2b1a0d}
+.txt.sc .ink img{opacity:.93;box-shadow:none;border-radius:0}
 .txt.sc figure{margin:0;display:flex;flex-direction:column;align-items:center;gap:.5em;width:100%}
-.txt.sc img,.txt.sc .ph{width:100%;aspect-ratio:1/1;display:block;border-radius:3px;box-shadow:0 0 0 .08em rgba(60,35,10,.55),0 .25em .7em rgba(40,20,5,.45)}
+.txt.sc img,.txt.sc .ph{width:100%;aspect-ratio:1/1;display:block}
 .txt.sc figcaption{display:flex;flex-direction:column;align-items:center;text-align:center;gap:.15em;line-height:1.15}
 .txt.sc figcaption b{font-size:1em;white-space:nowrap;letter-spacing:.02em}
 .txt.sc figcaption span{font-size:.8em;font-style:italic}
@@ -115,8 +118,8 @@ body.narrow #bar{gap:6px;padding-top:8px}body.narrow #bar button{padding:0 12px;
   <button id="auto" aria-pressed="true" title="Turn the pages by itself">Auto turn</button>
   <button id="next" aria-label="Next page">&#8594;</button>
 </div>
-<script src="story.js?v=28"></script>
-<script src="sprite.js?v=31"></script>
+<script src="story.js?v=29"></script>
+<script src="sprite.js?v=32"></script>
 <script src="voice.js?v=2"></script>
 <script src="vtime.js"></script>
 <script>
@@ -234,9 +237,9 @@ function makeLayer(i){
 }
 function words(s){return curly(s).split(' ').map(w=>'<span class="w">'+w+'</span>').join(' ');}
 function coverHTML(){return '<h1>'+S.title.replace('Upside-Down','Upside&#8209;Down')+'</h1><div class="orn">&#10022; &#10022; &#10022;</div><div class="by">by '+S.author+'</div>';}
-function songHTML(img){return '<figure class="sc">'+(img?'<img src="img/song-cover.webp" alt="Swim in the Stars cover art">':'<div class="ph"></div>')+'<figcaption><b>Swim in the Stars</b><span>Upside World &middot; Vol. 2</span><i>&#9835; A special song</i></figcaption></figure>';}
+function songHTML(img){return '<figure class="sc">'+(img?'<img src="img/song-cover-oil.webp" alt="Swim in the Stars cover art, painted in oil">':'<div class="ph"></div>')+'<figcaption><b>Swim in the Stars</b><span>Upside World &middot; Vol. 2</span><i>&#9835; A special song</i></figcaption></figure>';}
 function setText(L,k){
-  const p=L._p,t=L._t,html=p.songcard?songHTML(false):p.cover?coverHTML():p.book?p.parts[0].split('\n').map((x,i)=>'<p class="'+(i===0?'dropcap':'')+'">'+words(x)+'</p>').join(''):'<p class="'+(k===0?'dropcap':'')+'">'+words(p.parts[k])+'</p>';
+  const p=L._p,t=L._t,html=p.songcard?songHTML(true):p.cover?coverHTML():p.book?p.parts[0].split('\n').map((x,i)=>'<p class="'+(i===0?'dropcap':'')+'">'+words(x)+'</p>').join(''):'<p class="'+(k===0?'dropcap':'')+'">'+words(p.parts[k])+'</p>';
   t.innerHTML='<div class="lip" aria-hidden="true">'+html+'</div><div class="ink">'+(p.songcard?songHTML(true):html)+'</div>';
   if(L===layers[cur]){pp.className='pp'+(p.cover?' cover':'');pp.innerHTML=p.cover?coverHTML():words(p.parts[k]);}
   sizeText(L);
