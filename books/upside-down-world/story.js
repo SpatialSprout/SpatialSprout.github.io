@@ -81,5 +81,7 @@ window.STORY={title:"The Upside-Down World",author:"M. A. Mafodh",pages:[
 {img:"p32",sprite:"p32k",dust:true,book:true,box:[374,170,574,596],parts:[
  "There, they had to ride blue shiny horses floating just above the water. \"Wow, they use horses to sail!\" said Sam, who had always wanted to ride one. The three adventurous friends started sailing towards the horizon.\nThere they saw giant, translucent jellyfish. They glowed from within, shifting from pink to green to blue. As they pulsed, a beautiful, humming melody filled the air. It was the whale's song, but softer, a chorus of gentle, glowing notes.\nSam looked at them, completely mesmerized. \"It's even better than my music box,\" he whispered."]},
 {img:"p33",sprite:"p33k",dust:true,songcard:true,song:[0],box:[372,176,602,590],parts:[
- "Swim in the Stars — Upside World Vol. 2"]}
+ "Swim in the Stars — Upside World Vol. 2"]},
+{img:"p34",sprite:"p34k",dust:true,book:true,box:[374,170,584,590],parts:[
+ "Leo took out the camera. \"I have to film this.\" He pressed record, capturing the impossible sight for proof. For a second, he almost forgot they were trapped in another world.\nAll of a sudden, the jellyfish panicked and started running away. \"We have to leave right now, pirates are approaching us!\" Xylia shouted with urgency, her voice filled with concern. She pointed towards the horizon where several black horses and wagons were swiftly heading in their direction. The wagons were rusty and jagged, like they were carved from nightmare, and they flew tattered flags with a dragon skull on them."]}
 ]};
