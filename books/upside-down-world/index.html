@@ -33,13 +33,18 @@ body.nogl .layer.on .fb{opacity:1}
 .txt .w{transition:color .3s,text-shadow .3s}
 .txt .ink .w.now{color:#9a4a00;text-shadow:0 0 .35em rgba(255,200,90,.9)}
 .txt.bk{justify-content:flex-start;text-align:justify;hyphens:auto;-webkit-hyphens:auto;font-kerning:normal;font-feature-settings:'liga','kern'}
+.txt.sc .lyr{min-height:8em;width:100%;display:flex;flex-direction:column;align-items:center;margin-top:.35em;font-size:.62em;font-style:italic;text-align:center;line-height:1.22;white-space:normal}
+.txt.sc .lyr .ln{margin:0;text-indent:0!important;display:none;padding:0 .2em}
+.txt.sc .lyr .lw{opacity:0;transition:opacity .35s ease,transform .35s ease;display:inline-block;transform:translateY(.15em)}
+.txt.sc .lyr .lw.on{opacity:1;transform:none}
+.txt.sc .ink .lyr{filter:url(#oil)}
 .txt.sc .lip{justify-content:flex-start;color:rgba(255,241,212,.55)}
 .txt.sc .lip img{filter:grayscale(1) brightness(1.7) blur(.5px);opacity:.55;box-shadow:none}
 .txt.sc .lip figcaption{opacity:1}
 .txt.sc .ink{mix-blend-mode:multiply;filter:contrast(1.12) saturate(1.1) blur(.2px);justify-content:flex-start;text-shadow:0 -.02em .03em rgba(60,30,8,.45);color:#2b1a0d}
 .txt.sc .ink img{opacity:.93;box-shadow:none;border-radius:0}
 .txt.sc figure{margin:0;display:flex;flex-direction:column;align-items:center;gap:.5em;width:100%}
-.txt.sc img,.txt.sc .ph{width:100%;aspect-ratio:1/1;display:block}
+.txt.sc img,.txt.sc .ph{width:78%;aspect-ratio:1/1;display:block}
 .txt.sc figcaption{display:flex;flex-direction:column;align-items:center;text-align:center;gap:.15em;line-height:1.15}
 .txt.sc figcaption b{font-size:1em;white-space:nowrap;letter-spacing:.02em}
 .txt.sc figcaption span{font-size:.8em;font-style:italic}
@@ -100,6 +105,7 @@ body.narrow #bar{gap:6px;padding-top:8px}body.narrow #bar button{padding:0 12px;
 </style>
 </head>
 <body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><filter id="oil"><feTurbulence type="fractalNoise" baseFrequency="0.06" numOctaves="2" seed="4" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="1.6"/></filter></svg>
 <a id="home" href="../../account.html">&larr; My books</a>
 <div id="wrap">
   <div id="stage">
@@ -118,8 +124,9 @@ body.narrow #bar{gap:6px;padding-top:8px}body.narrow #bar button{padding:0 12px;
   <button id="auto" aria-pressed="true" title="Turn the pages by itself">Auto turn</button>
   <button id="next" aria-label="Next page">&#8594;</button>
 </div>
-<script src="story.js?v=30"></script>
+<script src="story.js?v=32"></script>
 <script src="sprite.js?v=33"></script>
+<script src="lyrics.js?v=2"></script>
 <script src="voice.js?v=2"></script>
 <script src="vtime.js"></script>
 <script>
@@ -237,10 +244,20 @@ function makeLayer(i){
 }
 function words(s){return curly(s).split(' ').map(w=>'<span class="w">'+w+'</span>').join(' ');}
 function coverHTML(){return '<h1>'+S.title.replace('Upside-Down','Upside&#8209;Down')+'</h1><div class="orn">&#10022; &#10022; &#10022;</div><div class="by">by '+S.author+'</div>';}
-function songHTML(img){return '<figure class="sc">'+(img?'<img src="img/song-cover-oil.webp" alt="Swim in the Stars cover art, painted in oil">':'<div class="ph"></div>')+'<figcaption><b>Swim in the Stars</b><span>Upside World &middot; Vol. 2</span><i>&#9835; A special song</i></figcaption></figure>';}
+function songHTML(img){return '<figure class="sc">'+(img?'<img src="img/song-cover-oil.webp" alt="Swim in the Stars cover art, painted in oil">':'<div class="ph"></div>')+'<figcaption><b>Swim in the Stars</b><span>Upside World &middot; Vol. 2</span></figcaption><div class="lyr">'+(window.LYR||[]).map((l,i)=>'<p class="ln" data-s="'+l.s+'">'+l.w.map((x,j)=>'<span class="lw" data-i="'+i+'" data-j="'+j+'">'+x+'</span>').join(' ')+'</p>').join('')+'</div></figure>';}
+let lyK='';
+function lyricTick(L){
+  if(!L||!L._t||!window.LYR)return;const live=!audio.paused&&!audio.ended&&audio.src.indexOf('1070a45b')>=0;
+  let t=window.__lt!=null?window.__lt:audio.src.indexOf('1070a45b')>=0?audio.currentTime:0;if(window.__lt==null&&audio.ended&&audio.src.indexOf('1070a45b')>=0)t=999;
+  let ci=-1;LYR.forEach((l,i)=>{if(t>=l.t)ci=i;});
+  const st=ci<0?-1:LYR[ci].s;
+  const key=ci+':'+(ci<0?0:LYR[ci].tm.filter(x=>t>=x).length);if(key===lyK)return;lyK=key;
+  L._t.querySelectorAll('.ln').forEach(p=>{p.style.display=(+p.dataset.s===st)?'block':'none';});
+  L._t.querySelectorAll('.lw').forEach(w=>{const l=LYR[+w.dataset.i];w.classList.toggle('on',t>=l.tm[+w.dataset.j]);});
+}
 function setText(L,k){
   const p=L._p,t=L._t,html=p.songcard?songHTML(true):p.cover?coverHTML():p.book?p.parts[0].split('\n').map((x,i)=>'<p class="'+(i===0?'dropcap':'')+'">'+words(x)+'</p>').join(''):'<p class="'+(k===0?'dropcap':'')+'">'+words(p.parts[k])+'</p>';
-  t.innerHTML='<div class="lip" aria-hidden="true">'+html+'</div><div class="ink">'+(p.songcard?songHTML(true):html)+'</div>';
+  lyK='';t.innerHTML='<div class="lip" aria-hidden="true">'+html+'</div><div class="ink">'+(p.songcard?songHTML(true):html)+'</div>';
   if(L===layers[cur]){pp.className='pp'+(p.cover?' cover':'');pp.innerHTML=p.cover?coverHTML():words(p.parts[k]);}
   sizeText(L);
 }
@@ -278,7 +295,7 @@ function nextPart(){
 }
 /* ---------- narration with word highlight ---------- */
 function hl(){
-  const L=layers[cur];if(!L)return;const ends=(window.VTIME||{})[fnv(L._p.parts[part])]||[];
+  const L=layers[cur];if(!L)return;if(L._p.songcard){lyK='';lyricTick(L);if(!audio.paused&&!audio.ended)requestAnimationFrame(()=>{if(layers[cur]===L)hl();});return;}const ends=(window.VTIME||{})[fnv(L._p.parts[part])]||[];
   const t=audio.currentTime,live=!audio.paused&&!audio.ended;let k=0;while(k<ends.length&&ends[k]<t)k++;
   [L._t.querySelector('.ink'),pp].forEach(el=>el&&el.querySelectorAll('.w').forEach((w,j)=>w.classList.toggle('now',live&&j===k)));
   if(live)raf=requestAnimationFrame(hl);
