@@ -52,8 +52,11 @@ body.nogl .layer.on .fb{opacity:1}
 .txt.bk .lip,.txt.bk .ink{justify-content:flex-start}
 .txt.bk p{margin:0 0 .5em;text-indent:1.4em}
 .txt.bk p.dropcap{text-indent:0}
-.txt.bk .ink{color:#2b1a0d;text-shadow:0 -.03em .02em rgba(35,15,2,.55),0 0 .5px rgba(35,15,2,.35);filter:blur(.1px)}
-.txt.bk .lip{color:rgba(255,244,218,.7);transform:translate(0,.07em)}
+.txt.bk{font-weight:600}
+.txt.bk .ink{color:#1c0e05;text-shadow:-.035em -.045em .02em rgba(20,8,0,.85),.02em .02em .5px rgba(20,8,0,.35),0 0 .6px rgba(20,8,0,.6);filter:url(#oilt) contrast(1.15)}
+.txt.bk .lip{color:rgba(255,246,222,.95);transform:translate(.045em,.085em);filter:blur(.25px) url(#oilt)}
+.txt.bk p.dropcap::first-letter{font-size:3.3em;line-height:.8;padding:.02em .1em 0 0;font-weight:700}
+.txt.bk .ink .dropcap::first-letter{color:#5a1f02;text-shadow:-.03em -.04em .02em rgba(30,8,0,.9)}
 .txt.cover{text-align:center}
 .txt.cover .ink,.txt.cover .lip{align-items:center}
 .txt h1,#panel h1{font-family:'IM Fell English SC',serif;font-weight:400;line-height:1.05;letter-spacing:.02em}
@@ -105,7 +108,7 @@ body.narrow #bar{gap:6px;padding-top:8px}body.narrow #bar button{padding:0 12px;
 </style>
 </head>
 <body>
-<svg width="0" height="0" style="position:absolute" aria-hidden="true"><filter id="oil"><feTurbulence type="fractalNoise" baseFrequency="0.06" numOctaves="2" seed="4" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="1.6"/></filter></svg>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><filter id="oilt"><feTurbulence type="fractalNoise" baseFrequency="0.09" numOctaves="2" seed="7" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="1.1"/></filter><filter id="oil"><feTurbulence type="fractalNoise" baseFrequency="0.06" numOctaves="2" seed="4" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="1.6"/></filter></svg>
 <a id="home" href="../../account.html">&larr; My books</a>
 <div id="wrap">
   <div id="stage">
@@ -124,7 +127,7 @@ body.narrow #bar{gap:6px;padding-top:8px}body.narrow #bar button{padding:0 12px;
   <button id="auto" aria-pressed="true" title="Turn the pages by itself">Auto turn</button>
   <button id="next" aria-label="Next page">&#8594;</button>
 </div>
-<script src="story.js?v=39"></script>
+<script src="story.js?v=40"></script>
 <script src="sprite.js?v=40"></script>
 <script src="lyrics.js?v=2"></script>
 <script src="voice.js?v=2"></script>
