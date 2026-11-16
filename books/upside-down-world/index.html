@@ -128,9 +128,9 @@ body.narrow #bar{gap:6px;padding-top:8px}body.narrow #bar button{padding:0 12px;
   <button id="auto" aria-pressed="true" title="Turn the pages by itself">Auto turn</button>
   <button id="next" aria-label="Next page">&#8594;</button>
 </div>
-<script src="story.js?v=57"></script>
+<script src="story.js?v=58"></script>
 <script src="sprite.js?v=42"></script>
-<script src="lyrics.js?v=2"></script>
+<script src="lyrics.js?v=2"></script><script src="lyrics2.js?v=1"></script>
 <script src="voice.js?v=19"></script>
 <script src="vtime.js?v=17"></script>
 <script>
@@ -250,16 +250,17 @@ function makeLayer(i){
 }
 function words(s){return curly(s).split(' ').map(w=>'<span class="w">'+w+'</span>').join(' ');}
 function coverHTML(){return '<h1>'+S.title.replace('Upside-Down','Upside&#8209;Down')+'</h1><div class="orn">&#10022; &#10022; &#10022;</div><div class="by">by '+S.author+'</div>';}
-function songHTML(img,pg){pg=pg||{};return '<figure class="sc">'+(pg.nocover?'':img?'<img src="img/song-cover-oil.webp" alt="Swim in the Stars cover art, painted in oil">':'<div class="ph"></div>')+'<figcaption><b>'+(pg.title||'Swim in the Stars')+'</b><span>'+(pg.sub||'Upside World &middot; Vol. 2')+'</span></figcaption><div class="lyr">'+(pg.nolyr?[]:(window.LYR||[])).map((l,i)=>'<p class="ln" data-s="'+l.s+'">'+l.w.map((x,j)=>'<span class="lw" data-i="'+i+'" data-j="'+j+'">'+x+'</span>').join(' ')+'</p>').join('')+'</div></figure>';}
+function songHTML(img,pg){pg=pg||{};return '<figure class="sc">'+(pg.nocover?'':img?'<img src="img/song-cover-oil.webp" alt="Swim in the Stars cover art, painted in oil">':'<div class="ph"></div>')+'<figcaption><b>'+(pg.title||'Swim in the Stars')+'</b><span>'+(pg.sub||'Upside World &middot; Vol. 2')+'</span></figcaption><div class="lyr">'+(pg.nolyr?[]:(window[pg.lyk||'LYR']||[])).map((l,i)=>'<p class="ln" data-s="'+l.s+'">'+l.w.map((x,j)=>'<span class="lw" data-i="'+i+'" data-j="'+j+'">'+x+'</span>').join(' ')+'</p>').join('')+'</div></figure>';}
 let lyK='';
 function lyricTick(L){
-  if(!L||!L._t||!window.LYR)return;const live=!audio.paused&&!audio.ended&&audio.src.indexOf('1070a45b')>=0;
-  let t=window.__lt!=null?window.__lt:audio.src.indexOf('1070a45b')>=0?audio.currentTime:0;if(window.__lt==null&&audio.ended&&audio.src.indexOf('1070a45b')>=0)t=999;
-  let ci=-1;LYR.forEach((l,i)=>{if(t>=l.t)ci=i;});
-  const st=ci<0?-1:LYR[ci].s;
-  const key=ci+':'+(ci<0?0:LYR[ci].tm.filter(x=>t>=x).length);if(key===lyK)return;lyK=key;
+  const LY=L&&L._p&&window[L._p.lyk||'LYR'],H=(L&&L._p&&L._p.lyh)||'1070a45b';
+  if(!L||!L._t||!LY)return;const on=audio.src.indexOf(H)>=0;
+  let t=window.__lt!=null?window.__lt:on?audio.currentTime:0;if(window.__lt==null&&audio.ended&&on)t=999;
+  let ci=-1;LY.forEach((l,i)=>{if(t>=l.t)ci=i;});
+  const st=ci<0?-1:LY[ci].s;
+  const key=ci+':'+(ci<0?0:LY[ci].tm.filter(x=>t>=x).length);if(key===lyK)return;lyK=key;
   L._t.querySelectorAll('.ln').forEach(p=>{p.style.display=(+p.dataset.s===st)?'block':'none';});
-  L._t.querySelectorAll('.lw').forEach(w=>{const l=LYR[+w.dataset.i];w.classList.toggle('on',t>=l.tm[+w.dataset.j]);});
+  L._t.querySelectorAll('.lw').forEach(w=>{const l=LY[+w.dataset.i];w.classList.toggle('on',t>=l.tm[+w.dataset.j]);});
 }
 function setText(L,k){
   const p=L._p,t=L._t;let html=p.songcard?songHTML(true,p):p.cover?coverHTML():p.book?p.parts[0].split('\n').map((x,i)=>'<p class="'+(i===0?'dropcap':'')+'">'+words(x)+'</p>').join(''):'<p class="'+(k===0?'dropcap':'')+'">'+words(p.parts[k])+'</p>';
