@@ -128,10 +128,10 @@ body.narrow #bar{gap:6px;padding-top:8px}body.narrow #bar button{padding:0 12px;
   <button id="auto" aria-pressed="true" title="Turn the pages by itself">Auto turn</button>
   <button id="next" aria-label="Next page">&#8594;</button>
 </div>
-<script src="story.js?v=56"></script>
+<script src="story.js?v=57"></script>
 <script src="sprite.js?v=42"></script>
 <script src="lyrics.js?v=2"></script>
-<script src="voice.js?v=17"></script>
+<script src="voice.js?v=18"></script>
 <script src="vtime.js?v=17"></script>
 <script>
 (function(){
@@ -212,7 +212,7 @@ function loadTex(src){
 /* a page with a living video: the still shows until the video can play; the video already moves, so no relief parallax */
 const vids={};let blackT=null;
 function black(){if(!blackT&&gl){blackT=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,blackT);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGB,1,1,0,gl.RGB,gl.UNSIGNED_BYTE,new Uint8Array([0,0,0]));}return {ready:true,t:blackT};}
-function loadVid(name){if(vids[name])return vids[name];const v=document.createElement('video');v.muted=true;v.defaultMuted=true;v.loop=true;v.playsInline=true;v.setAttribute('playsinline','');v.setAttribute('muted','');v.preload='auto';v.crossOrigin='anonymous';v.src='img/'+name+'.mp4?v=4';
+function loadVid(name){if(vids[name])return vids[name];const v=document.createElement('video');v.muted=true;v.defaultMuted=true;v.loop=true;v.playsInline=true;v.setAttribute('playsinline','');v.setAttribute('muted','');v.preload='auto';v.crossOrigin='anonymous';v.src='img/'+name+'.mp4?v=5';
   const o={v,t:null,ok:false};v.addEventListener('playing',()=>{o.ok=true;});vids[name]=o;return o;}
 function pageTex(p){if(p.video)return {c:loadTex('img/'+p.img+'.webp?v=10'),d:p.relief?loadTex('img/'+p.img+'-d.webp'):black(),vid:loadVid(p.video)};return {c:loadTex('img/'+p.img+'.webp?v=10'),d:loadTex('img/'+p.img+'-d.webp')};}
 const ORIGIN={kb:[.72,.55],shade:[.80,.74]};
@@ -250,7 +250,7 @@ function makeLayer(i){
 }
 function words(s){return curly(s).split(' ').map(w=>'<span class="w">'+w+'</span>').join(' ');}
 function coverHTML(){return '<h1>'+S.title.replace('Upside-Down','Upside&#8209;Down')+'</h1><div class="orn">&#10022; &#10022; &#10022;</div><div class="by">by '+S.author+'</div>';}
-function songHTML(img){return '<figure class="sc">'+(img?'<img src="img/song-cover-oil.webp" alt="Swim in the Stars cover art, painted in oil">':'<div class="ph"></div>')+'<figcaption><b>Swim in the Stars</b><span>Upside World &middot; Vol. 2</span></figcaption><div class="lyr">'+(window.LYR||[]).map((l,i)=>'<p class="ln" data-s="'+l.s+'">'+l.w.map((x,j)=>'<span class="lw" data-i="'+i+'" data-j="'+j+'">'+x+'</span>').join(' ')+'</p>').join('')+'</div></figure>';}
+function songHTML(img,pg){pg=pg||{};return '<figure class="sc">'+(pg.nocover?'':img?'<img src="img/song-cover-oil.webp" alt="Swim in the Stars cover art, painted in oil">':'<div class="ph"></div>')+'<figcaption><b>'+(pg.title||'Swim in the Stars')+'</b><span>'+(pg.sub||'Upside World &middot; Vol. 2')+'</span></figcaption><div class="lyr">'+(pg.nolyr?[]:(window.LYR||[])).map((l,i)=>'<p class="ln" data-s="'+l.s+'">'+l.w.map((x,j)=>'<span class="lw" data-i="'+i+'" data-j="'+j+'">'+x+'</span>').join(' ')+'</p>').join('')+'</div></figure>';}
 let lyK='';
 function lyricTick(L){
   if(!L||!L._t||!window.LYR)return;const live=!audio.paused&&!audio.ended&&audio.src.indexOf('1070a45b')>=0;
@@ -262,9 +262,9 @@ function lyricTick(L){
   L._t.querySelectorAll('.lw').forEach(w=>{const l=LYR[+w.dataset.i];w.classList.toggle('on',t>=l.tm[+w.dataset.j]);});
 }
 function setText(L,k){
-  const p=L._p,t=L._t;let html=p.songcard?songHTML(true):p.cover?coverHTML():p.book?p.parts[0].split('\n').map((x,i)=>'<p class="'+(i===0?'dropcap':'')+'">'+words(x)+'</p>').join(''):'<p class="'+(k===0?'dropcap':'')+'">'+words(p.parts[k])+'</p>';
+  const p=L._p,t=L._t;let html=p.songcard?songHTML(true,p):p.cover?coverHTML():p.book?p.parts[0].split('\n').map((x,i)=>'<p class="'+(i===0?'dropcap':'')+'">'+words(x)+'</p>').join(''):'<p class="'+(k===0?'dropcap':'')+'">'+words(p.parts[k])+'</p>';
   if(L._sl&&p.book)html='<i class="sl" style="width:'+L._sl.toFixed(3)+'%"></i>'+html;
-  lyK='';t.innerHTML='<div class="lip" aria-hidden="true">'+html+'</div><div class="ink">'+(p.songcard?songHTML(true):html)+'</div>';
+  lyK='';t.innerHTML='<div class="lip" aria-hidden="true">'+html+'</div><div class="ink">'+(p.songcard?songHTML(true,p):html)+'</div>';
   if(L===layers[cur]){pp.className='pp'+(p.cover?' cover':'');pp.innerHTML=p.cover?coverHTML():words(p.parts[k]);}
   sizeText(L);
 }
