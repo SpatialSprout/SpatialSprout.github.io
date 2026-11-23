@@ -879,6 +879,21 @@ window.CATALOG = {
       blurb: "A magical tree, flying fish and the strangest game of soccer ever. Leo and Sam crawl under an old oak tree and tumble into an upside-down world — where the sun is blue, the sea is yellow, and the fish fly through the sky. An illustrated storybook to read together.",
       strands: { "Storybook": { letter: "S", color: "#7c4dff" } },
       lessons: []
+    },
+    {
+      grade: "Storybooks",
+      name: "The Upside-Down World (Template)",
+      subject: "Storybook",
+      status: "live",
+      private: true,
+      colors: ["#7c4dff", "#e05a7a", "#7fd8f0"],
+      slug: "upside-down-world-template",
+      tiles: ["L", "S"],
+      title: "The Upside-Down World (Template)",
+      author: "M. A. Mafodh",
+      blurb: "Template preview: every page on one clean book. A magical tree, flying fish and the strangest game of soccer ever. Leo and Sam crawl under an old oak tree and tumble into an upside-down world — where the sun is blue, the sea is yellow, and the fish fly through the sky. An illustrated storybook to read together.",
+      strands: { "Storybook": { letter: "S", color: "#7c4dff" } },
+      lessons: []
     }
   ],
   moreSubjects: ["English, Science and Social Studies for Grades 3 to 8", "History and Geography"]
