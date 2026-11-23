@@ -215,7 +215,7 @@ function loadTex(src){
 /* a page with a living video: the still shows until the video can play; the video already moves, so no relief parallax */
 const vids={};let blackT=null;
 function black(){if(!blackT&&gl){blackT=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,blackT);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGB,1,1,0,gl.RGB,gl.UNSIGNED_BYTE,new Uint8Array([0,0,0]));}return {ready:true,t:blackT};}
-function loadVid(name){if(vids[name])return vids[name];const v=document.createElement('video');v.muted=true;v.defaultMuted=true;v.loop=true;v.playsInline=true;v.setAttribute('playsinline','');v.setAttribute('muted','');v.preload='auto';v.crossOrigin='anonymous';v.src='img/'+name+'.mp4?v=148';
+function loadVid(name){if(vids[name])return vids[name];const v=document.createElement('video');v.muted=true;v.defaultMuted=true;v.loop=true;v.playsInline=true;v.setAttribute('playsinline','');v.setAttribute('muted','');v.preload='auto';v.crossOrigin='anonymous';v.src='img/'+name+'.mp4?v=149';
   const o={v,t:null,ok:false};v.addEventListener('playing',()=>{o.ok=true;});vids[name]=o;return o;}
 function pageTex(p){if(p.video)return {c:loadTex('img/'+p.img+'.webp?v=163'),d:p.relief?loadTex('img/'+p.img+'-d.webp?v=163'):black(),vid:loadVid(p.video)};return {c:loadTex('img/'+p.img+'.webp?v=163'),d:loadTex('img/'+p.img+'-d.webp?v=163')};}
 const ORIGIN={kb:[.72,.55],shade:[.80,.74]};
