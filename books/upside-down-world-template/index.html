@@ -58,6 +58,9 @@ body.nogl .layer.on .fb{opacity:1}
 .txt.bk .lip{display:none}
 .txt.bk .ink{display:block}
 .txt.bk .sl{float:left;height:100%;shape-outside:polygon(0 0,100% 0,0 100%)}
+.txt.bk .sr{float:right;height:100%;display:block}
+.txt.bk.rag{text-align:left}
+
 .txt.bk .ink{color:transparent;text-shadow:none;filter:none;mix-blend-mode:normal}
 .txt.bk .ink .w.now{background:rgba(255,214,120,.30);border-radius:.18em;color:transparent;text-shadow:none}
 .txt.bk p.dropcap::first-letter,.dropcap::first-letter{font-size:inherit;float:none;line-height:inherit;padding:0;color:inherit}
@@ -131,7 +134,7 @@ body.narrow #bar{gap:6px;padding-top:8px}body.narrow #bar button{padding:0 12px;
   <button id="auto" aria-pressed="true" title="Turn the pages by itself">Auto turn</button>
   <button id="next" aria-label="Next page">&#8594;</button>
 </div>
-<script src="story.js?v=180"></script>
+<script src="story.js?v=181"></script>
 <script src="sprite.js?v=42"></script>
 <script src="../upside-down-world/lyrics.js?v=2"></script><script src="../upside-down-world/lyrics2.js?v=1"></script>
 <script src="../upside-down-world/voice.js?v=20"></script>
@@ -154,7 +157,7 @@ const audio=new Audio();audio.preload='auto';
    adds a gentle breathing sway to the raised parts, and shimmers their light. */
 const VS='attribute vec2 p;varying vec2 v;void main(){v=p*.5+.5;v.y=1.-v.y;gl_Position=vec4(p,0.,1.);}';
 const FS=`precision highp float;varying vec2 v;
-uniform sampler2D tA,dA,tB,dB;uniform float mixv,t,sA,sB,dimA,dimB,windA,windB;uniform vec2 par,oA,oB;uniform vec4 hairA,hairB,swA,swB,whA,whB;
+uniform sampler2D tA,dA,tB,dB;uniform float mixv,t,sA,sB,dimA,dimB,windA,windB;uniform vec2 par,oA,oB;uniform vec4 hairA,hairB,swA,swB,whA,whB;uniform float fl,ft,fdir,fth,xe,fside;uniform mat3 iHR,iHL;
 float mask(vec2 q){return smoothstep(.30,.40,q.x)*smoothstep(.97,.90,q.x)*smoothstep(.95,.85,q.y);}
 vec3 live(sampler2D tx,sampler2D dx,vec2 uv,float s,vec2 o,float dim,float wind,vec4 hair,vec4 sw,vec4 wh){
   vec2 q=o+(uv-o)/s;
@@ -191,17 +194,66 @@ vec3 live(sampler2D tx,sampler2D dx,vec2 uv,float s,vec2 o,float dim,float wind,
   float sh=m*r2*(.055*sin(t*1.6+q.x*13.+q.y*6.)+.035*sin(t*2.7-q.y*17.));
   c*=1.+sh;c*=1.-dim*.25*smoothstep(.40,.56,q.x);
   return c;}
+#ifdef SHEET
+varying vec2 uvF,uvB;varying float ang,gut;
+void main(){bool fr=gl_FrontFacing==(fside>0.);vec3 c;float d;
+  if(fr){c=fdir>0.?live(tA,dA,uvF,sA,oA,dimA,windA,hairA,swA,whA):live(tB,dB,uvF,sB,oB,dimB,windB,hairB,swB,whB);d=cos(ang);}
+  else{c=fdir>0.?live(tB,dB,uvB,sB,oB,dimB,windB,hairB,swB,whB):live(tA,dA,uvB,sA,oA,dimA,windA,hairA,swA,whA);d=-cos(ang);}
+  /* paper lit from above: full brightness when lying flat, darker as it tilts away, a soft sheen across the bend and a little gutter shade */
+  float sn=sin(ang);c*=1.-.32*(1.-d)*.5-.10*sn*sn;c+=vec3(1.,.93,.80)*.07*pow(max(0.,sn),6.)*max(0.,d);
+  c*=1.-.22*sn*exp(-gut*9.);
+  gl_FragColor=vec4(c,1.);}
+#else
+vec2 pmap(mat3 M,vec2 px){vec3 q=M*vec3(px,1.);return q.xy/q.z;}
+float inbox(vec2 q){vec2 e=vec2(.004,.003);return smoothstep(-e.x,e.x,q.x)*smoothstep(1.+e.x,1.-e.x,q.x)*smoothstep(-e.y,e.y,q.y)*smoothstep(1.+e.y,1.-e.y,q.y);}
 void main(){vec3 a=live(tA,dA,v,sA,oA,dimA,windA,hairA,swA,whA);vec3 b=live(tB,dB,v,sB,oB,dimB,windB,hairB,swB,whB);
-  vec3 c=mix(a,b,smoothstep(0.,1.,mixv));c+=vec3(1.,.82,.5)*.10*sin(3.14159*mixv);
-  gl_FragColor=vec4(c,1.);}`;
+  vec3 c;
+  if(fl<.5){c=mix(a,b,smoothstep(0.,1.,mixv));c+=vec3(1.,.82,.5)*.10*sin(3.14159*mixv);}
+  else{
+    /* page turn: X is the spread being turned away from, Y the spread being turned to (forward time ft) */
+    vec3 X=fdir>0.?a:b,Y=fdir>0.?b:a;vec2 px=v*vec2(1920.,1046.);
+    vec2 qr=pmap(iHR,px),ql=pmap(iHL,px);float inR=inbox(qr),inL=inbox(ql);
+    c=mix(X,Y,smoothstep(.30,.64,ft));c=mix(c,Y,inR);c=mix(c,X,inL);
+    /* the lifted sheet shades the page under it and casts a soft shadow ahead of its leading edge */
+    float sn=sin(fth);
+    float shR=qr.x<xe?.46*sn:.40*sn*exp(-(qr.x-xe)*5.);
+    float shL=xe<0.?(ql.x< -xe?.46*sn:.40*sn*exp(-(ql.x+xe)*5.)):.10*sn*exp(-ql.x*7.);
+    c*=1.-shR*inR-shL*inL;}
+  gl_FragColor=vec4(c,1.);}
+#endif`;
+const VS2=`attribute vec2 p;uniform float fth,kp;uniform mat3 HR,HL;uniform mat4 PM;varying vec2 uvF,uvB;varying float ang,gut;
+vec2 hp(mat3 M,vec2 q){vec3 r=M*vec3(q,1.);return r.xy/r.z;}
+vec2 pj(vec4 X){vec4 q=PM*X;return q.xy/q.z;}
+void main(){float s=p.x,r=p.y,k=abs(kp)<1e-4?1e-4:kp,ph=fth+k*s;
+  float x=(sin(ph)-sin(fth))/k,z=(cos(fth)-cos(ph))/k;
+  vec2 fR=hp(HR,p),fL=hp(HL,p);
+  vec2 dR=fR-pj(vec4(s,r*1.42,0.,1.)),dL=fL-pj(vec4(-s,r*1.42,0.,1.));
+  vec2 im=pj(vec4(x,r*1.42,z,1.))+mix(dR,dL,smoothstep(0.,1.,clamp(ph/3.14159,0.,1.)));
+  uvF=fR/vec2(1920.,1046.);uvB=fL/vec2(1920.,1046.);ang=ph;gut=s;
+  gl_Position=vec4(im.x/1920.*2.-1.,1.-im.y/1046.*2.,0.,1.);}`;
 let gl=null,prog=null,U={},tex={},slotA=null,slotB=null,fadeT0=0,fading=false;
 try{gl=glc.getContext('webgl',{antialias:false,premultipliedAlpha:false,preserveDrawingBuffer:true});}catch(e){}
 function sh(type,src){const s=gl.createShader(type);gl.shaderSource(s,src);gl.compileShader(s);if(!gl.getShaderParameter(s,gl.COMPILE_STATUS))throw gl.getShaderInfoLog(s);return s;}
-if(gl){try{prog=gl.createProgram();gl.attachShader(prog,sh(gl.VERTEX_SHADER,VS));gl.attachShader(prog,sh(gl.FRAGMENT_SHADER,FS));gl.linkProgram(prog);gl.useProgram(prog);
-  const b=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,b);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
-  const loc=gl.getAttribLocation(prog,'p');gl.enableVertexAttribArray(loc);gl.vertexAttribPointer(loc,2,gl.FLOAT,false,0,0);
-  ['tA','dA','tB','dB','mixv','t','sA','sB','dimA','dimB','par','oA','oB','windA','windB','hairA','hairB','swA','swB','whA','whB'].forEach(n=>U[n]=gl.getUniformLocation(prog,n));
-  [0,1,2,3].forEach(i=>gl.uniform1i(U[['tA','dA','tB','dB'][i]],i));}catch(e){console.warn(e);gl=null;}}
+/* ---------- page turn geometry: both pages of the open book (picture pixels 1920x1046) and a camera fitted to them ---------- */
+const FG={HR:[[867.8094811274725, -88.1957990330647, 970.0], [41.71645915339158, 684.0041936109112, 173.6999969482422], [0.10074838763848373, -0.08364936906073357, 1.0]],HL:[[-515.1179824418764, -302.2045421348555, 959.0], [7.227271458598532, 483.2261551261291, 166.0], [0.029888671828592936, -0.3055662229412991, 1.0]],P:[[3000.765924442363, -812.7871113921204, -943.3708943202066, 4996.645281518186], [-58.08762720609389, 1995.1277717068322, -2437.5185662602316, 878.9025759533486], [-0.09279407994819808, -0.656429019569998, -0.7501087960307592, 4.988531939718516]]};
+const UN=['tA','dA','tB','dB','mixv','t','sA','sB','dimA','dimB','par','oA','oB','windA','windB','hairA','hairB','swA','swB','whA','whB','fl','ft','fdir','fth','xe','fside','iHR','iHL','kp','HR','HL','PM'];
+let sheet=null,quadBuf=null,meshBuf=null,meshN=0,flip=null;
+function mk(vs,fs){const pr=gl.createProgram();gl.attachShader(pr,sh(gl.VERTEX_SHADER,vs));gl.attachShader(pr,sh(gl.FRAGMENT_SHADER,fs));gl.linkProgram(pr);
+  if(!gl.getProgramParameter(pr,gl.LINK_STATUS))throw gl.getProgramInfoLog(pr);const u={};UN.forEach(n=>u[n]=gl.getUniformLocation(pr,n));u._p=gl.getAttribLocation(pr,'p');
+  gl.useProgram(pr);[0,1,2,3].forEach(i=>gl.uniform1i(u[['tA','dA','tB','dB'][i]],i));return {pr,u};}
+function m3(M){return new Float32Array([M[0][0],M[1][0],M[2][0],M[0][1],M[1][1],M[2][1],M[0][2],M[1][2],M[2][2]]);}
+function inv3(M){const [a,b,c]=M[0],[d,e,f]=M[1],[g,h,i]=M[2],A=e*i-f*h,B=-(d*i-f*g),C=d*h-e*g,D=a*A+b*B+c*C;
+  return [[A/D,-(b*i-c*h)/D,(b*f-c*e)/D],[B/D,(a*i-c*g)/D,-(a*f-c*d)/D],[C/D,-(a*h-b*g)/D,(a*e-b*d)/D]];}
+if(gl){try{const base=mk(VS,FS);prog=base.pr;U=base.u;
+  quadBuf=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,quadBuf);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
+  gl.useProgram(prog);gl.uniformMatrix3fv(U.iHR,false,m3(inv3(FG.HR)));gl.uniformMatrix3fv(U.iHL,false,m3(inv3(FG.HL)));
+  try{sheet=mk(VS2,'#define SHEET\n'+FS);gl.useProgram(sheet.pr);gl.uniformMatrix3fv(sheet.u.HR,false,m3(FG.HR));gl.uniformMatrix3fv(sheet.u.HL,false,m3(FG.HL));
+    const P=FG.P;gl.uniformMatrix4fv(sheet.u.PM,false,new Float32Array([P[0][0],P[1][0],P[2][0],0,P[0][1],P[1][1],P[2][1],0,P[0][2],P[1][2],P[2][2],0,P[0][3],P[1][3],P[2][3],1]));
+    /* the turning sheet: a fine grid over the page, s from the spine (0) to the outer edge (1), r from top (0) to bottom (1) */
+    const NS=64,NR=28,v=[];for(let j=0;j<NR;j++)for(let i=0;i<NS;i++){const a=[i/NS,j/NR],b=[(i+1)/NS,j/NR],c=[i/NS,(j+1)/NR],d=[(i+1)/NS,(j+1)/NR];v.push(...a,...b,...c,...b,...d,...c);}
+    meshBuf=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,meshBuf);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(v),gl.STATIC_DRAW);meshN=v.length/2;
+  }catch(e){console.warn('page turn off',e);sheet=null;}
+  gl.useProgram(prog);}catch(e){console.warn(e);gl=null;}}
 if(!gl)document.body.classList.add('nogl');
 function loadTex(src){
   if(tex[src])return tex[src];
@@ -215,13 +267,13 @@ function loadTex(src){
 /* a page with a living video: the still shows until the video can play; the video already moves, so no relief parallax */
 const vids={};let blackT=null;
 function black(){if(!blackT&&gl){blackT=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,blackT);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGB,1,1,0,gl.RGB,gl.UNSIGNED_BYTE,new Uint8Array([0,0,0]));}return {ready:true,t:blackT};}
-function loadVid(name){if(vids[name])return vids[name];const v=document.createElement('video');v.muted=true;v.defaultMuted=true;v.loop=true;v.playsInline=true;v.setAttribute('playsinline','');v.setAttribute('muted','');v.preload='auto';v.crossOrigin='anonymous';v.src='img/'+name+'.mp4?v=160';
+function loadVid(name){if(vids[name])return vids[name];const v=document.createElement('video');v.muted=true;v.defaultMuted=true;v.loop=true;v.playsInline=true;v.setAttribute('playsinline','');v.setAttribute('muted','');v.preload='auto';v.crossOrigin='anonymous';v.src='img/'+name+'.mp4?v=165';
   const o={v,t:null,ok:false};v.addEventListener('playing',()=>{o.ok=true;});vids[name]=o;return o;}
-function pageTex(p){if(p.video)return {c:loadTex('img/'+p.img+'.webp?v=175'),d:p.relief?loadTex('img/'+p.img+'-d.webp?v=175'):black(),vid:loadVid(p.video)};return {c:loadTex('img/'+p.img+'.webp?v=175'),d:loadTex('img/'+p.img+'-d.webp?v=175')};}
+function pageTex(p){if(p.video)return {c:loadTex('img/'+p.img+'.webp?v=180'),d:p.relief?loadTex('img/'+p.img+'-d.webp?v=180'):black(),vid:loadVid(p.video)};return {c:loadTex('img/'+p.img+'.webp?v=180'),d:loadTex('img/'+p.img+'-d.webp?v=180')};}
 const ORIGIN={kb:[.72,.55],shade:[.80,.74]};
 function whv(p){return p.whale?[p.whale[0]/1408,p.whale[1]/768,p.whale[2]/1408,p.whale[3]/768]:[0,0,0,0];}
 function swv(p){return p.swirl?[p.swirl[0]/1408,p.swirl[1]/768,p.swirl[2],p.swirl[3]||0]:[0,0,0,0];}
-function kbScale(p,el){const dur=40,x=Math.min(1,el/dur),e=1-Math.pow(1-x,2);return 1+(p.fx==='shade'?.065:.045)*e;}
+function kbScale(p,el){if(p.book)return 1;const dur=40,x=Math.min(1,el/dur),e=1-Math.pow(1-x,2);return 1+(p.fx==='shade'?.065:.045)*e;}
 
 /* ---------- layout ---------- */
 function fit(){
@@ -242,10 +294,10 @@ function makeLayer(i){
   if(layers[i])return layers[i];
   const p=P[i],L=document.createElement('div');L.className='layer';
   const kb=document.createElement('div');kb.className='kb';kb.style.transformOrigin=(p.fx==='shade'?'80% 74%':'72% 55%');
-  if(!gl){let im;if(p.video){im=loadVid(p.video).v;im.poster='img/'+p.img+'.webp';}else{im=new Image();im.src='img/'+p.img+'.webp?v=175';im.alt='';}im.className='fb';kb.appendChild(im);}
+  if(!gl){let im;if(p.video){im=loadVid(p.video).v;im.poster='img/'+p.img+'.webp';}else{im=new Image();im.src='img/'+p.img+'.webp?v=180';im.alt='';}im.className='fb';kb.appendChild(im);}
   if(p.fx==='shade'){const s=document.createElement('div');s.className='shade';kb.appendChild(s);L._shade=s;}
   if(p.song){const r=document.createElement('div');r.className='rings';r.style.cssText='left:'+(650/W*100)+'%;top:'+(55/H*100)+'%;width:'+(130/W*100)+'%;height:'+(130/H*100)+'%';r.innerHTML='<i></i><i></i><i></i><i></i>';kb.appendChild(r);L._rings=r;}
-  const t=document.createElement('div');t.className='txt'+(p.cover?' cover':'')+(p.book?' bk':'')+(p.songcard?' sc':'')+(p.big?' big':'');let b=p.box;
+  const t=document.createElement('div');t.className='txt'+(p.cover?' cover':'')+(p.book?' bk':'')+(p.rag?' rag':'')+(p.songcard?' sc':'')+(p.big?' big':'');let b=p.box;
   if(p.book){const nl=b[0]-.25*(b[3]-b[1]);L._sl=(b[0]-nl)/(b[2]-nl)*100;b=[nl,b[1],b[2],b[3]];}
   if(p.book&&!window.__nobkshift)b=[b[0]+14,b[1]-3,b[2]+14,b[3]-3];
   t.style.cssText='left:'+(b[0]/W*100)+'%;top:'+(b[1]/H*100)+'%;width:'+((b[2]-b[0])/W*100)+'%;height:'+((b[3]-b[1])/H*100)+'%';
@@ -265,9 +317,15 @@ function lyricTick(L){
   L._t.querySelectorAll('.ln').forEach(p=>{p.style.display=(+p.dataset.s===st)?'block':'none';});
   L._t.querySelectorAll('.lw').forEach(w=>{const l=LY[+w.dataset.i];w.classList.toggle('on',t>=l.tm[+w.dataset.j]);});
 }
+/* the slanted left margin of a book page; a sketch on the page (gap: its top and bottom in picture pixels) becomes a band the text flows above and below */
+function slStyle(L){const p=L._p,sl=L._sl;if(p.shl)return 'width:'+p.shl.w+'%;shape-outside:polygon('+p.shl.p+')';if(!p.gap)return 'width:'+sl.toFixed(3)+'%';
+  const h=p.box[3]-p.box[1],s=sl,pts=['0% 0%',s.toFixed(2)+'% 0%'];
+  p.gap.forEach(g=>{const a=Math.max(0,Math.min(1,(g[0]-p.box[1])/h)),b=Math.max(0,Math.min(1,(g[1]-p.box[1])/h));
+    pts.push((s*(1-a)).toFixed(2)+'% '+(a*100).toFixed(2)+'%','100% '+(a*100).toFixed(2)+'%','100% '+(b*100).toFixed(2)+'%',(s*(1-b)).toFixed(2)+'% '+(b*100).toFixed(2)+'%');});
+  pts.push('0% 100%');return 'width:100%;shape-outside:polygon('+pts.join(',')+')';}
 function setText(L,k){
   const p=L._p,t=L._t;let html=p.songcard?songHTML(true,p):p.cover?coverHTML():p.book?p.parts[0].split('\n').map((x,i)=>'<p class="'+(i===0?'dropcap':'')+'">'+words(x)+'</p>').join(''):'<p class="'+(k===0?'dropcap':'')+'">'+words(p.parts[k])+'</p>';
-  if(L._sl&&p.book)html='<i class="sl" style="width:'+L._sl.toFixed(3)+'%"></i>'+html;
+  if(L._sl&&p.book)html='<i class="sl" style="'+slStyle(L)+'"></i>'+(p.shr?'<i class="sr" style="width:'+p.shr.w+'%;shape-outside:polygon('+p.shr.p+')"></i>':'')+html;
   lyK='';t.innerHTML='<div class="lip" aria-hidden="true">'+html+'</div><div class="ink">'+(p.songcard?songHTML(true,p):html)+'</div>';
   if(L===layers[cur]){pp.className='pp'+(p.cover?' cover':'');pp.innerHTML=p.cover?coverHTML():words(p.parts[k]);}
   sizeText(L);
@@ -276,18 +334,21 @@ function maxGap(ink){let g=0;ink.querySelectorAll('p').forEach(p=>{const ws=[...
 function sizeText(L){
   const t=L._t;if(!t||!t.firstChild)return;const ink=t.querySelector('.ink');
   let f=L._p.cover?56:(L._p.fs||25);t.style.fontSize=(f*u)+'px';
+  if(L._p.gap||L._p.shl)t.querySelectorAll('.sl,.sr').forEach(e=>{e.style.height=t.clientHeight+'px';});
   let n=0;while((ink.scrollHeight>t.clientHeight+1||ink.scrollWidth>t.clientWidth+1)&&f>13&&n++<80){f-=.5;t.style.fontSize=(f*u)+'px';}
   if(L._p.book&&!L._p.fs){let m=0;const f0=f;while(maxGap(ink)>1.1&&f>Math.max(19,f0-2.5)&&m++<20){f-=.5;t.style.fontSize=(f*u)+'px';}}
 }
 function show(i,k){
   if(i<0||i>=P.length)return;
+  const from=cur;
   stopAudio();clearTimeout(timer);
   const prev=layers[cur],L=makeLayer(i);
   if(i+1<P.length)makeLayer(i+1);
   const same=prev===L;
   if(prev&&!same){prev.classList.remove('on');prev._t.classList.remove('show');if(prev._shade)prev._shade.classList.remove('go');if(prev._rings)prev._rings.classList.remove('on');}
   cur=i;part=k||0;
-  if(!same){const now=performance.now();slotA=prev?{p:prev._p,t0:pageT0}:null;slotB={p:L._p,t0:now};pageT0=now;fadeT0=now;fading=!!prev;}
+  if(!same){const now=performance.now();slotA=prev?{p:prev._p,t0:pageT0}:null;slotB={p:L._p,t0:now};pageT0=now;fadeT0=now;fading=!!prev;
+    flip=(prev&&prev._p.book&&L._p.book&&sheet&&!reduce)?{dir:i>from?1:-1,t0:now}:null;}
   L.classList.add('on');
   Object.keys(vids).forEach(n=>{const o=vids[n];if(L._p.video===n){try{o.v.currentTime=0;}catch(e){}o.v.play().catch(()=>{});}else if(!(prev&&prev._p.video===n))o.v.pause();});
   if(prev&&prev._p.video&&prev._p.video!==L._p.video)setTimeout(()=>{const o=vids[prev._p.video];if(o&&layers[cur]!==prev)o.v.pause();},1300);
@@ -401,7 +462,7 @@ function sprState(d,tt){
 const sm3=(a,b,x)=>{const k=Math.max(0,Math.min(1,(x-a)/(b-a)));return k*k*(3-2*k);},ease=k=>k*k*(3-2*k);
 function shiftAt(qx,qy,rl,t){const m=sm3(.30,.40,qx)*sm3(.97,.90,qx)*sm3(.95,.85,qy);
   return [(curPar[0]*.011*(.35+.65*m)+m*Math.sin(t*.85+qy*9+qx*2)*.0022)*rl,(curPar[1]*.011*(.35+.65*m)+m*Math.cos(t*.67+qx*7)*.0022)*rl];}
-const DEP={};function depthAt(img,x,y){let o=DEP[img];if(!o){o=DEP[img]={c:null};const im=new Image();im.onload=()=>{const cv2=document.createElement('canvas');cv2.width=im.naturalWidth;cv2.height=im.naturalHeight;const cx=cv2.getContext('2d');cx.drawImage(im,0,0);o.c=cx;o.w=cv2.width;o.h=cv2.height;};im.src='img/'+img+'-d.webp?v=175';}
+const DEP={};function depthAt(img,x,y){let o=DEP[img];if(!o){o=DEP[img]={c:null};const im=new Image();im.onload=()=>{const cv2=document.createElement('canvas');cv2.width=im.naturalWidth;cv2.height=im.naturalHeight;const cx=cv2.getContext('2d');cx.drawImage(im,0,0);o.c=cx;o.w=cv2.width;o.h=cv2.height;};im.src='img/'+img+'-d.webp?v=180';}
   if(!o.c)return .85;try{const v=o.c.getImageData(Math.min(o.w-1,Math.round(x/W*o.w)),Math.min(o.h-1,Math.round(y/H*o.h)),1,1).data[0]/255;return sm3(.14,1,v);}catch(e){return .85;}}
 /* body-part motions: rot (rad, + = clockwise on screen), sx, sy scale about the pivot, dx, dy in picture px */
 const MOT={
@@ -586,24 +647,38 @@ let last=performance.now(),dimS=0;
 function bindPage(slot,unitC,unitD){const tx=pageTex(slot.p);gl.activeTexture(gl.TEXTURE0+unitC);
   const vo=tx.vid;if(vo&&vo.ok&&vo.v.readyState>=2){if(!vo.t){vo.t=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,vo.t);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);}
     gl.bindTexture(gl.TEXTURE_2D,vo.t);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGB,gl.RGB,gl.UNSIGNED_BYTE,vo.v);}else gl.bindTexture(gl.TEXTURE_2D,tx.c.t);gl.activeTexture(gl.TEXTURE0+unitD);gl.bindTexture(gl.TEXTURE_2D,tx.d.t);return tx.c.ready&&tx.d.ready;}
+function setU(u,o){for(const k in o){const v=o[k],l=u[k];if(l==null)continue;if(typeof v==='number')gl.uniform1f(l,v);else if(v.length===2)gl.uniform2f(l,v[0],v[1]);else gl.uniform4fv(l,v);}}
+const FLIP_MS=1350;
 function drawGL(now){
   if(!gl||!slotB)return;
   const tB=pageTex(slotB.p);if(!(tB.c.ready&&tB.d.ready)){if(!slotA)return;}
   const t=reduce?0:now/1000;
   ptrS[0]+=(ptr[0]-ptrS[0])*.04;ptrS[1]+=(ptr[1]-ptrS[1])*.04;
-  const par=reduce?[0,0]:[Math.sin(t*.23)*.9+ptrS[0]*1.1,Math.cos(t*.17)*.55+ptrS[1]*.7];
-  let m=fading?Math.min(1,(now-fadeT0)/1100):1;if(!(tB.c.ready&&tB.d.ready))m=0,fadeT0=now;if(m>=1)fading=false;
+  let par=reduce?[0,0]:[Math.sin(t*.23)*.9+ptrS[0]*1.1,Math.cos(t*.17)*.55+ptrS[1]*.7];
+  /* page turn: wait until the next spread is loaded, then turn the sheet over the spine */
+  let fp=-1;
+  if(flip){const tA=slotA&&pageTex(slotA.p);if(!(tB.c.ready&&tB.d.ready)||!(tA&&tA.c.ready&&tA.d.ready)){flip.t0=now;fadeT0=now;}
+    fp=Math.min(1,(now-flip.t0)/FLIP_MS);if(fp>=1){flip=null;fading=false;fp=-1;}}
+  let m=fading?Math.min(1,(now-fadeT0)/1100):1;if(!(tB.c.ready&&tB.d.ready))m=0,fadeT0=now;if(fp>=0)m=.5;else if(m>=1)fading=false;
   const A=slotA&&m<1?slotA:slotB;
   bindPage(A,0,1);bindPage(slotB,2,3);
   const oa=A.p.fx==='shade'?ORIGIN.shade:ORIGIN.kb,ob=slotB.p.fx==='shade'?ORIGIN.shade:ORIGIN.kb;
   const sa=reduce?1:kbScale(A.p,(now-A.t0)/1000),sb=reduce?1:kbScale(slotB.p,(now-pageT0)/1000);
-  gl.uniform1f(U.mixv,m);gl.uniform1f(U.t,t);gl.uniform1f(U.sA,sa);gl.uniform1f(U.sB,sb);
-  gl.uniform2f(U.oA,oa[0],oa[1]);gl.uniform2f(U.oB,ob[0],ob[1]);gl.uniform2f(U.par,par[0],par[1]);
-  dimS+=((slotB.p.fx==='shade'?1:0)-dimS)*.01;gl.uniform1f(U.dimA,A.p.fx==='shade'?dimS:0);gl.uniform1f(U.dimB,slotB.p.fx==='shade'?dimS:0);
+  dimS+=((slotB.p.fx==='shade'?1:0)-dimS)*.01;
   const hv=p=>p.hair?[p.hair[0]/W,p.hair[1]/H,p.hair[2]/W,p.hair[3]/H]:[0,0,-1,-1];
-  gl.uniform1f(U.windA,A.p.wind?(+A.p.wind||1):0);gl.uniform1f(U.windB,slotB.p.wind?(+slotB.p.wind||1):0);gl.uniform4fv(U.hairA,hv(A.p));gl.uniform4fv(U.hairB,hv(slotB.p));gl.uniform4fv(U.swA,swv(A.p));gl.uniform4fv(U.swB,swv(slotB.p));gl.uniform4fv(U.whA,whv(A.p));gl.uniform4fv(U.whB,whv(slotB.p));
+  /* forward time of the turn (a backward turn plays the forward one in reverse), sheet angle and curl */
+  let ft=0,th=0,kp=0,xe=1;
+  if(fp>=0){const f=flip.dir>0?fp:1-fp;ft=f;const e=.5-.5*Math.cos(Math.PI*f);th=Math.PI*e;
+    kp=-2.1*Math.sin(Math.PI*e)*(flip.dir>0?1:.85);const k=Math.abs(kp)<1e-4?1e-4:kp;xe=(Math.sin(th+k)-Math.sin(th))/k;
+    const q=1-Math.sin(Math.PI*fp);par=[par[0]*q,par[1]*q];}
+  const Uo={mixv:m,t,sA:sa,sB:sb,oA:oa,oB:ob,par,dimA:A.p.fx==='shade'?dimS:0,dimB:slotB.p.fx==='shade'?dimS:0,
+    windA:A.p.wind?(+A.p.wind||1):0,windB:slotB.p.wind?(+slotB.p.wind||1):0,hairA:hv(A.p),hairB:hv(slotB.p),swA:swv(A.p),swB:swv(slotB.p),whA:whv(A.p),whB:whv(slotB.p),
+    fl:fp>=0?1:0,ft,fdir:fp>=0?(flip.dir>0?1:-1):1,fth:th,xe,kp,fside:-1};
+  gl.useProgram(prog);gl.bindBuffer(gl.ARRAY_BUFFER,quadBuf);gl.enableVertexAttribArray(U._p);gl.vertexAttribPointer(U._p,2,gl.FLOAT,false,0,0);
+  setU(U,Uo);gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
+  if(fp>=0&&sheet){gl.useProgram(sheet.pr);gl.bindBuffer(gl.ARRAY_BUFFER,meshBuf);gl.enableVertexAttribArray(sheet.u._p);gl.vertexAttribPointer(sheet.u._p,2,gl.FLOAT,false,0,0);
+    setU(sheet.u,Uo);gl.drawArrays(gl.TRIANGLES,0,meshN);}
   curPar=par;curS=sb;
-  gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
   const L=layers[cur];if(L&&L._kb)L._kb.style.transform='scale('+sb+')';
 }
 function frame(now){
