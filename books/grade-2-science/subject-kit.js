@@ -52,7 +52,7 @@ function standee(n,o){o=o||{};const col=o.col||COLS[0];const g=new THREE.Group()
   else{const cp=PICS[n];if(cp)figGeo(cp,parts=>{if(!parts){/* no vector art: a simple word block */return;}const fg=new THREE.Group();const s=.0215;fg.scale.set(s,-s,s);fg.position.set(-18*s,36*s+.02,0);
       parts.forEach(pt=>{const m=new THREE.Mesh(pt.geo,figMat(pt.col,pt.op));m.castShadow=true;fg.add(m);});const f0=new THREE.Group();f0.add(fg);f0.scale.setScalar(.01);piv.add(f0);
       tween(.45,k=>f0.scale.setScalar(Math.max(.01,k<.8?k/.8*1.1:1.1-(k-.8)/.2*.1)));});}
-  if(o.label!==false&&g.userData.label){const L=label(g.userData.label,{size:.17,bg:'#ffffff',border:col});L.position.set(0,.98,0);g.add(L);}
+  if(o.label!==false&&g.userData.label){const L=onTop(label(g.userData.label,{size:.17,bg:'#ffffff',border:col}));L.position.set(0,.98,0);g.add(L);}
   if(o.s)g.scale.setScalar(o.s);return g;}
 function glyphMat(txt,col,bg,w){return M('gl'+txt+col+bg+w,()=>{const c=document.createElement('canvas');const cw=Math.min(1024,Math.round(256*w/.46));c.width=cw;c.height=256;const g=c.getContext('2d');
   g.fillStyle=bg;g.fillRect(0,0,cw,256);g.strokeStyle='rgba(27,34,54,.22)';g.lineWidth=12;g.strokeRect(6,6,cw-12,244);g.fillStyle=col;
@@ -87,10 +87,11 @@ function ghost(w){if(BKs.tokens){const g=new THREE.Group();const r=mk(G('tkg',()
     const q=sticker('?','#e09b00',.42);q.position.y=.4;g.add(q);bob(g,.06,2.4,0);g.userData.gap=1;g.userData.w=w;return g;}const g=new THREE.Group();const b=new THREE.Mesh(new THREE.BoxGeometry(w,.42,.46),new THREE.MeshLambertMaterial({color:'#ffe066',transparent:true,opacity:.42,depthWrite:false}));b.position.y=.21;g.add(b);
   const e=new THREE.LineSegments(new THREE.EdgesGeometry(b.geometry),new THREE.LineBasicMaterial({color:'#e09b00'}));e.position.y=.21;g.add(e);const q=label('?',{size:.3,color:'#c27c00'});q.position.y=.7;g.add(q);g.userData.gap=1;g.userData.w=w;return g;}
 /* an open crate with a sign, for sorting */
+function onTop(o){o.traverse(m=>{if(m.isMesh&&m.material){m.material=m.material.clone();m.material.depthTest=false;m.renderOrder=80;}});return o;}
 function crate(lab,col,x,z,w){if(BKs.tokens){const g=new THREE.Group();g.position.set(x,0,z);const d=1.15;
     const b=mk(G('tkbk'+w,()=>new THREE.CylinderGeometry(w/2,w/2*.85,.22,28,1,true)),P.paper('#c99a5b',{mix:.1}),0);b.material.side=THREE.DoubleSide;b.scale.z=d/w;b.position.y=.11;g.add(b);
     const fl=mk(G('tkbf'+w,()=>new THREE.CylinderGeometry(w/2*.85,w/2*.85,.02,28)),P.paper(col,{mix:.55}),0);fl.scale.z=d/w;fl.position.y=.01;g.add(fl);const rim=mk(G('tkbr'+w,()=>new THREE.TorusGeometry(w/2,.03,6,32)),P.paper('#a87a45'),0);rim.rotation.x=Math.PI/2;rim.scale.y=d/w;rim.position.y=.22;g.add(rim);
-    const L=sticker(lab,col,.3);L.position.set(0,.62,-d/2);g.add(L);g.userData.bin=lab;return g;}const g=new THREE.Group();g.position.set(x,0,z);const d=1.15,h=.3,c=lam(col),lt=lam(mixHex(col,'#ffffff',.72));
+    const L=onTop(sticker(lab,col,.3));L.position.set(0,.62,-d/2);g.add(L);g.userData.bin=lab;return g;}const g=new THREE.Group();g.position.set(x,0,z);const d=1.15,h=.3,c=lam(col),lt=lam(mixHex(col,'#ffffff',.72));
   const fl=mk(new THREE.BoxGeometry(w,.04,d),lt,20);fl.position.y=.02;g.add(fl);
   [[0,-d/2,w,.06],[0,d/2,w,.06]].forEach(([xx,zz,ww,dd])=>{const m=mk(new THREE.BoxGeometry(ww,h,dd),c,20);m.position.set(xx,h/2,zz);g.add(m);});
   [[-w/2,0],[w/2,0]].forEach(([xx])=>{const m=mk(new THREE.BoxGeometry(.06,h,d),c,20);m.position.set(xx,h/2,0);g.add(m);});
@@ -165,7 +166,8 @@ function render(g2,st,h){const set=st.set||{};const reg={items:[],opts:[],built:
     if(set.pic&&(set.fill||set.build)){heroAt(set.pic,1.2,-3.15,1.05);heroDone=true;}}
   const ZS0=EX?.55:0;
   if(!EX&&st.theme&&!st.explain&&P.HAB&&!set.grid&&!set.custom&&!set.scene&&st.mode==='play'){const H2=P.HAB.mini(P.HAB.strandEnv(st.strand,st.lidx),st.lidx+3);g2.add(H2.g);}
-  if(set.scene&&P.STAGE){reg.sc=P.STAGE.makeScene(g2,st,set.row||set.fill||set.build||set.bins||set.grid?.3:.7);const fn=typeof set.scene==='function'?set.scene:(P.SCENES||{})[set.scene];try{reg.scene=fn?fn(reg.sc,st,set)||{}:{};}catch(e){console.error(e);reg.scene={};}}
+  if(set.scene&&P.STAGE){reg.sc=P.STAGE.makeScene(g2,st,set.row||set.fill||set.build||set.bins||set.grid?.3:.7);const fn=typeof set.scene==='function'?set.scene:(P.SCENES||{})[set.scene];try{reg.scene=fn?fn(reg.sc,st,set)||{}:{};}catch(e){console.error(e);reg.scene={};}
+    if(set.row||set.fill||set.build||set.bins||set.grid){try{g2.updateMatrixWorld(true);reg.sc.g.children.slice().forEach(o=>{if(!o.visible||o.userData.arms||o.userData.head||o.userData.keep)return;const bb=new THREE.Box3().setFromObject(o);if(bb.isEmpty())return;const h=bb.max.y-bb.min.y;const c=bb.getCenter(new THREE.Vector3());g2.worldToLocal(c);if(h>.45&&Math.abs(c.x)<2.7&&c.z>-3.1&&c.z<1.1)o.visible=false;});}catch(e){console.warn('clearZone',e);}}}
   if(set.custom&&CUSTOM[set.custom]){reg.custom=CUSTOM[set.custom](g2,st,h,set)||{};}
   /* a row of standees (also used for order and pick rounds) */
   if(set.row){const names=set.row,pos=layoutRow(names.length,set.z||(set.scene?-.95:set.fill||set.build?-2.6:Z0));names.forEach((n,i)=>{const lb=set.labels===false?false:(set.labels&&set.labels[i]!=null?set.labels[i]:(set.letters?'ABCDEFGH'[i]:n));
@@ -329,7 +331,7 @@ P.unit=function(d){(window.__UNITS=window.__UNITS||[]).push(d);if(BKs.autoRounds
           if(set.opts)set=Object.assign({},set,{opts:shuffle(set.opts)});
           if(set.bins)set=Object.assign({},set,{items:shuffle(set.items)});
           if(R.scene)set=Object.assign({},set,{scene:R.scene});else if(!BKs.noThinker&&P.STAGE&&!set.row&&!set.fill&&!set.build&&!set.bins&&!set.grid&&!set.custom)set=Object.assign({},set,{scene:(sc,st2,s2)=>P.STAGE.thinker(sc,st2,s2,{kid:r%6})});
-          if(R.o&&!set.fill&&!set.build&&!set.bins&&!set.grid&&!set.custom&&R.o.length<=4&&R.o.every(t=>String(t).length<=16))set=Object.assign({},set,{choices:shuffle(R.o.map(String))});
+          if(!BKs.pageAnswers&&R.o&&!set.fill&&!set.build&&!set.bins&&!set.grid&&!set.custom&&R.o.length<=4&&R.o.every(t=>String(t).length<=16))set=Object.assign({},set,{choices:shuffle(R.o.map(String))});
           st.chosen=null;useSet(set);st.setup=false;return R.q;}};}});
 };
 P.K2={standee,block,crate,find,pic,picTile,img,CUSTOM,COLS,render,jump,shake,mixHex};

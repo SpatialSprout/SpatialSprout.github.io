@@ -154,7 +154,7 @@ const STRAND_ENV={'Sounds and Letters':'garden','Sounds and Spelling':'meadow','
  'Life Systems':'forest','Matter and Energy':'kitchen','Structures and Mechanisms':'city','Earth and Space Systems':'sky','Heritage and Identity':'home','People and Environments':'town',
  'Number':'store','Algebra':'garden','Data':'park','Spatial Sense':'city','Financial Literacy':'store'};
 const ENVS=Object.keys(ENV);
-P.HAB={ENV,MAP,AN,
+P.HAB={ENV,MAP,AN,fx,
  kindFor(name,fallback){return MAP[name]||fallback||'meadow';},
  /* build a habitat: returns {g, tick, title} */
  make(kind,seed){SEED=seed||7;const g=new THREE.Group();const T=[];let title='';try{title=(ENV[kind]||ENV.meadow)(g,T);}catch(e){console.error('habitat',kind,e);}

@@ -13,7 +13,7 @@ const words=n=>n===100?'one hundred':n<20?ONES[n]:TENS[Math.floor(n/10)]+(n%10?'
 const ORD=['','1st','2nd','3rd','4th','5th','6th','7th','8th','9th','10th'];
 const ORDW=['','first','second','third','fourth','fifth','sixth','seventh','eighth','ninth','tenth'];
 /* answer buttons in the dock: right answer solves the round, wrong answer gives a hint */
-function choices(game,list,ans,ok,lab,hint){return list.map(o=>({t:lab?lab(o):String(o),big:true,fn:()=>{if(String(o)===String(ans)){if(game)game.solved(ok);else A.good(ok);}else A.bad(hint||'Not quite. Try again!');}}));}
+function choices(game,list,ans,ok,lab,hint){return list.map(o=>({t:lab?lab(o):String(o),big:true,choice:true,fn:()=>{if(String(o)===String(ans)){if(game)game.solved(ok);else A.good(ok);}else{if(game){(game.wrong=game.wrong||{})[game.round+'|'+(lab?lab(o):String(o))]=1;if(P.redrawR)P.redrawR();}A.bad(hint||'Not quite. Try again!');}}}));}
 function nearby(ans,lo,hi,k){const s=new Set([ans]);let guard=0;while(s.size<(k||3)&&guard++<60){const v=ans+pick([-2,-1,1,2,3,-3]);if(v>=lo&&v<=hi)s.add(v);}return shuffle([...s]);}
 
 /* ---------------- 3D toy box ---------------- */
