@@ -76,6 +76,24 @@ if(D){const op=D.person;D.person=function(sc,who,x,z,o){P.__who=typeof who==='st
   const ob=D.base;D.base=function(sc,ground,o){const id=sc.__sid;const f=FLOOR[id];const b=ob.call(D,sc,f?'#e9e2d6':ground,o);
     if(f&&M[f]){const w=(o&&o.w)||4.15,d=(o&&o.d)||2.35;const t=tex(f);t.wrapS=t.wrapT=THREE.MirroredRepeatWrapping;t.repeat.set(2,1);
       const fl=new THREE.Mesh(new THREE.PlaneGeometry(w*.97,d*.95),new THREE.MeshBasicMaterial({map:t}));fl.rotation.x=-Math.PI/2;fl.position.y=.02;b.add(fl);}
+    {const KIND={c01:'classroom',c02:'savannah',c03:'forest',c04:'arctic',c05:'ocean',c06:'farm',c07:'jungle',c08:'pond',c09:'garden',c10:'kitchen',c11:'kitchen',c12:'winter',c13:'pond',c14:'store',c15:'sky',c16:'river',c17:'park',c18:'home',c19:'river',c20:'town',c21:'park',c22:'mountain',c23:'beach',c24:'classroom'};
+      const cd=P.HAB&&P.HAB.CLAY&&P.HAB.CLAY[KIND[id]];if(cd){let sd=id.charCodeAt(2)*13+id.charCodeAt(1);const rr=()=>{sd=(sd*9301+49297)%233280;return sd/233280;};
+        cd.rim.slice(0,6).forEach((n,i)=>{const side=i%2?1:-1;const m=P.artProp(n,{s:.36+rr()*.08,bare:true,shadow:true});if(m){m.position.set(side*(1.78+rr()*.12),.02,-.95+Math.floor(i/2)*.7+rr()*.15);m.rotation.y=side>0?-.3:.3;b.add(m);}});
+        cd.back.slice(0,3).forEach((n,i)=>{if(/^eco_|cloud|sun|rainbow/.test(n))return;const m=P.artProp(n,{s:.45,bare:true,shadow:true});if(m){m.position.set(-.9+i*.9,.02,-1.05);b.add(m);}});}}
     const e=ECO[id];if(e&&M[e]){const s=P.artProp(e,{s:.9,bare:true});if(s){s.position.set(-1.8,.02,-.95);s.scale.setScalar(.75);s.userData.tick=null;b.add(s);}}
     return b;};}
+
+/* more coded set pieces become clay art */
+if(SET){const grp=(f)=>{try{return f();}catch(e){return null;}};const A2=(n,s)=>P.artProp(n,{s:s,bare:true,shadow:true});
+  const row=(n,w,s,gap)=>{const g=new THREE.Group();const k=Math.max(2,Math.round(w/gap));for(let i=0;i<k;i++){const m=A2(n,s);if(m){m.position.x=(i-(k-1)/2)*gap;g.add(m);}}return g;};
+  const wrapN=(name,fn)=>{const old=SET[name];if(!old)return;SET[name]=function(...a){const r=grp(()=>fn.apply(SET,a));return r||old.apply(SET,a);};};
+  wrapN('fence',w=>M.plant?row('plant',w||3,.5,.45):null);
+  wrapN('house',o=>M.eco_farm?A2('eco_farm',((o&&o.w)||.9)*1.6):null);
+  wrapN('bench',()=>{if(!M.chair)return null;const g=new THREE.Group();[-.22,.22].forEach(x=>{const m=A2('chair',.5);m.position.x=x;g.add(m);});return g;});
+  wrapN('swing',()=>M.carousel?A2('carousel',1.1):null);
+  wrapN('cave',()=>M.rock?A2('rock',1.9):null);
+  wrapN('lamp',()=>{if(!M.light_bulb)return null;const g=new THREE.Group();const m=A2('light_bulb',.7);g.add(m);g.userData.bulb=m;return g;});
+  const shelf=()=>{if(!M.box)return null;const g=new THREE.Group();[-.4,0,.4].forEach((x,i)=>{const m=A2(i==1?'book':'box',.5);m.position.set(x,0,0);g.add(m);});const t=A2('plant',.3);t.position.set(.7,0,0);g.add(t);return g;};
+  wrapN('shelf',shelf);wrapN('counter',w=>M.box?row('box',w||1,.5,.5):null);
+  wrapN('table',o=>M.box?row('box',(o&&o.w)||1.5,.45,.6):null);}
 })();

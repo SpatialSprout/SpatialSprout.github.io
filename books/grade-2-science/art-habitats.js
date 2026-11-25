@@ -40,6 +40,7 @@ const D={
  sky:{f:'f_meadow',c:'#bfe3f7',rim:['cloud','kite','pinwheel','rainbow','bird'],back:['cloud','rainbow','cloud','cloud'],fx:'sparkle'},
  home:{f:'f_wood',c:'#e7d4b4',rim:['chair','cat','dog','plant','teddy','door'],back:['door','chair','plant'],fx:'sparkle'}
 };
+H.CLAY=D;
 function place(g,m,x,z,s){if(!m)return;m.position.set(x,0,z);g.add(m);}
 function build(kind,g,T){
   const d=D[kind];SEED=7+kind.length*3;
