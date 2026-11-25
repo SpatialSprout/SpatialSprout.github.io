@@ -68,7 +68,7 @@ const TCOL=['#ff6b6b','#4dabf7','#51cf66','#fcc419','#cc5de8','#ff922b','#20c997
 function bob(o,amp,sp,ph){const m=o.children[0];if(!m)return;const y0=o.position.y;m.onBeforeRender=()=>{const t=performance.now()/1000;o.children.forEach(c=>{if(c.userData.b0==null)c.userData.b0=c.position.y;c.position.y=c.userData.b0+Math.sin(t*(sp||1.6)+(ph||0))*(amp||.05);});};}
 /* a themed answer piece: a balloon, a fish, a flower… with the word floating on it */
 function token(txt,o){o=o||{};const role=o.side==='#5fd38a'?'ok':o.side==='#8fd3ff'?'opt':'part';const g=new THREE.Group();const ph=(txt.length*1.7)%6;
-  const col=role==='ok'?'#2f9e44':role==='part'?'#e9e3d3':TCOL[(txt.charCodeAt(0)+txt.length)%TCOL.length];const P3=P.PROP3||{};const th=role==='part'?'paper':THEME;let ty=.55;
+  const col=role==='ok'?'#2f9e44':role==='part'?'#e9e3d3':TCOL[(txt.charCodeAt(0)+txt.length)%TCOL.length];const P3=P.PROP3||{};const th='paper';let ty=.55;
   const add=(m,y)=>{if(y!=null)m.position.y=y;g.add(m);return m;};
   if(th==='paper'){const s=P.mk(G('tkp',()=>new THREE.CylinderGeometry(.2,.2,.02,24)),P.paper('#ffffff',{mix:0}),0);s.scale.set(Math.max(1,bw(txt)/.42),1,.75);add(s,.01);ty=.32;}
   else if(th==='balloon'){const b=add(P.mk(G('tkb',()=>new THREE.SphereGeometry(.2,20,14)),P.paper(col,{mix:.1}),0),.62);b.scale.set(1,1.15,1);add(P.mk(G('tks',()=>new THREE.CylinderGeometry(.004,.004,.45,4)),P.paper('#495057'),0),.22);ty=.62;}
@@ -165,7 +165,7 @@ function render(g2,st,h){const set=st.set||{};const reg={items:[],opts:[],built:
       return reg;}
     if(set.pic&&(set.fill||set.build)){heroAt(set.pic,1.2,-3.15,1.05);heroDone=true;}}
   const ZS0=EX?.55:0;
-  if(!EX&&st.theme&&!st.explain&&P.HAB&&!set.grid&&!set.custom&&!set.scene&&st.mode==='play'){const H2=P.HAB.mini(P.HAB.strandEnv(st.strand,st.lidx),st.lidx+3);g2.add(H2.g);}
+  if(!EX&&st.theme&&!st.explain&&P.HAB&&!set.grid&&!set.custom&&!set.scene&&st.mode==='play'){const gk=(()=>{const words=[].concat(set.ans||[],set.opts||[],set.row||[],set.fill||[],(set.items||[]).map(i=>i[0])).join(' ').toLowerCase();const M=P.HAB.MAP;const tryN=n=>M[n];let k=null;[].concat(set.ans||[]).concat(set.row||[]).forEach(a=>{if(!k&&M[String(a).toLowerCase()])k=M[String(a).toLowerCase()];});if(!k)Object.keys(M).sort((a,b)=>b.length-a.length).some(n=>{if(n.length>2&&new RegExp('\\b'+n+'\\b').test(words)){k=M[n];return true;}});return k;})();const H2=P.HAB.mini(gk||P.HAB.strandEnv(st.strand,st.lidx),st.lidx+3);g2.add(H2.g);}
   if(set.scene&&P.STAGE){reg.sc=P.STAGE.makeScene(g2,st,set.row||set.fill||set.build||set.bins||set.grid?.3:.7);const fn=typeof set.scene==='function'?set.scene:(P.SCENES||{})[set.scene];try{reg.scene=fn?fn(reg.sc,st,set)||{}:{};}catch(e){console.error(e);reg.scene={};}
     if(set.row||set.fill||set.build||set.bins||set.grid){try{g2.updateMatrixWorld(true);reg.sc.g.children.slice().forEach(o=>{if(!o.visible||o.userData.arms||o.userData.head||o.userData.keep)return;const bb=new THREE.Box3().setFromObject(o);if(bb.isEmpty())return;const h=bb.max.y-bb.min.y;const c=bb.getCenter(new THREE.Vector3());g2.worldToLocal(c);if(h>.45&&Math.abs(c.x)<2.7&&c.z>-3.1&&c.z<1.1)o.visible=false;});}catch(e){console.warn('clearZone',e);}}}
   if(set.custom&&CUSTOM[set.custom]){reg.custom=CUSTOM[set.custom](g2,st,h,set)||{};}
@@ -189,7 +189,7 @@ function render(g2,st,h){const set=st.set||{};const reg={items:[],opts:[],built:
     const hasPic=!!set.pic&&!set.row&&!heroDone;let x=-tot/2+(hasPic?.55:0);if(hasPic){const s=standee(set.pic,{col:COLS[1],label:set.picLabel||false,s:.95});s.userData.kind=set.pic;s.position.set(Math.max(-2.05,x-.75),0,-1.95);g2.add(s);reg.items.push(s);reg.pic=s;x=Math.max(x,-1.4);}
     const z=set.row?-1.55:-1.9+ZS0;parts.forEach((t,i)=>{const w=ws[i];let b;if(t==='_'){b=st.filled?block(st.filled,{side:'#5fd38a'}):ghost(w/fsc);b.userData.gap=1;}else b=block(t,{side:set.side||'#ffd24a'});b.scale.setScalar(fsc);b.position.set(x+w/2,0,z);b.userData.part=String(i);g2.add(b);x+=w+gap;});
     const opts=set.opts||[];const ow=opts.map(t=>bw(t)),otot=ow.reduce((a,b)=>a+b,0)+.3*(opts.length-1),osc=Math.min(EX?1.4:1,3.9/Math.max(.01,otot));let ox=-otot*osc/2;const oxs=ow.map(w=>{const c=ox+w*osc/2;ox+=w*osc+.3*osc;return c;});
-    opts.forEach((t,i)=>{if(st.filled&&t===st.filled&&st.filledOk)return;const b=block(t,{side:'#8fd3ff'});b.scale.setScalar(osc);b.position.set(oxs[i],0,set.row?-.62:-.78+ZS0*.3);b.userData.opt=t;g2.add(b);reg.opts.push(b);A.drag(b,{tap:()=>h.opt(t,b)});});}
+    if(!(BKs.pageAnswers&&st.mode==='play'&&st.round))opts.forEach((t,i)=>{if(st.filled&&t===st.filled&&st.filledOk)return;const b=block(t,{side:'#8fd3ff'});b.scale.setScalar(osc);b.position.set(oxs[i],0,set.row?-.62:-.78+ZS0*.3);b.userData.opt=t;g2.add(b);reg.opts.push(b);A.drag(b,{tap:()=>h.opt(t,b)});});}
   /* build a sentence: tap the word blocks in order */
   if(set.build){const words=set.build,perm=st.perm||words.map((w,i)=>i);const built=st.built||[];const full=words.reduce((a,w)=>a+BW(w)+.06,0),sc=Math.min(1,3.9/full);const bw=t=>BW(t)*sc;const block=(t,o)=>{const b=BLOCK(t,o);b.scale.setScalar(sc);return b;};let x=-full*sc/2;
     const line=mk(G('k2line',()=>new THREE.BoxGeometry(4.5,.02,.06)),lam('#c9cfdc'),0);line.position.set(0,.01,-1.6);g2.add(line);
@@ -319,6 +319,7 @@ P.unit=function(d){(window.__UNITS=window.__UNITS||[]).push(d);if(BKs.autoRounds
         controls:()=>{if(BKs.noLearnDock&&mode==='learn')return reg.custom&&reg.custom.controls?reg.custom.controls():[];const c=[{t:'Next',go:true,fn:()=>{st.ex=(st.ex+1)%sets.length;st.round=null;st.msg='';useSet(sets[st.ex]);}},{t:'Again',fn:()=>{useSet(st.set);}}];
           if(reg.custom&&reg.custom.controls)c.unshift(...reg.custom.controls());
           if(mode!=='play')return c;const cc=reg.custom&&reg.custom.controls?reg.custom.controls():[];
+          if(BKs.pageAnswers&&st.round&&!st.round.o&&st.set&&st.set.fill&&st.set.opts&&!st.filledOk)return st.set.opts.map(t=>({t:String(t),big:true,choice:true,fn:()=>{if(String(t)===String(st.set.ans)){H.opt(t,new THREE.Group());}else{(game.wrong=game.wrong||{})[game.round+'|'+t]=1;if(P.redrawR)P.redrawR();H.opt(t,new THREE.Group());}}})).concat(cc);
           if(st.round&&st.round.o)return choices(st.setup?null:game,st.round.o,st.round.ans,st.round.ok||'Yes!',null,st.round.hint).concat(cc);return cc;},
         stepEnd(s){if(s&&!s.storyRead&&!BKs.readTheory)fold();},
         demo(n){st.round=null;st.msg='';if(RT){const story=!!STORY[d.id]&&/^s0(\D|$)/.test(n);if(/^s\d+$/.test(n)||n==='play')place(story);if(!STORY[d.id])st.explain=true;}

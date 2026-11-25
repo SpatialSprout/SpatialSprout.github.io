@@ -19,7 +19,7 @@ const D={
  ocean:{f:'f_ocean',c:'#4aa3e0',rim:['sailboat','whale','seal','surfboard','life_ring','ship'],back:['eco_ocean','cloud','eco_ocean','cloud','eco_ocean'],fx:'bubbles',sea:true},
  underwater:{f:'f_ocean',c:'#3d8fd6',rim:['fish','octopus','shark','dolphin','turtle','anchor'],back:['eco_ocean','fish','eco_ocean','fish','eco_ocean'],fx:'bubbles',sea:true},
  desert:{f:'f_desert',c:'#f0d58a',rim:['cactus','rock','camel','snake','cactus'],back:['eco_desert','sun','eco_desert','eco_desert'],fx:'dust'},
- jungle:{f:'f_forest',c:'#7fbf6a',rim:['tree','parrot','monkey','crocodile','plant','flower'],back:['eco_rainforest','tree','eco_rainforest','tree','eco_rainforest'],fx:'leaves'},
+ jungle:{f:'f_meadow',c:'#7fbf6a',rim:['tree','parrot','monkey','crocodile','plant','flower'],back:['eco_rainforest','tree','eco_rainforest','tree','eco_rainforest'],fx:'leaves'},
  savannah:{f:'f_sand',c:'#e3c777',rim:['tree','rock','lion','elephant','plant'],back:['eco_savanna','sun','eco_savanna','eco_savanna'],fx:'dust'},
  mountain:{f:'f_pebbles',c:'#b9c2b0',rim:['rock','eagle','tree','plant','rock'],back:['eco_mountain','eco_mountain','cloud','eco_mountain'],fx:'dust'},
  meadow:{f:'f_meadow',c:'#a7d08c',rim:['flower','daisy','butterfly','bee','plant','tulip'],back:['eco_meadow','tree','eco_meadow','tree','eco_meadow'],fx:'sparkle'},
