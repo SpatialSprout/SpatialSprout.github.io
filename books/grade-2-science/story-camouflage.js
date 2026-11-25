@@ -67,4 +67,47 @@ P0.steps[3]={set:{},scene:sc=>{const X=stage(sc,['cater','hare'],TH);P.CAMO=sc;P
   at(sc,'a caterpillar',()=>{X.show('cater');X.lab('cater');sc.later(()=>X.look(2200,'Just leaves…'),600);sc.later(()=>X.found('Found you!'),3200);});
   at(sc,'a snowshoe hare',()=>{X.show('hare');X.lab('hare');sc.later(()=>X.look(2200,'Just snow…'),600);sc.later(()=>X.found('Found you!'),3200);});
   sc.later(()=>{X.show('cater');X.lab('cater');},600);return {};}};
+
+/* ---- practice: every round is a picture scene ---- */
+const HAB={snow:['bear','Snow'],desert:['camel','Desert'],pond:['frog','Pond'],grass:['tiger','Tall grass'],leaves:['cater','Leaves']};
+/* a round question with a clay picture: the hawk searches, a right answer finds the animal */
+const picRound=(k,q)=>(sc,st,set,hk)=>{const X=stage(sc,[k],TH);P.CAMO=sc;P.CAMO_X=X;
+  sc.later(()=>{X.show(k);X.lab(k);},150);sc.later(()=>X.look(2600,q||'Where is it?'),1300);
+  return {win(){X.focus=true;X.found('Found you!');sc.later(()=>{X.focus=null;},2400);return 3000;},miss(){X.look(1400,'Hmm…');}};};
+/* the falcon game: drag the animal to a home. Right home: the falcon flies past without seeing it. */
+const hideRound=(animal,right,homes)=>(sc,st,set,hk)=>{
+  sc.__sid='c09pic';D.base(sc,'#e9e2d6');P.CAMO=sc;
+  const n=homes.length,gap=1.52,px=i=>(i-(n-1)/2)*gap;let busy=false,done=false;
+  const pan=homes.map((h,i)=>{const g=new THREE.Group();g.position.set(px(i),.02,-1.45);g.rotation.x=-1.0;sc.g.add(g);
+    const m=PIC.plane("pic-"+HAB[h][0]+"-bg",1.46,1.46*864/1536,1,true);m.position.y=.4;g.add(m);D.grow&&0;
+    const c=D.card(sc,HAB[h][1],px(i),-.95,{h:.17,col:'#1c4fb8'});c.visible=true;D.grow(c);return {g,m,x:px(i)};});
+  const tok=P.artProp(animal,{s:1.15});const home=new THREE.Vector3(0,0,.15);tok.position.copy(home);sc.g.add(tok);
+  const mats=[];tok.traverse(o=>{if(o.material){o.material.transparent=true;mats.push(o.material);}});const fade=v=>mats.forEach(m=>{m.opacity=v;});
+  const fal=PIC.plane('pic-fox-hawk',1.0,.82,5,false);fal.geometry.translate(0,.41,0);sc.g.add(fal);fal.position.set(-2.4,2.1,-.6);
+  let mode='patrol',fx=0,t0=0;const tgt=new THREE.Vector3();
+  sc.tick((dt,t)=>{t0=t;if(mode==='patrol'){const tx=Math.sin(t*.55)*2.3,ty=2.15+Math.sin(t*1.4)*.2;const vx=tx-fal.position.x;fal.position.x+=vx*Math.min(1,dt*3);fal.position.y+=(ty-fal.position.y)*Math.min(1,dt*3);fal.position.z=-.6;if(Math.abs(vx)>.02)fal.scale.x=vx>0?-1:1;fal.rotation.z=Math.sin(t*3)*.06;}});
+  const sayF=(txt,ms)=>sc.say(fal,txt,ms||1500);
+  const goto=(p,dur)=>{const a=fal.position.clone();return tween(dur,e=>{const z=ease(e);fal.position.set(a.x+(p.x-a.x)*z,a.y+(p.y-a.y)*z,a.z+(p.z-a.z)*z);});};
+  const idx=i=>homes[i]===right;
+  const goHome=()=>{const a=tok.position.clone();return tween(.5,e=>{tok.position.set(a.x+(home.x-a.x)*e,a.y*(1-e),a.z+(home.z-a.z)*e);});};
+  const place=i=>{busy=true;const a=tok.position.clone();const p=pan[i];
+    tween(.7,e=>{const z=ease(e);tok.position.set(a.x+(p.x-a.x)*z,.08+Math.sin(z*Math.PI)*.5,a.z+(-1.35-a.z)*z);const s=1-.35*z;tok.scale.setScalar(s);});
+    return p;};
+  const H={drop:pos=>{if(busy||done)return;if(pos.z>-.55){goHome();return;}let b=0,bd=9;pan.forEach((p,i)=>{const d=Math.abs(pos.x-p.x);if(d<bd){bd=d;b=i;}});H.pick(b);},
+    pick:i=>{if(busy||done)return;const ok=idx(i);place(i);H.last=i;
+      sc.later(()=>{if(ok){hk.win('Yes! The '+animal+' blends into the '+homes[i]+'.');}else{hk.miss('The falcon saw it! The '+animal+' does not blend into the '+homes[i]+'. Try another home.');}},800);}};
+  A.drag(tok,{drop:pos=>H.drop(pos),tap:()=>{A.pop();sayF(animal==='camel'?'Where is the camel?':'Where is it?',1400);}});
+  P.CAMO_H=H;
+  return {
+    win(){done=true;mode='pass';const i=H.last;const p=pan[i];
+      sc.later(()=>{const a=tok.scale.x;tween(1.8,e=>{fade(1-.85*e);});},300);
+      goto({x:-2.6,y:2.0,z:-.6},.01);fal.scale.x=-1;
+      sc.later(()=>goto({x:p.x-.3,y:1.5,z:-.6},1.5).then(()=>{sayF('Where did it go?',1700);fal.rotation.z=.25;}),600);
+      sc.later(()=>{fal.rotation.z=0;fal.scale.x=-1;goto({x:3.0,y:2.3,z:-.6},1.8).then(()=>{mode='patrol';});},3000);
+      return 5000;},
+    miss(){if(done)return;mode='dive';const i=H.last;const p=pan[i==null?0:i];const a=tok.position.clone();
+      goto({x:p.x,y:.85,z:-1.2},.55).then(()=>{sayF('Gotcha!',900);burst(V(p.x,.5,-1.4));
+        tween(.5,e=>{tok.position.x=a.x+Math.sin(e*30)*.04;});});
+      sc.later(()=>{goto({x:fal.position.x,y:2.2,z:-.6},.6).then(()=>{mode='patrol';});goHome().then(()=>{tok.scale.setScalar(1);busy=false;});},1500);}};};
+P.CAMO_R={pic:picRound,hide:hideRound};
 })();

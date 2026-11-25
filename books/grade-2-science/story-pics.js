@@ -27,5 +27,5 @@ function make(sc,name,meta,o){o=o||{};
   L.set=v=>{[bg,L.animal,L.hawk].forEach(m=>{if(m)m.material.opacity=v;});};
   L.set(0);g.visible=false;return L;}
 function fade(L,to,dur){L.g.visible=true;const from=L.bg.material.opacity;return tween(dur||.8,k=>{const e=k*k*(3-2*k);L.set(from+(to-from)*e);}).then(()=>{if(to<=0)L.g.visible=false;});}
-P.PIC={make,fade,W,H};
+P.PIC={make,fade,W,H,plane,edge,tex};
 })();

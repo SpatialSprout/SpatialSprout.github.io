@@ -1,6 +1,7 @@
 /* The Interactive Classroom: Grade 2 Science — Units 1–9: animals, how they eat and move, homes, winter, migration, babies, growth, life cycles, camouflage */
 (function(){
 "use strict";
+const CR=(window.PM&&window.PM.CAMO_R)||{pic:()=>undefined,hide:()=>undefined};
 const P=window.PM;if(!P||!P.unit)return;const U=P.unit,R=P.R,S=P.S;
 
 /* 1 ─ Animal groups */
@@ -247,11 +248,19 @@ U({id:'c09',title:'Camouflage',strand:'Animals',codes:['B1','B2'],
   {say:'Prey hides',speech:'Prey animals hide to stay safe. A caterpillar looks like a leaf. A snowshoe hare turns white in winter.',set:S.row(['caterpillar','rabbit'],{labels:['looks like a leaf','white in winter']}),
    cues:[['A caterpillar','caterpillar','prey'],['A snowshoe hare','rabbit','prey']]}],
  more:{title:'Did you know?',text:'An *octopus* can change its colour and even the bumps on its skin in less than a second! It can look like a rock, a plant or the sandy sea floor. It is the master of camouflage.',pics:['octopus','rock','plant','ocean'],lead:'An amazing animal fact!'},
- rounds:[R.q('Why is a polar bear white?',['to blend into the snow','to stay cool','to look pretty'],'to blend into the snow',{set:{row:['polar bear'],keep:true}}),R.q('Which animal hides best in the *desert*?',['camel','penguin','tiger'],'camel'),
-  R.sort('Where would it hide best?',['snow','sand'],[['polar bear',0],['camel',1],['fox',0],['scorpion',1]]),R.q('A crocodile looks like a log. It is a…',['predator','prey'],'predator'),
-  R.q('A caterpillar looks like a leaf. It is…',['prey','a predator'],'prey'),R.q('What is camouflage?',['colours that help an animal hide','a kind of food','a loud sound'],'colours that help an animal hide'),
-  R.q('Which animal blends into a green forest?',['a green frog','a polar bear','a pink flamingo'],'a green frog'),R.q('A snowshoe hare turns ___ in winter.',['white','red','black'],'white'),
-  R.q('A tiger hides in tall grass to…',['sneak up on food','sleep','stay cool'],'sneak up on food'),R.tf('Camouflage can help both predators and prey.',true),
+ rounds:[R.q('Why is a polar bear white?',['to blend into the snow','to stay cool','to look pretty'],'to blend into the snow',{set:{row:['polar bear'],keep:true},scene:CR.pic('bear','Where is the bear?')}),
+  R.q('Which animal hides best in the *desert*?',['camel','penguin','tiger'],'camel',{scene:CR.pic('camel','Where is the camel?')}),
+  {q:'Hide the polar bear! Drag it to the home where the falcon cannot see it.',set:{},scene:CR.hide('polar bear','snow',['desert','snow','pond'])},
+  R.q('A crocodile looks like a log. It is a…',['predator','prey'],'predator',{scene:CR.pic('croc','A log?')}),
+  R.q('A caterpillar looks like a leaf. It is…',['prey','a predator'],'prey',{scene:CR.pic('cater','Just leaves…')}),
+  {q:'Hide the camel! Drag it to the home where the falcon cannot see it.',set:{},scene:CR.hide('camel','desert',['snow','desert','pond'])},
+  R.q('What is camouflage?',['colours that help an animal hide','a kind of food','a loud sound'],'colours that help an animal hide',{scene:CR.pic('fox','Where did it go?')}),
+  R.q('Which animal blends into a green forest?',['a green frog','a polar bear','a pink flamingo'],'a green frog',{scene:CR.pic('frog','Where is the frog?')}),
+  {q:'Hide the frog! Drag it to the home where the falcon cannot see it.',set:{},scene:CR.hide('frog','pond',['desert','snow','pond'])},
+  R.q('A snowshoe hare turns ___ in winter.',['white','red','black'],'white',{scene:CR.pic('hare','Just snow…')}),
+  R.q('A tiger hides in tall grass to…',['sneak up on food','sleep','stay cool'],'sneak up on food',{scene:CR.pic('tiger','Is that a tiger?')}),
+  {q:'Hide the tiger! Drag it to the home where the falcon cannot see it.',set:{},scene:CR.hide('tiger','grass',['snow','grass','desert'])},
+  Object.assign(R.tf('Camouflage can help both predators and prey.',true),{scene:CR.pic('snake','Sneaky!')}),
   R.q('How fast can an octopus change colour?',['in less than a second','in a week','it cannot'],'in less than a second'),R.q('Which animal is a master of camouflage in the sea?',['octopus','shark','whale'],'octopus')],
  tries:[['Why are many fish dark on top and light underneath?','to *blend in* from above and below'],['Name an animal that hides in snow.','an *arctic fox*, a *snowy owl*']]});
 })();
