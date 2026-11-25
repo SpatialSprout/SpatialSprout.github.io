@@ -28,7 +28,7 @@ U({id:'c18',title:'Energy in, movement out',strand:'Movement and Machines',codes
   R.q('What energy turns a *pinwheel*?',['wind','food','fuel'],'wind'),R.q('Where does a *runner* get energy?',['food','electricity','fuel'],'food'),
   R.sort('Input or output?',['input','output'],[['button',0,'press'],['door',1,'opens'],['key',0,'wind up'],['robot',1,'walks']]),R.q('Wind up the robot. What happens?',['it walks','it sleeps','it melts'],'it walks'),
   R.q('Which is an *energy word*?',['electricity','banana split','pillow'],'electricity'),R.tf('Everything that moves needs energy.',true),
-  R.q('In "Did you know?", which body part uses lots of energy?',['your brain','your hair','your nails'],'your brain'),R.q('Why is breakfast important?',['it gives you energy','it makes you sleepy','it is purple'],'it gives you energy')],
+  R.q('Which body part uses lots of energy?',['your brain','your hair','your nails'],'your brain'),R.q('Why is breakfast important?',['it gives you energy','it makes you sleepy','it is purple'],'it gives you energy')],
  tries:[['What is the output of a doorbell?','a *ringing sound*'],['Name a toy that uses batteries.','a *remote-control car*, a *flashlight*…']]});
 
 /* 19 ─ Energy from moving water and wind */
@@ -56,7 +56,7 @@ U({id:'c19',title:'Power from water and wind',strand:'Movement and Machines',cod
   R.q('*Renewable* energy…',['will not run out','runs out fast','is dirty'],'will not run out'),R.q('Wind energy is clean because it…',['does not pollute the air','is cold','is noisy'],'does not pollute the air'),
   R.sort('Moving *water* or moving *air*?',['water','air'],[['swimmer',0,'surfing'],['kite',1,'kite'],['canoe',0,'rafting'],['sailboat',1,'sailing']]),R.q('Fill in: The surf is up, I’ll catch a __ave.',['w','c','s'],'w'),
   R.q('Fill in: With the wind like this, I could fly my __ite.',['k','b','w'],'k'),R.q('Where did Grandma’s sailboat go?',['across the lake','up the hill','into the sky'],'across the lake'),
-  R.q('In "Did you know?", Canada gets more than half its electricity from…',['moving water','coal','candles'],'moving water'),R.tf('Wind will run out one day.',false)],
+  R.q('Finish the fun fact: Canada gets more than half its electricity from…',['moving water','coal','candles'],'moving water'),R.tf('Wind will run out one day.',false)],
  tries:[['Name a toy that uses wind.','a *kite*, a *pinwheel*'],['Name a sport that uses moving water.','*surfing*, *rafting*']]});
 
 /* 20 ─ Windmills and water wheels */
@@ -84,7 +84,7 @@ U({id:'c20',title:'Windmills and water wheels',strand:'Movement and Machines',co
   R.q('What happens if the wind dies down?',['the windmill stops','it spins faster','it melts'],'the windmill stops'),R.q('What happens if the water stops moving?',['the water wheel stops','it turns faster','it floats away'],'the water wheel stops'),
   R.sort('Wind or moving water?',['wind','water'],[['windmill',0],['wheel',1],['sailboat',0],['ship',1,'paddle boat']]),R.q('A dam on a river can make…',['electricity','ice cream','wind'],'electricity'),
   R.q('Mills used water wheels to run…',['saws','cars','computers'],'saws'),R.tf('Windmills are still used today to make electricity.',true),
-  R.q('In "Did you know?", how old are some Dutch windmills?',['more than 300 years','10 years','one day'],'more than 300 years'),R.q('Where was the old mill on the field trip?',['by a river','on a mountain','in a desert'],'by a river')],
+  R.q('How old are some Dutch windmills?',['more than 300 years','10 years','one day'],'more than 300 years'),R.q('Where was the old mill on the field trip?',['by a river','on a mountain','in a desert'],'by a river')],
  tries:[['Name one job a windmill can do.','*grind grain*, *pump water*, *make electricity*'],['What does a dam make?','*electricity*']]});
 
 /* 21 ─ Positions */
@@ -112,7 +112,7 @@ U({id:'c21',title:'Where is it? Positions',strand:'Movement and Machines',codes:
   R.q('Which is a *position* word?',['under','run','jump'],'under'),R.q('What did Rebecca do at the swings?',['went around them','went through them','slept'],'went around them'),
   R.q('How do you get to the top of a slide?',['up the ladder','down the slide','under the bench'],'up the ladder'),R.q('Where was Rebecca’s hat?',['under the bench','on the slide','in the tunnel'],'under the bench'),
   R.q('Janet is between Amy and Linda. Who is in the *middle*?',['Janet','Amy','Linda'],'Janet'),R.q('The kite flies ___ the car.',['above','under','inside'],'above',{set:{row:['kite','car'],keep:true}}),
-  R.q('In "Did you know?", which directions never change?',['north, south, east and west','left and right','up and down'],'north, south, east and west'),R.tf('Through is a direction word.',true)],
+  R.q('Which directions never change?',['north, south, east and west','left and right','up and down'],'north, south, east and west'),R.tf('Through is a direction word.',true)],
  tries:[['Where is your mouth?','*below* my nose, *under* my nose'],['Give directions from your bed to the door.','*around* the bed, *through* the doorway…']]});
 
 /* 22 ─ Patterns of movement */
@@ -139,7 +139,7 @@ U({id:'c22',title:'Patterns of movement',strand:'Movement and Machines',codes:['
   R.q('How does a skier go down a steep hill?',['zigzagging','spinning in place','bouncing'],'zigzagging'),R.q('"I feel really dizzy from turning." Which ride?',['the teacups','the slide','the bouncy castle'],'the teacups'),
   R.q('"I was sliding down my ride." Which ride?',['the waterslide','the pirate ship','the merry-go-round'],'the waterslide'),R.q('"I feel like I’m still swinging!" Which ride?',['the pirate ship','the bumper cars','the slide'],'the pirate ship'),
   R.q('How does a rolling pin move?',['it rolls','it bounces','it spins in place'],'it rolls'),R.q('How does a microwave plate move?',['it turns','it slides','it bounces'],'it turns'),
-  R.q('In "Did you know?", how many times a second can a hummingbird’s wings swing?',['up to 80','2','1000'],'up to 80'),R.tf('A spinning top turns round and round.',true)],
+  R.q('How many times a second can a hummingbird’s wings swing?',['up to 80','2','1000'],'up to 80'),R.tf('A spinning top turns round and round.',true)],
  tries:[['How does a yo-yo move?','*up and down* (and it spins!)'],['Name something that zigzags.','a *skier*, a *snake*, *lightning*']]});
 
 /* 23 ─ Simple machines */
@@ -167,7 +167,7 @@ U({id:'c23',title:'Simple machines',strand:'Movement and Machines',codes:['D1','
   R.q('A jar lid twists on with a…',['screw','lever','pulley'],'screw'),R.q('A teeter-totter is a…',['lever','screw','wedge'],'lever'),
   R.pick('Tap *every* lever.',['broom','hammer','wheel','baseball'],['broom','hammer','baseball']),R.q('What did Bear use to lift the rock?',['a lever','a pulley','a screw'],'a lever'),
   R.q('Which tool is a wedge?',['an axe','a wagon','a flagpole'],'an axe'),R.q('How do simple machines help us?',['they make work easier','they make work harder','they make noise'],'they make work easier'),
-  R.q('In "Did you know?", who used ramps and levers to build pyramids?',['the ancient Egyptians','the Vikings','robots'],'the ancient Egyptians'),R.tf('Your arm can work like a lever.',true)],
+  R.q('Who used ramps and levers to build pyramids?',['the ancient Egyptians','the Vikings','robots'],'the ancient Egyptians'),R.tf('Your arm can work like a lever.',true)],
  tries:[['Name a lever in the kitchen.','a *bottle opener*, *tongs*, a *spoon* prying a lid'],['Where is a wheel and axle on a bike?','the *wheels* (and the pedals)']]});
 
 /* 24 ─ Movements and mechanisms */
@@ -195,6 +195,6 @@ U({id:'c24',title:'Mechanisms',strand:'Movement and Machines',codes:['D1','D2'],
   R.q('How does a ferris wheel move?',['it turns','it bounces','it zigzags'],'it turns'),R.q('Nail clippers make which movement easier?',['pushing','turning','swinging'],'pushing'),
   R.q('Which is *not* a mechanism?',['a single nail','scissors','a can opener'],'a single nail'),R.q('What has a turning head and a vibrating tail?',['Matt’s robot dog','the crane','the scissors'],'Matt’s robot dog'),
   R.q('A crane uses a…',['pulley','wedge','screw'],'pulley'),R.tf('A bicycle has many simple machines working together.',true),
-  R.q('In "Did you know?", what are a bike’s brakes?',['levers','wedges','ramps'],'levers'),R.pick('Tap *every* mechanism.',['scissors','bicycle','rock','alarm clock'],['scissors','bicycle','alarm clock'])],
+  R.q('What are a bike’s brakes?',['levers','wedges','ramps'],'levers'),R.pick('Tap *every* mechanism.',['scissors','bicycle','rock','alarm clock'],['scissors','bicycle','alarm clock'])],
  tries:[['Name a mechanism in your kitchen.','a *can opener*, an *egg beater*'],['What two machines are in scissors?','*levers* and *wedges*']]});
 })();

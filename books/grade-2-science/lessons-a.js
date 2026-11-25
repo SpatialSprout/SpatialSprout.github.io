@@ -28,7 +28,7 @@ U({id:'c01',title:'Animal groups',strand:'Animals',codes:['B1','B2'],
   R.q('A turtle has scales and lays eggs. It is a…',['reptile','mammal','amphibian'],'reptile',{set:{row:['turtle'],keep:true}}),R.q('A frog lives in water when young, then on land. It is an…',['amphibian','reptile','bird'],'amphibian',{set:{row:['frog'],keep:true}}),
   R.q('Why is a whale a *mammal*?',['It feeds its babies milk','It swims','It is big'],'It feeds its babies milk'),R.q('Which animal *gives birth to live babies*?',['a monkey','a robin','a goldfish'],'a monkey'),
   R.q('Give an example of a reptile.',['an alligator','a salamander','a shark'],'an alligator'),R.q('Give an example of an amphibian.',['a toad','a parrot','a turtle'],'a toad'),
-  R.tf('People are mammals.',true),R.q('In "Did you know?", what is strange about the platypus?',['It is a mammal that lays eggs','It has feathers','It can fly'],'It is a mammal that lays eggs')],
+  R.tf('People are mammals.',true),R.q('What is strange about the platypus?',['It is a mammal that lays eggs','It has feathers','It can fly'],'It is a mammal that lays eggs')],
  tries:[['Name a mammal that lives in the ocean.','a *whale*, a *dolphin*, a *seal*'],['What do all birds have?','*feathers* (and they lay eggs)']]});
 
 /* 2 ─ How animals eat and move */
@@ -56,7 +56,7 @@ U({id:'c02',title:'How animals eat and move',strand:'Animals',codes:['B1','B2'],
   R.sort('How does it move: *swim* or *fly*?',['swim','fly'],[['fish',0],['bird',1],['whale',0],['butterfly',1],['dolphin',0],['bee',1]]),R.q('How does a snake move?',['it slithers','it hops','it flies'],'it slithers'),
   R.q('Short legs, webbed feet: I waddle and paddle. Who am I?',['a duck','a horse','a snake'],'a duck'),R.q('My feathered wings help me fly. Who am I?',['a bird','a fish','a frog'],'a bird'),
   R.q('My body waves and my fins fan. Who am I?',['a fish','a bird','a dog'],'a fish'),R.pick('Tap *every* animal that *hops*.',['rabbit','frog','snake','kangaroo'],['rabbit','frog','kangaroo']),
-  R.q('In "Did you know?", how does a snake push itself?',['with its belly scales','with tiny legs','with its tail fin'],'with its belly scales'),R.tf('Some snakes can climb trees.',true)],
+  R.q('How does a snake push itself?',['with its belly scales','with tiny legs','with its tail fin'],'with its belly scales'),R.tf('Some snakes can climb trees.',true)],
  tries:[['How does a bird eat seeds?','it *pecks* with its beak'],['How does a kangaroo move?','it *hops*']]});
 
 /* 3 ─ Animal homes */
@@ -84,7 +84,7 @@ U({id:'c03',title:'Animal homes',strand:'Animals',codes:['B1','B2'],
   R.q('A bird builds its nest high up. It is safe from…',['predators','rain','the moon'],'predators'),R.q('A log gives a toad shade. It is safe from the…',['sun','snow','wind'],'sun'),
   R.q('A bear sleeps in a cozy den in winter. It is safe from the…',['cold','sun','water'],'cold'),R.q('Where does a *bat* rest?',['a roost','a hive','a lodge'],'a roost',{set:{row:['bat'],keep:true}}),
   R.q('Where does a swan build its nest?',['by the water, in reeds','high on a mountain','under the ground'],'by the water, in reeds'),R.q('Which bird builds the *biggest* nest at the top of a tree?',['an eagle','a robin','a hummingbird'],'an eagle'),
-  R.q('In "Did you know?", what keeps a termite mound cool?',['tunnels that let air flow','ice','water'],'tunnels that let air flow'),R.tf('Termite mounds can be taller than a grown-up.',true)],
+  R.q('What keeps a termite mound cool?',['tunnels that let air flow','ice','water'],'tunnels that let air flow'),R.tf('Termite mounds can be taller than a grown-up.',true)],
  tries:[['Where does a rabbit live?','a *burrow* or *warren*'],['Name a predator of mice.','an *owl*, a *fox*, a *cat*']]});
 
 /* 4 ─ Surviving winter */
@@ -112,7 +112,7 @@ U({id:'c04',title:'Surviving winter',strand:'Animals',codes:['B1','B2'],
   R.q('The heartbeat of a hibernating animal is…',['slower than normal','faster than normal'],'slower than normal'),R.pick('Tap *every* animal that hibernates.',['bear','frog','squirrel','turtle'],['bear','frog','turtle']),
   R.q('What do fish do when the water gets cold?',['slow down deep in the water','fly south','build a nest'],'slow down deep in the water'),R.q('Ptarmigans grow extra ___ around their feet.',['feathers','fur','scales'],'feathers'),
   R.sort('Store food or hibernate?',['store food','hibernate'],[['squirrel',0],['bear',1],['bee',0],['turtle',1]]),R.q('Which season do animals get ready for winter?',['fall','summer','spring'],'fall'),
-  R.q('In "Did you know?", what can the wood frog do?',['freeze almost solid','fly','grow fur'],'freeze almost solid'),R.tf('The wood frog thaws out in spring.',true)],
+  R.q('What can the wood frog do?',['freeze almost solid','fly','grow fur'],'freeze almost solid'),R.tf('The wood frog thaws out in spring.',true)],
  tries:[['Name an animal that stores food.','a *squirrel*, a *chipmunk*, a *beaver*'],['What does hibernate mean?','to *sleep* through the winter']]});
 
 /* 5 ─ Migration */
@@ -140,7 +140,7 @@ U({id:'c05',title:'Migration',strand:'Animals',codes:['B1','B2'],
   R.q('Why do animals migrate?',['to find food and better weather','to get lost','to make noise'],'to find food and better weather'),R.q('Which is a danger for migrating animals?',['pollution','sunshine','flowers'],'pollution'),
   R.q('A garter snake migrates by…',['land','air','water'],'land'),R.q('Salmon swim from rivers to the…',['ocean','desert','sky'],'ocean'),
   R.q('Fill in the danger: p_ed_t_rs',['predators','pedals','pirates'],'predators'),R.q('Fill in the danger: st_rms',['storms','stars','stems'],'storms'),
-  R.q('In "Did you know?", which tiny bird flies from Alaska to Mexico?',['the rufous hummingbird','the robin','the owl'],'the rufous hummingbird'),R.tf('The hummingbird weighs less than a coin.',true)],
+  R.q('Which tiny bird flies from Alaska to Mexico?',['the rufous hummingbird','the robin','the owl'],'the rufous hummingbird'),R.tf('The hummingbird weighs less than a coin.',true)],
  tries:[['Name an animal that migrates by air.','a *goose*, a *monarch*'],['Why do whales swim to warm water?','to have *babies* and find a better place']]});
 
 /* 6 ─ Animal babies */
@@ -168,7 +168,7 @@ U({id:'c06',title:'Animal babies',strand:'Animals',codes:['B1','B2'],
   R.sort('Is the baby a *cub* or a *calf*?',['cub','calf'],[['bear',0],['cow',1],['lion',0],['whale',1],['wolf',0],['camel',1]]),R.q('Baby horses and zebras are both called…',['foals','cubs','calves'],'foals'),
   R.q('Baby fish are called…',['fry','kits','chicks'],'fry'),R.q('Which baby lives in a pouch?',['a joey','a piglet','a lamb'],'a joey'),
   R.q('Which babies are on their own from birth?',['sea turtles','puppies','kittens'],'sea turtles'),R.q('Which babies are fed by *both* parents?',['penguin chicks','sea turtles','fish fry'],'penguin chicks'),
-  R.q('In "Did you know?", how fast can a baby giraffe walk?',['within an hour','after a year','never'],'within an hour'),R.tf('A baby giraffe is called a calf.',true)],
+  R.q('How fast can a baby giraffe walk?',['within an hour','after a year','never'],'within an hour'),R.tf('A baby giraffe is called a calf.',true)],
  tries:[['Baby cat?','a *kitten*'],['Baby goat?','a *kid*']]});
 
 /* 7 ─ Growing and changing */
@@ -196,7 +196,7 @@ U({id:'c07',title:'Growing and changing',strand:'Animals',codes:['B1','B2'],
   R.q('My pink, hairless body gets fur as I grow. Who am I?',['a mouse','a bird','a harp seal'],'a mouse'),R.q('I have fluffy white fur now; I will be smooth and grey. Who am I?',['a harp seal','a mouse','a bird'],'a harp seal'),
   R.q('I am featherless now; when I have feathers, I will leave the nest. Who am I?',['a bird','a mouse','a cub'],'a bird'),R.q('What new thing does a young bird learn?',['to fly','to swim','to bark'],'to fly'),
   R.q('When were Nala’s eyes open?',['after two weeks','at birth','after a year'],'after two weeks'),R.tf('Nala’s spots faded as she grew.',true),
-  R.q('In "Did you know?", a newborn panda is about the size of…',['a stick of butter','a car','a horse'],'a stick of butter'),R.q('All animals get ___ as they grow.',['bigger','smaller','greener'],'bigger')],
+  R.q('Finish the fun fact: A newborn panda is about the size of…',['a stick of butter','a car','a horse'],'a stick of butter'),R.q('All animals get ___ as they grow.',['bigger','smaller','greener'],'bigger')],
  tries:[['How have YOU changed since you were a baby?','I *grew*, I can *walk*, *talk*, *read*…'],['What does a tadpole become?','a *frog*']]});
 
 /* 8 ─ Life cycles */
@@ -224,7 +224,7 @@ U({id:'c08',title:'Life cycles',strand:'Animals',codes:['B1','B2'],
   R.q('What is a *larva* in the butterfly life cycle?',['the caterpillar','the egg','the adult'],'the caterpillar'),R.q('Where does a dragonfly larva live?',['underwater','in a tree','in a hive'],'underwater'),
   R.q('A complete change of body shape is called…',['metamorphosis','hibernation','migration'],'metamorphosis'),R.q('How many stages are in a butterfly’s life cycle?',['4','3','2'],'4'),
   R.q('What did the monarch caterpillar eat?',['milkweed leaves','grass','apples'],'milkweed leaves'),R.tf('The class let the butterfly go in the garden.',true),
-  R.q('In "Did you know?", what do ladybugs eat?',['aphids','leaves','seeds'],'aphids'),R.q('Which stage comes *first* for every animal here?',['egg','adult','larva'],'egg')],
+  R.q('What do ladybugs eat?',['aphids','leaves','seeds'],'aphids'),R.q('Which stage comes *first* for every animal here?',['egg','adult','larva'],'egg')],
  tries:[['Name the frog stages.','*egg, tadpole, adult frog*'],['What is a pupa?','the resting stage, like a *chrysalis*']]});
 
 /* 9 ─ Camouflage */
@@ -252,6 +252,6 @@ U({id:'c09',title:'Camouflage',strand:'Animals',codes:['B1','B2'],
   R.q('A caterpillar looks like a leaf. It is…',['prey','a predator'],'prey'),R.q('What is camouflage?',['colours that help an animal hide','a kind of food','a loud sound'],'colours that help an animal hide'),
   R.q('Which animal blends into a green forest?',['a green frog','a polar bear','a pink flamingo'],'a green frog'),R.q('A snowshoe hare turns ___ in winter.',['white','red','black'],'white'),
   R.q('A tiger hides in tall grass to…',['sneak up on food','sleep','stay cool'],'sneak up on food'),R.tf('Camouflage can help both predators and prey.',true),
-  R.q('In "Did you know?", how fast can an octopus change colour?',['in less than a second','in a week','it cannot'],'in less than a second'),R.q('Which animal is a master of camouflage in the sea?',['octopus','shark','whale'],'octopus')],
+  R.q('How fast can an octopus change colour?',['in less than a second','in a week','it cannot'],'in less than a second'),R.q('Which animal is a master of camouflage in the sea?',['octopus','shark','whale'],'octopus')],
  tries:[['Why are many fish dark on top and light underneath?','to *blend in* from above and below'],['Name an animal that hides in snow.','an *arctic fox*, a *snowy owl*']]});
 })();

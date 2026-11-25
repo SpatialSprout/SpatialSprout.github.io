@@ -28,7 +28,7 @@ U({id:'c10',title:'Liquids and solids',strand:'Liquids and Solids',codes:['C1','
   R.q('Pour it, sip it, swish it, drip it. It is a…',['liquid','solid'],'liquid'),R.q('Knock it, hold it, turn it, fold it. It is a…',['solid','liquid'],'solid'),
   R.pick('Tap *every* liquid.',['juice','milk','cookie','water'],['juice','milk','water']),R.q('Which one is a solid?',['tissues','dish soap','cooking oil'],'tissues'),
   R.q('Water poured into a flat dish will be…',['flat','tall','square'],'flat'),R.tf('A solid changes shape when you put it in a cup.',false),
-  R.q('In "Did you know?", honey is a liquid that flows…',['slowly','very fast','upward'],'slowly'),R.q('What makes honey flow faster?',['warming it up','putting it in the freezer','shaking a spoon at it'],'warming it up')],
+  R.q('Finish the fun fact: Honey is a liquid that flows…',['slowly','very fast','upward'],'slowly'),R.q('What makes honey flow faster?',['warming it up','putting it in the freezer','shaking a spoon at it'],'warming it up')],
  tries:[['Name a solid you can eat.','an *apple*, a *cracker*…'],['Name a liquid in the bathroom.','*shampoo*, *water*, *soap*']]});
 
 /* 11 ─ Dissolving and absorbing */
@@ -56,7 +56,7 @@ U({id:'c11',title:'Dissolving and absorbing',strand:'Liquids and Solids',codes:[
   R.q('What would you use to clean up a spill?',['a sponge','a spoon','a plate'],'a sponge'),R.q('A dish towel ___ the water on wet dishes.',['absorbs','dissolves'],'absorbs'),
   R.q('Salt ___ in a pot of soup.',['dissolves','absorbs'],'dissolves'),R.q('Where did the sugar go?',['it mixed into the water','it flew away','it turned into a rock'],'it mixed into the water'),
   R.q('How could you tell the sugar is still there?',['the water tastes sweet','the water is blue','it makes noise'],'the water tastes sweet'),R.tf('A metal spoon absorbs juice.',false),
-  R.q('In "Did you know?", what helps diapers stay dry?',['crystals that absorb water','metal','sand'],'crystals that absorb water'),R.q('Which one absorbs?',['a mop','a mug','a block'],'a mop')],
+  R.q('What helps diapers stay dry?',['crystals that absorb water','metal','sand'],'crystals that absorb water'),R.q('Which one absorbs?',['a mop','a mug','a block'],'a mop')],
  tries:[['Does a crayon dissolve in water?','*No*'],['Name something that absorbs water.','a *towel*, a *sponge*, *tissue*']]});
 
 /* 12 ─ Three states of water */
@@ -84,7 +84,7 @@ U({id:'c12',title:'Water: solid, liquid, gas',strand:'Liquids and Solids',codes:
   R.q('Juice in the freezer will…',['freeze','melt','evaporate'],'freeze'),R.q('A pot of soup boiling for a long time: some water will…',['evaporate','freeze','dissolve'],'evaporate'),
   R.sort('Solid or liquid?',['solid','liquid'],[['ice',0],['water',1],['snowman',0],['juice',1],['snowflake',0],['milk',1]]),R.q('What changes ice into water?',['heat','cold','wind'],'heat'),
   R.q('What changes water into ice?',['cold','heat','sunshine'],'cold'),R.q('A wet towel on the line dries because the water…',['evaporates','freezes','melts'],'evaporates'),
-  R.q('In "Did you know?", who drank the same water long ago?',['dinosaurs','robots','aliens'],'dinosaurs'),R.q('An igloo is made of water in which state?',['solid','liquid','gas'],'solid')],
+  R.q('Who drank the same water long ago?',['dinosaurs','robots','aliens'],'dinosaurs'),R.q('An igloo is made of water in which state?',['solid','liquid','gas'],'solid')],
  tries:[['Name water in the solid state.','*ice*, *snow*, *hail*'],['What happens to a puddle on a hot day?','it *evaporates*']]});
 
 /* 13 ─ Buoyancy */
@@ -112,7 +112,7 @@ U({id:'c13',title:'Sink or float?',strand:'Liquids and Solids',codes:['C1','C2']
   R.q('What material is best for a *raft*?',['wood','metal','ice cream'],'wood'),R.q('What material is best for an *anchor*?',['metal','cork','wood'],'metal'),
   R.pick('Tap *every* thing that would help Sam cross the river.',['wood','boat','key','scissors'],['wood','boat']),R.q('A ball of clay sinks. Shaped like a boat, it…',['can float','sinks faster','melts'],'can float'),
   R.q('Which one sinks?',['a bag of sand','a cork','a beach ball'],'a bag of sand'),R.tf('A wooden dock floats on the lake.',true),
-  R.q('In "Did you know?", why can a steel ship float?',['it is shaped like a bowl full of air','it is made of wood','it is very small'],'it is shaped like a bowl full of air'),R.q('What did Sam wear across the river?',['a life ring','a crown','a helmet'],'a life ring',{scene:'boat'})],
+  R.q('Why can a steel ship float?',['it is shaped like a bowl full of air','it is made of wood','it is very small'],'it is shaped like a bowl full of air'),R.q('What did Sam wear across the river?',['a life ring','a crown','a helmet'],'a life ring',{scene:'boat'})],
  tries:[['Does a leaf float?','*Yes*'],['Why do boats have air inside?','to help them *float*']]});
 
 /* 14 ─ Hazard symbols */
@@ -139,7 +139,7 @@ U({id:'c14',title:'Hazard symbols',strand:'Liquids and Solids',codes:['C1','C2']
   R.q('What should you do when you see a hazard symbol?',['tell a grown-up','taste it','shake it'],'tell a grown-up'),R.q('"Do not use near heat or flame." Which symbol?',['flammable','corrosive','poisonous'],'flammable'),
   R.q('"Do not drink or eat." Which symbol?',['poisonous','explosive','flammable'],'poisonous'),R.q('"Do not touch with bare hands." Which symbol?',['corrosive','explosive','flammable'],'corrosive'),
   R.q('A *triangle* frame means…',['the container is dangerous','the food is fresh','it is a toy'],'the container is dangerous'),R.q('An *octagon* frame means…',['what is inside is dangerous','it is safe','it is a game'],'what is inside is dangerous'),
-  R.tf('Mouse should drink the green bottle.',false),R.q('In "Did you know?", the octagon frame looks like a…',['stop sign','heart','star'],'stop sign')],
+  R.tf('Mouse should drink the green bottle.',false),R.q('Finish the fun fact: The octagon frame looks like a…',['stop sign','heart','star'],'stop sign')],
  tries:[['Where should hazardous products be kept?','*closed* and *up high*, away from little kids'],['What does flammable mean?','it can *catch fire* easily']]});
 
 /* 15 ─ Air around us */
@@ -167,7 +167,7 @@ U({id:'c15',title:'Air around us',strand:'Air and Water',codes:['E1','E2'],
   R.q('A *gentle* wind is called a…',['breeze','gale','storm'],'breeze'),R.q('A *very strong* wind is called a…',['gale','breeze','zephyr'],'gale'),
   R.sort('What do you wear in *cold* or *warm* air?',['cold air','warm air'],[['coat',0],['sunglasses',1],['mitten',0],['hat',1],['scarf',0],['sandal',1]]),R.q('Air takes up…',['space','no room','time'],'space'),
   R.q('What blew Leo’s hat off?',['the wind','a dog','Amy'],'the wind'),R.q('Why did Amy and Leo drink warm cocoa?',['the air was cold','it was hot','they were bored'],'the air was cold'),
-  R.q('In "Did you know?", where does the chinook blow?',['Alberta','Nova Scotia','Mexico'],'Alberta'),R.tf('A chinook can melt snow in January.',true)],
+  R.q('Where does the chinook blow?',['Alberta','Nova Scotia','Mexico'],'Alberta'),R.tf('A chinook can melt snow in January.',true)],
  tries:[['Name a game you play in warm air.','*soccer*, *tag*, *swimming*'],['How can you show air takes up space?','blow up a *balloon*!']]});
 
 /* 16 ─ Water around us and the water cycle */
@@ -196,7 +196,7 @@ U({id:'c16',title:'Water around us',strand:'Air and Water',codes:['E1','E2'],
   R.pick('Tap *every* place where you can find water.',['river','lake','ocean','cactus'],['river','lake','ocean']),R.q('Tiny drops on the grass in the morning are…',['dew','hail','snow'],'dew'),
   R.q('A cloud close to the ground is called…',['fog','frost','sleet'],'fog'),R.q('Where is water we get from a *well*?',['underground','in the sky','in the fridge'],'underground'),
   R.q('Drops under a pot lid are like…',['condensation','evaporation','a rainbow'],'condensation'),R.tf('Drip the water drop went back to the sea.',true),
-  R.q('In "Did you know?", how big can hail be?',['as big as a baseball','as big as a car','as big as a house'],'as big as a baseball'),R.q('Which form of water is frozen in a thundercloud?',['hail','dew','fog'],'hail')],
+  R.q('How big can hail be?',['as big as a baseball','as big as a car','as big as a house'],'as big as a baseball'),R.q('Which form of water is frozen in a thundercloud?',['hail','dew','fog'],'hail')],
  tries:[['Name three forms of water.','*rain*, *snow*, *ice*, *fog*…'],['What makes water evaporate?','*heat* from the sun']]});
 
 /* 17 ─ Clean air and water */
@@ -224,6 +224,6 @@ U({id:'c17',title:'Clean air and water',strand:'Air and Water',codes:['E1','E2']
   R.q('"No More Litter!" Which is right?',['put trash in a garbage can','drop it on the ground','throw it in the lake'],'put trash in a garbage can'),R.q('"Save Our Ocean!" Which is right?',['keep beaches clean','dump oil','throw bottles in'],'keep beaches clean'),
   R.q('Which pollutes the *air*?',['factory smoke','planting trees','walking'],'factory smoke'),R.q('Which pollutes the *water*?',['an oil spill','a bike','a tree'],'an oil spill'),
   R.q('What did the Clean Team do on Wednesday?',['planted trees','picked up litter','biked'],'planted trees'),R.tf('Ducks swam in the clean creek on Friday.',true),
-  R.q('In "Did you know?", one big tree makes oxygen for…',['two people for a year','one ant','a whole city'],'two people for a year'),R.q('Why does biking help the air?',['no exhaust','it is loud','bikes are red'],'no exhaust')],
+  R.q('Finish the fun fact: One big tree makes oxygen for…',['two people for a year','one ant','a whole city'],'two people for a year'),R.q('Why does biking help the air?',['no exhaust','it is loud','bikes are red'],'no exhaust')],
  tries:[['Name one way to save water.','turn off the *tap* while brushing'],['Name one way to clean the air.','plant *trees*, *walk* or *bike*']]});
 })();
