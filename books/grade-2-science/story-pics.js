@@ -18,7 +18,7 @@ const plane=(n,w,h,ro,alpha)=>{const g=new THREE.PlaneGeometry(w,h);const m=new 
   const o=new THREE.Mesh(g,m);o.renderOrder=ro;return o;};
 /* make(sc,name,meta) -> {g,bg,animal,hawk,show(),hide()} ; meta from pic-<name>.json (loaded inline below) */
 function make(sc,name,meta,o){o=o||{};
-  const g=new THREE.Group();g.position.set(0,.02,o.z||-1.95);g.rotation.x=-.2;sc.g.add(g);
+  const g=new THREE.Group();g.position.set(0,.02,o.z||-1.95);g.rotation.x=o.tilt!=null?o.tilt:-.2;sc.g.add(g);
   const bg=plane('pic-'+name+'-bg',W,H,1,true);bg.position.y=H/2;g.add(bg);
   const L={g,bg};
   meta.forEach(l=>{const w=(l.x1-l.x0)*W,h=(l.y1-l.y0)*H;const m=plane('pic-'+name+'-'+l.kind,w,h,l.kind==='hawk'?3:2,false);
