@@ -68,7 +68,7 @@ const PROPS={
 const P3FIRST=['moon','box','bread','cheese','heart'];
 function prop3(n,o){const raw=P.PROP3[n](o.p3||{});const w=new THREE.Group();w.add(raw);const b=new THREE.Box3().setFromObject(raw),sz=b.getSize(new THREE.Vector3());const k=.8*(o.s||.9)/Math.max(.05,sz.y,.85*Math.max(sz.x,sz.z));raw.scale.multiplyScalar(k);raw.position.y-=b.min.y*k;if(o.face!==false)raw.rotation.y=-.6;
   if(raw.userData.tick)w.userData.tick=raw.userData.tick;return w;}
-function prop(n,o){o=o||{};let g;if(P.PROP3&&P.PROP3[n]&&(!PROPS[n]||P3FIRST.includes(n))&&!o.card){g=prop3(n,o);g.userData.name=o.name||n;g.userData.kind=n;return g;}if(PROPS[n])g=PROPS[n]();else if(K.TOYS[n]&&!o.card)g=K.toy(n,{s:o.toyS||1.6});else g=K2.standee(n,{col:o.col||K2.COLS[(o.ci||0)%K2.COLS.length],label:o.label==null?false:o.label,s:o.s||.9,bare:o.bare});
+function prop(n,o){o=o||{};let g;if(P.artProp&&!o.card){const a=P.artProp(n,o);if(a){a.userData.name=o.name||n;a.userData.kind=n;return a;}}if(P.PROP3&&P.PROP3[n]&&(!PROPS[n]||P3FIRST.includes(n))&&!o.card){g=prop3(n,o);g.userData.name=o.name||n;g.userData.kind=n;return g;}if(PROPS[n])g=PROPS[n]();else if(K.TOYS[n]&&!o.card)g=K.toy(n,{s:o.toyS||1.6});else g=K2.standee(n,{col:o.col||K2.COLS[(o.ci||0)%K2.COLS.length],label:o.label==null?false:o.label,s:o.s||.9,bare:o.bare});
   g.userData.name=o.name||n;g.userData.kind=n;if(o.s&&(PROPS[n]||K.TOYS[n]))g.scale.multiplyScalar(o.s);return g;}
 
 /* ---------- how each thing comes alive ---------- */

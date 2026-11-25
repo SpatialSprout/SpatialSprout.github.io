@@ -44,7 +44,9 @@ function standee(n,o){o=o||{};const col=o.col||COLS[0];const g=new THREE.Group()
   const K0=P.K||{};const TOY=K0.TOYS&&K0.TOYS[n]&&K0.toy;
   const SP=P.STAGE&&P.STAGE.PROPS,REAL=['sun','moon','cloud','rainbow','snowman','bicycle','canoe','coat','helmet','sunglasses','hat','lifejacket','turnip','pot','windmill'];
   const fit=o=>{const b=new THREE.Box3().setFromObject(o),sz=b.getSize(new THREE.Vector3());const k=Math.min(.82/Math.max(.01,sz.y),.95/Math.max(.01,sz.x,sz.z));o.scale.multiplyScalar(k);const b2=new THREE.Box3().setFromObject(o);o.position.y-=b2.min.y;return o;};
-  if(P.PROP3&&P.PROP3[n]&&!(SP&&SP[n]&&REAL.includes(n))){const w=new THREE.Group();w.add(P.PROP3[n]({}));piv.add(fit(w));piv.rotation.x=0;}
+  const ART=P.artPlane&&P.artPlane(n,.82,.95);
+  if(ART){piv.add(ART);piv.rotation.x=-.12;}
+  else if(P.PROP3&&P.PROP3[n]&&!(SP&&SP[n]&&REAL.includes(n))){const w=new THREE.Group();w.add(P.PROP3[n]({}));piv.add(fit(w));piv.rotation.x=0;}
   else if(SP&&SP[n]&&REAL.includes(n)){const w=new THREE.Group();w.add(SP[n]());piv.add(fit(w));}
   else if(TOY){const w=new THREE.Group();w.add(K0.toy(n,{s:2.1}));piv.add(fit(w));}
   else{const cp=PICS[n];if(cp)figGeo(cp,parts=>{if(!parts){/* no vector art: a simple word block */return;}const fg=new THREE.Group();const s=.0215;fg.scale.set(s,-s,s);fg.position.set(-18*s,36*s+.02,0);

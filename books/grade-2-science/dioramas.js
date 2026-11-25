@@ -3,7 +3,7 @@
 "use strict";
 const P=window.PM;if(!P||!P.DIO)return;P.SCN=P.SCN||{};
 const D=P.DIO,S=P.SET,{V,tween,burst,THREE}=P;const ST=()=>P.STAGE;
-const story=(id,fn)=>{P.SCN[id]=P.SCN[id]||{steps:[]};P.SCN[id].steps[0]={scene:fn};};
+const story=(id,fn)=>{P.SCN[id]=P.SCN[id]||{steps:[]};P.SCN[id].steps[0]={scene:sc=>{sc.__sid=id;return fn(sc);}};};
 const at=(sc,w,f,n)=>sc.on(w,f,n);
 /* a picture prop (paper-tinted 3D figure); o.on = appear when that word is read */
 const prop=(sc,n,x,z,o)=>{o=Object.assign({label:false,bare:true,tap:false},o||{});const p=sc.prop(n,x,z,o);if(o.on){p.visible=false;sc.on(o.on,()=>D.grow(p),o.nth);}if(o.hide)p.visible=false;return p;};
