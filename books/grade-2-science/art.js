@@ -14,8 +14,11 @@ const tex=n=>TC[n]||(TC[n]=(()=>{const t=TL.load('art/'+n+'.webp');t.anisotropy=
 const key=n=>{n=String(n);let k=AL[n]===undefined?n:AL[n];if(!k)return null;if(M[k])return k;k=k.replace(/ /g,'_');return M[k]?k:null;};
 P.artKey=key;
 let BT=null;const blobTex=()=>BT||(BT=(()=>{const c=document.createElement('canvas');c.width=c.height=128;const x=c.getContext('2d'),g=x.createRadialGradient(64,64,4,64,64,62);g.addColorStop(0,'rgba(40,25,10,.38)');g.addColorStop(1,'rgba(40,25,10,0)');x.fillStyle=g;x.fillRect(0,0,128,128);return new THREE.CanvasTexture(c);})());
-function plane(k,H){const m=M[k],W=H*m[0]/m[1];const geo=new THREE.PlaneGeometry(W,H);geo.translate(0,H/2,0);
-  const o=new THREE.Mesh(geo,new THREE.MeshBasicMaterial({map:tex(k),transparent:true,depthWrite:false,side:THREE.DoubleSide}));o.renderOrder=6;return o;}
+function plane(k,H,bb){const m=M[k],W=H*m[0]/m[1];const geo=new THREE.PlaneGeometry(W,H);geo.translate(0,H/2,0);
+  const o=new THREE.Mesh(geo,new THREE.MeshBasicMaterial({map:tex(k),transparent:true,depthWrite:false,side:THREE.DoubleSide}));o.renderOrder=6;
+  if(!bb){const _q=new THREE.Quaternion(),_p=new THREE.Vector3(),_w=new THREE.Quaternion(),_t=new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1,0,0),-.1),_y=new THREE.Quaternion(),_u=new THREE.Vector3(0,1,0);
+    o.onBeforeRender=function(r,sc,cam){if(!o.parent)return;o.getWorldPosition(_p);o.parent.getWorldQuaternion(_w);const ang=Math.atan2(cam.position.x-_p.x,cam.position.z-_p.z);_y.setFromAxisAngle(_u,ang).multiply(_t);o.quaternion.copy(_w.invert()).multiply(_y);};}
+  return o;}
 function shadow(w,d){const s=new THREE.Mesh(new THREE.PlaneGeometry(1,1),new THREE.MeshBasicMaterial({map:blobTex(),transparent:true,depthWrite:false}));s.rotation.x=-Math.PI/2;s.position.y=.004;s.scale.set(w,d,1);s.renderOrder=2;return s;}
 /* a picture prop: fits the same box the old coded props did (o.s scales it) */
 P.artProp=function(n,o){const k=key(n);if(!k)return null;o=o||{};const m=M[k],asp=m[0]/m[1];const sc=.8*(o.s||.9)/Math.max(1,.85*asp);
@@ -23,7 +26,7 @@ P.artProp=function(n,o){const k=key(n);if(!k)return null;o=o||{};const m=M[k],as
   if(!o.bare||o.shadow)g.add(shadow(Math.max(.34,asp*sc*1.05),Math.max(.16,asp*sc*.4)));
   g.userData.piv=piv;g.userData.art=k;const seed=Math.random()*6;g.userData.tick=t=>{piv.scale.y=sc*(1+.012*Math.sin(t*2.2+seed));};return g;};
 /* a flat picture that fits the lesson-page standee box */
-P.artPlane=function(n,H,W){const k=key(n);if(!k)return null;const m=M[k],asp=m[0]/m[1];const f=Math.min(H,W/asp);const g=new THREE.Group();g.add(plane(k,f));return g;};
+P.artPlane=function(n,H,W){const k=key(n);if(!k)return null;const m=M[k],asp=m[0]/m[1];const f=Math.min(H,W/asp);const g=new THREE.Group();g.add(plane(k,f,true));return g;};
 
 /* clay water: the pond / water props become a soft-edged patch of the clay water tile */
 let EA=null;const edgeTex=()=>EA||(EA=(()=>{const c=document.createElement('canvas');c.width=c.height=128;const x=c.getContext('2d'),g=x.createRadialGradient(64,64,0,64,64,64);g.addColorStop(0,'#fff');g.addColorStop(.72,'#fff');g.addColorStop(.97,'#000');g.addColorStop(1,'#000');x.fillStyle=g;x.fillRect(0,0,128,128);return new THREE.CanvasTexture(c);})());
@@ -43,7 +46,7 @@ if(SET){const pat=(w,d,tn)=>{const g=new THREE.Group();const mk=(t,sx,sz,y)=>{co
   const w=SET.water&&M.f_ocean?SET.water:null;
   if(M.f_pond){SET.water=function(a,b){return pat(a||1.6,b||1,'f_ocean');};SET.pond=function(a,b){return pat(a||1.2,b||.8,'f_pond');};}
   if(M.f_pond){SET.river=function(a,b){return pat(a||4,Math.max(.5,b||.8)*1.2,'f_pond');};}
-  SET.rug=function(w,d,c){const g=new THREE.Group();const m=new THREE.Mesh(new THREE.CircleGeometry(.5,40),new THREE.MeshBasicMaterial({color:c||'#ffc9c9',transparent:true,opacity:.95}));m.rotation.x=-Math.PI/2;m.scale.set(w||1.6,d||1,1);m.position.y=.018;g.add(m);const r=new THREE.Mesh(new THREE.RingGeometry(.42,.47,40),new THREE.MeshBasicMaterial({color:'#ffffff',transparent:true,opacity:.7}));r.rotation.x=-Math.PI/2;r.scale.set(w||1.6,d||1,1);r.position.y=.021;g.add(r);return g;};
+  SET.rug=function(w,d,c){const g=new THREE.Group();const m=new THREE.Mesh(new THREE.CircleGeometry(.5,40),new THREE.MeshBasicMaterial({color:c||'#ffc9c9',transparent:true,opacity:.95}));m.rotation.x=-Math.PI/2;m.scale.set(w||1.6,d||1,1);m.position.y=.034;m.renderOrder=4;g.add(m);const r=new THREE.Mesh(new THREE.RingGeometry(.42,.47,40),new THREE.MeshBasicMaterial({color:'#ffffff',transparent:true,opacity:.7}));r.rotation.x=-Math.PI/2;r.scale.set(w||1.6,d||1,1);r.position.y=.036;r.renderOrder=5;g.add(r);return g;};
   const rep=(name,f)=>{const old=SET[name];if(!old)return;SET[name]=function(){const a=f.apply(null,arguments);return a||old.apply(SET,arguments);};};
   rep('hill',(r,o)=>{const c=String((o&&o.c)||'').toLowerCase();if(c==='#ffffff'&&M.eco_arctic)return P.artProp('eco_arctic',{s:(r||.5)*2.2,bare:true});if((c===''||/^#[a-d]/.test(c))&&M.eco_grass)return P.artProp('eco_grass',{s:(r||.5)*2.2,bare:true});return null;});
   rep('mountain',o=>M.eco_mountain?P.artProp('eco_mountain',{s:((o&&o.s)||1)*1.7,bare:true}):null);
@@ -59,7 +62,7 @@ P.artKid=function(p){let k=P.__who&&WHO[P.__who];
   if(!M[k])return null;const g=new THREE.Group(),body=new THREE.Group(),pl=plane(k,1.0);body.add(pl);g.add(body);g.add(shadow(.5,.2));
   const head=new THREE.Object3D();head.position.set(0,.94,0);g.add(head);
   const u=g.userData;u.body=body;u.head=head;u.arms=[new THREE.Object3D(),new THREE.Object3D()];u.art=k;u.hands=[new THREE.Object3D(),new THREE.Object3D()];
-  u.extra=(kk,dt)=>{const t=u.t,m=u.mode;const s=Math.sin(u.ry),c=Math.cos(u.ry);kk.rotation.y=Math.max(-.6,Math.min(.6,s*.6));pl.scale.x=c<-.3?-1:1;
+  u.extra=(kk,dt)=>{const t=u.t,m=u.mode;const s=Math.sin(u.ry),c=Math.cos(u.ry);
     let rz=0,sy=1;if(m==='cheer'||m==='dance')rz=Math.sin(t*8)*.13;else if(m==='wave')rz=Math.sin(t*5)*.07;else if(m==='walk')rz=Math.sin(t*7)*.06;else if(m==='run')rz=Math.sin(t*12)*.09;
     else if(m==='no')rz=Math.sin(t*14)*.1;else if(m==='shiver')rz=Math.sin(t*40)*.03;else if(m==='point')rz=-.1;else if(m==='think'||m==='read')rz=.08;else if(m==='cover'){sy=.93;rz=Math.sin(t*14)*.04;}else if(m==='clap'||m==='sing'||m==='eat')rz=Math.sin(t*6)*.05;
     body.rotation.z+=(rz-body.rotation.z)*.3;body.scale.y+=(sy-body.scale.y)*.3;};
