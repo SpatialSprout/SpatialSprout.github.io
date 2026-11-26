@@ -665,8 +665,8 @@ let bestVoice=null;function pickVoice(){try{const vs=speechSynthesis.getVoices()
   bestVoice=vs.sort((a,b)=>score(b)-score(a))[0];}catch(e){}}
 try{pickVoice();speechSynthesis.onvoiceschanged=pickVoice;}catch(e){}
 let voClock=null;
-let voH=null;
-function stopSpeak(){voTok++;voClock=null;try{VO.pause();}catch(e){}try{if(voH){voH.stop();voH=null;}}catch(e){}try{speechSynthesis.cancel();}catch(e){}}
+let voH=null;let voHeld=0,voHeldAt=0;
+function stopSpeak(){voTok++;voClock=null;voHeld=0;try{VO.pause();}catch(e){}try{if(voH){voH.stop();voH=null;}}catch(e){}try{speechSynthesis.cancel();}catch(e){}}
 function speakDevice(text,onend){if((window.BOOK||{}).noDeviceVoice){const tk=voTok;const ms=Math.max(2200,String(text||'').split(/\s+/).length*330);setTimeout(()=>{if(tk===voTok&&onend)onend();},ms);return true;}if(!('speechSynthesis' in window))return false;try{const u=new SpeechSynthesisUtterance(text.replace(/SpatialSprout/g,'Spatial Sprout'));if(bestVoice){u.voice=bestVoice;u.lang=bestVoice.lang;}else u.lang='en-US';u.rate=1;u.pitch=1;u.onend=onend;const tk=voTok;u.onstart=()=>{voClock={tok:tk,t0:performance.now(),dur:text.length/14,dev:true,ch:0};};u.onboundary=e=>{if(voClock&&voClock.tok===tk)voClock.ch=e.charIndex;};speechSynthesis.speak(u);return true;}catch(e){return false;}}
 let voCurH=null;PM.voiceNow=()=>(voClock&&voClock.tok===voTok&&!voClock.dev)?{h:voCurH,t:(performance.now()-voClock.t0)/1000}:null;
 function speak(text,onend){if(!soundOn)return false;stopSpeak();const tk=voTok;const h=vhash(text);voCurH=h;
@@ -900,6 +900,10 @@ function tickCues(){const cr=cueRun;if(!cr||busy)return;if(cr.tok!==playTok){cue
   else ch=(now-cr.t0)/1000*13;
   while(cr.k<cr.list.length&&cr.list[cr.k].i<=ch){const q=cr.list[cr.k++];try{if(q.demo&&q.demo!=='hold'&&curApi.demo)curApi.demo(q.demo);}catch(e){console.error(e);}if(q.p||q.l)spotOn(q);else if(q.hl){setHL(q.hl);A.redraw();}}
   if(cr.k>=cr.list.length)cueRun=null;}
+/* hold the narration (an action scene is still playing): pause the voice, resume when released */
+PM.voPause=()=>{if(voHeld++)return;voHeldAt=performance.now();try{if(voH&&voH.playing())voH.pause();else if(!VO.paused)VO.pause();}catch(e){}};
+PM.voResume=()=>{if(!voHeld||--voHeld)return;const d=performance.now()-voHeldAt;if(voClock)voClock.t0+=d;try{if(voH)voH.play();else if(VO.src&&!VO.ended&&VO.currentTime>0)VO.play().catch(()=>{});}catch(e){}};
+PM.voHeld=()=>voHeld>0;
 PM.voNow=()=>{const vc=voClock;if(!vc||vc.tok!==voTok)return null;if(vc.dev)return {dev:true,ch:vc.ch,el:(performance.now()-vc.t0)/1000};const ct=VO&&VO.currentTime;return {t:(typeof ct==='number'&&isFinite(ct)&&ct>0)?ct:(performance.now()-vc.t0)/1000,dur:vc.dur};};
 PM.vhash=vhash;
 PM.redrawR=()=>{if(cur<0||building||busy)return;drawPage(rightP,SP[cur],'R');};
@@ -1039,7 +1043,7 @@ function setStep(i){lineCut=false;const sp=SP[cur];stepI=Math.max(0,Math.min(sp.
   if(s.howto&&S&&!S.game.done){S.game.phase='howto';const d=(sp.L.learn.find(x=>x.demo)||{}).demo;if(d&&curApi.demo){try{curApi.demo(d);}catch(e){console.error(e);}}holdMs=7000;refreshDock();}
   if(s.go&&S&&!S.game.done){A.stopSeq();const gw=(BOOK.goFor&&sp.L&&BOOK.goFor[sp.L.id]&&window.VOICE)?(VOICE[vhash(s.speech||s.say||'')]||0)*1000+350:0;A.later(()=>startGame(S),Math.max(250,gw));}
   showStory(s.story&&!BK.readTheory?sp:null);if(s.story){guideMode='hello';guideT=0;if(PLAY)A.later(()=>mascotCheer(false,true),700);}
-  const tk=++playTok;PM.kStepDone=false;const adv=()=>{if(tk!==playTok||!playing)return;if(s.waitDone&&!PM.kStepDone){setTimeout(adv,500);return;}if(stepI<sp.steps.length-1)setStep(stepI+1);else if(s.kc){setPlay(false);refreshDock();}else if((sp.kind==='intro'||sp.kind==='learn')&&cur<SP.length-1)goSpread(cur+1,0,true);else setPlay(false);};
+  const tk=++playTok;PM.kStepDone=false;const adv=()=>{if(tk!==playTok||!playing)return;if(PM.holdAdv&&PM.holdAdv()){setTimeout(adv,300);return;}if(s.waitDone&&!PM.kStepDone){setTimeout(adv,500);return;}if(stepI<sp.steps.length-1)setStep(stepI+1);else if(s.kc){setPlay(false);refreshDock();}else if((sp.kind==='intro'||sp.kind==='learn')&&cur<SP.length-1)goSpread(cur+1,0,true);else setPlay(false);};
   const txt=s.readTheory?theoryText(sp).speech:(s.speech||s.say);const t0=Date.now();lineBusy=true;const spoke=speak(txt,()=>{if(tk===playTok)lineBusy=false;if(tk===playTok&&curApi.stepEnd)try{curApi.stepEnd(s);}catch(e){console.error(e);}setTimeout(adv,Math.max((s.demo&&!s.quietDemo?2400:s.story?1400:(s.cues?1700:1100))*(BK.grade>=6?.6:1)+(s.pause||0),holdMs-(Date.now()-t0)));});if(!spoke)lineBusy=false;
   if(s.cues&&s.cues.length)startCues(s,txt,spoke);
   if(!spoke&&curApi.stepEnd){const tk3=playTok;setTimeout(()=>{if(tk3===playTok)try{curApi.stepEnd(s);}catch(e){}},Math.max(3000,txt.split(' ').length*380));}

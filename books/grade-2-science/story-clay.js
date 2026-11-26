@@ -31,7 +31,7 @@ function stage(sc,keys,o){o=o||{};sc.__sid='c09pic';D.base(sc,'#e9e2d6');
     if(n.hero){n.hero.userData.busy=1;n.hero.scale.set(.2,.2,1);
       sc.later(()=>{tween(.7,e=>{const z=ease(e);n.hero.material.opacity=Math.min(1,e*2.2);const s=.2+.8*z+Math.sin(e*Math.PI)*.16;n.hero.scale.set(s,s,1);n.hero.position.y=n.hero.userData.hy+Math.sin(e*Math.PI)*.3;n.shadow.material.opacity=n.shadow.userData.base*e;}).then(()=>{n.hero.scale.set(1,1,1);n.hero.position.y=n.hero.userData.hy;n.hero.userData.busy=0;});try{burst(V(0,.7,-1.6));}catch(e){}},520);}
     X.setLab(label||cap(k));if(X.onShow)X.onShow(k);};
-  X.setLab=txt=>{if(!txt)return;const c=D.card(sc,txt,0,o.lz!=null?o.lz:TH.lz,{h:.2,col:COL[X.curK]||'#2b8a3e'});c.visible=true;D.grow(c);if(X.lab)X.lab.visible=false;X.lab=c;};
+  X.setLab=txt=>{if(!txt||o.noLab)return;const c=D.card(sc,txt,0,o.lz!=null?o.lz:TH.lz,{h:.2,col:COL[X.curK]||'#2b8a3e'});c.visible=true;D.grow(c);if(X.lab)X.lab.visible=false;X.lab=c;};
   X.pulse=()=>{const n=X.cur;if(!n)return;const hm=n.hero;tween(.6,e=>{const s=1+Math.sin(e*Math.PI)*.05;n.g.scale.set(s,s,1);if(hm){hm.userData.busy=1;const j=Math.sin(e*Math.PI);hm.position.y=hm.userData.hy+j*.35;hm.scale.set(1-j*.06,1+j*.1,1);}}).then(()=>{n.g.scale.set(1,1,1);if(hm){hm.userData.busy=0;hm.scale.set(1,1,1);hm.position.y=hm.userData.hy;}});};
   /* life: the scene swings slowly so the depth shows, and each animal moves its own way */
   sc.tick((dt,t)=>{const n=X.cur;if(!n||!n.g.visible)return;n.g.rotation.y=Math.sin(t*.55)*.1;n.g.rotation.z=Math.sin(t*.7)*.008;
@@ -46,9 +46,9 @@ function stage(sc,keys,o){o=o||{};sc.__sid='c09pic';D.base(sc,'#e9e2d6');
      default:sy=1+Math.sin(tt*2.2)*.02;sx=1-Math.sin(tt*2.2)*.01;rz=Math.sin(tt*1.15)*.018;dy=Math.max(0,Math.sin(tt*2.2))*.012;}
     hm.position.x=u.hx+dx;hm.position.y=u.hy+dy;hm.scale.set(sx*(u.sc||1)*(u.fl||1),sy*(u.sc||1),1);hm.rotation.z=rz;
     if(n.shadow){n.shadow.position.x=u.hx+dx*.5;n.shadow.scale.x=u.w*.9*(1-dy*.6);}});
-  sc.later(()=>{if(!A||!A.drag)return;Object.keys(S).forEach(k=>{const t=S[k].hero||S[k].m;A.drag(t,{tap:()=>{if(X.cur!==S[k])return;A.pop();X.pulse();try{burst(V(0,.7,-1.6));}catch(e){}sc.say(t,cap(k)+'!',1400);}});});},800);
+  sc.later(()=>{if(!A||!A.drag)return;Object.keys(S).forEach(k=>{const t=S[k].hero||S[k].m;A.drag(t,{tap:()=>{if(X.cur!==S[k])return;A.pop();X.pulse();try{burst(V(0,.7,-1.6));}catch(e){}if(!o.noLab)sc.say(t,cap(k)+'!',1400);}});});},800);
   return X;}
-P.CLAY={stage};
+P.CLAY={stage,HERO};
 
 /* a page scene: cues = [[word, key, label?], ...]; the first picture also shows at the start unless story */
 const page=(keys,cues,o)=>sc=>{const X=stage(sc,keys,o);P.CAMO=sc;P.CLAY_X=X;if(o&&o.id&&P.CLAY.act)X.onShow=k=>P.CLAY.act(sc,X,k,o.id);
@@ -90,7 +90,7 @@ const ALIAS={mammal:'dog',mammals:'dog',birds:'owl',bird:'owl',reptile:'turtle',
 const pickKey=(r,have)=>{const clean=s=>String(s||'').toLowerCase().replace(/\*/g,'').replace(/[^a-z\s]/g,' ').split(/\s+/).filter(Boolean);
   const scan=ws=>{for(const w of ws){const k=ALIAS[w]||ALIAS[w.replace(/s$/,'')];if(k&&have.includes(k))return k;}return null;};
   return scan(clean(r.ans))||scan(clean(r.q))||scan(clean((r.o||[]).join(' ')));};
-const roundScene=(k,keys,label)=>(sc,st,set,hk)=>{const X=stage(sc,[k],TH);P.CAMO=sc;P.CLAY_X=X;sc.later(()=>X.show(k,label||undefined),200);
+const roundScene=(k,keys,label)=>(sc,st,set,hk)=>{const X=stage(sc,[k],Object.assign({noLab:true},TH));P.CAMO=sc;P.CLAY_X=X;sc.later(()=>X.show(k,label||undefined),200);
   return {win(){X.pulse();try{burst(V(0,.7,-1.6));}catch(e){}tween(.6,e=>{X.S[k].g.position.y=.02+Math.sin(e*Math.PI)*.18;});return 2600;},miss(){tween(.4,e=>{X.S[k].g.position.x=Math.sin(e*Math.PI*6)*.08*(1-e);});}};};
 const simple=r=>{const s=r.set||{};if(r.scene)return false;if(s.bins||s.grid||s.fill||s.build||s.items||s.custom)return false;
   if(s.row&&!(s.row.length===1||s.keep)){/* a row of choices to tap is a game: keep it */return false;}return true;};
