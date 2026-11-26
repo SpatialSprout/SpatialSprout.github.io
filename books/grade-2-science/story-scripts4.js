@@ -16,6 +16,11 @@ const slide=(R,p,x,y,sec)=>{if(!p)return R.wait(sec||1);const x0=p.position.x,y0
 const bobber=(R,p,amp,sp)=>{if(!p)return;let on=true,ph=Math.random()*6,y0=p.position.y;R.actors.push({kill:()=>{on=false;},tick:dt=>{if(!on)return;ph+=dt*(sp||2.2);p.position.y=y0+Math.sin(ph)*(amp||.03);p.rotation.z=Math.sin(ph*.8)*.05;}});};
 const bye=(R,list)=>all(list.filter(Boolean).map(p=>R.shrink(p,.5))).then(()=>list.forEach(p=>p&&R.drop(p)));
 const heartsAt=(R,x,y)=>R.fx('heart',x,y,8,{w:.8,t:1.5});
+const hearts=(R,x,y,n)=>R.fx('heart',x,y,n||8,{w:.8,t:1.6});
+const spark=(R,x,y,n)=>R.fx('sparkle',x,y,n||12,{w:.8,t:1.3});
+const tintP=(p,c)=>{if(p&&p.traverse)p.traverse(o=>{if(o.material&&o.material.color)o.material.color.set(c);});};
+const grow=(R,p,k,sec)=>{if(!p)return R.wait(sec);const s0=p.scale.x;return R.T(sec,e=>p.scale.setScalar(s0+(k-s0)*e*e*(3-2*e)));};
+const sceneBg=async(R,k,lab,col)=>{await R.bg(k);if(lab)R.label(lab,col||'#2b8a3e');};
 
 /* ================= LESSON 6 : Animal babies ================= */
 /* page 1: special names */
@@ -93,91 +98,106 @@ page('c10',3,{old:[
  ['turn',async(R,S)=>{await R.T(.9,e=>S.b.rotation.z=e*Math.PI*2);S.b.rotation.z=0;}],
  ['fold',async(R,S)=>{R.word('Still a solid!',.6,1.9,'#e8590c',1.4);await wiggle(R,S.b,.05,.5);}]]});
 
-/* ================= LESSON 11 : Dissolving and absorbing ================= */
+/* ================= LESSONS 11-15 : theory pages with their own new clay art (pa-t11... pa-t15...) ================= */
+const act=async(R,img,x,y,h,face,how)=>{const a=R.act(img,{x,y,h,face:face==null?1:face});await a.show(.5,how||'pop');return a;};
+const ringAt=async(R,x,y,r,col)=>{const g=R.ring(x,y,r,col);await g.show();await g.pulse(2,1.1);await g.hide();};
+const bubblesUp=(R,x,y,n)=>R.fx('bubble',x,y,n||10,{w:.3,t:1.8,vy:.9});
+
+/* ---------- L11 page 1: sugar, salt, powder ---------- */
 page('c11',1,{old:[
- ['sugar',async(R,S)=>{await R.bg('magic');R.label('Sugar','#e8590c');S.g=await pop(R,'glass',-.4,.1,1.0);R.fx('crumb',-.4,1.2,12,{w:.2,t:1.4,vy:-1});await R.wait(.5);R.fx('sparkle',-.4,.6,12,{w:.3,t:1.2});R.word('Gone!',.7,1.9,'#1c7ed6',1.2);}],
- ['salt',async(R,S)=>{R.label('Salt','#868e96');const s=await pop(R,'salt',1.2,.25,.55);await R.toss(s,-.4,1.2,.8,.5);R.fx('crumb',-.4,1.2,10,{w:.2,t:1.2,vy:-1});await R.shrink(s,.4);R.fx('sparkle',-.4,.6,10,{w:.3,t:1.1});}],
- ['powder',async(R,S)=>{R.label('Drink powder','#c2255c');const j=await pop(R,'juice',1.3,.3,.55);await R.toss(j,-.4,1.3,.8,.5);R.fx('crumb',-.4,1.2,10,{w:.2,t:1.2,vy:-1});await R.shrink(j,.4);R.fx('sparkle',-.4,.6,10,{w:.3,t:1.1});}],
- ['disappear',async(R,S)=>{R.word('Dissolved!',.8,1.9,'#1c7ed6',1.5);await R.wait(.4);}],
- ['taste',async(R,S)=>{R.label('Still there: taste it!','#e8590c');R.fx('heart',-.4,1.4,8,{w:.6,t:1.5});await hop(R,S.g,.12,.6);}]]});
+ ['sugar',async(R,S)=>{await sceneBg(R,'magic','Sugar','#e8590c');S.m=await act(R,'pa-soupglass',-1.05,.05,1.6);S.g=await act(R,'pa-t11sugar',.8,.15,1.35);
+   for(let i=0;i<3;i++){const c=await pop(R,'candy',-.2+i*.15,1.9,.26);await R.toss(c,.8,1.2,.7,.3);R.drop(c);R.fx('splash',.8,1.1,8,{w:.2,t:.8});await S.g.jump(.08);}
+   await S.m.swap('pa-soupstir',.5,{h:1.6,face:1});for(let i=0;i<3;i++){R.fx('sparkle',.8,.7,8,{w:.3,t:1});await all([S.m.wag(.7,.04,5),S.g.wag(.7,.06,5)]);}
+   R.word('Gone!',.1,2.0,'#1c7ed6',1.4);await R.wait(.6);}],
+ ['salt',async(R,S)=>{R.label('Salt','#868e96');const s=await pop(R,'salt',-.3,1.8,.5);await R.T(.6,e=>{s.position.x=-.3+e*1.1;s.rotation.z=-e*.9;});R.fx('crumb',.8,1.5,20,{w:.15,t:1.5,vy:-1.2});await R.wait(1);await all([S.g.wag(1,.07,6),R.T(1,e=>{s.rotation.z=-.9*(1-e);s.position.x=.8-e*1.1;})]);R.drop(s);R.fx('sparkle',.8,.7,12,{w:.3,t:1.2});R.word('Salty!',.1,2.0,'#868e96',1.3);await R.wait(.5);}],
+ ['powder',async(R,S)=>{R.label('Drink powder','#c2255c');const j=await pop(R,'juice',-.3,1.8,.5);await R.T(.6,e=>{j.position.x=-.3+e*1.1;j.rotation.z=-e*.9;});R.fx('crumb',.8,1.5,22,{w:.15,t:1.5,vy:-1.2});await S.g.tint('#ffffff','#ff9ec4',1.2);await all([S.g.wag(1,.07,6),R.T(1,e=>{j.rotation.z=-.9*(1-e);j.position.x=.8-e*1.1;})]);R.drop(j);await S.g.tint('#ff9ec4','#ffffff',1.4);R.fx('sparkle',.8,.7,12,{w:.3,t:1.2});R.word('Pink, then gone!',.1,2.0,'#c2255c',1.6);await R.wait(.4);}],
+ ['disappear',async(R,S)=>{R.word('Dissolved!',.2,2.0,'#1c7ed6',1.6);await ringAt(R,.8,.65,.5);R.fx('sparkle',.8,.7,24,{w:.6,t:1.6});await S.g.jump(.1);}],
+ ['taste',async(R,S)=>{R.label('Still there: taste it!','#e8590c');await S.m.swap('pa-soupglass',.5,{h:1.6,face:1});await S.g.go(-.2,.15,1,{arc:.2});await S.g.jump(.15);R.word('Sweet!',.4,2.0,'#e8590c',1.5);hearts(R,-.2,1.6,12);await R.wait(.6);}]]});
+/* ---------- L11 page 2: sand, rocks, toys ---------- */
 page('c11',2,{old:[
- ['sand',async(R,S)=>{await R.bg('pond-summer');R.label('Sand','#c2a24d');S.g=await pop(R,'glass',-.5,.2,1.0);R.fx('crumb',-.5,1.3,14,{w:.2,t:1.4,vy:-1.2});await R.wait(.6);}],
- ['rocks',async(R,S)=>{R.label('Rocks','#868e96');const r=await pop(R,'rock',.8,1.5,.35);await R.toss(r,-.5,.45,.9,.2);R.fx('splash',-.5,.6,8,{w:.3,t:1});}],
- ['toys',async(R,S)=>{R.label('Toys','#e8590c');const t=await pop(R,'ball',-.1,1.6,.35);await R.toss(t,-.45,1.1,.9,.3);bobber(R,t,.03,2.4);}],
- ['sink',async(R,S)=>{R.word('Still there!',.9,1.9,'#e03131',1.4);await R.wait(.4);}]]});
+ ['sand',async(R,S)=>{await sceneBg(R,'pond-summer','Sand','#c2a24d');S.j=await act(R,'pa-t11jars',.2,.2,1.0);R.fx('crumb',-.62,1.7,26,{w:.12,t:2,vy:-1.1});await ringAt(R,-.62,.45,.34,'#c2a24d');R.word('Sand sinks',.2,1.95,'#c2a24d',1.5);await S.j.jump(.06);}],
+ ['rocks',async(R,S)=>{R.label('Rocks','#868e96');const r=await pop(R,'rock',.2,2.0,.28);await R.toss(r,.2,1.0,.8,.1);R.fx('splash',.2,.9,10,{w:.3,t:1});await R.T(.7,e=>{r.position.y=1.0-e*.55;});R.drop(r);await ringAt(R,.2,.42,.34,'#868e96');R.word('Plop!',.2,1.95,'#868e96',1.3);}],
+ ['toys',async(R,S)=>{R.label('Toys','#e8590c');const t=await pop(R,'ball',1.02,2.0,.28);await R.toss(t,1.02,.95,.8,.1);R.fx('splash',1.02,.9,10,{w:.3,t:1});bobber(R,t,.025,2.4);await ringAt(R,1.02,.95,.3,'#e8590c');R.word('Float!',1.0,1.95,'#e8590c',1.3);}],
+ ['sink',async(R,S)=>{R.word('Still there!',.2,1.95,'#e03131',1.7);for(let i=0;i<3;i++){R.fx('sparkle',-.62+i*.82,.6,8,{w:.3,t:1});await R.wait(.3);}await S.j.jump(.12);hearts(R,.2,1.5,10);await R.wait(.5);}]]});
+/* ---------- L11 page 3: absorbing ---------- */
 page('c11',3,{old:[
- ['spill',async(R,S)=>{await R.bg('magic');R.label('A spill','#1c7ed6');R.fx('splash',-.2,.15,14,{w:.8,t:1.2});S.j=await pop(R,'juice',-.2,.15,.55);await R.wait(.3);}],
- ['sponge',async(R,S)=>{R.label('Sponge','#e0a800');S.s=await pop(R,'sponge',.8,.2,.6);await slide(R,S.s,-.15,.15,.9);R.fx('drop',-.1,.3,10,{w:.4,t:1.2,vy:-1});await R.shrink(S.j,.8);}],
- ['mop',async(R,S)=>{R.label('Mop','#1c7ed6');const m=await pop(R,'broom',1.3,.2,.9);await slide(R,m,.5,.2,.8);await wiggle(R,m,.15,.8);}],
- ['towel',async(R,S)=>{R.label('Towel','#7048e8');const t=await pop(R,'paper',1.9,.2,.55);await hop(R,t,.2,.5);}],
- ['plastic',async(R,S)=>{R.label('Plastic block: does not absorb','#e03131');const b=await pop(R,'block',-1.2,.2,.6);R.word('No!',-1.2,1.3,'#e03131',1.1);await wiggle(R,b,.1,.6);}]]});
+ ['spill',async(R,S)=>{await sceneBg(R,'magic','A spill','#1c7ed6');S.m=await act(R,'pa-soupspill',-1.15,.05,1.55);S.d=[];for(let i=0;i<5;i++){S.d.push(await pop(R,'drop',-.3+i*.38,.14,.3));}R.fx('splash',.4,.2,14,{w:1.2,t:1.2});R.word('Oops!',.4,2.0,'#e03131',1.4);await S.m.shiver(.9);}],
+ ['sponge',async(R,S)=>{R.label('Sponge soaks it up','#e0a800');S.s=R.act('pa-t11sponge',{x:2.1,y:.1,h:.6,face:1});await S.s.show(.4);for(let i=4;i>=0;i--){await S.s.go(-.3+i*.38,.1,.55);R.fx('drop',-.3+i*.38,.3,3,{w:.1,t:.7,vy:-1});R.shrink(S.d[i],.4);}await S.s.jump(.15);R.word('Soaked!',.4,2.0,'#1c7ed6',1.4);hearts(R,.3,.9,6);await R.wait(.4);}],
+ ['mop',async(R,S)=>{R.label('Mop','#1c7ed6');await S.s.hide(.4);S.t=await act(R,'pa-t11tools',.6,.1,1.0);await ringAt(R,.8,.7,.3,'#1c7ed6');await S.t.wag(.8,.03,4);}],
+ ['towel',async(R,S)=>{R.label('Towel','#7048e8');await ringAt(R,.2,.55,.3,'#7048e8');R.fx('drop',.2,.7,8,{w:.2,t:1,vy:-1});await S.t.jump(.08);}],
+ ['plastic',async(R,S)=>{R.label('Plastic block: does not absorb','#e03131');await ringAt(R,1.15,.4,.3,'#e03131');R.word('No!',1.1,1.6,'#e03131',1.3);await S.t.shiver(.8);await R.wait(.6);}]]});
 
-/* ================= LESSON 12 : Water: solid, liquid, gas ================= */
+/* ---------- L12 page 1: heat melts ice ---------- */
 page('c12',1,{old:[
- ['heat',async(R,S)=>{await R.bg('pond-summer');R.label('Heat','#e8590c');S.sun=await pop(R,'sun',1.4,1.7,.75);R.fx('sparkle',1.4,1.7,10,{w:.6,t:1.2});}],
- ['ice',async(R,S)=>{await R.bg('pond-winter');R.label('Ice','#1c7ed6');await R.wait(.2);S.i=await pop(R,'ice',-.9,.2,.8);}],
- ['snowman',async(R,S)=>{await R.bg('pond-spring');S.s=await pop(R,'snowman',-.3,.2,1.0);S.sun2=await pop(R,'sun',1.5,1.8,.7);}],
- ['melts',async(R,S)=>{R.label('Melts','#1c7ed6');R.fx('drop',-.3,.8,16,{w:.4,t:1.6,vy:-1.4});await R.T(2.2,e=>{S.s.scale.set((S.s.userData.s0||1)*(1+e*.35),(S.s.userData.s0||1)*(1-e*.85),1);});R.fx('splash',-.3,.2,14,{w:.8,t:1.2});}],
- ['puddle',async(R,S)=>{R.word('A puddle!',.5,1.8,'#1c7ed6',1.4);R.fx('bubble',-.3,.2,6,{w:.6,t:1.2});await R.wait(.4);}]]});
+ ['heat',async(R,S)=>{await sceneBg(R,'pond-winter','Heat','#e8590c');S.w=await act(R,'pa-waterice',-1.0,.05,1.3);S.sun=await pop(R,'sun',1.4,1.6,.4);await grow(R,S.sun,.9,1.4);spark(R,1.4,1.7,14);}],
+ ['ice',async(R,S)=>{R.label('Ice','#1c7ed6');R.word('Solid ice',.4,2.0,'#1c7ed6',1.4);await S.w.shiver(.8);R.fx('drop',S.w.st.x,1.0,12,{w:.4,t:1.4,vy:-1.4});await S.w.swap('pa-watermelt',1.4,{h:1.0,face:1});R.fx('drop',S.w.st.x,.7,12,{w:.4,t:1.2,vy:-1.4});}],
+ ['snowman',async(R,S)=>{await R.bg('pond-spring');R.label('Snowman in the sun','#e8590c');S.s=await act(R,'pa-t12snowman',.5,.1,1.55);S.sun2=await pop(R,'sun',1.6,1.9,.6);await S.s.wag(.8,.03,3);}],
+ ['melts',async(R,S)=>{R.label('Melts','#1c7ed6');R.fx('drop',.5,1.0,30,{w:.5,t:3,vy:-1.4});await S.s.grow(1.06,.7,2.2);R.fx('splash',.5,.2,14,{w:.8,t:1.2});await S.s.swap('pa-t12puddle',1.4,{h:.45,face:1});S.s.st.sy=1;S.s.st.sx=1;R.fx('splash',.5,.2,16,{w:.9,t:1.2});}],
+ ['puddle',async(R,S)=>{R.word('A puddle!',.4,1.9,'#1c7ed6',1.5);S.w2=R.act('pa-waterdrop',{x:.5,y:.1,h:1.3,face:1});S.w2.st.op=0;S.w2.ap();R.fx('splash',.5,.3,20,{w:.8,t:1.3});await S.w2.show(.6,'pop');await S.w2.jump(.3);hearts(R,.5,1.7,10);await R.wait(.5);}]]});
+/* ---------- L12 page 2: freezing ---------- */
 page('c12',2,{old:[
- ['cold',async(R,S)=>{await R.bg('pond-winter');R.label('Cold','#1c7ed6');R.snow(5,40);S.g=await pop(R,'juice',-.8,.25,.8);R.fx('drop',-.8,1.0,10,{w:.1,t:1.2,vy:-1.4});}],
- ['mold',async(R,S)=>{R.label('Mold','#868e96');await R.wait(.5);}],
- ['freezer',async(R,S)=>{R.label('Freezer','#1c7ed6');R.word('Brrr!',.7,1.9,'#1c7ed6',1.3);R.fx('snow',0,H+.1,40,{w:W,vy:-1.6,t:3.5,spread:1});await R.wait(1);}],
- ['freezes',async(R,S)=>{R.label('Ice pops!','#c2255c');await R.shrink(S.g,.3);const a=await pop(R,'ice',-.3,.2,.6);const b=await pop(R,'ice',.4,.2,.6);const c=await pop(R,'ice',1.1,.2,.6);R.fx('sparkle',.4,.7,16,{w:1.6,t:1.4});await all([hop(R,a,.2,.5),hop(R,b,.25,.5),hop(R,c,.2,.5)]);}]]});
+ ['cold',async(R,S)=>{await sceneBg(R,'pond-winter','Cold','#1c7ed6');R.snow(6,50);S.w=await act(R,'pa-waterdrop',-1.15,.05,1.3);S.j=await pop(R,'juice',.6,.9,.75);R.word('Brrr!',.4,2.0,'#1c7ed6',1.4);await S.w.shiver(1.1);}],
+ ['mold',async(R,S)=>{R.label('Mold','#868e96');S.m=[];for(let i=0;i<3;i++)S.m.push(await pop(R,'cup',-.2+i*.8,.2,.5));await R.T(.6,e=>S.j.rotation.z=-.8*e);for(const m of S.m){await slide(R,S.j,m.position.x+.1,.9,.5);R.fx('drop',m.position.x,.9,6,{w:.05,t:.8,vy:-1.6});await R.wait(.3);}await R.T(.5,e=>S.j.rotation.z=-.8*(1-e));}],
+ ['freezer',async(R,S)=>{R.label('Freezer','#1c7ed6');R.word('Brrr!',.4,2.0,'#1c7ed6',1.5);R.snow(5,50);for(const m of S.m)tintP(m,'#cfe8ff');await S.w.shiver(1.8);R.fx('sparkle',.6,.5,20,{w:2.2,t:1.8});await R.wait(.6);}],
+ ['freezes',async(R,S)=>{R.label('Ice pops!','#c2255c');await bye(R,[...S.m,S.j]);S.p=await act(R,'pa-t12pops',.5,.15,1.3);R.fx('sparkle',.5,.9,22,{w:1.8,t:1.5});await S.p.jump(.15);await S.p.wag(.8,.03,4);S.b=R.act('pa-boywalk',{x:2.7,y:.1,h:1.0,face:-1});S.b.st.fl=-1;await S.b.show(.2);await S.b.walk(1.7,.1,1.4);R.word('Yum!',1.5,1.8,'#c2255c',1.4);await S.b.jump(.18);hearts(R,1.7,1.4,10);await R.wait(.4);}]]});
+/* ---------- L12 page 3: evaporating ---------- */
 page('c12',3,{old:[
- ['wet',async(R,S)=>{await R.bg('pond-summer');R.label('Wet clothes','#1c7ed6');S.sh=[await pop(R,'shirt',-.9,1.2,.6),await pop(R,'socks',-.2,1.25,.5),await pop(R,'shirt',.5,1.2,.6)];S.sh.forEach(p=>bobber(R,p,.02,3));R.fx('drop',-.2,1.0,10,{w:1.4,t:1.6,vy:-1.2});}],
- ['dry',async(R,S)=>{R.label('Dry!','#e8590c');R.fx('sparkle',-.2,1.2,14,{w:1.6,t:1.4});await R.wait(.8);}],
- ['sun',async(R,S)=>{R.label('Sun','#e8590c');S.su=await pop(R,'sun',1.5,1.8,.7);R.fx('sparkle',1.5,1.8,12,{w:.6,t:1.2});}],
- ['evaporates',async(R,S)=>{R.label('Evaporates','#868e96');R.fx('bubble',-.2,1.2,16,{w:1.6,t:2.2,vy:1});R.word('Up, up, up!',.6,1.95,'#868e96',1.4);await R.wait(1);}]]});
+ ['wet',async(R,S)=>{await sceneBg(R,'pond-summer','Wet clothes','#1c7ed6');S.l=await act(R,'pa-t12line',.4,.9,1.25);S.l.tint('#ffffff','#7f9cc8',.6);R.fx('drop',.2,1.6,24,{w:1.8,t:2.6,vy:-1.4});R.word('Drip, drip',.9,2.0,'#1c7ed6',1.4);await S.l.wag(1.4,.03,3);}],
+ ['dry',async(R,S)=>{R.label('Dries in the sun','#e8590c');S.su=await pop(R,'sun',1.7,1.9,.4);await grow(R,S.su,.85,1.4);R.fx('sparkle',1.7,1.9,14,{w:.7,t:1.3});await S.l.wag(1,.04,4);}],
+ ['sun',async(R,S)=>{await S.l.tint('#7f9cc8','#ffffff',1.4);R.fx('sparkle',.4,1.7,18,{w:2,t:1.5});R.word('Dry!',.9,2.1,'#e8590c',1.4);await R.wait(.6);}],
+ ['evaporates',async(R,S)=>{R.label('Evaporates into the air','#868e96');R.fx('bubble',.4,1.6,30,{w:2,t:3.4,vy:1.1});S.w=R.act('pa-watergas',{x:.1,y:1.0,h:1.1,face:1});S.w.st.op=0;S.w.ap();await S.w.show(.8);R.word('Up, up, up!',.7,2.15,'#868e96',1.5);await S.w.go(-.4,1.5,2,{arc:.2});await S.w.go(1.1,1.3,1.6,{arc:.2});await R.wait(.4);}]]});
 
-/* ================= LESSON 13 : Sink or float? ================= */
-const drop13=async(R,S,name,x,floatIt,lab,col,sz)=>{R.label(lab,col);const p=await pop(R,name,x,1.8,sz||.4);const wy=1.02;await R.toss(p,x,wy,.9,0);R.fx('splash',x,wy,10,{w:.3,t:1});
-  if(floatIt)bobber(R,p,.03,2.4);else{const y0=p.position.y;await R.T(1.2,e=>{p.position.y=y0-e*.5;p.scale.setScalar(p.scale.x*(1-e*.01));});}return p;};
+/* ---------- L13 page 1: apple, coin, duck ---------- */
 page('c13',1,{old:[
- ['apple',async(R,S)=>{await R.bg('river');await drop13(R,S,'apple',-.9,1,'Apple floats','#2b8a3e',.4);}],
- ['coin',async(R,S)=>{await drop13(R,S,'coin',.1,0,'Coin sinks','#868e96',.3);}],
- ['duck',async(R,S)=>{await drop13(R,S,'duck',1.1,1,'Rubber duck floats','#e0a800',.45);R.fx('heart',1.1,1.5,6,{w:.4,t:1.4});}]]});
+ ['apple',async(R,S)=>{await R.bg('river');S.s=await act(R,'pa-samlook',-1.45,.05,1.35);S.t=await act(R,'pa-t13tank',.7,.15,1.45);R.label('Apple floats','#2b8a3e');await ringAt(R,.45,1.25,.28,'#2b8a3e');R.word('Bob, bob!',.7,2.0,'#2b8a3e',1.3);await S.s.wag(.7,.04,3);}],
+ ['coin',async(R,S)=>{R.label('Coin sinks','#868e96');await ringAt(R,.85,.4,.26,'#868e96');bubblesUp(R,.85,.4,10);R.word('Glug!',.7,2.0,'#868e96',1.3);await S.s.shiver(.5);}],
+ ['duck',async(R,S)=>{R.label('Rubber duck floats','#e0a800');await ringAt(R,1.0,1.2,.3,'#e0a800');R.word('Quack!',.7,2.0,'#e0a800',1.3);await S.s.swap('pa-samcheer',.5,{h:1.0,face:1});await S.s.jump(.2);hearts(R,.7,1.8,10);await R.wait(.4);}]]});
+/* ---------- L13 page 2: wood vs metal ---------- */
 page('c13',2,{old:[
- ['raft',async(R,S)=>{await R.bg('river');R.label('Wood floats','#2b8a3e');S.w=await pop(R,'raft',-.5,.95,1.0);bobber(R,S.w,.03,2.2);R.fx('sparkle',-.5,1.5,8,{w:.7,t:1.2});}],
- ['wood',async(R,S)=>{R.word('Wood!',-.5,1.9,'#2b8a3e',1.2);await R.wait(.3);}],
- ['anchor',async(R,S)=>{R.label('Metal sinks','#868e96');const a=await pop(R,'anchor',1.1,1.7,.5);await R.toss(a,1.1,1.02,.8,0);R.fx('splash',1.1,1.0,10,{w:.3,t:1});const y0=a.position.y;await R.T(1.4,e=>{a.position.y=y0-e*.5;});}],
- ['metal',async(R,S)=>{R.word('Metal!',1.1,1.9,'#868e96',1.2);await R.wait(.3);}]]});
+ ['raft',async(R,S)=>{await R.bg('river');R.label('Wood floats','#2b8a3e');S.lg=await pop(R,'log',-.8,1.0,.6);bobber(R,S.lg,.03,2);S.w=await pop(R,'raft',.5,.95,1.0);bobber(R,S.w,.03,2.2);spark(R,.5,1.5,10);await R.wait(.6);}],
+ ['wood',async(R,S)=>{R.word('Wood floats!',.4,2.0,'#2b8a3e',1.6);S.s=R.act('pa-samraft',{x:.5,y:.8,h:.8,face:1});S.s.st.op=0;S.s.ap();await R.shrink(S.w,.4);R.drop(S.w);await S.s.show(.5,'pop');await S.s.go(1.3,.85,1.8,{arc:.04});await S.s.go(-.3,.85,2.2,{arc:.04});await R.wait(.3);}],
+ ['anchor',async(R,S)=>{R.label('Metal sinks','#868e96');S.a=R.act('pa-t13anchor',{x:1.0,y:1.7,h:.55,face:1});await S.a.show(.4,'pop');await S.a.go(1.0,1.0,.9);R.fx('splash',1.0,1.05,14,{w:.4,t:1.2});bubblesUp(R,1.0,.6,12);await S.a.go(1.0,.35,1.8);}],
+ ['metal',async(R,S)=>{R.word('Metal sinks!',.9,2.0,'#868e96',1.6);bubblesUp(R,1.0,.4,14);await S.s.go(.5,.85,1.2,{arc:.03});await R.wait(.5);}]]});
+/* ---------- L13 page 3: clay ball and boat ---------- */
 page('c13',3,{old:[
- ['clay',async(R,S)=>{await R.bg('river');R.label('Clay ball','#a0703c');S.c=await pop(R,'rock',-.3,1.7,.4);if(S.c.traverse)S.c.traverse(o=>{if(o.material&&o.material.color)o.material.color.set('#c97b3d');});await R.toss(S.c,-.3,1.02,.8,0);R.fx('splash',-.3,1.0,10,{w:.3,t:1});const y0=S.c.position.y;await R.T(1.3,e=>{S.c.position.y=y0-e*.45;});}],
- ['sinks',async(R,S)=>{R.word('It sinks!',.8,1.9,'#e03131',1.3);await R.wait(.4);}],
- ['boat',async(R,S)=>{R.label('Shape it into a boat','#2b8a3e');await R.shrink(S.c,.3);S.b=await pop(R,'boat',.5,.95,.8);bobber(R,S.b,.03,2.2);R.fx('sparkle',.5,1.4,14,{w:.8,t:1.3});}],
- ['matters',async(R,S)=>{R.word('Shape matters!',.5,1.95,'#2b8a3e',1.6);heartsAt(R,.5,1.5);await R.wait(.4);}]]});
+ ['clay',async(R,S)=>{await R.bg('river');R.label('A ball of clay','#a0703c');S.s=await act(R,'pa-samlook',-1.5,.05,1.35);S.c=await pop(R,'rock',-.4,1.9,.4);tintP(S.c,'#c97b3d');await R.toss(S.c,.4,1.0,.9,.3);R.fx('splash',.4,1.0,12,{w:.3,t:1});R.drop(S.c);S.t=await act(R,'pa-t13clay',.6,.15,1.35,1,'pop');}],
+ ['sinks',async(R,S)=>{R.word('It sinks!',.8,2.0,'#e03131',1.5);await ringAt(R,.5,.35,.3,'#e03131');bubblesUp(R,.5,.4,10);await S.s.shiver(.9);}],
+ ['boat',async(R,S)=>{R.label('Shape it into a boat','#2b8a3e');await S.t.hide(.5);S.b=R.act('pa-t13boat',{x:.5,y:.85,h:.8,face:1});S.b.st.op=0;S.b.ap();spark(R,.5,1.2,18);await S.b.show(.6,'pop');S.b.idle='swim';await S.s.swap('pa-samcheer',.5,{h:1.0,face:1});await S.s.jump(.2);}],
+ ['matters',async(R,S)=>{R.word('Shape matters!',.5,2.0,'#2b8a3e',1.7);await S.b.go(1.3,.85,1.6,{arc:.03});await S.b.go(.3,.85,1.6,{arc:.03});hearts(R,.5,1.6,10);await R.wait(.5);}]]});
 
-/* ================= LESSON 14 : Hazard symbols ================= */
-const SLOT=[-1.0,-.3,.4,1.1];
+/* ---------- L14 page 1: poison ---------- */
 page('c14',1,{old:[
- ['skull',async(R,S)=>{await R.bg('garage');R.label('Poisonous','#e03131');S.s=R.sign('skull',-.3,1.2,1.3);await S.s.show();await S.s.shake(.7);S.b=await pop(R,'bottle',.9,.2,.6);}],
- ['death',async(R,S)=>{R.word('Danger!',.5,2.0,'#e03131',1.4);await S.s.shake(.7);}],
- ['washer',async(R,S)=>{R.label('Windshield washer fluid','#1c7ed6');await hop(R,S.b,.2,.5);const car=await pop(R,'car',-1.0,.15,.9);}]]});
+ ['skull',async(R,S)=>{await R.bg('garage');R.label('Poisonous','#e03131');S.m=await act(R,'pa-mousebottle',-1.35,.05,1.2);S.c=R.act('pa-catstop',{x:2.8,y:.05,h:1.3,face:-1});await S.c.show(.1);await S.c.walk(1.3,.05,1);S.s=R.sign('skull',.1,1.55,1.3);await S.s.show();await S.s.shake(.8);R.word('Danger!',.4,2.15,'#e03131',1.3);}],
+ ['death',async(R,S)=>{await S.m.swap('pa-mousescared',.4,{h:1.2,face:1});await all([S.m.shiver(1.2),S.s.shake(1.2)]);R.word('Not for drinking!',.4,2.15,'#e03131',1.7);}],
+ ['washer',async(R,S)=>{R.label('Windshield washer fluid','#1c7ed6');await all([S.s.hide(),S.m.hide(.5),S.c.hide(.5)]);S.j=await act(R,'pa-t14jug',-.4,.1,1.4);const car=await pop(R,'car',1.2,.2,.9);const sg=R.sign('skull',.55,1.5,.9);await sg.show();await sg.shake(.7);await S.j.wag(.8,.04,4);await S.j.jump(.1);await R.wait(.5);}]]});
+/* ---------- L14 page 2: flammable and explosive ---------- */
 page('c14',2,{old:[
- ['flame',async(R,S)=>{await R.bg('garage');R.label('Flammable','#e8590c');S.f=R.sign('flame',-.8,1.2,1.2);await S.f.show();await S.f.shake(.6);S.fi=await pop(R,'fire',-.1,.2,.55);}],
- ['heat',async(R,S)=>{R.word('Keep away from fire!',.7,2.0,'#e8590c',1.8);await wiggle(R,S.fi,.12,.7);}],
- ['exploding',async(R,S)=>{R.label('Explosive','#e03131');S.e=R.sign('burst',.9,1.2,1.2);await S.e.show();await S.e.shake(.7);R.fx('sparkle',.9,1.2,18,{w:.8,t:1.4});}],
- ['poked',async(R,S)=>{R.word('Boom!',.9,2.0,'#e03131',1.3);R.fx('sparkle',.9,1.2,20,{w:1,t:1.4});await R.wait(.4);}]]});
+ ['flame',async(R,S)=>{await R.bg('garage');R.label('Flammable','#e8590c');S.c=await act(R,'pa-catpoint',-1.25,.05,1.35);S.f=R.sign('flame',.0,1.55,1.3);await S.f.show();await S.f.shake(.8);S.k=await act(R,'pa-t14fuel',1.4,.1,1.2);await S.k.wag(.8,.03,5);}],
+ ['heat',async(R,S)=>{R.word('Keep away from fire!',.4,2.15,'#e8590c',1.9);await S.k.go(1.9,.1,1.2);await S.c.wag(.8,.04,3);R.fx('sparkle',1.9,.8,14,{w:.5,t:1.2});}],
+ ['exploding',async(R,S)=>{R.label('Explosive','#e03131');await S.k.hide(.5);S.e=R.sign('burst',-.1,1.55,1.3);await S.e.show();await S.e.shake(.8);S.n=await act(R,'pa-t14can',1.3,.1,1.3);await S.n.grow(1.15,1.15,1.2);R.fx('sparkle',1.3,.9,12,{w:.4,t:1.2});}],
+ ['poked',async(R,S)=>{R.word('Boom!',.4,2.15,'#e03131',1.6);R.fx('sparkle',1.3,.8,30,{w:.9,t:1.6});R.fx('dust',1.3,.4,14,{w:.8,t:1.4});await S.n.hide(.3);await S.c.shiver(.8);await R.wait(.5);}]]});
+/* ---------- L14 page 3: be safe ---------- */
 page('c14',3,{old:[
- ['hazard',async(R,S)=>{await R.bg('garage');R.label('Hazard symbol','#e03131');S.s=R.sign('corrosive',-.6,1.2,1.2);await S.s.show();S.b=await pop(R,'bottle',.6,.2,.6);}],
- ['touch',async(R,S)=>{R.word('Do not touch!',.4,2.0,'#e03131',1.7);await wiggle(R,S.b,.1,.6);}],
- ['tell',async(R,S)=>{R.label('Tell a grown-up','#2b8a3e');const g=await pop(R,'man',1.5,.15,1.0);await hop(R,g,.15,.5);}],
- ['closed',async(R,S)=>{R.label('Keep closed, up high','#7048e8');await R.wait(.3);await slide(R,S.b,1.5,1.5,1.3);R.fx('sparkle',1.5,1.6,10,{w:.5,t:1.2});}]]});
+ ['hazard',async(R,S)=>{await R.bg('garage');R.label('Hazard symbol','#e03131');S.m=await act(R,'pa-mousebottle',-1.35,.05,1.2);S.s=R.sign('corrosive',.2,1.55,1.2);await S.s.show();S.b=await pop(R,'bottle',1.1,.2,.6);await S.s.shake(.7);}],
+ ['touch',async(R,S)=>{R.word('Do not touch!',.4,2.15,'#e03131',1.8);S.c=R.act('pa-catstop',{x:2.8,y:.05,h:1.3,face:-1});await S.c.show(.1);await S.c.walk(1.7,.05,1.2);await S.m.swap('pa-mousescared',.4,{h:1.2,face:1});await S.m.shiver(.8);}],
+ ['tell',async(R,S)=>{R.label('Tell a grown-up','#2b8a3e');const g=R.act('pa-keeper',{x:-2.6,y:.1,h:1.45,face:1});await g.show(.2);await g.walk(.1,.1,1.6);await g.jump(.15);R.word('Tell a grown-up!',.4,2.15,'#2b8a3e',1.8);hearts(R,.1,1.8,10);S.g=g;await R.wait(.4);}],
+ ['closed',async(R,S)=>{R.label('Keep closed, up high','#7048e8');S.sh=R.act('pa-t14shelf',{x:1.5,y:1.3,h:.95,face:1});S.sh.st.op=0;S.sh.ap();await all([S.sh.show(.6,'pop'),S.g.walk(.8,.1,1.2)]);await slide(R,S.b,1.5,1.5,1.6);R.drop(S.b);spark(R,1.5,1.7,14);R.word('Up high!',.3,2.15,'#7048e8',1.5);await S.g.jump(.2);await R.wait(.4);}]]});
 
-/* ================= LESSON 15 : Air around us ================= */
+/* ---------- L15 page 1: wind ---------- */
 page('c15',1,{old:[
- ['wind',async(R,S)=>{await R.bg('park-wind');R.label('Wind','#1c7ed6');R.leaves(4,18);}],
- ['kites',async(R,S)=>{S.k=await pop(R,'kite',-.6,1.6,.8);bobber(R,S.k,.08,2.4);}],
- ['flags',async(R,S)=>{S.fl=await pop(R,'flag',.5,.3,.9);const f=S.fl;let on=true,ph=0;R.actors.push({kill:()=>{on=false;},tick:dt=>{if(on){ph+=dt*9;f.rotation.z=Math.sin(ph)*.08;}}});}],
- ['clouds',async(R,S)=>{S.c=await pop(R,'cloud',1.3,1.8,.8);await slide(R,S.c,-.9,1.9,3);}],
- ['sails',async(R,S)=>{S.s=await pop(R,'sailboat',1.1,.55,.8);bobber(R,S.s,.03,2);await slide(R,S.s,.6,.55,1);}]]});
+ ['wind',async(R,S)=>{await R.bg('park-wind');R.label('Wind','#1c7ed6');S.l=R.act('pa-leorun',{x:-2.7,y:.05,h:1.3,face:1});await S.l.show(.2);R.leaves(5,24);await S.l.walk(-.3,.05,2.5);R.word('Whoosh!',.4,2.0,'#1c7ed6',1.4);}],
+ ['kites',async(R,S)=>{R.label('Wind flies kites','#e8590c');S.k=await pop(R,'kite',-.1,1.3,.9);bobber(R,S.k,.1,2.4);S.tr=R.trail([[-.3,.8],[-.2,1.0],[-.1,1.25]],.8,'#fff');await S.tr.draw();await S.l.walk(.5,.05,1.2);await slide(R,S.k,.9,1.8,1.4);}],
+ ['flags',async(R,S)=>{R.label('Flaps flags','#c2255c');S.fl=await pop(R,'flag',1.7,.3,.9);const f=S.fl;let on=true,ph=0;R.actors.push({kill:()=>{on=false;},tick:dt=>{if(on){ph+=dt*9;f.rotation.z=Math.sin(ph)*.1;}}});R.word('Flap, flap!',1.2,2.0,'#c2255c',1.4);await R.wait(1.2);}],
+ ['clouds',async(R,S)=>{R.label('Pushes clouds','#868e96');S.c=await pop(R,'cloud',1.5,1.9,.8);const c2=await pop(R,'cloud',-.8,2.0,.6);await all([slide(R,S.c,-.9,1.95,3),slide(R,c2,1.8,2.0,3)]);}],
+ ['sails',async(R,S)=>{R.label('Fills sails','#1c7ed6');await R.bg('river');S.s=R.act('pa-t15sail',{x:-1.4,y:.95,h:1.1,face:1});S.s.st.op=0;S.s.ap();await S.s.show(.5,'pop');S.s.idle='swim';R.fx('leaf',0,1.6,12,{w:2,t:3,vx:.9});await S.s.go(1.5,.95,3.2,{arc:.03});await R.wait(.4);}]]});
+/* ---------- L15 page 2: air takes up space ---------- */
 page('c15',2,{old:[
- ['air',async(R,S)=>{await R.bg('park');R.label('Air takes up space','#1c7ed6');await R.wait(.3);}],
- ['balloon',async(R,S)=>{S.b=await pop(R,'balloon',-1.0,.4,.7);await R.T(.8,e=>S.b.scale.setScalar((S.b.userData.s0||.7)*(1+Math.sin(e*Math.PI)*.12)));}],
- ['ball',async(R,S)=>{S.s=await pop(R,'ball',-.15,.2,.45);await hop(R,S.s,.35,.7);}],
- ['tire',async(R,S)=>{S.t=await pop(R,'bicycle',.8,.2,.9);}],
- ['squeeze',async(R,S)=>{R.label('It pushes back!','#e8590c');for(const p of [S.b,S.s]){if(p){const k=p.userData.s0||.5;await R.T(.5,e=>p.scale.set(k*(1-Math.sin(e*Math.PI)*.18),k*(1+Math.sin(e*Math.PI)*.1),1));}}R.fx('sparkle',-.5,.8,10,{w:1,t:1.2});}]]});
+ ['air',async(R,S)=>{await R.bg('park');R.label('Air takes up space','#1c7ed6');S.a=await act(R,'pa-amybubbles',-1.3,.05,1.35);R.fx('bubble',-.8,1.2,20,{w:1.2,t:3,vy:.7});R.word('Bubbles!',.5,2.0,'#1c7ed6',1.3);await S.a.wag(1.2,.03,3);}],
+ ['balloon',async(R,S)=>{S.b=await act(R,'pa-t15balloon',-.1,.1,.6);for(let i=0;i<3;i++){R.fx('bubble',-.4,.3,4,{w:.1,t:.7,vy:.3});await S.b.grow(1.15+i*.12,1.15+i*.12,.7);}R.word('Full of air!',.7,2.0,'#1c7ed6',1.5);await S.b.jump(.18);}],
+ ['ball',async(R,S)=>{S.s=await act(R,'pa-t15ball',1.4,.1,.5);await S.s.jump(.5);await S.s.jump(.35);R.fx('dust',1.4,.2,6,{w:.3,t:.8});}],
+ ['tire',async(R,S)=>{S.t=await act(R,'pa-t15bike',.7,1.4,.9);await S.t.go(.7,.1,.7,{arc:.1});for(let i=0;i<3;i++){R.fx('bubble',1.1,.3,4,{w:.1,t:.7,vy:.4});await S.t.wag(.5,.02,4);}}],
+ ['squeeze',async(R,S)=>{R.label('It pushes back!','#e8590c');for(const a of [S.b,S.s]){await a.grow(1.3,.7,.5);R.fx('sparkle',a.st.x,a.st.y+.5,8,{w:.3,t:.8});await a.grow(1,1,.5);}R.word('Push!',.5,2.0,'#e8590c',1.4);await R.wait(.6);}]]});
+/* ---------- L15 page 3 stays as before ---------- */
 page('c15',3,{old:[
  ['cold',async(R,S)=>{await R.bg('park');R.label('Cold air','#1c7ed6');R.snow(5,30);S.k=R.act('pa-kidsbench',{x:.9,y:.12,h:1.0,face:1});await S.k.show(.6,'pop');await S.k.shiver(1.3);}],
  ['coats',async(R,S)=>{R.fx('crumb',0,1,1,{});await R.wait(.5);}],
