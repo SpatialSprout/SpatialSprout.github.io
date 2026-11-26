@@ -258,10 +258,10 @@ P.DIR_NEW={
   steps:{2:"Some animals migrate by air. Geese fly south in a V shape, and tiny hummingbirds zip along. Some go by land, like caribou and garter snakes. And some travel by water, like grey whales and sea turtles."}}};
 const plain=t=>String(t).replace(/\*/g,'').replace(/\s+/g,' ').trim();
 const has=t=>!!(window.VOICE&&P.vhash&&window.VOICE[P.vhash(t)]);
-P.DIR.voiced=(id,i)=>{const n=P.DIR_NEW[id];if(!n)return false;if(i===0)return !!n._on;return !!(n._st&&n._st[i]);};
+P.DIR.voiced=(id,i)=>{const n=P.DIR_NEW[id];if(!n)return false;if(window.__NEU)return true;if(i===0)return !!n._on;return !!(n._st&&n._st[i]);};
 /* swap the lesson's words for the new narration, page by page, only where the new voice is ready */
 P.DIR.applyNarration=function(d){const n=P.DIR_NEW[d.id];if(!n)return;n._st={};
-  if(n.story&&d.page&&d.page.story){const ti=String(d.page.story.title).trim();const sp=ti+(/[.!?]$/.test(ti)?' ':'. ')+plain(n.story);if(has(sp)){d.page.story.text=n.story;n._on=true;}}
-  Object.keys(n.steps||{}).forEach(i=>{const t=n.steps[i];if(d.steps&&d.steps[+i]&&has(t)){d.steps[+i].speech=t;n._st[+i]=true;}});};
+  if(n.story&&d.page&&d.page.story){const ti=String(d.page.story.title).trim();const sp=ti+(/[.!?]$/.test(ti)?' ':'. ')+plain(n.story);if(has(sp)||window.__NEU){d.page.story.text=n.story;n._on=true;}}
+  Object.keys(n.steps||{}).forEach(i=>{const t=n.steps[i];if(d.steps&&d.steps[+i]&&(has(t)||window.__NEU)){d.steps[+i].speech=t;n._st[+i]=true;}});};
 P.DIR.mount();
 })();

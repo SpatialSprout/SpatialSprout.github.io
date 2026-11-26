@@ -16,9 +16,9 @@ import regen_stories_azure as az
 from mutagen.mp3 import MP3
 
 
-def load_js_obj(path, name):
+def load_js_obj(path, name, sep="="):
     src = open(path, encoding="utf-8").read()
-    i = src.index(name + "=")
+    i = src.index(name + sep)
     j = src.index("{", i)
     depth, k, q = 0, j, None
     while k < len(src):
@@ -51,6 +51,8 @@ def main():
     book = sys.argv[1] if len(sys.argv) > 1 else "grade-2-science"
     bdir = os.path.join("books", book)
     new = load_js_obj(os.path.join(bdir, "story-scripts.js"), "P.DIR_NEW")
+    if os.path.exists(os.path.join(bdir, "story-scripts2.js")):
+        new.update(load_js_obj(os.path.join(bdir, "story-scripts2.js"), "Object.assign(P.DIR_NEW", ","))
     lessons = "".join(open(os.path.join(bdir, f), encoding="utf-8").read()
                       for f in os.listdir(bdir) if re.match(r"lessons-[a-z]\.js$", f))
     texts = []
