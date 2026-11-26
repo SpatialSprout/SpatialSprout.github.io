@@ -30,7 +30,7 @@ function stage(sc,keys,o){o=o||{};sc.__sid='c09pic';D.base(sc,'#e9e2d6');
     tween(.8,e=>{const z=ease(e);n.m.material.opacity=Math.min(1,e*1.6);n.g.scale.y=.04+.96*z+Math.sin(e*Math.PI)*.07;n.g.scale.x=1.05-.05*z;}).then(()=>n.g.scale.set(1,1,1));
     if(n.hero){n.hero.userData.busy=1;n.hero.scale.set(.2,.2,1);
       sc.later(()=>{tween(.7,e=>{const z=ease(e);n.hero.material.opacity=Math.min(1,e*2.2);const s=.2+.8*z+Math.sin(e*Math.PI)*.16;n.hero.scale.set(s,s,1);n.hero.position.y=n.hero.userData.hy+Math.sin(e*Math.PI)*.3;n.shadow.material.opacity=n.shadow.userData.base*e;}).then(()=>{n.hero.scale.set(1,1,1);n.hero.position.y=n.hero.userData.hy;n.hero.userData.busy=0;});try{burst(V(0,.7,-1.6));}catch(e){}},520);}
-    X.setLab(label||cap(k));};
+    X.setLab(label||cap(k));if(X.onShow)X.onShow(k);};
   X.setLab=txt=>{if(!txt)return;const c=D.card(sc,txt,0,o.lz!=null?o.lz:TH.lz,{h:.2,col:COL[X.curK]||'#2b8a3e'});c.visible=true;D.grow(c);if(X.lab)X.lab.visible=false;X.lab=c;};
   X.pulse=()=>{const n=X.cur;if(!n)return;const hm=n.hero;tween(.6,e=>{const s=1+Math.sin(e*Math.PI)*.05;n.g.scale.set(s,s,1);if(hm){hm.userData.busy=1;const j=Math.sin(e*Math.PI);hm.position.y=hm.userData.hy+j*.35;hm.scale.set(1-j*.06,1+j*.1,1);}}).then(()=>{n.g.scale.set(1,1,1);if(hm){hm.userData.busy=0;hm.scale.set(1,1,1);hm.position.y=hm.userData.hy;}});};
   /* life: the scene swings slowly so the depth shows, and each animal moves its own way */
@@ -44,14 +44,14 @@ function stage(sc,keys,o){o=o||{};sc.__sid='c09pic';D.base(sc,'#e9e2d6');
      case 'slither':dx=Math.sin(tt*1.4)*.08;sx=1+Math.sin(tt*2.8)*.025;rz=Math.sin(tt*1.4)*.018;break;
      case 'sway':rz=Math.sin(tt*1.1)*.08;dy=Math.sin(tt*2.2)*.02;break;
      default:sy=1+Math.sin(tt*2.2)*.02;sx=1-Math.sin(tt*2.2)*.01;rz=Math.sin(tt*1.15)*.018;dy=Math.max(0,Math.sin(tt*2.2))*.012;}
-    hm.position.x=u.hx+dx;hm.position.y=u.hy+dy;hm.scale.set(sx,sy,1);hm.rotation.z=rz;
+    hm.position.x=u.hx+dx;hm.position.y=u.hy+dy;hm.scale.set(sx*(u.sc||1)*(u.fl||1),sy*(u.sc||1),1);hm.rotation.z=rz;
     if(n.shadow){n.shadow.position.x=u.hx+dx*.5;n.shadow.scale.x=u.w*.9*(1-dy*.6);}});
   sc.later(()=>{if(!A||!A.drag)return;Object.keys(S).forEach(k=>{const t=S[k].hero||S[k].m;A.drag(t,{tap:()=>{if(X.cur!==S[k])return;A.pop();X.pulse();try{burst(V(0,.7,-1.6));}catch(e){}sc.say(t,cap(k)+'!',1400);}});});},800);
   return X;}
 P.CLAY={stage};
 
 /* a page scene: cues = [[word, key, label?], ...]; the first picture also shows at the start unless story */
-const page=(keys,cues,o)=>sc=>{const X=stage(sc,keys,o);P.CAMO=sc;P.CLAY_X=X;
+const page=(keys,cues,o)=>sc=>{const X=stage(sc,keys,o);P.CAMO=sc;P.CLAY_X=X;if(o&&o.id&&P.CLAY.act)X.onShow=k=>P.CLAY.act(sc,X,k,o.id);
   cues.forEach(c=>D.at(sc,c[0],()=>X.show(c[1],c[2])));
   if(!(o&&o.noFirst))sc.later(()=>X.show(cues[0][1],cues[0][2]),700);return {};};
 P.CLAY.page=page;
@@ -78,8 +78,8 @@ const L={
   steps:{2:[['geese','goose','Air'],['hummingbirds','hummingbird','Air'],['caribou','caribou','Land'],['garter','garter','Land'],['whales','whale','Water'],['turtles','turtle','Water']]}}};
 const need={};Object.keys(L).forEach(id=>{const keys={};L[id].story.forEach(c=>keys[c[1]]=1);Object.keys(L[id].steps).forEach(i=>L[id].steps[i].forEach(c=>keys[c[1]]=1));need[id]=Object.keys(keys);});
 Object.keys(L).forEach(id=>{const X=P.SCN[id]=P.SCN[id]||{};X.steps=X.steps||[];
-  X.steps[0]={set:{},scene:page(L[id].story.map(c=>c[1]),L[id].story,Object.assign({noFirst:true},ST))};
-  Object.keys(L[id].steps).forEach(i=>{const cues=L[id].steps[i];X.steps[+i]={set:{},scene:page(cues.map(c=>c[1]).filter((k,j,a)=>a.indexOf(k)===j),cues,TH)};});});
+  X.steps[0]={set:{},scene:page(L[id].story.map(c=>c[1]),L[id].story,Object.assign({noFirst:true,id},ST))};
+  Object.keys(L[id].steps).forEach(i=>{const cues=L[id].steps[i];X.steps[+i]={set:{},scene:page(cues.map(c=>c[1]).filter((k,j,a)=>a.indexOf(k)===j),cues,Object.assign({id},TH))};});});
 
 /* ---- practice rounds: the lesson's picture for the animal in the question ---- */
 const ALIAS={mammal:'dog',mammals:'dog',birds:'owl',bird:'owl',reptile:'turtle',reptiles:'turtle',amphibian:'frog',amphibians:'frog',alligator:'turtle',toad:'toad',goldfish:'fish',robin:'robin',
