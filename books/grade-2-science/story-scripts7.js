@@ -68,11 +68,11 @@ const L8={
  jewel:async(R,S)=>{R.label('A jade-green jewel box','#2b8a3e');R.fx('sparkle',.4,.9,18,{w:.5,t:1.4});await R.wait(.5);},
  gold:async(R,S)=>{const r=R.ring(.4,.9,.3,'#e8a900');await r.show();await r.pulse(2,1);await r.hide();},
  weeks:async(R,S)=>{R.label('Two whole weeks','#868e96');R.fx('z',.4,1.5,5,{w:.3,t:2});await R.wait(.8);},
- nothing:async(R,S)=>{R.word('Nothing…',.5,2.1,'#868e96',1.3);await R.wait(.4);},
+ nothing:async(R,S)=>{R.word('Nothing\u2026',.5,2.1,'#868e96',1.3);await R.wait(.4);},
  whispered:async(R,S)=>{S.l=await pop(R,'pa-leo8whisper',{x:-1.0,y:.18,h:1.80,face:1});R.word('Is it broken?',-.6,2.1,'#1c7ed6',1.2);await S.l?.wag(.8,.03,3);},
  crack:async(R,S)=>{await sw(S.j,'pa-chrys8crack',.4,{h:1.80,face:1});R.word('CRACK!',.5,2.1,'#e03131',1.9);R.fx('sparkle',.4,1.0,22,{w:.7,t:1.2});if(S.j)S.j.idle='none';await S.j?.shiver(.5);},
  split:async(R,S)=>{R.fx('chip',.4,1.0,10,{w:.4,t:1.1});await S.j?.jump(.06);},
- climbed:async(R,S)=>{R.label('Out climbed…','#e8590c');await R.wait(.8);},
+ climbed:async(R,S)=>{R.label('Out climbed\u2026','#e8590c');await R.wait(.8);},
  dazzling:async(R,S)=>{await sw(S.j,'pa-mon8open',.8,{h:1.45,face:1});if(S.j)S.j.idle='flutter';R.fx('sparkle',.4,1.2,26,{w:1,t:1.6});await all([S.k?.jump(.15),S.l?.jump(.15)]);},
  soar:async(R,S)=>{await R.bg('garden8');S.k?.hide(.4);S.l?.hide(.4);S.j=await pop(R,'pa-mon8fly',{x:-1.6,y:.7,h:.85,face:1},.4);S.j.idle='flutter';await S.j.go(1.9,1.6,3.2);},
  garden:async(R,S)=>{R.label('Into the garden','#2b8a3e');R.fx('leaf',0,1.8,8,{w:3,t:2});await R.wait(.5);},
@@ -122,7 +122,7 @@ const L10={
   await R.wait(.5);for(const [p,x] of S.sol){R.fx('dust',x,.25,10,{w:.3,t:.8});R.fx('chip',x,.35,6,{w:.2,t:.6});}},
  thud:async(R,S)=>{R.word('THUD!',.9,1.7,'#8b5a2b',1.5);for(const [p,x] of S.sol||[]){R.toss(p,x+.15,.3,.35,.35);await R.wait(.15);}await R.wait(.4);for(const [p,x] of S.sol||[]){R.toss(p,x+.15,.3,.25,.12);}await R.wait(.3);},
  solids:async(R,S)=>{R.label('Solids keep their shape','#2b8a3e');const r=R.ring(.9,.5,1.0,'#2b8a3e');await r.show();R.fx('sparkle',.9,.5,12,{w:1.2,t:1.2});await r.pulse(2,1);await r.hide();},
- meanwhile:async(R,S)=>{R.label('Meanwhile…','#1c7ed6');await R.wait(.4);},
+ meanwhile:async(R,S)=>{R.label('Meanwhile\u2026','#1c7ed6');await R.wait(.4);},
  burst:async(R,S)=>{for(const [p] of S.sol||[])R.drop(p);S.m=R.act('pa-milk10',{x:.2,y:1.6,h:.9,face:1});S.o=R.act('pa-oil10',{x:1.4,y:1.6,h:.72,face:1});for(const a of [S.m,S.o]){a.st.op=0;a.ap();a.show(.1);}
   await all([S.m.go(.2,.18,.5,{arc:.2}),S.o.go(1.4,.18,.5,{arc:.2})]);R.word('Splash!',.8,1.9,'#1c7ed6',1.7);R.fx('splash',.2,.3,30,{w:.9,t:1.3});R.fx('splash',1.4,.3,30,{w:.9,t:1.3});},
  splashed:async(R,S)=>{await all([S.m.grow(1.7,.8,1.2),S.o.grow(1.7,.8,1.2)]);},
@@ -385,11 +385,11 @@ const L20b={
 page('c20',2,{old:mkq(L20b),neu:mkq(L20b)});
 const L20c={
  wind:async(R,S)=>{await R.bg('hill19');R.label('The wind dies down','#868e96');await windmill(R,S,3.2);S.g=R.act('pa-gust20',{x:-2.4,y:1.5,h:.7,face:1,idle:'sway'});S.g.st.op=0;S.g.ap();await S.g.show(.3);R.fx('leaf',-2.0,1.5,14,{w:.8,t:1.6,vx:2.6});await R.wait(.8);},
- dies:async(R,S)=>{S.g.hide(1.2);R.word('Calm…',-.5,2.8,'#868e96',1.8);await ramp(R,S.cw,.7,1.6);R.fx('leaf',-2.0,1.0,6,{w:.8,t:1.4,vx:.3,vy:-.6});},
+ dies:async(R,S)=>{S.g.hide(1.2);R.word('Calm\u2026',-.5,2.8,'#868e96',1.8);await ramp(R,S.cw,.7,1.6);R.fx('leaf',-2.0,1.0,6,{w:.8,t:1.4,vx:.3,vy:-.6});},
  windmill:async(R,S)=>{await ramp(R,S.cw,.15,1.4);},
  stops:async(R,S)=>{await ramp(R,S.cw,0,.8);S.x=await pop(R,'pa-stop20',{x:.5,y:.2,h:1.3,face:1},.4);await S.x.jump(.15);R.word('Stops!',.5,2.7,'#e03131',1.7);},
  river:async(R,S)=>{await R.bg('river20');R.label('The river dries up','#868e96');S.cw={v:2.2};S.w=await spinner(R,'pa-wheel20',WHX,WHC,WHH,S.cw);R.fx('splash',-2.2,.6,16,{w:.5,t:1.6,vx:3,vy:.5});await R.wait(.8);},
- dries:async(R,S)=>{await R.bg('dryriver20');R.label('The river dries up: no water','#c2a24d');R.word('Dry…',-.8,2.7,'#c2a24d',1.7);R.fx('dust',-1.5,.4,14,{w:1.4,t:2,vx:1.2,vy:.2});S.cw.v=0;await R.wait(1.2);},
+ dries:async(R,S)=>{await R.bg('dryriver20');R.label('The river dries up: no water','#c2a24d');R.word('Dry\u2026',-.8,2.7,'#c2a24d',1.7);R.fx('dust',-1.5,.4,14,{w:1.4,t:2,vx:1.2,vy:.2});S.cw.v=0;await R.wait(1.2);},
  wheel:async(R,S)=>{S.x=await pop(R,'pa-stop20',{x:.6,y:.2,h:1.3,face:1},.4);await S.x.jump(.15);R.word('Stops!',.6,2.7,'#e03131',1.7);},
  work:async(R,S)=>{R.label('Works only when moving','#2b8a3e');await R.wait(.6);},
  moving:async(R,S)=>{S.x?.hide(.3);await R.bg('river20');R.label('Water moving = the wheel works','#2b8a3e');S.cw={v:0};S.w=await spinner(R,'pa-wheel20',WHX,WHC,WHH,S.cw);R.fx('splash',-2.2,.6,24,{w:.5,t:1.8,vx:3,vy:.5});R.word('Moving = work!',0,2.7,'#2b8a3e',1.8);await ramp(R,S.cw,2.4,1.4);hearts(R,-.6,2.2,8);}
@@ -397,22 +397,21 @@ const L20c={
 page('c20',3,{old:mkq(L20c),neu:mkq(L20c)});
 
 /* ===== 21 theory pages: position words / direction words (a ball goes around, up, through, down, over) / on the map. Objects only. ===== */
-const ballTo=(a,x,y,sec,o)=>a.go(x,y,sec,o||{});
 const L21a={
- position:async(R,S)=>{await R.bg('park21');R.label('Position words','#7048e8');for(const [x,y] of [[-1.8,.9],[0,1.8],[1.8,.9]]){const r=R.ring(x,y,.5,'#7048e8');await r.show();await r.pulse(1,1);await r.hide();}R.word('Where is it?',0,2.8,'#7048e8',1.6);},
- above:async(R,S)=>{R.label('Above','#e8590c');S.c=await pop(R,'pa-car21',{x:-2.0,y:.2,h:.6,face:1},.4);S.k=R.act('pa-kite21',{x:-2.0,y:3.1,h:.9,face:1,idle:'sway'});S.k.st.op=0;S.k.ap();await S.k.show(.2);await S.k.go(-2.0,1.55,1.0,{arc:.2});R.fx('leaf',-2.4,1.6,10,{w:.6,t:1.4,vx:1.6});R.word('Above!',-2.0,2.8,'#e8590c',1.6);await S.k.wag(.8,.12,4);},
- between:async(R,S)=>{R.label('Between','#2b8a3e');S.b1=await pop(R,'pa-box21',{x:-.8,y:.2,h:.75,face:1},.35);S.b2=await pop(R,'pa-box21',{x:.5,y:.2,h:.75,face:1},.35);S.l=R.act('pa-ball21',{x:-.15,y:3,h:.45,face:1,idle:'none'});S.l.st.op=0;S.l.ap();await S.l.show(.2);await S.l.go(-.15,.2,.7,{squash:.15});await S.l.jump(.35);R.word('Between!',-.15,2.5,'#2b8a3e',1.6);const r=R.ring(-.15,.5,.55,'#2b8a3e');await r.show();await r.pulse(2,1.1);await r.hide();},
- under:async(R,S)=>{R.label('Under','#1c7ed6');S.t=await pop(R,'pa-table21',{x:1.65,y:.2,h:.95,face:1},.4);S.d=R.act('pa-dog21',{x:3.2,y:.2,h:.6,face:-1});S.d.st.op=0;S.d.ap();await S.d.show(.2);await S.d.go(1.65,.2,1.4,{hops:4,wob:.03});R.word('Under!',1.65,2.5,'#1c7ed6',1.6);await S.d.wag(.8,.08,6);hearts(R,1.65,1.4,8);}
+ position:async(R,S)=>{await R.bg('street21');R.label('Position words','#7048e8');R.word('Where is it?',0,2.3,'#7048e8',1.6);S.cr=await act22(R,'pa-car21',{x:-1.7,y:.2,h:.65,face:1});await S.cr.jump(.08);R.fx('sparkle',-1.7,.5,10,{w:.6,t:1});},
+ above:async(R,S)=>{R.label('Above','#e8590c');S.k=R.act('pa-kite21',{x:-2.3,y:1.5,h:.8,face:1,idle:'sway'});S.k._R=R;S.k.st.op=0;S.k.ap();await S.k.show(.25);await S.k.go(-1.7,1.15,.9,{arc:.2});const r=R.ring(-1.7,1.5,.45,'#e8590c');r.show();R.word('Above!',-1.7,2.3,'#e8590c',1.6);await all([S.cr.go(.4,.2,2.4,{lin:true,wob:.02}),S.k.go(.4,1.15,2.4,{lin:true,wob:.03})]);await r.hide();},
+ between:async(R,S)=>{await R.bg('livingroom21');R.label('Between','#2b8a3e');S.b1=await act22(R,'pa-box21',{x:-1.0,y:.25,h:.8,face:1,idle:'none'});S.b2=await act22(R,'pa-box21',{x:.5,y:.25,h:.8,face:1,idle:'none'});S.bl=await act22(R,'pa-ball21',{x:-2.1,y:.25,h:.4,face:1,idle:'none'});await S.bl.go(-.25,.25,1.3,{arc:.6,hops:2});await S.bl.jump(.15);for(const x of [-1.0,.5]){const r=R.ring(x,.7,.55,'#2b8a3e');await r.show();await r.pulse(1,1.1);await r.hide();}R.word('Between!',-.25,2.2,'#2b8a3e',1.6);hearts(R,-.25,1.2,8);},
+ under:async(R,S)=>{S.b1.hide(.25);S.b2.hide(.25);S.bl.hide(.25);R.label('Under','#1c7ed6');S.dg=await act22(R,'pa-dog21',{x:-2.1,y:.25,h:.65,face:1});S.tb=R.act('pa-table21',{x:.5,y:.25,h:1.0,face:1,idle:'none',z:.05});S.tb._R=R;S.tb.st.op=0;S.tb.ap();await S.tb.show(.3,'pop');await S.dg.go(.5,.25,1.6,{hops:4,wob:.03});R.word('Under!',.5,2.2,'#1c7ed6',1.6);await S.dg.wag(.8,.08,6);hearts(R,.5,1.3,8);}
 };
 page('c21',1,{old:mkq(L21a),neu:mkq(L21a)});
-const mover=async(R,x,y)=>{const a=R.act('pa-ball21',{x,y,h:.5,face:1,idle:'none'});a.st.op=0;a.ap();await a.show(.25,'pop');return a;};
+const circ=(a,R,cx,cy,rx,ry,sec,turns)=>R.T(sec,e=>{const t=Math.PI+e*Math.PI*2*(turns||1);a.st.x=cx+Math.cos(t)*rx;a.st.y=cy+(Math.sin(t)+1)*ry;a.st.fl=-Math.sin(t)>0?1:-1;a.ap();});
 const L21b={
- direction:async(R,S)=>{await R.bg('playgr21');R.label('Direction words','#7048e8');R.word('Which way?',0,2.8,'#7048e8',1.6);S.bl=await mover(R,-2.3,.2);await S.bl.jump(.2);},
- around:async(R,S)=>{R.label('Around','#e8590c');S.cn=await pop(R,'pa-cone21',{x:-1.5,y:.2,h:.7,face:1},.3);R.word('Around!',-1.5,2.5,'#e8590c',1.6);await R.T(2.4,e=>{const a=e*Math.PI*2+Math.PI;S.bl.st.x=-1.5+Math.cos(a)*.8;S.bl.st.y=.2+(Math.sin(a)+1)*.18;S.bl.st.rz=-e*Math.PI*4;S.bl.ap();});S.bl.st.rz=0;S.bl.st.x=-2.3;S.bl.st.y=.2;S.bl.ap();},
- up:async(R,S)=>{R.label('Up','#2b8a3e');S.sl=await pop(R,'pa-slidee21',{x:.5,y:.2,h:1.5,face:1},.4);await ballTo(S.bl,.95,.2,1.0,{hops:3});R.word('Up!',.9,2.8,'#2b8a3e',1.6);await ballTo(S.bl,1.0,1.55,1.2,{lin:true});await S.bl.jump(.15);},
- through:async(R,S)=>{R.label('Through','#1c7ed6');S.bl.hide(.2);S.tu=await pop(R,'pa-tunnel21',{x:-.9,y:.2,h:.7,face:1},.4);const b2=await mover(R,-2.0,.2);await ballTo(b2,-1.35,.3,.8,{hops:2});b2.hide(.25);R.word('Through!',-.9,2.0,'#1c7ed6',1.6);await R.wait(.7);S.bl=R.act('pa-ball21',{x:-.45,y:.3,h:.5,face:1,idle:'none'});S.bl.st.op=0;S.bl.ap();await S.bl.show(.25,'pop');await S.bl.jump(.3);R.fx('sparkle',-.45,.6,10,{w:.4,t:1});await ballTo(S.bl,-.3,.2,.3);},
- down:async(R,S)=>{R.label('Down','#c2255c');S.bl.hide(.2);S.bl=R.act('pa-ball21',{x:1.0,y:1.55,h:.5,face:1,idle:'none'});S.bl.st.op=0;S.bl.ap();await S.bl.show(.25,'pop');R.word('Down!',.5,2.8,'#c2255c',1.6);await R.T(1.1,e=>{S.bl.st.x=1.0-e*1.1;S.bl.st.y=1.55-e*1.35+Math.sin(e*Math.PI)*.05;S.bl.st.rz=-e*9;S.bl.ap();});S.bl.st.rz=0;await ballTo(S.bl,-.2,.2,.5,{hops:2});},
- over:async(R,S)=>{R.label('Over','#e8a900');S.hu=await pop(R,'pa-hurdle21',{x:1.8,y:.2,h:.6,face:1},.35);S.bl.hide(.2);S.bl=await mover(R,1.1,.2);R.word('Over!',1.8,2.4,'#e8a900',1.6);await ballTo(S.bl,1.8,1.35,.7,{lin:true});await ballTo(S.bl,2.45,.2,.7,{lin:true});hearts(R,2.0,1.6,10);}
+ direction:async(R,S)=>{await R.bg('playgr21');R.label('Direction words','#7048e8');R.word('Which way?',0,2.3,'#7048e8',1.6);S.dg=await act22(R,'pa-dog21',{x:-2.0,y:.25,h:.7,face:1});await S.dg.jump(.15);},
+ around:async(R,S)=>{R.label('Around','#e8590c');S.cn=R.act('pa-cone21',{x:-.7,y:.25,h:.7,face:1,idle:'none',z:.0});S.cn._R=R;S.cn.st.op=0;S.cn.ap();await S.cn.show(.3,'pop');R.word('Around!',-.7,2.0,'#e8590c',1.6);await S.dg.go(-1.5,.25,.6,{});await circ(S.dg,R,-.7,.25,.8,.22,2.6,1);await S.dg.go(-2.0,.25,.5,{});S.dg.st.fl=1;S.dg.ap();},
+ up:async(R,S)=>{S.cn.hide(.2);R.label('Up','#2b8a3e');S.sl=R.act('pa-slidee21',{x:-.2,y:.2,h:1.5,face:1,idle:'none',z:.05});S.sl._R=R;S.sl.st.op=0;S.sl.ap();await S.sl.show(.3,'pop');R.word('Up!',-.6,2.2,'#2b8a3e',1.6);await S.dg.go(.4,.25,1.0,{hops:3});await S.dg.go(.15,1.3,1.1,{lin:true,hops:4});hearts(R,.15,1.9,6);},
+ through:async(R,S)=>{S.sl.hide(.2);await S.dg.hide(.2);S.dg.st.x=-2.0;S.dg.st.y=.25;S.dg.ap();R.label('Through','#1c7ed6');S.tu=R.act('pa-tunnel21',{x:-.1,y:.25,h:.75,face:1,idle:'none',z:.08});S.tu._R=R;S.tu.st.op=0;S.tu.ap();await S.tu.show(.3,'pop');await S.dg.show(.2);R.word('Through!',-.1,2.0,'#1c7ed6',1.6);await S.dg.go(-.65,.25,.9,{hops:3});S.dg.st.op=0;S.dg.ap();await R.wait(.5);S.dg.st.x=.55;S.dg.ap();await S.dg.show(.2);R.fx('sparkle',.55,.6,12,{w:.5,t:1});await S.dg.go(1.2,.25,.5,{hops:2});},
+ down:async(R,S)=>{S.tu.hide(.2);S.dg.hide(.2);R.label('Down','#c2255c');S.sl=R.act('pa-slidee21',{x:-.2,y:.2,h:1.5,face:1,idle:'none',z:.05});S.sl._R=R;S.sl.st.op=0;S.sl.ap();await S.sl.show(.3,'pop');S.dg.st.x=.15;S.dg.st.y=1.3;S.dg.ap();await S.dg.show(.2);R.word('Down!',.4,2.2,'#c2255c',1.6);await S.dg.go(-.95,.25,1.0,{lin:true});R.fx('dust',-.95,.3,10,{w:.4,t:.9});hearts(R,-.95,1.0,6);},
+ over:async(R,S)=>{S.sl.hide(.2);S.dg.hide(.2);R.label('Over','#e8a900');S.hu=R.act('pa-hurdle21',{x:.2,y:.25,h:.65,face:1,idle:'none',z:.05});S.hu._R=R;S.hu.st.op=0;S.hu.ap();await S.hu.show(.3,'pop');S.dg.st.x=-2.0;S.dg.st.y=.25;S.dg.ap();await S.dg.show(.2);R.word('Over!',.2,2.1,'#e8a900',1.6);await S.dg.go(-.7,.25,.8,{hops:2});await S.dg.go(.2,1.15,.45,{lin:true});await S.dg.go(1.2,.25,.45,{lin:true});hearts(R,1.2,1.0,10);}
 };
 page('c21',2,{old:mkq(L21b),neu:mkq(L21b)});
 const gridPlane=(R)=>{const T=window.THREE,cw=.9,rh=.8,x0=-1.8,yb=.05,cols=4,rows=3;const c=document.createElement('canvas');const W=Math.round((cols*cw+.4)*128),H=Math.round((rows*rh+.4)*128);c.width=W;c.height=H;const g=c.getContext('2d');
@@ -428,7 +427,7 @@ const gridPlane=(R)=>{const T=window.THREE,cw=.9,rh=.8,x0=-1.8,yb=.05,cols=4,row
  const hl=async(b,peak)=>{const mm=b.material;await R.T(.4,e=>{mm.opacity=peak*e;});await R.wait(.8);await R.T(.5,e=>{mm.opacity=peak*(1-e);});};
  return {m,cell,fade:sec=>R.T(sec,e=>{m.material.opacity=e;}),row:(r,col)=>hl(bar(x0+cols*cw/2,yb+rows*rh-(r+.5)*rh,cols*cw,rh,col||'#ffd43b'),.55),col:(cc,col)=>hl(bar(x0+(cc+.5)*cw,yb+rows*rh/2,cw,rows*rh,col||'#74c0fc'),.55)};};
 const L21c={
- map:async(R,S)=>{await R.bg('meadow');R.label('On a map','#7048e8');S.gp=gridPlane(R);await S.gp.fade(.8);R.fx('sparkle',0,1.4,16,{w:3,t:1.4});},
+ map:async(R,S)=>{await R.bg('townmap21');R.label('On a map','#7048e8');S.gp=gridPlane(R);await S.gp.fade(.8);R.fx('sparkle',0,1.4,16,{w:3,t:1.4});},
  tree:async(R,S)=>{const [x,y]=S.gp.cell(1,2);S.tr=await pop(R,'pa-tree21',{x,y:y-.3,h:.75,face:1},.4);await S.tr.jump(.12);R.word('B3',x,2.9,'#7048e8',1.8);},
  row:async(R,S)=>{R.label('Row B (across)','#e8a900');await S.gp.row(1,'#ffd43b');},
  column:async(R,S)=>{R.label('Column 3 (down)','#1c7ed6');await S.gp.col(2,'#74c0fc');const r=R.ring(...S.gp.cell(1,2),.4,'#e03131');await r.show();await r.pulse(2,1.1);await r.hide();},
@@ -457,7 +456,7 @@ const swingRig=async(R,S,x,h,sc)=>{const s=h/346;S.sf=await act22(R,'pa-swingf22
 const topSpin=async(R,S,x,sc)=>{S.tp=await act22(R,'pa-top22',{x,y:.2,h:1.0,face:1,idle:'none'});let ph=0;R.actors.push({kill:()=>{},tick:dt=>{ph+=dt*sc.v;S.tp.st.sx=Math.cos(ph);S.tp.st.rz=Math.sin(ph*.5)*.07*Math.min(1,sc.v/4);S.tp.ap();}});};
 const L22b={
  swing:async(R,S)=>{await R.bg('playgr21');R.label('A swing','#e8590c');S.sc={a:0,f:.55};await swingRig(R,S,-.9,1.55,S.sc);await R.T(1.0,e=>{S.sc.a=.55*e;});},
- back:async(R,S)=>{R.word('Back…',-1.8,2.8,'#e8590c',1.4);await R.wait(1.0);R.word('…and forth!',-.2,2.8,'#e8590c',1.4);},
+ back:async(R,S)=>{R.word('Back\u2026',-1.8,2.8,'#e8590c',1.4);await R.wait(1.0);R.word('\u2026and forth!',-.2,2.8,'#e8590c',1.4);},
  swinging:async(R,S)=>{R.label('Swinging','#2b8a3e');R.word('Swinging!',-.9,3.0,'#2b8a3e',1.8);hearts(R,-.9,2.0,8);},
  spinning:async(R,S)=>{R.label('A spinning top','#7048e8');S.tc={v:0};await topSpin(R,S,1.2,S.tc);await ramp(R,S.tc,9,1.2);R.fx('sparkle',1.2,.9,12,{w:.5,t:1});},
  turns:async(R,S)=>{R.word('Round and round!',1.2,2.3,'#7048e8',1.6);await ramp(R,S.tc,14,1.2);},
@@ -474,37 +473,42 @@ const L22c={
  slides:async(R,S)=>{R.word('Slide!',-.2,2.6,'#e8a900',1.6);for(let i=0;i<3;i++){await S.ch.go(.4,.8,.5,{lin:true});R.fx('crumb',.7,.9,10,{w:.3,t:.8});await S.ch.go(-.6,.8,.5,{lin:true});}hearts(R,0,1.6,6);}
 };
 page('c22',3,{old:mkq(L22c),neu:mkq(L22c)});
-/* ===== 23 theory pages: six machines / ramps and wedges / sorting. Objects only. ===== */
-const park=(a,i,y)=>all([a.go(-1.9+i*.72,y||1.6,.6,{}),a.scaleTo(.4,.6)]);
+/* ===== 23 theory pages (rebuilt): every machine shown doing its job with cause and effect. Objects only. ===== */
 const sxSpin=(R,a,ctl)=>{let ph=0;R.actors.push({kill:()=>{},tick:dt=>{ph+=dt*ctl.v;a.st.sx=Math.cos(ph);a.ap();}});};
+const piv=(a,hx,hy,hh,th)=>{a.st.rz=th;a.st.x=hx+hh/2*Math.sin(th);a.st.y=hy-hh/2*Math.cos(th);a.ap();};
+const PK=3.828;
+const mini=async(R,k,i)=>{const a=await act22(R,k,{x:-1.85+i*.72,y:1.55,h:.42,face:1,idle:'none'},.3);R.fx('sparkle',-1.85+i*.72,1.8,8,{w:.3,t:.8});return a;};
+const rampUp=async(R,S,x0,y0,x1,y1)=>{const len=Math.hypot(x1-x0,y1-y0),th=Math.atan2(y1-y0,x1-x0),hh=len/PK;S.rmp=R.act('pa-plankh23',{x:0,y:0,h:hh,face:1,idle:'none',z:.02});S.rmp._R=R;S.rmp.st.op=0;S.rmp.ap();piv(S.rmp,(x0+x1)/2,(y0+y1)/2+.04,hh,th);await S.rmp.show(.3,'pop');return th;};
+const rollUp=(a,R,x0,y0,x1,y1,sec)=>R.T(sec,e=>{a.st.x=x0+(x1-x0)*e;a.st.y=y0+(y1-y0)*e;a.st.rz=-e*7;a.ap();});
 const L23a={
- six:async(R,S)=>{await R.bg('meadow');R.label('Six simple machines','#7048e8');R.word('Six!',-.2,2.45,'#7048e8',1.7);R.fx('sparkle',-.2,1.4,18,{w:3.2,t:1.4});S.n=0;},
- lever:async(R,S)=>{S.m1=await act22(R,'pa-seesaw23',{x:-.2,y:.2,h:1.1,face:1});R.label('Lever','#e8590c');for(let i=0;i<3;i++){await S.m1.T(.45,e=>{S.m1.st.rz=-.2*Math.sin(e*Math.PI*2);S.m1.ap();});}S.m1.st.rz=0;S.m1.ap();hearts(R,-.2,1.5,6);},
- wheel:async(R,S)=>{await park(S.m1,0);R.label('Wheel and axle','#2b8a3e');S.m2=await act22(R,'pa-wagon23',{x:-2.0,y:.2,h:.9,face:1});R.fx('dust',-2.0,.3,8,{w:.4,t:1.1,vx:-1.2,vy:.3});await S.m2.go(1.2,.2,2.0,{lin:true,wob:.03});},
- inclined:async(R,S)=>{S.m2.hide(.2);S.m2.st.op=0;R.label('Inclined plane (ramp)','#1c7ed6');S.m3=await act22(R,'pa-ramp23',{x:-.2,y:.2,h:1.1,face:1});S.bl=await act22(R,'pa-ball21',{x:-1.4,y:.2,h:.4,face:1,idle:'none'});await S.bl.go(.1,.95,1.6,{lin:true});await S.bl.jump(.1);},
- wedge:async(R,S)=>{S.bl.hide(.2);await park(S.m3,1);R.label('Wedge','#c2255c');S.m4=await act22(R,'pa-wedge23',{x:2.6,y:.2,h:.7,face:-1});await S.m4.go(.0,.2,.7,{squash:.1});R.fx('chip',.2,.3,14,{w:.6,t:.9});await S.m4.jump(.1);},
- screw:async(R,S)=>{await park(S.m4,2);R.label('Screw','#868e96');S.m5=await act22(R,'pa-screw23',{x:-.2,y:1.0,h:1.1,face:1,idle:'none'});S.sc={v:9};sxSpin(R,S.m5,S.sc);await S.m5.go(-.2,.35,1.8,{lin:true});R.word('Turn & dig in!',-.2,2.45,'#868e96',1.4);},
- pulley:async(R,S)=>{S.sc.v=0;S.m5.st.sx=1;S.m5.ap();await park(S.m5,3);R.label('Pulley','#e8a900');S.m6=await act22(R,'pa-pulley23',{x:-.2,y:.2,h:1.9,face:1,idle:'none'});await S.m6.go(-.2,.5,.5,{});await S.m6.go(-.2,.2,.5,{});R.word('Pull!',-.2,2.45,'#e8a900',1.6);await park(S.m6,4);R.word('Work made easy!',-.2,1.0,'#2b8a3e',1.8);hearts(R,-.2,.8,12);}
+ six:async(R,S)=>{await R.bg('farm23');R.label('Six simple machines','#7048e8');R.word('Six!',0,2.2,'#7048e8',1.6);R.fx('sparkle',0,1.6,22,{w:3.4,t:1.4});},
+ lever:async(R,S)=>{R.label('Lever','#e8590c');const hx=-.2,L=2.0,hh=L/PK,hy=.5+hh/2;S.st=await act22(R,'pa-stone23',{x:hx,y:.2,h:.3,face:1,idle:'none'});S.pk=R.act('pa-plankh23',{x:0,y:0,h:hh,face:1,idle:'none',z:.02});S.pk._R=R;S.pk.st.op=0;S.pk.ap();S.th=.22;piv(S.pk,hx,hy,hh,S.th);await S.pk.show(.3,'pop');S.rk=await act22(R,'pa-rock23',{x:hx-.65,y:.4,h:.5,face:1,idle:'none'});const place=()=>{S.rk.st.x=hx-.65*Math.cos(S.th);S.rk.st.y=hy-.65*Math.sin(S.th)+hh*.2;S.rk.st.rz=S.th;S.rk.ap();};R.actors.push({kill:()=>{},tick:()=>{piv(S.pk,hx,hy,hh,S.th);place();}});S.bl=await act22(R,'pa-ball21',{x:.6,y:2.0,h:.34,face:1,idle:'none'});await S.bl.go(.6,.95,.5,{});await all([R.T(.6,e=>{S.th=.22-.44*e;}),S.bl.go(1.3,.2,.6,{arc:.4})]);R.word('Small push, big lift!',-.2,2.2,'#e8590c',1.5);await S.rk.jump(.12);hearts(R,-.8,1.4,6);await mini(R,'pa-seesaw23',0);},
+ wheel:async(R,S)=>{S.pk.hide(.2);S.rk.hide(.2);S.st.hide(.2);S.bl.hide(.2);S.th=0;R.label('Wheel and axle','#2b8a3e');S.cr=await act22(R,'pa-crate23',{x:-1.6,y:.2,h:.6,face:1,idle:'none'});R.word('Hard to drag\u2026',-1.2,2.0,'#868e96',1.4);await R.T(1.8,e=>{S.cr.st.x=-1.6+e*.5+Math.sin(e*40)*.02;S.cr.st.rz=Math.sin(e*30)*.03;S.cr.ap();if(Math.random()<.5)R.fx('dust',S.cr.st.x-.2,.25,2,{w:.2,t:.7,vx:-.8});});S.cr.st.rz=0;S.wg=await act22(R,'pa-wagon23',{x:.4,y:.2,h:.55,face:1});await S.cr.go(.4,.52,.5,{arc:.4});R.word('Wheels: easy!',.4,2.0,'#2b8a3e',1.5);await all([S.wg.go(1.5,.2,1.3,{lin:true}),S.cr.go(1.5,.52,1.3,{lin:true})]);hearts(R,1.5,1.3,6);await mini(R,'pa-wagon23',1);},
+ inclined:async(R,S)=>{S.wg.hide(.2);S.cr.hide(.2);R.label('Inclined plane (ramp)','#1c7ed6');S.sp=await act22(R,'pa-step23',{x:1.0,y:.2,h:.7,face:1,idle:'none'});S.rk2=await act22(R,'pa-rock23',{x:-1.3,y:.2,h:.5,face:1,idle:'none'});R.word('Too heavy to lift!',-1.0,2.0,'#c2255c',1.4);for(let i=0;i<2;i++){await S.rk2.jump(.12);await S.rk2.shiver(.25);}await rampUp(R,S,-.6,.2,.4,.9);R.word('Ramp: roll it up!',-.3,2.0,'#1c7ed6',1.4);await rollUp(S.rk2,R,-.6,.25,.4,.95,1.5);S.rk2.st.rz=0;S.rk2.ap();await S.rk2.go(1.0,.9,.5,{});hearts(R,1.0,1.8,6);await mini(R,'pa-ramp23',2);},
+ wedge:async(R,S)=>{S.rmp.hide(.2);S.sp.hide(.2);S.rk2.hide(.2);R.label('Wedge','#c2255c');S.ax=await act22(R,'pa-axe23',{x:-.3,y:.2,h:1.0,face:1,idle:'none'});for(let i=0;i<2;i++){await S.ax.T(.25,e=>{S.ax.st.rz=-.2*Math.sin(e*Math.PI);S.ax.ap();});R.fx('chip',-.3,.7,14,{w:.4,t:.8,vy:1.0});}R.word('A wedge splits!',-.3,2.2,'#c2255c',1.5);await mini(R,'pa-wedge23',3);},
+ screw:async(R,S)=>{S.ax.hide(.2);R.label('Screw','#868e96');S.jr=await act22(R,'pa-jar23',{x:-.3,y:.2,h:.95,face:1,idle:'none'});S.ld=R.act('pa-lid23',{x:-.3,y:1.7,h:.34,face:1,idle:'none',z:.05});S.ld._R=R;S.ld.st.op=0;S.ld.ap();await S.ld.show(.2);S.sv={v:10};sxSpin(R,S.ld,S.sv);R.word('Twist it on!',-.3,2.2,'#868e96',1.5);await S.ld.go(-.3,1.12,1.6,{lin:true});S.sv.v=0;S.ld.st.sx=1;S.ld.ap();R.fx('sparkle',-.3,1.2,12,{w:.5,t:1});await mini(R,'pa-screw23',4);},
+ pulley:async(R,S)=>{S.jr.hide(.2);S.ld.hide(.2);R.label('Pulley','#e8a900');S.po=await act22(R,'pa-pole23',{x:-.2,y:.2,h:1.6,face:1,idle:'none'});S.pc={v:0};S.pw=await spinner(R,'pa-pulleyw23',-.2,1.72,.3,S.pc);S.fg=await act22(R,'pa-flag23',{x:-.08,y:.35,h:.4,face:1,idle:'none'});R.word('Pull down, flag goes up!',-.2,2.2,'#e8a900',1.4);S.pc.v=-4;await S.fg.go(-.08,1.2,1.7,{lin:true});S.pc.v=0;hearts(R,-.2,1.9,8);await mini(R,'pa-pulley23',5);R.word('Work made easy!',-.2,1.0,'#2b8a3e',1.6);}
 };
 page('c23',1,{old:mkq(L23a),neu:mkq(L23a)});
 const L23b={
- ramp:async(R,S)=>{await R.bg('egypt20');R.label('A ramp is an inclined plane','#1c7ed6');S.rp=await act22(R,'pa-ramp23',{x:.4,y:.2,h:1.4,face:1});S.rk=await act22(R,'pa-rock23',{x:-1.7,y:.2,h:.55,face:1,idle:'none'});await S.rk.jump(.1);},
- lifting:async(R,S)=>{R.word('Slide it up!',-.5,2.45,'#1c7ed6',1.5);await S.rk.go(.1,.2,.7,{lin:true});await S.rk.go(.85,1.1,1.8,{lin:true});hearts(R,.85,1.8,8);},
- wedge:async(R,S)=>{S.rk.hide(.2);S.rp.hide(.2);R.label('A wedge','#c2255c');S.w=await act22(R,'pa-wedge23',{x:-.8,y:.2,h:1.0,face:1});R.fx('sparkle',-.8,.8,10,{w:.6,t:1});},
- two:async(R,S)=>{R.word('2 ramps back to back',-.5,2.45,'#c2255c',1.4);for(const x of [-1.1,-.5]){const r=R.ring(x,.55,.3,'#c2255c');await r.show();await r.pulse(1,1.1);await r.hide();}},
- splits:async(R,S)=>{S.w.hide(.2);R.label('Splits things','#e03131');S.ax=await act22(R,'pa-axe23',{x:-.8,y:.2,h:1.2,face:1});await S.ax.shiver(.5);R.word('Split!',-.8,2.45,'#e03131',1.7);R.fx('chip',-.8,.7,30,{w:.5,t:1.2,vy:1.3});const p=await act22(R,'pa-plank23',{x:-.3,y:.2,h:.18,face:1});await p.go(.9,.2,.6,{squash:.1});},
- axe:async(R,S)=>{const r=R.ring(-.8,.9,.7,'#e03131');await r.show();await r.pulse(2,1.1);await r.hide();},
- doorstop:async(R,S)=>{S.ax.hide(.2);R.label('Doorstop: holds things','#2b8a3e');S.ds=await act22(R,'pa-wedge23',{x:1.3,y:.2,h:.6,face:-1});S.bx=await act22(R,'pa-box23',{x:-1.9,y:.2,h:1.3,face:1,idle:'none'});await S.bx.go(.55,.2,1.0,{lin:true});await S.bx.shiver(.3);R.word('Holds!',.4,2.45,'#2b8a3e',1.7);hearts(R,.5,1.6,8);}
+ ramp:async(R,S)=>{await R.bg('egypt20');R.label('A ramp is an inclined plane','#1c7ed6');S.sp=await act22(R,'pa-step23',{x:1.0,y:.2,h:.7,face:1,idle:'none'});S.rk=await act22(R,'pa-rock23',{x:-1.4,y:.2,h:.55,face:1,idle:'none'});await rampUp(R,S,-.7,.2,.4,.9);},
+ lifting:async(R,S)=>{R.word('Not straight up\u2026',-1.2,2.0,'#c2255c',1.4);await S.rk.go(-1.4,.2,.1,{});for(let i=0;i<2;i++){await S.rk.go(-1.4,.55,.35,{});await S.rk.go(-1.4,.2,.3,{squash:.12});}R.word('\u2026roll it up the ramp!',-.2,2.0,'#1c7ed6',1.5);await S.rk.go(-.8,.2,.5,{});await rollUp(S.rk,R,-.8,.25,.4,.95,1.6);S.rk.st.rz=0;S.rk.ap();await S.rk.go(1.0,.9,.5,{});hearts(R,1.0,1.8,8);},
+ wedge:async(R,S)=>{await R.bg('farm23');R.label('A wedge','#c2255c');S.w=await act22(R,'pa-wedge23',{x:-1.0,y:.2,h:.7,face:1,idle:'none'});R.fx('sparkle',-1.0,.8,10,{w:.6,t:1});},
+ two:async(R,S)=>{S.w.hide(.25);R.word('2 ramps back to back',-.5,2.1,'#c2255c',1.4);const mk=async(cx,cy,th)=>{const a=R.act('pa-plankh23',{x:0,y:0,h:.9/PK,face:1,idle:'none',z:.02});a._R=R;a.st.op=0;a.ap();piv(a,cx,cy,.9/PK,th);await a.show(.3,'pop');return a;};S.r1=await mk(-1.69,.52,.55);S.r2=await mk(-.91,.52,-.55);await R.wait(.6);},
+ splits:async(R,S)=>{S.r1.hide(.2);S.r2.hide(.2);R.label('Splits things','#e03131');S.lg=await act22(R,'pa-log23',{x:.4,y:.2,h:.75,face:1,idle:'none'});S.wd=await act22(R,'pa-wedge23',{x:.4,y:.95,h:.28,face:1,idle:'none'});S.hm=await act22(R,'pa-hammer23',{x:1.3,y:.45,h:.9,face:1,idle:'none'});for(let i=0;i<2;i++){await S.hm.T(.35,e=>{S.hm.st.rz=.9*Math.sin(e*Math.PI/2);S.hm.ap();});R.fx('chip',.4,1.0,8,{w:.2,t:.6});await S.hm.T(.3,e=>{S.hm.st.rz=.9*(1-e);S.hm.ap();});}await S.hm.T(.35,e=>{S.hm.st.rz=.9*Math.sin(e*Math.PI/2);S.hm.ap();});S.wd.hide(.1);await S.lg.swap('pa-logsplit23',.2,{h:.55});R.fx('chip',.4,.6,30,{w:.6,t:1.2,vy:1.2});R.word('Split!',.4,2.1,'#e03131',1.7);await S.hm.T(.4,e=>{S.hm.st.rz=.9*(1-e);S.hm.ap();});},
+ axe:async(R,S)=>{S.lg.hide(.2);S.hm.hide(.2);R.word('An axe is a wedge too',-.3,2.1,'#e03131',1.4);S.ax=await act22(R,'pa-axe23',{x:-.6,y:.2,h:1.1,face:1,idle:'none'});await S.ax.T(.3,e=>{S.ax.st.rz=-.2*Math.sin(e*Math.PI);S.ax.ap();});R.fx('chip',-.6,.7,16,{w:.4,t:.8,vy:1.0});const r=R.ring(-.7,.9,.7,'#e03131');await r.show();await r.pulse(2,1.1);await r.hide();},
+ doorstop:async(R,S)=>{S.ax.hide(.2);R.label('A doorstop holds things','#2b8a3e');S.dr=await act22(R,'pa-door23',{x:-.7,y:.2,h:1.3,face:1,idle:'none'});R.fx('leaf',-1.8,1.2,16,{w:1.2,t:1.8,vx:3});R.word('Wind pushes the door\u2026',-.3,2.1,'#868e96',1.3);await S.dr.go(.1,.2,.7,{lin:true});await S.dr.go(-.7,.2,.6,{});S.dw=await act22(R,'pa-wedge23',{x:.35,y:.2,h:.28,face:-1,idle:'none'});R.fx('leaf',-1.8,1.2,16,{w:1.2,t:1.8,vx:3});await S.dr.go(.0,.2,.5,{lin:true});await S.dr.shiver(.3);R.word('\u2026the wedge holds it!',.1,1.9,'#2b8a3e',1.5);hearts(R,.2,1.7,8);}
 };
 page('c23',2,{old:mkq(L23b),neu:mkq(L23b)});
-const sortHead=(R)=>{R.word('Lever',-1.5,2.35,'#e8590c',1.1);R.word('Wheel & axle',.1,2.35,'#2b8a3e',1.1);R.word('Wedge',1.5,2.35,'#c2255c',1.1);};
+const toBin=async(R,S,i,k,h,x0,name,col,x)=>{const a=await act22(R,k,{x:x0,y:1.25,h,face:1,idle:'none'},.3);await a.go(x,1.25,.7,{arc:.4});R.word(name,x,2.05,col,1.3);await a.go(x,.5,.35,{});await all([a.scaleTo(.6,.2),S.bn[i].T(.25,e=>{S.bn[i].st.sy=1-.12*Math.sin(e*Math.PI);S.bn[i].ap();})]);a.hide(.2);R.fx('sparkle',x,.8,12,{w:.4,t:.8});return a;};
 const L23c={
- levers:async(R,S)=>{await R.bg('meadow');R.label('Sort the machines','#7048e8');sortHead(R);S.a=await act22(R,'pa-seesaw23',{x:-.2,y:.2,h:.6,face:1});await S.a.go(-1.5,.15,.8,{hops:2});S.b=await act22(R,'pa-hammer23',{x:.2,y:.2,h:.7,face:1});await S.b.go(-1.5,.95,.8,{hops:2});hearts(R,-1.5,1.9,6);},
- wagons:async(R,S)=>{S.c=await act22(R,'pa-wagon23',{x:-.2,y:.2,h:.5,face:1});await S.c.go(.1,.15,.8,{hops:2});S.d=await act22(R,'pa-barrow23',{x:-.2,y:.2,h:.6,face:1});await S.d.go(.1,.95,.8,{hops:2});hearts(R,.1,1.9,6);},
- knives:async(R,S)=>{S.e=await act22(R,'pa-axe23',{x:.8,y:.2,h:.75,face:1});await S.e.go(1.5,.15,.8,{hops:2});S.f=await act22(R,'pa-wedge23',{x:.8,y:.2,h:.45,face:1});await S.f.go(1.5,1.0,.8,{hops:2});},
- wedges:async(R,S)=>{hearts(R,1.5,1.8,8);R.fx('sparkle',0,1.4,24,{w:3.4,t:1.4});}
+ levers:async(R,S)=>{await R.bg('farm23');R.label('Sort the machines','#7048e8');S.bn=[];for(const x of [-1.5,.1,1.5]){S.bn.push(await act22(R,'pa-crate23',{x,y:.2,h:.55,face:1,idle:'none'},.3));}await toBin(R,S,0,'pa-seesaw23',.7,-2.0,'Lever','#e8590c',-1.5);await toBin(R,S,0,'pa-hammer23',.8,-2.0,'Lever','#e8590c',-1.5);hearts(R,-1.5,1.3,6);},
+ wagons:async(R,S)=>{await toBin(R,S,1,'pa-wagon23',.6,-1.0,'Wheel & axle','#2b8a3e',.1);await toBin(R,S,1,'pa-wheels23',.6,-1.0,'Wheel & axle','#2b8a3e',.1);hearts(R,.1,1.3,6);},
+ knives:async(R,S)=>{await toBin(R,S,2,'pa-axe23',.8,.3,'Wedge','#c2255c',1.5);await toBin(R,S,2,'pa-wedge23',.5,.3,'Wedge','#c2255c',1.5);},
+ wedges:async(R,S)=>{hearts(R,1.5,1.3,8);R.fx('sparkle',0,1.4,26,{w:3.4,t:1.4});R.word('All sorted!',0,1.6,'#2b8a3e',1.6);}
 };
 page('c23',3,{old:mkq(L23c),neu:mkq(L23c)});
+
 /* ===== 24 theory pages: joined machines / movements / easier work. Objects only. ===== */
 const snip=async(a,n)=>{for(let i=0;i<n;i++){await a.swap('pa-scisC24',.12);await a.swap('pa-scisO24',.12);}};
 const L24a={
