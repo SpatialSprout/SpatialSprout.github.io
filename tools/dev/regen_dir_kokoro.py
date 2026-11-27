@@ -24,6 +24,33 @@ def trim(a, th=.012):
     return a[max(0, idx[0] - int(.03 * SR)):min(len(a), idx[-1] + int(.06 * SR))]
 
 
+ABBR = r"(?:Mrs|Mr|Ms|Dr|St|vs|Jr|Sr)"
+
+
+def chunks(t):
+    """Sentence chunks for natural prosody: never split after Mrs./Mr./Ms., keep
+    '..." yelled Amy.' together, and glue one/two-word shouts (CRASH!) to the next sentence."""
+    t = t.strip(); out = []; start = 0
+    for m in re.finditer(r'[.!?]["”\']?(?=\s+["“]?[A-Z0-9*])', t):
+        pre = t[start:m.end()]
+        if re.search(r"\b" + ABBR + r"\.$", pre):
+            continue
+        out.append(pre.strip()); start = m.end()
+    out.append(t[start:].strip())
+    out = [x for x in out if x]
+    merged, carry = [], ""
+    for i, s in enumerate(out):
+        s = (carry + " " + s).strip() if carry else s
+        carry = ""
+        if i < len(out) - 1 and len(re.sub(r"[^\w\s]", "", s).split()) <= 2 and re.search(r'[!?]["”\']?$', s):
+            carry = s
+            continue
+        merged.append(s)
+    if carry:
+        merged.append(carry)
+    return merged
+
+
 def main():
     book = sys.argv[1] if len(sys.argv) > 1 else "grade-2-science"
     bdir = os.path.join("books", book)
@@ -32,11 +59,14 @@ def main():
     vj, tj, sj = (os.path.join(bdir, n) for n in ("voice.js", "vtime.js", "vsent.js"))
     rj = lambda p: json.loads(open(p, encoding="utf-8").read().split("=", 1)[1].rstrip().rstrip(";")) if os.path.exists(p) else {}
     V, T, S = rj(vj), rj(tj), rj(sj)
+    FROM = int(os.environ.get('FROM', '0'))
     for n, text in enumerate(texts):
+        if int(rd.LIDS[n][1:]) < FROM:
+            continue
         h = az.fnv(text)
         if os.environ.get('SKIP_DONE') and h in V and os.path.exists(os.path.join(vd, h + '.mp3')):
             continue
-        sents = rd.sentences(text)
+        sents = chunks(text)
         audio = [np.zeros(int(.12 * SR), dtype=np.float32)]
         t, ends, words_t = .12, [], []
         for i, se in enumerate(sents):
@@ -48,7 +78,7 @@ def main():
             for w in wt:
                 c += w
                 words_t.append(round(t + dur * c / tot, 3))
-            gap = (GAP + .25) if re.search(r'[?!]["”]?$', se) else GAP
+            gap = (GAP + .05) if re.search(r'[?!]["”]?$', se) else GAP
             audio += [a, np.zeros(int(gap * SR), dtype=np.float32)]
             if i < len(sents) - 1:
                 ends.append(round(t + dur, 3))

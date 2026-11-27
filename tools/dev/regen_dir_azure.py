@@ -48,7 +48,11 @@ def sentences(t):
     return [p.strip() for p in parts if p.strip()]
 
 
+LIDS = []
+
+
 def collect_texts(bdir):
+    del LIDS[:]
     new = load_js_obj(os.path.join(bdir, "story-scripts.js"), "P.DIR_NEW")
     if os.path.exists(os.path.join(bdir, "story-scripts2.js")):
         new.update(load_js_obj(os.path.join(bdir, "story-scripts2.js"), "Object.assign(P.DIR_NEW", ","))
@@ -63,9 +67,9 @@ def collect_texts(bdir):
         if d.get("story"):
             m = re.search(r"id:'%s'.*?story:\{title:'((?:[^'\\]|\\.)*)'" % lid, lessons, re.S)
             title = az.js_unescape(m.group(1))
-            texts.append(az.story_speech(title, d["story"]))
+            texts.append(az.story_speech(title, d["story"])); LIDS.append(lid)
         for k, t in (d.get("steps") or {}).items():
-            texts.append(t)
+            texts.append(t); LIDS.append(lid)
 
     return texts
 
