@@ -34,6 +34,8 @@ def main():
     V, T, S = rj(vj), rj(tj), rj(sj)
     for n, text in enumerate(texts):
         h = az.fnv(text)
+        if os.environ.get('SKIP_DONE') and h in V and os.path.exists(os.path.join(vd, h + '.mp3')):
+            continue
         sents = rd.sentences(text)
         audio = [np.zeros(int(.12 * SR), dtype=np.float32)]
         t, ends, words_t = .12, [], []

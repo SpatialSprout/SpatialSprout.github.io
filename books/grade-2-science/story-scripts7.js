@@ -18,6 +18,7 @@ const wt=async(S,k)=>{for(let i=0;i<50&&!S[k];i++)await new Promise(r=>setTimeou
 const bob=(R,a,amp)=>{if(!a)return;let on=true,ph=0;R.actors.push({kill:()=>{on=false;},tick:dt=>{if(!on)return;ph+=dt*2;a.st.lift=Math.sin(ph)*(amp||.04);}});};
 /* ---------- the new narration (switches on once its voice files exist) ---------- */
 Object.assign(P.DIR_NEW,{
+ c10:{story:"Mrs. Shaw hated pushing grocery carts, because the wobbly wheel always got stuck! So she moved her whole shopping trip into one giant backpack: a box of cookies, a pack of socks, a lollipop, a carton of milk, and a bottle of cooking oil. On the walk home, the bottom ripped! CRASH! The cookies, socks, and lollipop hit the ground with a thud, and kept their exact shapes because they are *solids*. Meanwhile, the milk and oil burst open and splashed everywhere, spreading out flat because they are *liquids*. Mrs. Shaw grabbed a bottle of floor wash and mopped up the mess. \"Solid or liquid?\" Definitely a liquid!"},
  c09:{story:"Barnaby the bright pink flamingo wanted to be the world's greatest hide-and-seek champion, and he failed everywhere! In the snowy Arctic, a white arctic fox vanished while Barnaby stood out like a neon sign. In the desert, a sandy camel blended into the dunes while Barnaby glowed pink. In the jungle, a striped tiger melted into tall grass, and a green caterpillar disappeared on a leaf. Barnaby finally flew home to a flock of pink flamingos, and vanished at last! In nature, *camouflage* keeps animals alive."},
  c19:{story:"A summer storm knocked out the power lines at Windy Point Lake, and everyone panicked, except Grandma! Out on the lake, ocean waves still launched Ella's surfboard, the breeze still lifted Ben's kite, and wind still rocketed Grandma's sailboat across the water. Up on the ridge, giant *wind turbines* spun smoothly in the gale, sending fresh electricity straight back to town! \"Fossil fuels run out,\" Grandma smiled, \"but wind and water are *renewable*. Nature never unplugs!\""},
  c20:{story:"Maya bit into her lunch and wondered how wheat turned into bread. Inside the creaking old mill, a colossal *water wheel* roared in the river, shaking the floor beneath her sneakers! \"Humans have borrowed power from wind and water for ages,\" the guide shouted over the rumble. \"Ancient Egyptians used wind to sail the Nile. Fourteen hundred years ago in Persia, inventors built the first *windmills* to grind corn. Later, water wheels powered saws and crushed grain!\" Outside, a giant modern *dam* turned that same river into electricity."},
@@ -104,28 +105,32 @@ page('c09',0,{old:null,neu:B9});
 
 /* ===== 10: Mrs. Shaw's terrible backpack ===== */
 const L10={
- hated:async(R,S)=>{await R.bg('store');R.label('Mrs. Shaw','#7048e8');S.s=await pop(R,'pa-shaw10bag',{x:-1.2,y:.18,h:1.92,face:1});R.word('No more carts!',-.6,2.1,'#e03131',1.3);},
- stuffed:async(R,S)=>{await S.s?.grow(1.07,1.07,.5);R.fx('crumb',-1.2,1.1,8,{w:.5,t:1});},
- backpack:async(R,S)=>{R.label('One giant backpack','#1c7ed6');const r=R.ring(-1.2,1.0,.5,'#1c7ed6');await r.show();await r.pulse(2,1);await r.hide();},
- cookies:async(R,S)=>{R.label('Cookies','#8b5a2b');const p=pr(R,'cookie',1.4,1.9,.5);if(p){await R.toss(p,-1.2,1.0,1,.5);R.shrink(p,.4);}},
- socks:async(R,S)=>{R.label('Socks','#e8590c');const p=pr(R,'socks',1.4,1.9,.5);if(p){await R.toss(p,-1.2,1.0,1,.5);R.shrink(p,.4);}},
- lollipop:async(R,S)=>{R.label('Lollipop','#c2255c');const p=pr(R,'lollipop',1.4,1.9,.5);if(p){await R.toss(p,-1.2,1.0,1,.5);R.shrink(p,.4);}},
- milk:async(R,S)=>{R.label('Milk','#1c7ed6');const p=pr(R,'milk',1.4,1.9,.5);if(p){await R.toss(p,-1.2,1.0,1,.5);R.shrink(p,.4);}},
- oil:async(R,S)=>{R.label('Cooking oil','#e8a900');R.fx('drop',-1.2,1.2,8,{w:.3,t:1,vy:-.4});await S.s?.shiver(.6);},
- walk:async(R,S)=>{await R.bg('street');R.label('The walk home','#2b8a3e');S.s=await pop(R,'pa-shaw10bag',{x:-2.4,y:.18,h:1.92,face:1},.3);await S.s.go(-.5,.18,2.6,{hops:6,lin:true});},
- ripped:async(R,S)=>{await sw(S.s,'pa-shaw10shock',.3,{h:1.92,face:1});R.word('RIP!',-.2,2.2,'#e03131',1.7);R.fx('crumb',-.5,1.2,16,{w:.4,t:1});await S.s?.shiver(.6);},
- crash:async(R,S)=>{R.word('CRASH!',.2,2.2,'#e03131',2.0);S.t=await pop(R,'pa-bag10torn',{x:-1.3,y:.18,h:0.78,face:1},.3);S.i=R.act('pa-items10',{x:-.6,y:1.4,h:1.02,face:-1});S.i.st.op=0;S.i.ap();await S.i.show(.1);await S.i.go(1.9,.18,.8,{arc:.8});R.fx('dust',1.9,.2,16,{w:.8,t:1.1});},
- bounced:async(R,S)=>{await S.i?.go(2.1,.18,.3,{arc:.35});await S.i?.go(1.7,.18,.3,{arc:.25});await S.i?.jump(.15);},
- solids:async(R,S)=>{R.label('Solids keep their shape','#2b8a3e');const r=R.ring(2.0,.5,.7,'#2b8a3e');await r.show();R.fx('sparkle',2.0,.5,12,{w:.9,t:1.2});await r.pulse(2,1);await r.hide();},
- meanwhile:async(R,S)=>{R.label('Meanwhile…','#1c7ed6');await R.wait(.5);},
- burst:async(R,S)=>{S.m=await pop(R,'pa-milk10',{x:.2,y:.18,h:0.90,face:1},.3);S.o=await pop(R,'pa-oil10',{x:1.15,y:.18,h:0.72,face:1},.3);R.word('Splash!',.6,1.8,'#1c7ed6',1.6);R.fx('splash',.2,.3,16,{w:.5,t:1.3});R.fx('splash',1.15,.3,16,{w:.5,t:1.3});},
- oozed:async(R,S)=>{await all([S.m?.grow(1.25,1.25,1),S.o?.grow(1.25,1.25,1)]);},
- shoes:async(R,S)=>{R.word('Shoe-shaped puddles!',.6,2.0,'#e8590c',1.4);const r=R.ring(.7,.3,.9,'#e8590c');await r.show();await r.pulse(2,1);await r.hide();},
- liquids:async(R,S)=>{R.label('Liquids flow','#1c7ed6');R.fx('drop',.7,.5,10,{w:1,t:1.2,vy:-.2});await R.wait(.4);},
- grabbed:async(R,S)=>{await sw(S.s,'pa-shaw10soap',.6,{h:1.92,face:1});R.fx('sparkle',-1.5,1.2,10,{w:.5,t:1.2});await S.s?.jump(.1);},
- soap:async(R,S)=>{R.label('Dish soap','#2b8a3e');R.fx('bubble',-1.3,1.3,14,{w:.6,t:2.2,vy:.6});await R.wait(.5);},
- solid:async(R,S)=>{R.word('Solid or liquid?',-.2,2.2,'#7048e8',1.6);await S.s?.wag(.8,.04,3);},
- definitely:async(R,S)=>{S.d=await pop(R,'pa-soap10',{x:1.9,y:.18,h:1.02,face:-1},.4);R.word('A liquid!',.4,2.0,'#2b8a3e',1.9);R.fx('sparkle',1.9,.7,18,{w:1,t:1.5});await all([S.s?.jump(.15),S.d?.jump(.15)]);}
+ hated:async(R,S)=>{await R.bg('store');R.label('Mrs. Shaw','#7048e8');S.s=R.act('pa-shawstruggle10',{x:-2.4,y:.18,h:1.9,face:1});S.s.st.op=0;S.s.ap();await S.s.show(.2);
+  await S.s.go(-1.2,.18,.7,{hops:2});for(let i=0;i<2;i++){await S.s.go(-1.0,.18,.15);await S.s.go(-1.25,.18,.15);}R.word('Stuck!',-.7,2.3,'#e03131',1.6);R.fx('dust',-.6,.3,10,{w:.4,t:.8});S.s.shiver(.6);},
+ moved:async(R,S)=>{await sw(S.s,'pa-shaw10bag',.3,{h:1.92,face:1});R.fx('crumb',-1.2,1.1,8,{w:.5,t:1});S.cw=await pop(R,'pa-cart10',{x:1.7,y:.18,h:1.2,face:-1},.3);},
+ giant:async(R,S)=>{R.label('One giant backpack','#1c7ed6');S.cw?.hide(.3);await S.s.grow(1.06,1.06,.4);},
+ cookies:async(R,S)=>{R.label('Cookies','#8b5a2b');const p=pr(R,'cookie',1.4,1.9,.5);if(p){await R.toss(p,-1.2,1.1,.8,.6);R.shrink(p,.3);await S.s.grow(1.04,1.04,.25);}},
+ socks:async(R,S)=>{R.label('Socks','#e8590c');const p=pr(R,'socks',1.4,1.9,.5);if(p){await R.toss(p,-1.2,1.1,.8,.6);R.shrink(p,.3);await S.s.grow(1.04,1.04,.25);}},
+ lollipop:async(R,S)=>{R.label('Lollipop','#c2255c');const p=pr(R,'lollipop',1.4,1.9,.5);if(p){await R.toss(p,-1.2,1.1,.8,.6);R.shrink(p,.3);await S.s.grow(1.04,1.04,.25);}},
+ milk:async(R,S)=>{R.label('Milk','#1c7ed6');const p=pr(R,'milk',1.4,1.9,.5);if(p){await R.toss(p,-1.2,1.1,.8,.6);R.shrink(p,.3);await S.s.grow(1.04,1.04,.25);}},
+ oil:async(R,S)=>{R.label('Cooking oil','#e8a900');const p=pr(R,'oil',1.4,1.9,.5)||pr(R,'bottle',1.4,1.9,.5);if(p){await R.toss(p,-1.2,1.1,.8,.6);R.shrink(p,.3);}R.fx('drop',-1.2,1.2,8,{w:.3,t:1,vy:-.4});await S.s.shiver(.5);},
+ walk:async(R,S)=>{await R.bg('street');R.label('The walk home','#2b8a3e');S.s=await pop(R,'pa-shaw10bag',{x:-2.4,y:.18,h:1.92,face:1},.3);await S.s.go(-.6,.18,2.0,{hops:5,lin:true});},
+ ripped:async(R,S)=>{await sw(S.s,'pa-shaw10shock',.25,{h:1.92,face:1});R.word('RIP!',-.2,2.3,'#e03131',1.7);R.fx('crumb',-.6,1.2,16,{w:.4,t:1});S.t=await pop(R,'pa-bag10torn',{x:-1.6,y:.18,h:.78,face:1},.3);await S.s.shiver(.5);},
+ crash:async(R,S)=>{R.word('CRASH!',.4,2.4,'#e03131',2.0);S.sol=[];
+  for(const [n,x] of [['cookie',.2],['socks',.9],['lollipop',1.6]]){const p=pr(R,n,-.6,1.3,.5);if(p){S.sol.push([p,x]);R.toss(p,x,.3,.6,.5);}await R.wait(.15);}
+  await R.wait(.5);for(const [p,x] of S.sol){R.fx('dust',x,.25,10,{w:.3,t:.8});R.fx('chip',x,.35,6,{w:.2,t:.6});}},
+ thud:async(R,S)=>{R.word('THUD!',.9,1.7,'#8b5a2b',1.5);for(const [p,x] of S.sol||[]){R.toss(p,x+.15,.3,.35,.35);await R.wait(.15);}await R.wait(.4);for(const [p,x] of S.sol||[]){R.toss(p,x+.15,.3,.25,.12);}await R.wait(.3);},
+ solids:async(R,S)=>{R.label('Solids keep their shape','#2b8a3e');const r=R.ring(.9,.5,1.0,'#2b8a3e');await r.show();R.fx('sparkle',.9,.5,12,{w:1.2,t:1.2});await r.pulse(2,1);await r.hide();},
+ meanwhile:async(R,S)=>{R.label('Meanwhile…','#1c7ed6');await R.wait(.4);},
+ burst:async(R,S)=>{for(const [p] of S.sol||[])R.drop(p);S.m=R.act('pa-milk10',{x:.2,y:1.6,h:.9,face:1});S.o=R.act('pa-oil10',{x:1.4,y:1.6,h:.72,face:1});for(const a of [S.m,S.o]){a.st.op=0;a.ap();a.show(.1);}
+  await all([S.m.go(.2,.18,.5,{arc:.2}),S.o.go(1.4,.18,.5,{arc:.2})]);R.word('Splash!',.8,1.9,'#1c7ed6',1.7);R.fx('splash',.2,.3,30,{w:.9,t:1.3});R.fx('splash',1.4,.3,30,{w:.9,t:1.3});},
+ splashed:async(R,S)=>{await all([S.m.grow(1.7,.8,1.2),S.o.grow(1.7,.8,1.2)]);},
+ spreading:async(R,S)=>{R.word('Spreading out flat!',.8,2.1,'#e8590c',1.4);R.fx('drop',.2,.5,12,{w:1.2,t:1.2,vy:-.2});await R.wait(.4);},
+ liquids:async(R,S)=>{R.label('Liquids flow','#1c7ed6');R.fx('drop',.8,.5,14,{w:1.6,t:1.2,vy:-.2});await R.wait(.4);},
+ grabbed:async(R,S)=>{S.t?.hide(.2);await S.s.go(-1.1,.18,.4);S.fw=await pop(R,'pa-floorwash10',{x:-1.9,y:.18,h:1.0,face:1},.3);R.fx('bubble',-1.9,1.0,10,{w:.4,t:1.4,vy:.6});await sw(S.s,'pa-shawmop10',.3,{h:1.7,face:1});},
+ mopped:async(R,S)=>{R.label('Floor wash','#2b8a3e');R.fx('bubble',-1.3,1.3,16,{w:.6,t:2.2,vy:.6});await S.s.go(-.2,.18,.6,{hops:2});for(let i=0;i<2;i++){await S.s.go(.4,.18,.4,{lin:true});await S.s.go(-.1,.18,.4,{lin:true});}
+  await all([S.m.scaleTo(.2,1.2),S.o.scaleTo(.2,1.2)]);},
+ solid:async(R,S)=>{S.m?.hide(.3);S.o?.hide(.3);R.fx('sparkle',.8,.4,22,{w:1.6,t:1.5});R.word('Solid or liquid?',-.2,2.3,'#7048e8',1.6);await S.s.wag(.8,.04,3);}
 };
 const B10=mkq(L10);
 page('c10',0,{old:OLD('c10'),neu:B10});
