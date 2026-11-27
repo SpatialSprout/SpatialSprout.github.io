@@ -200,5 +200,104 @@ const L19={
 const B19=mk(L19);
 page('c19',0,{old:null,neu:B19});
 
+/* ===== 20: Maya at the old mill ===== */
+const L20={
+ maya:async(R,S)=>{await R.bg('mill20in');S.m=await pop(R,'pa-maya20',{x:-1.6,y:.18,h:2.0,face:1});bob(R,S.m,.03);},
+ bread:async(R,S)=>{S.br=await pop(R,'pa-bread20',{x:-.5,y:.3,h:.6,face:1},.4);R.word('Bread?',-.5,1.6,'#e8590c',1.5);R.fx('sparkle',-.5,.8,10,{w:.5,t:1.2});},
+ colossal:async(R,S)=>{S.br?.hide(.3);R.label('A colossal water wheel','#1c7ed6');S.w=await pop(R,'pa-wheel20',{x:1.4,y:.18,h:1.6,face:-1},.5);await S.w?.wag(1.4,.05,5);},
+ roared:async(R,S)=>{R.word('ROAR!',1.1,2.3,'#1c7ed6',1.8);R.fx('splash',1.3,.4,20,{w:1,t:1.5});await all([S.w?.wag(1.2,.06,7),S.m?.shiver(1)]);},
+ guide:async(R,S)=>{S.g=await pop(R,'pa-guide20',{x:-.3,y:.18,h:2.0,face:1},.5);bob(R,S.g,.03);R.fx('note',-.3,2.2,4,{w:.5,t:1.4});},
+ borrowed:async(R,S)=>{R.label('Power from wind and water','#2b8a3e');R.fx('sparkle',1.3,1.2,14,{w:1.4,t:1.4});await S.g?.jump(.1);},
+ egyptians:async(R,S)=>{await R.bg('river20');R.label('Ancient Egypt: wind sails the Nile','#e8590c');S.g=await pop(R,'pa-guide20',{x:-1.9,y:.18,h:1.9,face:1},.3);S.s=await pop(R,'pa-sail20',{x:-.9,y:.3,h:1.4,face:1},.4);R.fx('leaf',-1.6,1.4,10,{w:1.2,t:2.2,vx:.9});await S.s?.go(1.6,.3,2.6);},
+ persia:async(R,S)=>{S.s?.hide(.4);R.label('Persia: the first windmills','#7048e8');S.wm=await pop(R,'pa-wind20',{x:1.0,y:.18,h:2.1,face:-1},.5);if(S.wm)S.wm.idle='sway';R.fx('leaf',.4,1.6,12,{w:1.6,t:2.2,vx:.9});},
+ grind:async(R,S)=>{S.sk=await pop(R,'pa-sacks20',{x:1.9,y:.18,h:.6,face:-1},.4);R.fx('crumb',1.5,.6,14,{w:.6,t:1.2});await S.wm?.wag(1,.03,4);},
+ later:async(R,S)=>{await R.bg('mill20in');R.label('Water wheels: saws and grain','#1c7ed6');S.w=await pop(R,'pa-wheel20',{x:1.4,y:.18,h:1.6,face:-1},.4);S.sk=await pop(R,'pa-sacks20',{x:-.4,y:.18,h:.7,face:1},.3);S.m=await pop(R,'pa-maya20',{x:-1.8,y:.18,h:1.9,face:1},.3);await S.w?.wag(1.6,.05,5);R.fx('chip',.4,.9,14,{w:.7,t:1.4});},
+ outside:async(R,S)=>{await R.bg('river20');R.label('A giant modern dam','#1c7ed6');S.d=await pop(R,'pa-dam20',{x:.5,y:.18,h:1.4,face:1},.5);S.m=await pop(R,'pa-maya20',{x:-1.8,y:.18,h:1.9,face:1},.3);R.fx('splash',.3,.4,22,{w:1,t:1.6});},
+ electricity:async(R,S)=>{R.word('Electricity!',.3,2.4,'#e8a900',1.8);for(let i=0;i<6;i++){R.fx('sparkle',-.8+i*.4,1.2,6,{w:.3,t:.9});await R.wait(.2);}await S.m?.jump(.15);}
+};
+const B20=mk(L20);
+page('c20',0,{old:null,neu:B20});
+
+/* ===== 21: Rebecca's lucky red hat ===== */
+const L21={
+ yoink:async(R,S)=>{await R.bg('playgr21');S.r=await pop(R,'pa-reb21',{x:-1.7,y:.18,h:2.0,face:1},.3);S.q=await pop(R,'pa-squir21',{x:.3,y:.18,h:1.3,face:-1},.3);R.word('YOINK!',-.2,2.3,'#e03131',1.9);await S.r?.shiver(.7);},
+ cheeky:async(R,S)=>{await S.q?.jump(.2);await S.q?.go(2.2,.18,.7);S.q?.hide(.3);},
+ friends:async(R,S)=>{S.a=await pop(R,'pa-amy21',{x:-.9,y:.18,h:1.8,face:1},.3);S.j=await pop(R,'pa-janet21',{x:-.1,y:.18,h:1.8,face:1},.3);S.l=await pop(R,'pa-linda21',{x:.7,y:.18,h:1.8,face:1},.3);R.fx('heart',-.2,2.2,8,{w:1.2,t:1.4});},
+ sprint:async(R,S)=>{R.label('Around the swings','#1c7ed6');S.sw=await pop(R,'pa-swing21',{x:1.7,y:.2,h:1.5,face:1},.4);R.word('Around!',-.5,2.3,'#1c7ed6',1.6);await S.a?.go(1.1,.18,.5);await S.a?.go(2.0,.18,.5);await S.a?.go(1.1,.18,.4);},
+ climb:async(R,S)=>{R.label('Up the ladder','#2b8a3e');S.sw?.hide(.3);S.c=await pop(R,'pa-climb21',{x:1.5,y:.18,h:1.8,face:1},.4);R.word('Up!',1.0,2.4,'#2b8a3e',1.6);await S.j?.go(1.2,.18,.6);await S.j?.jump(.4);},
+ through:async(R,S)=>{R.label('Through the tunnel','#7048e8');R.word('Through!',1.5,2.3,'#7048e8',1.6);await S.j?.go(1.9,.3,.5);R.fx('dust',1.8,.5,12,{w:.5,t:1});},
+ zoom:async(R,S)=>{S.c?.hide(.3);S.j?.go(-.1,.18,.4);S.s=await pop(R,'pa-slide21',{x:1.5,y:.18,h:1.7,face:-1},.4);await S.l?.go(1.2,.9,.5);},
+ down:async(R,S)=>{R.label('Down the slide','#e8590c');R.word('Down!',1.4,2.3,'#e8590c',1.6);await S.l?.go(1.9,.18,.6);R.fx('dust',1.9,.3,12,{w:.5,t:1});},
+ over:async(R,S)=>{S.s?.hide(.3);S.h=await pop(R,'pa-horse21',{x:1.1,y:.18,h:1.3,face:1},.4);R.label('Over the rocking horse','#e03131');await S.a?.go(.3,.18,.4);await S.a?.jump(.55);await S.a?.go(1.9,.18,.5);},
+ skidded:async(R,S)=>{R.fx('dust',-.9,.3,14,{w:.6,t:1.2});await S.r?.go(-.5,.18,.5);R.word('Skid!',-.9,2.3,'#e8590c',1.5);},
+ peeked:async(R,S)=>{S.h?.hide(.3);for(const a of [S.a,S.j,S.l])a?.hide(.3);S.b=await pop(R,'pa-bench21',{x:1.1,y:.18,h:1.4,face:1},.4);await sw(S.r,'pa-peek21',.5,{h:1.6,face:1});await S.r?.go(-.1,.18,.5);},
+ under:async(R,S)=>{R.label('Under the park bench','#2b8a3e');const g=R.ring(1.1,.35,.6,'#2b8a3e');await g.show();await g.pulse(2,1);await g.hide();},
+ beside:async(R,S)=>{R.label('Beside the garbage can','#7048e8');S.n=await pop(R,'pa-bin21',{x:2.0,y:.18,h:1.4,face:-1},.4);const g=R.ring(2.0,.5,.6,'#7048e8');await g.show();await g.pulse(2,1);await g.hide();},
+ traded:async(R,S)=>{S.q=await pop(R,'pa-squir21',{x:.3,y:.18,h:1.2,face:1},.4);R.word('Trade!',.3,1.9,'#e8590c',1.5);R.fx('crumb',1.6,.6,10,{w:.5,t:1.2});R.fx('heart',-.3,2.2,8,{w:1,t:1.5});await S.r?.jump(.12);}
+};
+const B21=mk(L21);
+page('c21',0,{old:null,neu:B21});
+
+/* ===== 22: Max at the Mega-Fair ===== */
+const L22={
+ bragged:async(R,S)=>{await R.bg('fair22');R.label('The Mega-Fair','#e8590c');S.x=await pop(R,'pa-max22brave',{x:-1.7,y:.18,h:1.9,face:1},.4);R.word('Not me!',-1.4,2.4,'#e8590c',1.6);await S.x?.jump(.15);},
+ survived:async(R,S)=>{R.label('Round and round','#1c7ed6');S.r=await pop(R,'pa-carou22',{x:1.2,y:.18,h:1.9,face:-1},.4);await S.r?.wag(1.6,.04,6);R.fx('note',1.2,2.0,8,{w:1,t:1.5});},
+ laughed:async(R,S)=>{S.r?.hide(.3);R.label('Back and forth','#e03131');S.p=await pop(R,'pa-pirate22',{x:1.2,y:.18,h:1.9,face:-1},.4);await S.p?.wag(1.8,.08,3);R.word('Ha ha!',-1.3,2.4,'#e03131',1.5);},
+ bumper:async(R,S)=>{S.p?.hide(.3);R.label('Zigzag','#7048e8');S.b=await pop(R,'pa-bump22',{x:.3,y:.18,h:1.2,face:1},.4);await S.b?.go(1.5,.18,.4);await S.b?.go(.2,.18,.4);await S.b?.go(1.7,.18,.4);R.fx('sparkle',1.5,.5,10,{w:.5,t:1});},
+ bounced:async(R,S)=>{S.b?.hide(.3);R.label('Bounce!','#e64980');S.c=await pop(R,'pa-castle22',{x:1.4,y:.18,h:1.8,face:-1},.4);await S.x?.go(.4,.18,.4);await S.x?.jump(.35);await S.x?.jump(.45);},
+ slid:async(R,S)=>{S.c?.hide(.3);R.label('Slide!','#1c7ed6');S.w=await pop(R,'pa-wslide22',{x:1.4,y:.18,h:1.8,face:-1},.4);R.fx('splash',1.4,.4,22,{w:.9,t:1.5});await S.x?.go(1.0,.6,.5);await S.x?.go(1.0,.18,.4);R.word('Splash!',1.1,2.4,'#1c7ed6',1.6);},
+ spinning:async(R,S)=>{S.w?.hide(.3);R.label('The spinning teacups','#e8590c');S.t=await pop(R,'pa-cups22',{x:1.3,y:.18,h:1.5,face:-1},.4);await S.t?.wag(1.8,.08,8);await S.x?.go(.8,.18,.4);},
+ seconds:async(R,S)=>{R.word('3...2...1...',.4,2.4,'#e8590c',1.5);R.fx('note',1.3,1.9,10,{w:1,t:1.6});await S.t?.wag(1.2,.1,10);},
+ wobbled:async(R,S)=>{await sw(S.x,'pa-max22dizzy',.4,{h:1.7,face:1});await S.x?.shiver(1);await S.x?.go(-.8,.18,1);R.fx('sparkle',-.8,2.0,10,{w:.6,t:1.5});},
+ green:async(R,S)=>{R.label('Bright green face','#2b8a3e');R.fx('sparkle',S.x?S.x.st.x:-.8,1.6,16,{w:.5,t:1.3});await R.wait(.5);},
+ moving:async(R,S)=>{R.word('Whoa!',-.8,2.4,'#2b8a3e',1.8);await S.x?.wag(1.4,.06,4);R.fx('z',-.8,2.2,5,{w:.5,t:1.5});}
+};
+const B22=mk(L22);
+page('c22',0,{old:null,neu:B22});
+
+/* ===== 23: Mouse, Bear and the lever ===== */
+const L23={
+ thud:async(R,S)=>{await R.bg('forest23');S.h=await pop(R,'pa-mhouse23',{x:-1.3,y:.18,h:1.7,face:1},.3);R.word('THUD!',.5,2.4,'#e03131',1.9);S.b=await pop(R,'pa-boulder23',{x:2.2,y:.18,h:1.05,face:1},.2);await S.b?.go(.2,.18,.8);R.fx('dust',.2,.4,20,{w:.7,t:1.4});},
+ jammed:async(R,S)=>{await S.b?.go(-.4,.18,.6);R.fx('dust',-.4,.4,16,{w:.5,t:1.2});R.word('Stuck!',-.7,2.3,'#e03131',1.6);},
+ pancakes:async(R,S)=>{R.label('Pancakes are smoking!','#e8590c');R.fx('dust',-1.3,1.7,14,{w:.4,t:2,vy:.4});},
+ pushed:async(R,S)=>{S.m=await pop(R,'pa-mouse23',{x:.6,y:.18,h:1.3,face:-1},.3);await S.m?.go(.3,.18,.4);await S.m?.wag(1,.05,8);R.word('Push!',.5,2.0,'#7048e8',1.6);},
+ purple:async(R,S)=>{R.fx('sparkle',.4,1.0,10,{w:.4,t:1});await S.m?.shiver(.8);},
+ budge:async(R,S)=>{R.word("Won't budge!",-.1,2.3,'#e03131',1.7);await S.m?.shiver(.6);},
+ ran:async(R,S)=>{S.r=await pop(R,'pa-bear23',{x:2.3,y:.18,h:1.9,face:-1},.3);await S.r?.go(1.5,.18,.9);R.fx('dust',1.8,.3,12,{w:.6,t:1.2});},
+ branch:async(R,S)=>{R.label('A long branch and a small stone','#2b8a3e');await S.r?.jump(.12);R.fx('leaf',1.5,1.6,8,{w:.6,t:1.5});},
+ pivot:async(R,S)=>{R.label('The stone is the pivot','#e8590c');const g=R.ring(.2,.3,.5,'#e8590c');await g.show();await g.pulse(2,1);await g.hide();},
+ leaned:async(R,S)=>{await sw(S.r,'pa-bearlean23',.5,{h:1.6,face:-1});R.word('Lean!',1.4,2.2,'#e8590c',1.6);await S.r?.shiver(.5);},
+ pop:async(R,S)=>{R.word('POP!',.3,2.4,'#e03131',2.1);R.fx('sparkle',-.4,1.0,22,{w:.9,t:1.4});},
+ flew:async(R,S)=>{await S.b?.go(-.4,1.8,.4);await S.b?.go(-.4,.18,.5);R.fx('dust',-.4,.4,18,{w:.6,t:1.4});S.m?.jump(.2);},
+ lever:async(R,S)=>{R.label('That is a lever','#7048e8');await sw(S.r,'pa-bear23',.4,{h:1.9,face:-1});const g=R.ring(1.4,1.0,.7,'#7048e8');await g.show();await g.pulse(2,1);await g.hide();},
+ simple:async(R,S)=>{R.word('Super-strength!',.5,2.4,'#2b8a3e',1.8);R.fx('heart',.5,1.8,10,{w:1.4,t:1.6});await S.m?.jump(.15);},
+ wheelbarrow:async(R,S)=>{S.w=await pop(R,'pa-barrow23',{x:1.6,y:.18,h:1.0,face:-1},.3);R.label('A wheelbarrow','#2b8a3e');await S.b?.go(1.3,.5,.6);await S.w?.go(-.8,.18,.1);S.b?.hide(.2);},
+ breakfast:async(R,S)=>{S.p=await pop(R,'pa-pancake23',{x:-1.9,y:.18,h:.8,face:1},.4);R.word('Breakfast!',-.6,2.3,'#e8590c',1.8);R.fx('heart',-1.2,1.6,12,{w:1,t:1.6});await S.m?.jump(.15);}
+};
+const B23=mk(L23);
+page('c23',0,{old:null,neu:B23});
+
+/* ===== 24: Matt's top-secret shelf ===== */
+const L24={
+ matt:async(R,S)=>{await R.bg('bedroom24');S.m=await pop(R,'pa-matt24',{x:-1.8,y:.18,h:1.9,face:1},.3);R.word('Top secret!',-.6,2.5,'#e03131',1.6);},
+ shelf:async(R,S)=>{S.v=await pop(R,'pa-vault24',{x:2.0,y:.18,h:1.0,face:-1},.4);R.fx('sparkle',2.0,.8,12,{w:.6,t:1.2});},
+ sister:async(R,S)=>{S.s=await pop(R,'pa-sis24',{x:-1.0,y:.18,h:1.6,face:1},.3);await S.s?.jump(.12);R.word('Keep out!',-.4,2.3,'#e8590c',1.5);},
+ mechanisms:async(R,S)=>{R.label('Mechanisms: simple machines teaming up','#7048e8');for(const a of [S.m,S.s])a?.hide(.3);const g=R.ring(2.0,.7,.9,'#7048e8');await g.show();await g.pulse(2,1);await g.hide();},
+ clippers:async(R,S)=>{S.c=await pop(R,'pa-clip24',{x:-1.7,y:.18,h:.6,face:1},.4);R.label('Nail clippers','#e03131');},
+ lever:async(R,S)=>{R.word('Lever!',-1.5,1.3,'#e03131',1.6);await S.c?.wag(.8,.08,6);},
+ wedges:async(R,S)=>{R.word('Wedges!',-1.3,1.7,'#e8590c',1.6);R.fx('chip',-1.6,.6,10,{w:.4,t:1});},
+ crane:async(R,S)=>{S.k=await pop(R,'pa-crane24',{x:-.8,y:.18,h:1.4,face:1},.4);R.label('A toy crane','#1c7ed6');},
+ pulley:async(R,S)=>{R.word('Pulley!',-.8,2.2,'#1c7ed6',1.6);await S.k?.wag(.9,.04,5);},
+ scissors:async(R,S)=>{S.z=await pop(R,'pa-scis24',{x:.1,y:.18,h:.9,face:1},.4);R.label('Scissors: two levers, two wedge blades','#2b8a3e');await S.z?.wag(.8,.07,7);},
+ robot:async(R,S)=>{S.d=await pop(R,'pa-rdog24',{x:1.0,y:.18,h:1.2,face:-1},.4);R.label('Robot dog guard!','#7048e8');R.fx('note',1.0,1.7,6,{w:.6,t:1.5});},
+ spinning:async(R,S)=>{await S.d?.wag(1.2,.1,8);},
+ snuck:async(R,S)=>{S.s=await pop(R,'pa-sis24',{x:-2.2,y:.18,h:1.6,face:1},.3);await S.s?.go(-1.0,.18,1);},
+ button:async(R,S)=>{S.b=await pop(R,'pa-button24',{x:.5,y:.1,h:.5,face:1},.4);await S.s?.go(-.1,.18,.7);R.word('Click!',.5,1.4,'#e03131',1.6);const g=R.ring(.5,.35,.4,'#e03131');await g.show();await g.pulse(2,1);await g.hide();},
+ laughed:async(R,S)=>{R.fx('heart',.2,2.0,12,{w:1.4,t:1.8});R.word('Ha ha ha!',.2,2.4,'#e8590c',1.8);await S.s?.jump(.15);await S.s?.jump(.1);}
+};
+const B24=mk(L24);
+page('c24',0,{old:null,neu:B24});
+
 P.DIR.mount();
+
 })();

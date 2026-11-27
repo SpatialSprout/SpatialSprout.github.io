@@ -21,10 +21,10 @@ const CFG={
  c18:{bgs:['kitchen-day','hall','gas'],cast:[['pa-k18switch',1.6],['pa-e18open',1.6],['pa-b18blend',1.4],['pa-c18pump',.9],['pa-k18apple',1.6]],amb:'sparkle'},
  c19:{bgs:['lake19','hill19'],cast:[['pa-gran19',1.4],['pa-ella19',1.4],['pa-ben19',1.6],['pa-turb19',1.8]],amb:'leaves'},
  c20:{bgs:['mill20in','river20'],cast:[['pa-maya20',1.6],['pa-guide20',1.7],['pa-wheel20',1.4],['pa-wind20',1.7]],amb:'leaves'},
- c21:{bgs:['park','livingroom','meadow','hall'],cast:[['kid2',1.2],['kid3',1.2],['kid5',1.2],['kid1',1.2]],amb:'sparkle'},
- c22:{bgs:['park','street','meadow','pond-summer'],cast:[['kid4',1.2],['kid0',1.2],['kid2',1.2],['kid5',1.2]],amb:'sparkle'},
- c23:{bgs:['park','livingroom','street','store'],cast:[['kid3',1.2],['kid1',1.2],['kid4',1.2],['kid0',1.2]],amb:'sparkle'},
- c24:{bgs:['livingroom','store','park','hall'],cast:[['kid5',1.2],['kid2',1.2],['kid3',1.2],['kid1',1.2]],amb:'sparkle'}
+ c21:{bgs:['playgr21','park21'],cast:[['pa-reb21',1.7],['pa-amy21',1.6],['pa-janet21',1.6],['pa-linda21',1.6],['pa-squir21',1.2]],amb:'leaves'},
+ c22:{bgs:['fair22','fairdusk22'],cast:[['pa-max22brave',1.7],['pa-max22dizzy',1.5],['pa-carou22',1.6],['pa-castle22',1.6]],amb:'sparkle'},
+ c23:{bgs:['forest23','trail23'],cast:[['pa-mouse23',1.2],['pa-bear23',1.9],['pa-boulder23',1.1],['pa-mhouse23',1.5]],amb:'leaves'},
+ c24:{bgs:['bedroom24','kitchen24'],cast:[['pa-matt24',1.8],['pa-sis24',1.6],['pa-rdog24',1.3],['pa-crane24',1.4]],amb:'sparkle'}
 };
 const CHEER=['Yes!','Great!','You got it!','Brilliant!','Super!','Nice one!'];
 const OOPS=['Hmm…','Try again!','Not quite!','Oh!'];
