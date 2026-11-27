@@ -437,6 +437,34 @@ const L21c={
 };
 page('c21',3,{old:mkq(L21c),neu:mkq(L21c)});
 
+/* ===== 22 theory pages: sports / playground / kitchen. Objects only. ===== */
+const roll=(a,x0,x1,y,sec,turns)=>R_T(a,x0,x1,y,sec,turns);
+const R_T=(a,x0,x1,y,sec,turns)=>new Promise(res=>{a._R.T(sec,e=>{a.st.x=x0+(x1-x0)*e;a.st.y=y;a.st.rz=-e*turns*Math.PI*2;a.ap();}).then(res);});
+const act22=async(R,k,o,t)=>{const a=await pop(R,k,o,t||.35);a._R=R;return a;};
+const L22a={
+ wheels:async(R,S)=>{await R.bg('meadow');R.label('Turning wheels','#2b8a3e');S.bk=await act22(R,'pa-bike22',{x:-2.1,y:.2,h:1.0,face:1});R.word('Turn!',-.5,2.4,'#2b8a3e',1.5);R.fx('dust',-2.1,.3,10,{w:.5,t:1.2,vx:-1.5,vy:.3});await S.bk.go(1.4,.2,2.4,{wob:.03,lin:true});},
+ skater:async(R,S)=>{await R.bg('rink22');R.label('Skating on ice','#1c7ed6');S.sk=await act22(R,'pa-skates22',{x:-2.0,y:.3,h:.7,face:1});R.fx('sparkle',-2.0,.8,10,{w:.6,t:1.2});},
+ slides:async(R,S)=>{R.word('Slide!',0,2.6,'#1c7ed6',1.6);for(let i=0;i<5;i++)R.fx('snow',-1.6+i*.7,.35,6,{w:.3,t:1.0});await S.sk.go(1.6,.3,1.9,{lin:true});hearts(R,1.6,1.2,6);},
+ trampoline:async(R,S)=>{await R.bg('playgr21');R.label('Trampoline','#e8590c');S.tr=await act22(R,'pa-tramp22',{x:-.2,y:.2,h:1.0,face:1});S.bl=await act22(R,'pa-ball21',{x:-.2,y:1.2,h:.45,face:1,idle:'none'});await S.bl.jump(.2);},
+ bounces:async(R,S)=>{R.word('Bounce!',-.2,3.0,'#e8590c',1.6);for(let i=0;i<3;i++){await S.bl.go(-.2,2.4,.45,{});await S.bl.go(-.2,1.1,.4,{squash:.18});S.tr.st.sy=.88;S.tr.ap();await R.wait(.08);S.tr.st.sy=1;S.tr.ap();}R.fx('sparkle',-.2,1.2,12,{w:.7,t:1});},
+ bowling:async(R,S)=>{await R.bg('park21');R.label('Bowling','#7048e8');S.pn=await act22(R,'pa-pins22',{x:1.5,y:.2,h:.85,face:1});S.bw=await act22(R,'pa-bowl22',{x:-2.1,y:.2,h:.55,face:1,idle:'none'});await S.bw.jump(.1);},
+ rolls:async(R,S)=>{R.word('Roll!',-.3,2.4,'#7048e8',1.6);await roll(S.bw,-2.1,1.1,.2,1.3,4);R.word('Strike!',1.4,2.7,'#e03131',1.8);R.fx('chip',1.5,.6,26,{w:.9,t:1.3,vy:1.2});await all([R.T(.6,e=>{S.pn.st.rz=-e*1.25;S.pn.st.x=1.5+e*.6;S.pn.st.op=1-e*.7;S.pn.ap();}),S.bw.go(1.8,.2,.6,{})]);},
+ skier:async(R,S)=>{await R.bg('ski22');R.label('Skiing downhill','#1c7ed6');S.sj=await act22(R,'pa-skis22',{x:-1.9,y:2.0,h:.7,face:1,idle:'none'});R.fx('snow',-1.9,2.2,10,{w:.6,t:1.2});},
+ zigzags:async(R,S)=>{S.g1=await act22(R,'pa-gates22',{x:-.8,y:1.35,h:.75,face:1});S.g2=await act22(R,'pa-gates22',{x:.7,y:.85,h:.75,face:-1});R.word('Zig-zag!',0,2.9,'#e03131',1.7);await R.T(3.0,e=>{const z=Math.sin(e*Math.PI*4);S.sj.st.x=-1.9+e*3.6+z*.4;S.sj.st.y=2.0-e*1.65;S.sj.st.rz=z*.5;S.sj.ap();if(Math.random()<.4)R.fx('snow',S.sj.st.x,S.sj.st.y,2,{w:.2,t:.8});});hearts(R,1.6,.5,8);}
+};
+page('c22',1,{old:mkq(L22a),neu:mkq(L22a)});
+const swingRig=async(R,S,x,h,sc)=>{const s=h/346;S.sf=await act22(R,'pa-swingf22',{x,y:.2,h,face:1,idle:'none'});const hx=x+(183-188.5)*s,hy=.2+(346-46)*s,Hp=217*s;S.sp=await act22(R,'pa-swingp22',{x:hx,y:hy-Hp,h:Hp,face:1,idle:'none'});let ph=0;R.actors.push({kill:()=>{},tick:dt=>{ph+=dt*sc.f*6.283;const th=sc.a*Math.sin(ph);S.sp.st.rz=th;S.sp.st.x=hx+Hp*Math.sin(th);S.sp.st.y=hy-Hp*Math.cos(th);S.sp.ap();}});};
+const topSpin=async(R,S,x,sc)=>{S.tp=await act22(R,'pa-top22',{x,y:.2,h:1.0,face:1,idle:'none'});let ph=0;R.actors.push({kill:()=>{},tick:dt=>{ph+=dt*sc.v;S.tp.st.sx=Math.cos(ph);S.tp.st.rz=Math.sin(ph*.5)*.07*Math.min(1,sc.v/4);S.tp.ap();}});};
+const L22b={
+ swing:async(R,S)=>{await R.bg('playgr21');R.label('A swing','#e8590c');S.sc={a:0,f:.55};await swingRig(R,S,-.9,1.55,S.sc);await R.T(1.0,e=>{S.sc.a=.55*e;});},
+ back:async(R,S)=>{R.word('Back…',-1.8,2.8,'#e8590c',1.4);await R.wait(1.0);R.word('…and forth!',-.2,2.8,'#e8590c',1.4);},
+ swinging:async(R,S)=>{R.label('Swinging','#2b8a3e');R.word('Swinging!',-.9,3.0,'#2b8a3e',1.8);hearts(R,-.9,2.0,8);},
+ spinning:async(R,S)=>{R.label('A spinning top','#7048e8');S.tc={v:0};await topSpin(R,S,1.2,S.tc);await ramp(R,S.tc,9,1.2);R.fx('sparkle',1.2,.9,12,{w:.5,t:1});},
+ turns:async(R,S)=>{R.word('Round and round!',1.2,2.3,'#7048e8',1.6);await ramp(R,S.tc,14,1.2);},
+ place:async(R,S)=>{R.label('Turns in one place','#c2255c');const r=R.ring(1.2,.7,.7,'#c2255c');await r.show();await r.pulse(2,1.1);await r.hide();}
+};
+page('c22',2,{old:mkq(L22b),neu:mkq(L22b)});
+
 P.DIR.mount();
 
 })();
