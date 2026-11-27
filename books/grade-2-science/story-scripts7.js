@@ -204,21 +204,22 @@ const B19=mk(L19);
 page('c19',0,{old:null,neu:B19});
 
 /* ===== 20: Maya at the old mill ===== */
+const spin=(R,a,sp)=>{if(!a)return;let on=true;R.actors.push({kill:()=>{on=false;},tick:dt=>{if(!on)return;a.st.rz=(a.st.rz||0)+dt*sp;a.ap();}});};
 const L20={
- maya:async(R,S)=>{await R.bg('mill20in');S.m=await pop(R,'pa-maya20',{x:-1.6,y:.18,h:2.0,face:1});bob(R,S.m,.03);},
- bread:async(R,S)=>{S.br=await pop(R,'pa-bread20',{x:-.5,y:.3,h:.6,face:1},.4);R.word('Bread?',-.5,1.6,'#e8590c',1.5);R.fx('sparkle',-.5,.8,10,{w:.5,t:1.2});},
- colossal:async(R,S)=>{S.br?.hide(.3);R.label('A colossal water wheel','#1c7ed6');S.w=await pop(R,'pa-wheel20',{x:1.4,y:.18,h:1.6,face:-1},.5);await S.w?.wag(1.4,.05,5);},
- roared:async(R,S)=>{R.word('ROAR!',1.1,2.3,'#1c7ed6',1.8);R.fx('splash',1.3,.4,20,{w:1,t:1.5});await all([S.w?.wag(1.2,.06,7),S.m?.shiver(1)]);},
- guide:async(R,S)=>{S.g=await pop(R,'pa-guide20',{x:-.3,y:.18,h:2.0,face:1},.5);bob(R,S.g,.03);R.fx('note',-.3,2.2,4,{w:.5,t:1.4});},
- borrowed:async(R,S)=>{R.label('Power from wind and water','#2b8a3e');R.fx('sparkle',1.3,1.2,14,{w:1.4,t:1.4});await S.g?.jump(.1);},
- egyptians:async(R,S)=>{await R.bg('river20');R.label('Ancient Egypt: wind sails the Nile','#e8590c');S.g=await pop(R,'pa-guide20',{x:-1.9,y:.18,h:1.9,face:1},.3);S.s=await pop(R,'pa-sail20',{x:-.9,y:.3,h:1.4,face:1},.4);R.fx('leaf',-1.6,1.4,10,{w:1.2,t:2.2,vx:.9});await S.s?.go(1.6,.3,2.6);},
- persia:async(R,S)=>{S.s?.hide(.4);R.label('Persia: the first windmills','#7048e8');S.wm=await pop(R,'pa-wind20',{x:1.0,y:.18,h:2.1,face:-1},.5);if(S.wm)S.wm.idle='sway';R.fx('leaf',.4,1.6,12,{w:1.6,t:2.2,vx:.9});},
- grind:async(R,S)=>{S.sk=await pop(R,'pa-sacks20',{x:1.9,y:.18,h:.6,face:-1},.4);R.fx('crumb',1.5,.6,14,{w:.6,t:1.2});await S.wm?.wag(1,.03,4);},
- later:async(R,S)=>{await R.bg('mill20in');R.label('Water wheels: saws and grain','#1c7ed6');S.w=await pop(R,'pa-wheel20',{x:1.4,y:.18,h:1.6,face:-1},.4);S.sk=await pop(R,'pa-sacks20',{x:-.4,y:.18,h:.7,face:1},.3);S.m=await pop(R,'pa-maya20',{x:-1.8,y:.18,h:1.9,face:1},.3);await S.w?.wag(1.6,.05,5);R.fx('chip',.4,.9,14,{w:.7,t:1.4});},
- outside:async(R,S)=>{await R.bg('river20');R.label('A giant modern dam','#1c7ed6');S.d=await pop(R,'pa-dam20',{x:.5,y:.18,h:1.4,face:1},.5);S.m=await pop(R,'pa-maya20',{x:-1.8,y:.18,h:1.9,face:1},.3);R.fx('splash',.3,.4,22,{w:1,t:1.6});},
- electricity:async(R,S)=>{R.word('Electricity!',.3,2.4,'#e8a900',1.8);for(let i=0;i<6;i++){R.fx('sparkle',-.8+i*.4,1.2,6,{w:.3,t:.9});await R.wait(.2);}await S.m?.jump(.15);}
+ maya:async(R,S)=>{await R.bg('mill20in');S.m=await pop(R,'pa-maya20',{x:-1.6,y:.18,h:2.0,face:1},.3);await S.m.chew(3,1.0);S.m.faceTo(1);S.br=await pop(R,'pa-bread20',{x:-.7,y:1.7,h:.6,face:1},.3);R.fx('sparkle',-.7,1.9,8,{w:.4,t:1});},
+ bread:async(R,S)=>{R.word('Bread?',-.5,2.5,'#e8590c',1.5);await S.br.go(-.2,1.9,.5,{arc:.2});S.br.wag?.(.6,.1,6);},
+ colossal:async(R,S)=>{S.br?.hide(.3);R.label('A colossal water wheel','#1c7ed6');S.w=await pop(R,'pa-wheel20',{x:1.4,y:.18,h:1.7,face:-1},.4);spin(R,S.w,2.2);R.fx('splash',1.1,1.4,14,{w:.6,t:1.5});await R.wait(.5);},
+ roared:async(R,S)=>{R.word('ROAR!',.9,2.5,'#1c7ed6',1.8);R.fx('splash',1.5,.5,26,{w:1,t:1.6});await sw(S.m,'pa-mayaamaze20',.2,{h:2.0,face:1});await all([S.m.shiver(1.2),S.w.wag(1.2,.05,9)]);},
+ guide:async(R,S)=>{S.g=R.act('pa-guide20',{x:-2.4,y:.18,h:2.0,face:1});S.g.st.op=0;S.g.ap();await S.g.show(.2);await S.g.go(-.4,.18,1.0,{hops:3});R.fx('note',-.4,2.3,5,{w:.5,t:1.2});await sw(S.m,'pa-maya20',.3,{h:2.0,face:1});},
+ borrowed:async(R,S)=>{R.label('Power from wind and water','#2b8a3e');R.fx('leaf',.4,1.8,12,{w:1.4,t:1.6,vx:.9});R.fx('splash',1.3,1.2,14,{w:.8,t:1.2});await S.g?.jump(.15);},
+ egyptians:async(R,S)=>{S.w?.hide(.2);await R.bg('river20');R.label('Ancient Egypt: wind sails the Nile','#e8590c');S.g=await pop(R,'pa-guidepoint20',{x:-1.9,y:.18,h:1.9,face:1},.3);S.s=R.act('pa-sail20',{x:-1.0,y:.3,h:1.4,face:1});S.s.st.op=0;S.s.ap();await S.s.show(.2);R.fx('leaf',-1.6,1.4,14,{w:1.2,t:2.4,vx:1.2});await S.s.go(1.9,.3,2.8,{wob:.04,lin:true});},
+ persia:async(R,S)=>{S.s?.hide(.3);R.label('Persia: the first windmills','#7048e8');S.wm=await pop(R,'pa-wind20',{x:1.0,y:.18,h:2.2,face:-1},.4);S.wm.idle='sway';R.fx('leaf',.2,1.6,16,{w:1.6,t:2.2,vx:1.2});await S.g?.jump(.12);},
+ grind:async(R,S)=>{await S.wm.wag(.8,.04,5);S.sk=R.act('pa-sacks20',{x:1.9,y:1.6,h:.6,face:-1});S.sk.st.op=0;S.sk.ap();await S.sk.show(.15);await S.sk.go(1.9,.18,.5,{squash:.12});R.fx('crumb',1.6,.7,22,{w:.6,t:1.4});},
+ later:async(R,S)=>{S.wm?.hide(.3);S.sk?.hide(.3);await R.bg('mill20in');R.label('Water wheels: saws and grain','#1c7ed6');S.w=await pop(R,'pa-wheel20',{x:1.5,y:.18,h:1.7,face:-1},.3);spin(R,S.w,2.4);S.sk=await pop(R,'pa-sacks20',{x:.3,y:.18,h:.7,face:1},.3);R.fx('chip',.4,.9,18,{w:.7,t:1.6});S.m=await pop(R,'pa-mayabread20',{x:-1.7,y:.18,h:2.0,face:1},.3);S.g?.hide(.2);S.m.jump(.2);R.fx('heart',-1.7,2.4,8,{w:.6,t:1.3});},
+ outside:async(R,S)=>{S.w?.hide(.2);S.sk?.hide(.2);await R.bg('river20');R.label('A giant modern dam','#1c7ed6');S.d=await pop(R,'pa-dam20',{x:.6,y:.18,h:1.5,face:1},.4);S.m=await pop(R,'pa-mayaamaze20',{x:-1.7,y:.18,h:2.0,face:1},.3);R.fx('splash',.5,.5,26,{w:1,t:1.8});},
+ electricity:async(R,S)=>{S.bu=await pop(R,'pa-bulb20',{x:.6,y:2.0,h:.8,face:1},.3);R.word('Electricity!',.4,2.8,'#e8a900',1.8);for(let i=0;i<3;i++){R.fx('sparkle',.6,2.3,10,{w:.5,t:.8});await S.bu.scaleTo(1.25,.2);await S.bu.scaleTo(1,.2);}S.m.jump(.25);}
 };
-const B20=mk(L20);
+const B20=mkq(L20);
 page('c20',0,{old:null,neu:B20});
 
 /* ===== 21: Rebecca's lucky red hat ===== */
