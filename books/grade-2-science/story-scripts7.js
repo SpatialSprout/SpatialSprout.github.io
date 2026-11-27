@@ -505,6 +505,37 @@ const L23c={
  wedges:async(R,S)=>{hearts(R,1.5,1.8,8);R.fx('sparkle',0,1.4,24,{w:3.4,t:1.4});}
 };
 page('c23',3,{old:mkq(L23c),neu:mkq(L23c)});
+/* ===== 24 theory pages: joined machines / movements / easier work. Objects only. ===== */
+const snip=async(a,n)=>{for(let i=0;i<n;i++){await a.swap('pa-scisC24',.12);await a.swap('pa-scisO24',.12);}};
+const L24a={
+ scissors:async(R,S)=>{await R.bg('kitchen22');R.label('Scissors: a mechanism','#e03131');S.sc=await act22(R,'pa-scisO24',{x:-.5,y:.6,h:1.0,face:1});await snip(S.sc,2);R.fx('sparkle',-.5,1.2,10,{w:.7,t:1});},
+ levers:async(R,S)=>{R.word('2 levers',-.5,2.1,'#e8590c',1.4);for(const [x,y] of [[-.1,1.45],[-.1,.8]]){const r=R.ring(x,y,.3,'#e8590c');await r.show();await r.pulse(1,1.1);await r.hide();}},
+ pin:async(R,S)=>{R.word('joined at a pin',-.5,2.1,'#7048e8',1.3);const r=R.ring(-.5,1.1,.2,'#7048e8');await r.show();await r.pulse(2,1.2);await r.hide();},
+ wedges:async(R,S)=>{R.word('2 sharp wedges',-.5,2.1,'#c2255c',1.3);for(const [x,y] of [[-.9,1.3],[-.9,.9]]){const r=R.ring(x,y,.28,'#c2255c');await r.show();await r.pulse(1,1.1);await r.hide();}},
+ together:async(R,S)=>{R.word('Together!',-.5,2.1,'#2b8a3e',1.6);S.pp=await act22(R,'pa-paper24',{x:1.1,y:.6,h:.7,face:1});await S.sc.go(.1,.6,.9,{lin:true});},
+ cuts:async(R,S)=>{await snip(S.sc,2);await S.pp.swap('pa-paper2x24',.15);R.fx('crumb',.8,1.0,16,{w:.4,t:1});R.word('Snip!',.4,2.1,'#e03131',1.7);hearts(R,.6,1.6,8);}
+};
+page('c24',1,{old:mkq(L24a),neu:mkq(L24a)});
+const L24b={
+ ferris:async(R,S)=>{await R.bg('meadow');R.label('A ferris wheel','#7048e8');S.fs=await act22(R,'pa-fstand24',{x:-.4,y:.2,h:1.25,face:1,idle:'none'});S.fc={v:0};S.fw=await spinner(R,'pa-ferris24',-.4,1.36,1.15,S.fc);R.fx('sparkle',-.4,1.4,12,{w:.8,t:1.1});},
+ turns:async(R,S)=>{await ramp(R,S.fc,1.1,1.6);R.word('Turns!',-.4,2.1,'#7048e8',1.6);},
+ chairs:async(R,S)=>{R.word('Chairs swing!',-.4,2.1,'#e8590c',1.4);R.fx('sparkle',-.4,1.4,20,{w:1.2,t:1.6});await R.wait(.8);},
+ alarm:async(R,S)=>{await R.bg('kitchen22');R.label('An alarm clock','#e03131');S.ck=await act22(R,'pa-clock24',{x:-.3,y:.7,h:.9,face:1,idle:'none'});},
+ vibrates:async(R,S)=>{R.word('Brrring!',-.3,2.1,'#e03131',1.6);R.fx('note',-.3,1.7,10,{w:.8,t:1.6});const x0=-.3;await R.T(2.0,e=>{S.ck.st.x=x0+Math.sin(e*120)*.03*(1-e*.3);S.ck.st.rz=Math.sin(e*95)*.05;S.ck.ap();});S.ck.st.x=x0;S.ck.st.rz=0;S.ck.ap();},
+ push:async(R,S)=>{await R.bg('playgr21');R.label('A push toy','#2b8a3e');S.pt=await act22(R,'pa-pushtoy24',{x:-1.6,y:.2,h:1.4,face:1,idle:'none'});},
+ bounce:async(R,S)=>{R.word('Bounce!',0,2.1,'#2b8a3e',1.6);await S.pt.go(.4,.2,2.2,{hops:5,wob:.02,lin:true});},
+ spins:async(R,S)=>{R.word('Spins!',.4,2.1,'#7048e8',1.6);await S.pt.T(1.4,e=>{S.pt.st.rz=e*Math.PI*4;S.pt.ap();});S.pt.st.rz=0;S.pt.ap();R.fx('sparkle',.4,.8,14,{w:.6,t:1.2});}
+};
+page('c24',2,{old:mkq(L24b),neu:mkq(L24b)});
+const L24c={
+ clippers:async(R,S)=>{await R.bg('kitchen22');R.label('Nail clippers','#e8590c');S.nc=await act22(R,'pa-nailcl24',{x:-.4,y:.7,h:.8,face:1,idle:'none'});},
+ pushing:async(R,S)=>{R.word('Push!',-.4,2.0,'#e8590c',1.6);for(let i=0;i<3;i++){await S.nc.T(.3,e=>{S.nc.st.sy=1-.14*Math.sin(e*Math.PI);S.nc.ap();});R.fx('crumb',-.2,.9,6,{w:.2,t:.6});}hearts(R,-.4,1.6,6);},
+ pliers:async(R,S)=>{S.nc.hide(.3);await R.bg('meadow');R.label('Pliers','#1c7ed6');S.pl=await act22(R,'pa-plierO24',{x:-.5,y:.2,h:1.3,face:1,idle:'none'});},
+ pulling:async(R,S)=>{await S.pl.swap('pa-plierC24',.25);R.word('Pull!',-.5,2.0,'#1c7ed6',1.6);for(let i=0;i<3;i++){await S.pl.go(-.2,.35,.35,{});await S.pl.go(-.5,.2,.3,{});}hearts(R,-.4,1.6,6);},
+ corkscrew:async(R,S)=>{S.pl.hide(.3);await R.bg('kitchen22');R.label('A corkscrew','#7048e8');S.bt=await act22(R,'pa-bottle24',{x:-.3,y:.3,h:.9,face:1,idle:'none'});S.ck=await act22(R,'pa-cork24',{x:-.3,y:1.05,h:.45,face:1,idle:'none'});S.sv={v:0};sxSpin(R,S.ck,S.sv);},
+ turning:async(R,S)=>{R.word('Turn!',-.3,2.0,'#7048e8',1.6);S.sv.v=10;await S.ck.go(-.3,1.3,1.6,{lin:true});S.sv.v=0;S.ck.st.sx=1;S.ck.ap();R.word('Pop!',.4,1.5,'#e03131',1.5);R.fx('sparkle',-.3,1.5,16,{w:.5,t:1});hearts(R,-.3,1.9,8);}
+};
+page('c24',3,{old:mkq(L24c),neu:mkq(L24c)});
 P.DIR.mount();
 
 })();
