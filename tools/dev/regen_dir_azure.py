@@ -55,6 +55,8 @@ def main():
         new.update(load_js_obj(os.path.join(bdir, "story-scripts2.js"), "Object.assign(P.DIR_NEW", ","))
     if os.path.exists(os.path.join(bdir, "story-scripts3.js")):
         new.update(load_js_obj(os.path.join(bdir, "story-scripts3.js"), "Object.assign(P.DIR_NEW", ","))
+    if os.path.exists(os.path.join(bdir, "story-scripts7.js")):
+        new.update(load_js_obj(os.path.join(bdir, "story-scripts7.js"), "Object.assign(P.DIR_NEW", ","))
     lessons = "".join(open(os.path.join(bdir, f), encoding="utf-8").read()
                       for f in os.listdir(bdir) if re.match(r"lessons-[a-z]\.js$", f))
     texts = []
