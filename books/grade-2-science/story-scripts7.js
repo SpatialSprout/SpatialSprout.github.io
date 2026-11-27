@@ -359,6 +359,43 @@ const L19c={
 };
 page('c19',3,{old:mkq(L19c),neu:mkq(L19c)});
 
+/* ===== 20 theory pages: windmill (grind grain, pump water) / water wheel (saw, grindstone) / when it stops. Objects only. ===== */
+const spinV=(R,a,hx,hy,rh,ctl)=>{let on=true;const d=rh/2;R.actors.push({kill:()=>{on=false;},tick:dt=>{if(!on)return;const z=(a.st.rz||0)+dt*ctl.v;a.st.rz=z;a.st.x=hx+d*Math.sin(z);a.st.y=hy-d*Math.cos(z);a.ap();}});};
+const ramp=(R,ctl,to,sec)=>{const v0=ctl.v;return R.T(sec,e=>{ctl.v=v0+(to-v0)*e;});};
+const spinner=async(R,img,x,cy,h,ctl)=>{const a=R.act(img,{x,y:cy-h/2,h,face:1,idle:'none'});a.st.op=0;a.ap();await a.show(.4,'pop');spinV(R,a,x,cy,h,ctl);return a;};
+const WMX=-1.3,WMH=1.9,WMHUB=.2+WMH*.64;
+const windmill=async(R,S,on)=>{S.b=await pop(R,'pa-wmbody20',{x:WMX,y:.2,h:WMH,face:1},.4);S.cw={v:on||0};S.s=await spinner(R,'pa-wmsails20',WMX,WMHUB,WMH*.95,S.cw);return S.s;};
+const cobs=async(R,x,y,n)=>{for(let i=0;i<n;i++){const c=await pop(R,'pa-corn20',{x:x+(i-1)*.12,y:y+.9,h:.4,face:1},.15);await c.go(x,y,.4,{squash:.1});R.fx('crumb',x,y,10,{w:.3,t:.9});c.hide(.2);}};
+const L20a={
+ wind:async(R,S)=>{await R.bg('hill19');R.label('Wind','#1c7ed6');await windmill(R,S,0);S.g=R.act('pa-gust20',{x:-2.7,y:1.5,h:.7,face:1,idle:'sway'});S.g.st.op=0;S.g.ap();await S.g.show(.3);R.fx('leaf',-2.0,1.4,14,{w:.8,t:1.8,vx:2.6});await S.g.go(-1.9,1.55,1.0,{arc:.1});R.word('Whoooo!',-.6,2.7,'#1c7ed6',1.6);},
+ sails:async(R,S)=>{R.label('Wind pushes the sails','#e8590c');R.fx('leaf',-2.0,1.6,12,{w:.8,t:1.4,vx:2.6});await S.s.wag(.7,.12,6);R.word('Push!',-1.0,2.8,'#e8590c',1.4);S.s.st.rz=0;},
+ turn:async(R,S)=>{R.label('The sails turn','#2b8a3e');R.word('Turning!',-.5,2.8,'#2b8a3e',1.6);await ramp(R,S.cw,1.4,1.0);R.fx('leaf',-2.0,1.5,16,{w:.8,t:1.6,vx:2.8});await ramp(R,S.cw,3.4,1.2);await S.b.shiver(.6);},
+ grind:async(R,S)=>{R.label('Grind grain: corn into flour','#e8a900');S.cs={v:3.4};S.st=await spinner(R,'pa-stone20',1.45,.8,.9,S.cs);await cobs(R,1.45,.95,3);S.f=await pop(R,'pa-flour20',{x:2.2,y:.2,h:.7,face:1},.3);R.fx('crumb',1.9,.7,16,{w:.5,t:1.2,vx:.6});R.word('Flour!',1.8,2.4,'#c2a24d',1.5);await S.f.jump(.12);},
+ pump:async(R,S)=>{R.label('Pump water','#1c7ed6');S.st?.hide(.3);S.f?.hide(.3);S.cs.v=0;S.p=await pop(R,'pa-pump20',{x:1.1,y:.2,h:1.2,face:1},.4);S.k=await pop(R,'pa-bucket20',{x:1.95,y:.2,h:.5,face:1},.3);for(let i=0;i<3;i++){await S.p.wag(.5,.07,3);R.fx('drop',1.55,.95,10,{w:.15,t:.9,vy:-1.4});}R.word('Water!',1.5,2.4,'#1c7ed6',1.5);await S.k.jump(.12);hearts(R,1.9,1.1,6);}
+};
+page('c20',1,{old:mkq(L20a),neu:mkq(L20a)});
+const WHX=-1.3,WHH=1.7,WHC=.2+WHH/2;
+const L20b={
+ moving:async(R,S)=>{await R.bg('river20');R.label('Moving water','#1c7ed6');R.fx('splash',-2.2,.6,18,{w:.5,t:1.6,vx:3,vy:.5});R.fx('leaf',-2.2,.9,10,{w:.6,t:2,vx:2.4});S.w=R.act('pa-wheel20',{x:WHX,y:WHC-WHH/2,h:WHH,face:1,idle:'none'});S.w.st.op=0;S.w.ap();await S.w.show(.5,'pop');},
+ pushes:async(R,S)=>{R.label('Water pushes the paddles','#e8590c');R.fx('splash',WHX+.4,1.7,22,{w:.7,t:1.4,vx:.8,vy:-.6});await S.w.wag(.8,.1,5);S.w.st.rz=0;},
+ turn:async(R,S)=>{R.label('The wheel turns','#2b8a3e');R.word('Turning!',-.4,2.8,'#2b8a3e',1.6);S.cw={v:0};spinV(R,S.w,WHX,WHC,WHH,S.cw);await ramp(R,S.cw,1.2,1.2);R.fx('splash',WHX+.4,1.7,22,{w:.7,t:1.4,vx:.8,vy:-.6});await ramp(R,S.cw,2.2,1.2);},
+ saw:async(R,S)=>{R.label('Run a saw','#868e96');S.sw=await spinner(R,'pa-sawblade20',1.5,1.05,.9,{v:9});const lg=await pop(R,'pa-log20',{x:2.5,y:.2,h:.45,face:1},.3);await lg.go(1.5,.2,1.2,{lin:true});R.fx('chip',1.5,.7,26,{w:.4,t:1.1});R.word('Zzzzt!',1.5,2.6,'#868e96',1.6);lg.hide(.3);S.pl=await pop(R,'pa-planks20',{x:.6,y:.2,h:.6,face:1},.35);R.fx('chip',.6,.7,16,{w:.5,t:1});await S.pl.jump(.1);},
+ grinding:async(R,S)=>{R.label('Grind with a stone','#e8a900');S.sw?.hide(.3);S.pl?.hide(.3);S.cs={v:2.4};S.st=await spinner(R,'pa-stone20',1.5,.85,.95,S.cs);await cobs(R,1.5,1.0,3);S.f=await pop(R,'pa-flour20',{x:.8,y:.2,h:.7,face:1},.3);R.fx('crumb',1.2,.7,16,{w:.5,t:1.2,vx:-.6});R.word('Flour!',.9,2.4,'#c2a24d',1.5);await S.f.jump(.12);}
+};
+page('c20',2,{old:mkq(L20b),neu:mkq(L20b)});
+const L20c={
+ wind:async(R,S)=>{await R.bg('hill19');R.label('The wind dies down','#868e96');await windmill(R,S,3.2);S.g=R.act('pa-gust20',{x:-2.4,y:1.5,h:.7,face:1,idle:'sway'});S.g.st.op=0;S.g.ap();await S.g.show(.3);R.fx('leaf',-2.0,1.5,14,{w:.8,t:1.6,vx:2.6});await R.wait(.8);},
+ dies:async(R,S)=>{S.g.hide(1.2);R.word('Calm…',-.5,2.8,'#868e96',1.8);await ramp(R,S.cw,.7,1.6);R.fx('leaf',-2.0,1.0,6,{w:.8,t:1.4,vx:.3,vy:-.6});},
+ windmill:async(R,S)=>{await ramp(R,S.cw,.15,1.4);},
+ stops:async(R,S)=>{await ramp(R,S.cw,0,.8);S.x=await pop(R,'pa-stop20',{x:.5,y:.2,h:1.3,face:1},.4);await S.x.jump(.15);R.word('Stops!',.5,2.7,'#e03131',1.7);},
+ river:async(R,S)=>{await R.bg('river20');R.label('The river dries up','#868e96');S.cw={v:2.2};S.w=await spinner(R,'pa-wheel20',WHX,WHC,WHH,S.cw);R.fx('splash',-2.2,.6,16,{w:.5,t:1.6,vx:3,vy:.5});await R.wait(.8);},
+ dries:async(R,S)=>{S.d=R.act('pa-dry20',{x:.3,y:.1,h:.55,face:1,idle:'none'});S.d.st.op=0;S.d.ap();S.d.st.s=.3;S.d.ap();await S.d.show(.4);R.word('Dry…',0,2.7,'#c2a24d',1.7);await all([ramp(R,S.cw,.5,2.0),S.d.scaleTo(1.25,2.0)]);},
+ wheel:async(R,S)=>{await ramp(R,S.cw,0,.8);S.x=await pop(R,'pa-stop20',{x:.9,y:.2,h:1.3,face:1},.4);await S.x.jump(.15);R.word('Stops!',.9,2.7,'#e03131',1.7);},
+ work:async(R,S)=>{R.label('Works only when moving','#2b8a3e');await R.wait(.6);},
+ moving:async(R,S)=>{S.x?.hide(.3);S.d?.hide(.6);R.fx('splash',-2.2,.6,24,{w:.5,t:1.8,vx:3,vy:.5});R.word('Moving = work!',0,2.7,'#2b8a3e',1.8);await ramp(R,S.cw,2.4,1.4);hearts(R,-.6,2.2,8);}
+};
+page('c20',3,{old:mkq(L20c),neu:mkq(L20c)});
+
 P.DIR.mount();
 
 })();
