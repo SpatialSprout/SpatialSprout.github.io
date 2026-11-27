@@ -15,6 +15,7 @@ const mkq=L=>Object.keys(L).map(k=>[k,liteq(L[k])]);
 const mk=L=>Object.keys(L).map(k=>[k,lite(L[k])]);
 const OLD=id=>(P.DIR_PAGES[id]&&P.DIR_PAGES[id][0]&&P.DIR_PAGES[id][0].old)||null;
 const wt=async(S,k)=>{for(let i=0;i<50&&!S[k];i++)await new Promise(r=>setTimeout(r,100));return S[k];};
+const hearts=(R,x,y,n)=>R.fx('heart',x,y,n||10,{w:.8,t:1.6});
 const bob=(R,a,amp)=>{if(!a)return;let on=true,ph=0;R.actors.push({kill:()=>{on=false;},tick:dt=>{if(!on)return;ph+=dt*2;a.st.lift=Math.sin(ph)*(amp||.04);}});};
 /* ---------- the new narration (switches on once its voice files exist) ---------- */
 Object.assign(P.DIR_NEW,{
@@ -329,6 +330,34 @@ const L24={
 };
 const B24=mkq(L24);
 page('c24',0,{old:null,neu:B24});
+
+/* ===== 19 theory pages: moving water / moving air / renewable (existing art + new rotor, tower, Mr. Earth, wind puff) ===== */
+const spinC=(R,a,sp,hx,hy,rh)=>{let on=true;const d=rh/2;R.actors.push({kill:()=>{on=false;},tick:dt=>{if(!on)return;const z=(a.st.rz||0)+dt*sp;a.st.rz=z;a.st.x=hx+d*Math.sin(z);a.st.y=hy-d*Math.cos(z);a.ap();}});};
+const TURB=async(R,S,key,tx,H,sp)=>{const t=await pop(R,'pa-tower19',{x:tx,y:.2,h:H,face:1},.35);const hx=tx-.158*H,hy=.2+H*.92,rh=H*.62;const r=R.act('pa-rotor19',{x:hx,y:hy-rh/2,h:rh,face:1,idle:'none'});r.st.op=0;r.ap();await r.show(.25);spinC(R,r,sp,hx,hy,rh);S[key]=[t,r];return r;};
+const L19a={
+ energy:async(R,S)=>{await R.bg('lake19');R.label('Moving water has energy','#1c7ed6');S.e=await pop(R,'pa-ella19',{x:-1.5,y:.4,h:1.5,face:1},.4);bob(R,S.e,.05);for(let i=0;i<3;i++){R.fx('splash',-1.5+i*.35,.5,10,{w:.7,t:1.1});await R.wait(.25);}},
+ waves:async(R,S)=>{R.word('Whoosh!',-.2,2.2,'#1c7ed6',1.6);R.fx('splash',-1.2,.45,16,{w:.8,t:1.4});await S.e.go(1.5,.4,2.8,{wob:.04,lin:true});R.fx('splash',1.5,.5,16,{w:.8,t:1.2});await S.e.jump(.2);hearts(R,1.5,2.2,8);},
+ rivers:async(R,S)=>{S.e?.hide(.3);await R.bg('river20');R.label('Rivers push rafts','#1c7ed6');S.r=await pop(R,'pa-samraft',{x:-1.9,y:.3,h:1.15,face:1},.4);bob(R,S.r,.03);R.fx('leaf',-1.9,.7,10,{w:1.2,t:2.4,vx:1.2});await S.r.go(-.4,.3,2.0,{wob:.03,lin:true});},
+ downstream:async(R,S)=>{R.word('Downstream!',.5,2.2,'#1c7ed6',1.7);R.fx('leaf',0,.6,12,{w:3,t:2.2,vx:1.6});R.fx('splash',.4,.4,14,{w:1.2,t:1.4});await S.r.go(2.0,.3,2.2,{wob:.03,lin:true});await S.r.jump(.2);hearts(R,2.0,1.6,8);}
+};
+page('c19',1,{old:mkq(L19a),neu:mkq(L19a)});
+const L19b={
+ energy:async(R,S)=>{await R.bg('park-wind');R.label('Moving air has energy too','#74c0fc');S.w=await pop(R,'pa-puff19',{x:-1.7,y:1.4,h:1.0,face:1},.4);S.w.idle='sway';R.fx('leaf',-1.0,1.5,16,{w:.8,t:1.8,vx:2.2});await S.w.wag(.9,.05,5);R.word('Whoosh!',.5,2.4,'#1c7ed6',1.5);},
+ sails:async(R,S)=>{await R.bg('lake19');S.w?.hide(.2);R.label('Wind fills sails','#1c7ed6');S.w=await pop(R,'pa-puff19',{x:-2.0,y:1.5,h:.8,face:1},.3);S.s=await pop(R,'pa-t15sail',{x:-.9,y:.4,h:1.4,face:1},.4);bob(R,S.s,.03);R.fx('leaf',-1.3,1.4,14,{w:.7,t:1.8,vx:2.4});await S.s.wag(.5,.04,3);await S.s.go(1.8,.4,2.8,{wob:.02,lin:true});R.fx('splash',1.5,.5,12,{w:.7,t:1.2});},
+ kites:async(R,S)=>{S.s?.hide(.3);S.w?.hide(.2);await R.bg('park-wind');R.label('Wind lifts kites','#e8590c');S.w=await pop(R,'pa-puff19',{x:-2.0,y:1.3,h:.8,face:1},.3);S.b=await pop(R,'pa-ben19',{x:-1.3,y:.1,h:1.8,face:1},.4);R.fx('leaf',-1.2,1.6,12,{w:.7,t:1.6,vx:2.2});await S.b.go(.9,.1,1.8,{hops:5,wob:.03});R.word('Up, up!',.9,2.5,'#e8590c',1.5);await S.b.jump(.25);},
+ turbines:async(R,S)=>{S.b?.hide(.3);S.w?.hide(.2);await R.bg('hill19');R.label('Wind spins turbines','#2b8a3e');await TURB(R,S,'t1',-1.5,1.75,3.0);await TURB(R,S,'t2',.3,2.1,3.6);await TURB(R,S,'t3',1.75,1.5,2.6);R.fx('leaf',-2,1.6,18,{w:.8,t:2.4,vx:3});await R.wait(.8);S.h=await pop(R,'pa-town19lit',{x:-.6,y:.15,h:.75,face:1},.3);R.word('Electricity!',.2,2.9,'#e8a900',1.5);for(let i=0;i<4;i++){R.fx('sparkle',-.5+i*.5,.9,6,{w:.3,t:.9});await R.wait(.25);}}
+};
+page('c19',2,{old:mkq(L19b),neu:mkq(L19b)});
+const L19c={
+ wind:async(R,S)=>{await R.bg('hill19');R.label('Wind and water','#2b8a3e');await TURB(R,S,'t1',1.4,1.9,3.2);S.w=await pop(R,'pa-puff19',{x:-1.6,y:1.3,h:.9,face:1},.4);R.fx('leaf',-1.2,1.5,16,{w:.8,t:1.8,vx:2.4});await S.w.wag(.8,.05,5);},
+ run:async(R,S)=>{R.word('Never runs out!',0,2.7,'#2b8a3e',1.8);for(let i=0;i<3;i++){R.fx('leaf',-1.2,1.5,10,{w:.8,t:1.4,vx:2.4});await S.w.wag(.6,.06,6);}},
+ renewable:async(R,S)=>{R.label('Renewable: use it again and again','#2b8a3e');const r=R.ring(0,1.2,.9,'#2b8a3e');await r.show();R.fx('sparkle',0,1.2,24,{w:2.4,t:1.6});await r.pulse(3,1.1);await r.hide();},
+ smoke:async(R,S)=>{R.label('No smoke!','#868e96');R.fx('dust',-.2,1.2,16,{w:.6,t:1.6,vy:.5});await R.wait(.5);R.fx('leaf',-.9,1.2,14,{w:.8,t:1.4,vx:3});R.word('No smoke!',-.2,2.6,'#e03131',1.6);},
+ clean:async(R,S)=>{R.label('Clean air','#2f7de1');const s=pr(R,'sun',-1.7,2.3,.5);R.fx('sparkle',0,1.6,30,{w:3,t:1.8});await R.wait(.6);},
+ earth:async(R,S)=>{S.w?.hide(.3);S.m=await pop(R,'pa-earth19',{x:-.6,y:.3,h:1.5,face:1},.5);R.fx('sparkle',-.6,1.2,16,{w:1,t:1.4});await S.m.jump(.2);},
+ thank:async(R,S)=>{R.word('Thank you!',-.4,2.6,'#c2255c',1.8);hearts(R,-.6,1.9,14);await S.m.jump(.25);await S.m.jump(.2);await S.m.wag(.8,.06,5);}
+};
+page('c19',3,{old:mkq(L19c),neu:mkq(L19c)});
 
 P.DIR.mount();
 
