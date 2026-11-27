@@ -39,6 +39,7 @@ def load_js_obj(path, name, sep="="):
         k += 1
     body = src[j:k + 1]
     body = re.sub(r"([{,]\s*)([A-Za-z_0-9]+)\s*:", r'\1"\2":', body)
+    body = re.sub(r',(\s*[}\]])', r'\1', body)
     return json.loads(body)
 
 
