@@ -257,6 +257,7 @@ P.unit=function(d){(window.__UNITS=window.__UNITS||[]).push(d);if(P.DIR&&P.DIR.a
   {const X=(P.SCN||{})[d.id]||(P.autoScene&&P.autoScene(d))||{};(X.steps||[]).forEach((f,i)=>{if(!f||!d.steps[i])return;if(typeof f==='function')d.steps[i].set=Object.assign({},d.steps[i].set,{scene:f});else{d.steps[i].set=Object.assign({},f.set||{},{scene:f.scene});}});
    Object.keys(X.rounds||{}).forEach(k=>{const r=d.rounds[+k];if(!r)return;const f=X.rounds[k];if(typeof f==='function')r.scene=f;else{r.scene=f.scene;if(f.set)r.set=f.set;if(f.o)r.o=f.o;if(f.ans!=null)r.ans=f.ans;if(f.q)r.q=f.q;}});}
   if(P.CLAY&&P.CLAY.rounds)try{P.CLAY.rounds(d);}catch(e){console.error(e);}
+  if(P.DIR&&P.DIR.rounds)try{P.DIR.rounds(d);}catch(e){console.error(e);}
   const sets=d.steps.map(s=>s.set);
   P.theory=P.theory||{};
   if(BKs.readTheory)d.steps.forEach((s0,i)=>{const set=s0.set||{};if(!set.row)return;(s0.cues||[]).forEach(c=>{if(!c[1]||c[3])return;const nm=String(c[1]).split('|')[0];if(set.row.includes(nm))c[3]='@'+nm;});});
