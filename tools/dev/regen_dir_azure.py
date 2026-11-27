@@ -48,9 +48,7 @@ def sentences(t):
     return [p.strip() for p in parts if p.strip()]
 
 
-def main():
-    book = sys.argv[1] if len(sys.argv) > 1 else "grade-2-science"
-    bdir = os.path.join("books", book)
+def collect_texts(bdir):
     new = load_js_obj(os.path.join(bdir, "story-scripts.js"), "P.DIR_NEW")
     if os.path.exists(os.path.join(bdir, "story-scripts2.js")):
         new.update(load_js_obj(os.path.join(bdir, "story-scripts2.js"), "Object.assign(P.DIR_NEW", ","))
@@ -69,6 +67,13 @@ def main():
         for k, t in (d.get("steps") or {}).items():
             texts.append(t)
 
+    return texts
+
+
+def main():
+    book = sys.argv[1] if len(sys.argv) > 1 else "grade-2-science"
+    bdir = os.path.join("books", book)
+    texts = collect_texts(bdir)
     vd = os.path.join(bdir, "voice")
     vj, tj, sj = (os.path.join(bdir, n) for n in ("voice.js", "vtime.js", "vsent.js"))
     rd = lambda p: json.loads(open(p, encoding="utf-8").read().split("=", 1)[1].rstrip().rstrip(";")) if os.path.exists(p) else {}
