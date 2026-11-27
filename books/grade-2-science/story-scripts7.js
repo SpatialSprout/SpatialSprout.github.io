@@ -465,6 +465,46 @@ const L22b={
 };
 page('c22',2,{old:mkq(L22b),neu:mkq(L22b)});
 
+const L22c={
+ microwave:async(R,S)=>{await R.bg('kitchen22');R.label('In the kitchen','#e8590c');S.mw=await act22(R,'pa-micro22',{x:-1.5,y:.75,h:1.0,face:1});R.fx('sparkle',-1.5,1.5,10,{w:.7,t:1.1});},
+ turns:async(R,S)=>{S.pc={v:0};S.pl=await spinner(R,'pa-plate23',-.2,1.2,.75,S.pc);await ramp(R,S.pc,2.6,1.2);R.word('Turns!',-.6,2.7,'#7048e8',1.6);},
+ rolling:async(R,S)=>{S.mw.hide(.3);S.pl.hide(.3);S.pc.v=0;S.rp=await act22(R,'pa-roller22',{x:-1.4,y:.8,h:.8,face:1});R.fx('sparkle',-1.4,1.4,8,{w:.6,t:1});},
+ rolls:async(R,S)=>{R.word('Rolls!',-.1,2.5,'#2b8a3e',1.6);await S.rp.go(1.2,.8,1.1,{lin:true,wob:.02});await S.rp.go(-1.2,.8,1.1,{lin:true,wob:.02});hearts(R,0,1.8,6);},
+ cheese:async(R,S)=>{S.rp.hide(.3);S.gr=await act22(R,'pa-grater22',{x:.9,y:.75,h:1.2,face:1});S.ch=await act22(R,'pa-cheese22',{x:-1.3,y:.8,h:.6,face:1});},
+ slides:async(R,S)=>{R.word('Slide!',-.2,2.6,'#e8a900',1.6);for(let i=0;i<3;i++){await S.ch.go(.4,.8,.5,{lin:true});R.fx('crumb',.7,.9,10,{w:.3,t:.8});await S.ch.go(-.6,.8,.5,{lin:true});}hearts(R,0,1.6,6);}
+};
+page('c22',3,{old:mkq(L22c),neu:mkq(L22c)});
+/* ===== 23 theory pages: six machines / ramps and wedges / sorting. Objects only. ===== */
+const park=(a,i,y)=>all([a.go(-1.9+i*.72,y||1.6,.6,{}),a.scaleTo(.4,.6)]);
+const sxSpin=(R,a,ctl)=>{let ph=0;R.actors.push({kill:()=>{},tick:dt=>{ph+=dt*ctl.v;a.st.sx=Math.cos(ph);a.ap();}});};
+const L23a={
+ six:async(R,S)=>{await R.bg('meadow');R.label('Six simple machines','#7048e8');R.word('Six!',-.2,2.45,'#7048e8',1.7);R.fx('sparkle',-.2,1.4,18,{w:3.2,t:1.4});S.n=0;},
+ lever:async(R,S)=>{S.m1=await act22(R,'pa-seesaw23',{x:-.2,y:.2,h:1.1,face:1});R.label('Lever','#e8590c');for(let i=0;i<3;i++){await S.m1.T(.45,e=>{S.m1.st.rz=-.2*Math.sin(e*Math.PI*2);S.m1.ap();});}S.m1.st.rz=0;S.m1.ap();hearts(R,-.2,1.5,6);},
+ wheel:async(R,S)=>{await park(S.m1,0);R.label('Wheel and axle','#2b8a3e');S.m2=await act22(R,'pa-wagon23',{x:-2.0,y:.2,h:.9,face:1});R.fx('dust',-2.0,.3,8,{w:.4,t:1.1,vx:-1.2,vy:.3});await S.m2.go(1.2,.2,2.0,{lin:true,wob:.03});},
+ inclined:async(R,S)=>{S.m2.hide(.2);S.m2.st.op=0;R.label('Inclined plane (ramp)','#1c7ed6');S.m3=await act22(R,'pa-ramp23',{x:-.2,y:.2,h:1.1,face:1});S.bl=await act22(R,'pa-ball21',{x:-1.4,y:.2,h:.4,face:1,idle:'none'});await S.bl.go(.1,.95,1.6,{lin:true});await S.bl.jump(.1);},
+ wedge:async(R,S)=>{S.bl.hide(.2);await park(S.m3,1);R.label('Wedge','#c2255c');S.m4=await act22(R,'pa-wedge23',{x:2.6,y:.2,h:.7,face:-1});await S.m4.go(.0,.2,.7,{squash:.1});R.fx('chip',.2,.3,14,{w:.6,t:.9});await S.m4.jump(.1);},
+ screw:async(R,S)=>{await park(S.m4,2);R.label('Screw','#868e96');S.m5=await act22(R,'pa-screw23',{x:-.2,y:1.0,h:1.1,face:1,idle:'none'});S.sc={v:9};sxSpin(R,S.m5,S.sc);await S.m5.go(-.2,.35,1.8,{lin:true});R.word('Turn & dig in!',-.2,2.45,'#868e96',1.4);},
+ pulley:async(R,S)=>{S.sc.v=0;S.m5.st.sx=1;S.m5.ap();await park(S.m5,3);R.label('Pulley','#e8a900');S.m6=await act22(R,'pa-pulley23',{x:-.2,y:.2,h:1.9,face:1,idle:'none'});await S.m6.go(-.2,.5,.5,{});await S.m6.go(-.2,.2,.5,{});R.word('Pull!',-.2,2.45,'#e8a900',1.6);await park(S.m6,4);R.word('Work made easy!',-.2,1.0,'#2b8a3e',1.8);hearts(R,-.2,.8,12);}
+};
+page('c23',1,{old:mkq(L23a),neu:mkq(L23a)});
+const L23b={
+ ramp:async(R,S)=>{await R.bg('egypt20');R.label('A ramp is an inclined plane','#1c7ed6');S.rp=await act22(R,'pa-ramp23',{x:.4,y:.2,h:1.4,face:1});S.rk=await act22(R,'pa-rock23',{x:-1.7,y:.2,h:.55,face:1,idle:'none'});await S.rk.jump(.1);},
+ lifting:async(R,S)=>{R.word('Slide it up!',-.5,2.45,'#1c7ed6',1.5);await S.rk.go(.1,.2,.7,{lin:true});await S.rk.go(.85,1.1,1.8,{lin:true});hearts(R,.85,1.8,8);},
+ wedge:async(R,S)=>{S.rk.hide(.2);S.rp.hide(.2);R.label('A wedge','#c2255c');S.w=await act22(R,'pa-wedge23',{x:-.8,y:.2,h:1.0,face:1});R.fx('sparkle',-.8,.8,10,{w:.6,t:1});},
+ two:async(R,S)=>{R.word('2 ramps back to back',-.5,2.45,'#c2255c',1.4);for(const x of [-1.1,-.5]){const r=R.ring(x,.55,.3,'#c2255c');await r.show();await r.pulse(1,1.1);await r.hide();}},
+ splits:async(R,S)=>{S.w.hide(.2);R.label('Splits things','#e03131');S.ax=await act22(R,'pa-axe23',{x:-.8,y:.2,h:1.2,face:1});await S.ax.shiver(.5);R.word('Split!',-.8,2.45,'#e03131',1.7);R.fx('chip',-.8,.7,30,{w:.5,t:1.2,vy:1.3});const p=await act22(R,'pa-plank23',{x:-.3,y:.2,h:.18,face:1});await p.go(.9,.2,.6,{squash:.1});},
+ axe:async(R,S)=>{const r=R.ring(-.8,.9,.7,'#e03131');await r.show();await r.pulse(2,1.1);await r.hide();},
+ doorstop:async(R,S)=>{S.ax.hide(.2);R.label('Doorstop: holds things','#2b8a3e');S.ds=await act22(R,'pa-wedge23',{x:1.3,y:.2,h:.6,face:-1});S.bx=await act22(R,'pa-box23',{x:-1.9,y:.2,h:1.3,face:1,idle:'none'});await S.bx.go(.55,.2,1.0,{lin:true});await S.bx.shiver(.3);R.word('Holds!',.4,2.45,'#2b8a3e',1.7);hearts(R,.5,1.6,8);}
+};
+page('c23',2,{old:mkq(L23b),neu:mkq(L23b)});
+const sortHead=(R)=>{R.word('Lever',-1.5,2.35,'#e8590c',1.1);R.word('Wheel & axle',.1,2.35,'#2b8a3e',1.1);R.word('Wedge',1.5,2.35,'#c2255c',1.1);};
+const L23c={
+ levers:async(R,S)=>{await R.bg('meadow');R.label('Sort the machines','#7048e8');sortHead(R);S.a=await act22(R,'pa-seesaw23',{x:-.2,y:.2,h:.6,face:1});await S.a.go(-1.5,.15,.8,{hops:2});S.b=await act22(R,'pa-hammer23',{x:.2,y:.2,h:.7,face:1});await S.b.go(-1.5,.95,.8,{hops:2});hearts(R,-1.5,1.9,6);},
+ wagons:async(R,S)=>{S.c=await act22(R,'pa-wagon23',{x:-.2,y:.2,h:.5,face:1});await S.c.go(.1,.15,.8,{hops:2});S.d=await act22(R,'pa-barrow23',{x:-.2,y:.2,h:.6,face:1});await S.d.go(.1,.95,.8,{hops:2});hearts(R,.1,1.9,6);},
+ knives:async(R,S)=>{S.e=await act22(R,'pa-axe23',{x:.8,y:.2,h:.75,face:1});await S.e.go(1.5,.15,.8,{hops:2});S.f=await act22(R,'pa-wedge23',{x:.8,y:.2,h:.45,face:1});await S.f.go(1.5,1.0,.8,{hops:2});},
+ wedges:async(R,S)=>{hearts(R,1.5,1.8,8);R.fx('sparkle',0,1.4,24,{w:3.4,t:1.4});}
+};
+page('c23',3,{old:mkq(L23c),neu:mkq(L23c)});
 P.DIR.mount();
 
 })();
