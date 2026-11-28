@@ -112,7 +112,7 @@ body:not(.narrow) #karaoke{display:none}
 #karaoke .kw.on{color:#ffd978;text-shadow:0 0 .5em rgba(255,200,90,.85),0 2px 3px rgba(0,0,0,.8)}
 body.narrow #karaoke{font-size:clamp(20px,6.2vw,30px);bottom:2.5%}
 
-#tpage{position:absolute;inset:0;z-index:4;display:none;background:url(../upside-down-world/img/cover.webp?v=227) center/cover}
+#tpage{position:absolute;inset:0;z-index:4;display:none;background:url(../upside-down-world/img/cover.webp?v=228) center/cover}
 #tpage.on{display:block}
 body.narrow #tpage{display:none!important}
 #tpage .pg{position:absolute;left:calc(335*var(--u)*1px);top:calc(172*var(--u)*1px);width:calc(190*var(--u)*1px);height:calc(300*var(--u)*1px);transform:rotate(-1.2deg);display:flex;flex-direction:column;align-items:center;text-align:center;color:#3a2410;font-family:'IM Fell English',serif}
@@ -164,7 +164,7 @@ body.narrow #tpage{display:none!important}
   <button id="auto" aria-pressed="true" title="Turn the pages by itself">Auto turn</button>
   <button id="next" aria-label="Next page">&#8594;</button>
 </div>
-<script src="story.js?v=227"></script>
+<script src="story.js?v=228"></script>
 <script src="sprite.js?v=43"></script>
 <script src="../upside-down-world/lyrics.js?v=2"></script><script src="../upside-down-world/lyrics2.js?v=1"></script>
 <script src="../upside-down-world/voice.js?v=20"></script><script src="voice.js?v=8"></script>
@@ -311,9 +311,9 @@ function loadTex(src){
 /* a page with a living video: the still shows until the video can play; the video already moves, so no relief parallax */
 const vids={};let blackT=null;
 function black(){if(!blackT&&gl){blackT=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,blackT);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGB,1,1,0,gl.RGB,gl.UNSIGNED_BYTE,new Uint8Array([0,0,0]));}return {ready:true,t:blackT};}
-function loadVid(name){if(vids[name])return vids[name];const v=document.createElement('video');v.muted=true;v.defaultMuted=true;v.loop=true;v.playsInline=true;v.setAttribute('playsinline','');v.setAttribute('muted','');v.preload='auto';v.crossOrigin='anonymous';v.src='img/'+name+'.mp4?v=227';
+function loadVid(name){if(vids[name])return vids[name];const v=document.createElement('video');v.muted=true;v.defaultMuted=true;v.loop=true;v.playsInline=true;v.setAttribute('playsinline','');v.setAttribute('muted','');v.preload='auto';v.crossOrigin='anonymous';v.src='img/'+name+'.mp4?v=228';
   const o={v,t:null,ok:false};v.addEventListener('playing',()=>{o.ok=true;});vids[name]=o;return o;}
-function pageTex(p){if(p.video)return {c:loadTex('img/'+p.img+'.webp?v=227'),d:p.relief?loadTex('img/'+p.img+'-d.webp?v=227'):black(),vid:loadVid(p.video)};return {c:loadTex('img/'+p.img+'.webp?v=227'),d:loadTex('img/'+p.img+'-d.webp?v=227')};}
+function pageTex(p){if(p.video)return {c:loadTex('img/'+p.img+'.webp?v=228'),d:p.relief?loadTex('img/'+p.img+'-d.webp?v=228'):black(),vid:loadVid(p.video)};return {c:loadTex('img/'+p.img+'.webp?v=228'),d:loadTex('img/'+p.img+'-d.webp?v=228')};}
 const ORIGIN={kb:[.72,.55],shade:[.80,.74]};
 const ZV=new WeakMap();
 function zv(p){let z=ZV.get(p);if(z)return z;z=new Float32Array(36);(p.mv||[]).slice(0,3).forEach((m,i)=>{const k=m[0],o=i*12,amp=k===3?m[5]*Math.PI/180:k===4?m[5]:m[5]/1408;
@@ -341,7 +341,7 @@ function makeLayer(i){
   if(layers[i])return layers[i];
   const p=P[i],L=document.createElement('div');L.className='layer';
   const kb=document.createElement('div');kb.className='kb';kb.style.transformOrigin=(p.fx==='shade'?'80% 74%':'72% 55%');
-  if(!gl){let im;if(p.video){im=loadVid(p.video).v;im.poster='img/'+p.img+'.webp';}else{im=new Image();im.src='img/'+p.img+'.webp?v=227';im.alt='';}im.className='fb';kb.appendChild(im);}
+  if(!gl){let im;if(p.video){im=loadVid(p.video).v;im.poster='img/'+p.img+'.webp';}else{im=new Image();im.src='img/'+p.img+'.webp?v=228';im.alt='';}im.className='fb';kb.appendChild(im);}
   if(p.fx==='shade'){const s=document.createElement('div');s.className='shade';kb.appendChild(s);L._shade=s;}
   if(p.song){const r=document.createElement('div');r.className='rings';r.style.cssText='left:'+(650/W*100)+'%;top:'+(55/H*100)+'%;width:'+(130/W*100)+'%;height:'+(130/H*100)+'%';r.innerHTML='<i></i><i></i><i></i><i></i>';kb.appendChild(r);L._rings=r;}
   const t=document.createElement('div');t.className='txt'+(p.cover?' cover':'')+(p.book?' bk':'')+(p.rag?' rag':'')+(p.songcard?' sc':'')+(p.big?' big':'');let b=p.box;
@@ -513,7 +513,7 @@ function sprState(d,tt){
 const sm3=(a,b,x)=>{const k=Math.max(0,Math.min(1,(x-a)/(b-a)));return k*k*(3-2*k);},ease=k=>k*k*(3-2*k);
 function shiftAt(qx,qy,rl,t){const m=sm3(.30,.40,qx)*sm3(.97,.90,qx)*sm3(.95,.85,qy);
   return [(curPar[0]*.011*(.35+.65*m)+m*Math.sin(t*.85+qy*9+qx*2)*.0022)*rl,(curPar[1]*.011*(.35+.65*m)+m*Math.cos(t*.67+qx*7)*.0022)*rl];}
-const DEP={};function depthAt(img,x,y){let o=DEP[img];if(!o){o=DEP[img]={c:null};const im=new Image();im.onload=()=>{const cv2=document.createElement('canvas');cv2.width=im.naturalWidth;cv2.height=im.naturalHeight;const cx=cv2.getContext('2d');cx.drawImage(im,0,0);o.c=cx;o.w=cv2.width;o.h=cv2.height;};im.src='img/'+img+'-d.webp?v=227';}
+const DEP={};function depthAt(img,x,y){let o=DEP[img];if(!o){o=DEP[img]={c:null};const im=new Image();im.onload=()=>{const cv2=document.createElement('canvas');cv2.width=im.naturalWidth;cv2.height=im.naturalHeight;const cx=cv2.getContext('2d');cx.drawImage(im,0,0);o.c=cx;o.w=cv2.width;o.h=cv2.height;};im.src='img/'+img+'-d.webp?v=228';}
   if(!o.c)return .85;try{const v=o.c.getImageData(Math.min(o.w-1,Math.round(x/W*o.w)),Math.min(o.h-1,Math.round(y/H*o.h)),1,1).data[0]/255;return sm3(.14,1,v);}catch(e){return .85;}}
 /* body-part motions: rot (rad, + = clockwise on screen), sx, sy scale about the pivot, dx, dy in picture px */
 const MOT={
@@ -875,7 +875,7 @@ function rustle(){if(audio.muted||!ac||ac.state!=='running')return;const n=ac.sa
 const turnSnd=new Audio('sfx/turn.mp3');turnSnd.preload='auto';turnSnd.volume=.55;
 function flipSound(){if(audio.muted)return;try{turnSnd.currentTime=0;const p=turnSnd.play();if(p&&p.catch)p.catch(()=>{});}catch(e){}}
 const _show=show;let lastShown=-1;
-show=function(i,k){const was=cur;_show(i,k);if(started&&was>=0&&was!==i&&i>0)flipSound();if(i>0&&i<P.length)ls.set('ssPage:'+KEY,String(i));endCard(false);star();if(i===P.length-1)$('next').disabled=false;};
+show=function(i,k){const was=cur;_show(i,k);if(started&&was>=0&&was!==i&&i>0)flipSound();if(i>0&&i<P.length)ls.set('ssPage:'+KEY,String(i));endCard(false);star();if(i===P.length-1)$('next').disabled=false;if(i>=2){const rb=$('resume');if(rb)rb.remove();}};
 /* ---- resume button on the cover ---- */
 const saved=parseInt(ls.get('ssPage:'+KEY)||'0',10);
 if(saved>1&&saved<P.length){const r=document.createElement('button');r.id='resume';r.textContent='Continue from page '+saved;r.onclick=e=>{e.stopPropagation();r.remove();jump(saved);};$('stage').appendChild(r);$('start').addEventListener('click',()=>r.remove());}
