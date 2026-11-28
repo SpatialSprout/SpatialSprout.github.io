@@ -4,7 +4,7 @@
   var URL = "https://mjtdwumwnpkzogbhvukg.supabase.co", KEY = "sb_publishable_YlpgiQC1v5JFBQbB5-I6NA_9K0fklN3";
   var m = location.pathname.match(/\/books\/([^/]+)\//); if (!m) return;
   var slug = m[1].replace(/-classic$/, "");
-  var OWN = ["mu.mahfodh@gmail.com", "os.ahmed@hotmail.com"], PRIV = { "upside-down-world": OWN, "upside-down-world-template": OWN }; /* private books: only the owner's account opens them */
+  var OWN = ["mu.mahfodh@gmail.com", "os.ahmed@hotmail.com"], PRIV = { "upside-down-world": OWN }; /* private books: only the owner's account opens them */
   var price = "$14.99";
   var css = "#ssGate{position:fixed;inset:0;z-index:2147483647;display:grid;place-items:center;padding:16px;background:#f4efe6;font:16px/1.45 system-ui,-apple-system,Segoe UI,sans-serif;color:#1b2a41}" +
     "#ssGate .card{max-width:26rem;width:100%;background:#fff;border:2px solid #1b2a41;border-radius:18px;padding:28px 24px;text-align:center;box-shadow:0 6px 0 #1b2a41}" +
