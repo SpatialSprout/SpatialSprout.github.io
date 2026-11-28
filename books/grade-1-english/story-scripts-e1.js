@@ -209,5 +209,58 @@ const E3c={
  'one little':async(R,S)=>{hearts(R,-.2,1.6,10);await wave(R,S.w);await S.item.jump(.3);await S.item.jump(.2);}
 };
 page('e03',3,{old:mkq(E3c),neu:mkq(E3c),tm:{"look at": 0, "with a": 1.79, "with e": 4.19, "with i": 6.64, "one little": 9.09}});
+/* ================= LESSON 4 : Long vowels ================= */
+const NH=1.5;
+const tg=async(R,S,word,x,y,sz)=>{const ts=vTiles(S.G,word,x,y,sz||.3);S.tags=(S.tags||[]).concat(ts);for(const t of ts)t.s=.2;for(const t of ts)await tin(R,t,.1);return ts;};
+const E4s={
+ 'at night':async(R,S)=>{await R.bg('nighthill1');R.label('Looking Up at the Sky','#3b5bdb');S.G=gfx(R);
+  S.n=R.act('pa-norawave',{x:-2.4,y:.2,h:NH,face:1,idle:'none'});S.n.st.op=0;S.n.ap();S.n.show(.2);
+  await S.n.go(-1.3,.2,1.1,{hops:3});await S.n.swap('pa-noralook',.2,{h:NH});R.fx('sparkle',-.2,1.7,12,{w:1.6,t:1.2});},
+ 'the moon':async(R,S)=>{S.mn=R.act('pa-moon',{x:1.4,y:-.6,h:.95,face:1,idle:'none'});S.mn.st.op=0;S.mn.ap();S.mn.show(.2);
+  await S.mn.go(1.4,1.35,1.5,{arc:.2});R.fx('sparkle',1.4,1.35,24,{w:.9,t:1.4});await all([R.T(.7,e=>{S.mn.st.rz=Math.sin(e*Math.PI*2)*.15;S.mn.ap();}),S.n.jump(.3)]);tg(R,S,'moon',.7,.55,.28);},
+ 'tiny stars':async(R,S)=>{await S.n.swap('pa-noratele',.2,{h:NH});S.st=[];const P=[[-1.9,1.9],[-.6,1.75],[.1,1.95],[.8,1.7],[2.0,1.9],[-1.0,1.55]];
+  for(const[x,y]of P){const a=R.act('pa-star',{x:x,y:y-.4,h:.3,face:1,idle:'none'});a.st.op=0;a.ap();a.show(.15,'pop');S.st.push(a);R.fx('sparkle',x,y,6,{w:.3,t:.6});a.go(x,y,.35,{arc:.15});await R.wait(.38);}
+  for(const a of S.st)a.shiver(.5);await R.wait(.4);},
+ 'shooting star':async(R,S)=>{S.ss=R.act('pa-shootstar',{x:2.3,y:1.9,h:.6,face:-1,idle:'none'});S.ss.st.op=0;S.ss.ap();S.ss.show(.05);
+  S.n.swap('pa-norawonder',.15,{h:NH});
+  await all([S.ss.go(-2.0,.9,.85,{lin:true}),(async()=>{for(let i=0;i<6;i++){R.fx('sparkle',2.0-i*.7,1.85-i*.18,7,{w:.35,t:.7});await R.wait(.13);}})()]);
+  S.ss.hide(.2);R.word('Make a wish!',-.2,1.5,'#f59f00',1.6);hearts(R,-1.3,1.9,6);},
+ 'in the daytime':async(R,S)=>{await R.bg('sunhill1');R.label('Looking Up at the Sky','#3b5bdb');S.G=gfx(R);
+  S.n=R.act('pa-norawave',{x:-1.3,y:.2,h:NH,face:1,idle:'none'});S.n.st.op=0;S.n.ap();S.n.show(.2);
+  S.sun=R.act('pa-sunface',{x:1.5,y:-.2,h:.8,face:1,idle:'none'});S.sun.st.op=0;S.sun.ap();S.sun.show(.2);
+  await all([S.sun.go(1.5,1.4,1.4,{arc:.2}),S.n.jump(.35)]);R.fx('sparkle',1.5,1.4,18,{w:.8,t:1.2});await S.n.swap('pa-noralook',.2,{h:NH});},
+ 'a whale':async(R,S)=>{S.wh=R.act('pa-whalecloud',{x:3.2,y:1.3,h:.85,face:-1,idle:'none'});S.wh.st.op=0;S.wh.ap();S.wh.show(.2);
+  await S.wh.go(.5,1.4,1.4,{arc:.15,wob:.06});R.fx('sparkle',.45,1.95,10,{w:.3,t:.9});R.word('Whoosh!',.5,1.95,'#1c7ed6',.8);await S.n.swap('pa-norapoint',.2,{h:NH});},
+ 'a kite':async(R,S)=>{S.kc=R.act('pa-kitecloud',{x:-3.0,y:1.2,h:.85,face:1,idle:'none'});S.kc.st.op=0;S.kc.ap();S.kc.show(.2);
+  await S.kc.go(-.45,1.5,1.3,{arc:.2,wob:.06});await all([S.kc.jump(.3),S.n.jump(.4)]);await tg(R,S,'kite',-.45,.75,.3);hearts(R,-.45,1.9,10);R.fx('sparkle',.0,1.6,24,{w:1.8,t:1.4});await S.n.swap('pa-norawave',.2,{h:NH});await S.n.jump(.35);}
+};
+page('e04',0,{old:mkq(E4s),neu:mkq(E4s),tm:{"at night": 0, "the moon": 2.49, "tiny stars": 5.59, "shooting star": 9.62, "in the daytime": 10.6, "a whale": 15.15, "a kite": 17.07}});
+const E4a={
+ 'long vowel':async(R,S)=>{await R.bg('sunhill1');R.label('Long vowels say their name','#3b5bdb');const G=S.G=gfx(R);
+  S.n=R.act('pa-norawave',{x:-2.4,y:.2,h:NH,face:1,idle:'none'});S.n.st.op=0;S.n.ap();S.n.show(.2);S.n.go(-1.9,.2,.8,{hops:2});
+  S.vt={};for(const[i,ch]of['a','i','o'].entries()){const x=-.7+i*1.0;const t=G.tile(ch,x,1.95,vcol(ch),.6);t.s=.1;S.vt[ch]=t;R.fx('sparkle',x,1.95,8,{w:.3,t:.7});await tin(R,t,.35);await R.wait(.12);}
+  for(const ch of['a','i','o']){R.word(ch.toUpperCase()+'!',S.vt[ch].x,1.55,vcol(ch),.55);await glow(R,S.vt[ch],.35);}},
+ 'in cake':async(R,S)=>{S.ck=R.act('pa-cake',{x:-.7,y:2.6,h:.7,face:1,idle:'none'});S.ck.st.op=0;S.ck.ap();await S.ck.show(.1);await fly(R,S.ck,-.7,.2,.6,{arc:0,spin:Math.PI*2});R.fx('crumb',-.7,.3,10,{w:.5,t:.7});
+  R.word('A!',-.7,1.3,vcol('a'),1.0);tg(R,S,'cake',-.7,.95,.28);await all([glow(R,S.vt.a,.8),S.ck.jump(.35),S.n.jump(.3)]);},
+ 'in kite':async(R,S)=>{S.kt=R.act('kite',{x:2.5,y:.3,h:.8,face:-1,idle:'none'});S.kt.st.op=0;S.kt.ap();await S.kt.show(.1);
+  await S.kt.go(.3,1.2,1.0,{arc:.5,wob:.08});R.word('I!',.3,1.7,vcol('i'),1.0);tg(R,S,'kite',.3,.6,.28);await all([glow(R,S.vt.i,.8),S.kt.shiver(.6)]);hearts(R,.3,1.4,6);},
+ 'in rose':async(R,S)=>{S.rs=R.act('rose',{x:1.6,y:.2,h:.9,face:1,idle:'none'});S.rs.st.op=0;S.rs.ap();await S.rs.show(.5,'pop');R.fx('sparkle',1.6,.7,18,{w:.5,t:1});R.word('O!',1.6,1.55,vcol('o'),1.0);tg(R,S,'rose',1.6,.0+1.35,.28);
+  await all([glow(R,S.vt.o,.8),S.rs.jump(.4)]);await S.n.swap('pa-norawave',.2,{h:NH});hearts(R,0,1.6,10);await all([S.n.jump(.35),S.ck.jump(.35),S.rs.jump(.35)]);await wave(R,Object.values(S.vt));}
+};
+page('e04',1,{old:mkq(E4a),neu:mkq(E4a),tm:{"long vowel": 0.28, "in cake": 2.35, "in kite": 4.49, "in rose": 6.84}});
+const E4b={
+ 'the word kit':async(R,S)=>{await R.bg('picnic5');R.label('The silent e','#3b5bdb');const G=S.G=gfx(R);
+  S.n=R.act('pa-noralook',{x:-1.9,y:.2,h:NH,face:1,idle:'none'});S.n.st.op=0;S.n.ap();S.n.show(.2);
+  S.kit=R.act('pa-kit',{x:.9,y:2.6,h:.7,face:1,idle:'none'});S.kit.st.op=0;S.kit.ap();await S.kit.show(.1);await fly(R,S.kit,.9,.2,.6,{arc:0,spin:Math.PI*2});R.fx('dust',.9,.25,8,{w:.5,t:.6});
+  S.w=vTiles(G,'kite',-.2,1.5,.6);S.w[3].a=0;for(const t of S.w.slice(0,3)){await tin(R,t,.22);}await S.kit.jump(.3);},
+ 'silent e':async(R,S)=>{const e=S.w[3];e.a=0;e.y=2.2;e.s=.6;R.word('shh!',.9,2.0,'#868e96',.9);await all([tileFly(R,e,e.baseX,1.5,.9,.4),R.T(.9,k=>{e.a=.35+.5*k;})]);e.a=.5;await R.wait(.3);},
+ 'becomes kite':async(R,S)=>{S.w[3].a=1;R.fx('sparkle',S.w[3].x,1.5,20,{w:.6,t:1});await S.kit.swap('kite',.25,{h:.9});await all([S.kit.go(1.5,1.2,1.0,{arc:.5,wob:.08}),S.n.jump(.4)]);hearts(R,1.5,1.7,8);},
+ 'makes the i long':async(R,S)=>{R.word('I!',S.w[1].x,2.0,vcol('i'),1.2);await all([R.T(1.0,e=>{S.w[1].s=1+.4*Math.sin(e*Math.PI);S.w[1].hl=Math.sin(e*Math.PI);}),S.kit.jump(.4),S.n.jump(.4)]);},
+ 'cap plus e':async(R,S)=>{for(const t of S.w)tout(R,t,.3);S.kit.hide(.25);await R.wait(.3);S.G.clear();S.cp=R.act('pa-cap',{x:.9,y:.2,h:.55,face:1,idle:'none'});S.cp.st.op=0;S.cp.ap();S.cp.show(.2,'pop');
+  S.w=vTiles(S.G,'cape',-.2,1.5,.6);S.w[3].a=0;for(const t of S.w.slice(0,3)){t.s=.2;await tin(R,t,.2);}const e=S.w[3];e.y=2.2;e.s=.6;R.word('shh!',.9,2.0,'#868e96',.8);await all([tileFly(R,e,e.baseX,1.5,.7,.4),R.T(.7,k=>{e.a=k;})]);},
+ 'long too':async(R,S)=>{S.cp.swap('pa-cape',.2,{h:.9});R.fx('sparkle',.9,.7,20,{w:.6,t:1});R.word('A!',S.w[1].x,2.0,vcol('a'),1.2);S.n.swap('pa-norawave',.2,{h:NH});
+  await all([R.T(.9,e=>{S.w[1].s=1+.4*Math.sin(e*Math.PI);S.w[1].hl=Math.sin(e*Math.PI);}),S.n.jump(.4)]);await S.cp.go(.5,1.3,.9,{arc:.5,wob:.08});hearts(R,.5,1.8,10);await all([S.cp.jump(.3),S.n.jump(.3)]);}
+};
+page('e04',2,{old:mkq(E4b),neu:mkq(E4b),tm:{"the word kit": 0.68, "silent e": 2.49, "becomes kite": 4.72, "makes the i long": 8.16, "cap plus e": 9.28, "long too": 12.67}});
 P.DIR.mount();
 })();
