@@ -94,5 +94,54 @@ const E1c={
  'say them with me':async(R,S)=>{R.word('Bee!',-1.3,1.95,'#e8a900',1.0);await S.bee.jump(.25);R.word('Bear!',-.3,1.95,'#a0522d',1.0);await S.br.jump(.25);R.word('Bus!',.9,1.95,'#c92a2a',1.0);await S.bs.jump(.25);hearts(R,-.3,1.4,8);}
 };
 page('e01',3,{old:mkq(E1c),neu:mkq(E1c)});
+
+/* ================= LESSON 2 : Ending sounds ================= */
+const MIA_H=1.4;
+const endTiles=async(R,S,word,sound,col)=>{const ts=wordTiles(S.G,word,.55,1.55,.4);S.ts=(S.ts||[]).concat(ts);for(const t of ts){await tin(R,t,.18);}
+  const last=ts[ts.length-1];ts.slice(0,-1).forEach(t=>{t.a=.35;});await moveT(R,last,last.x,1.8,.5);await glow(R,last,.7);R.word('/'+sound+'/',last.x,1.3,col,1.3);return ts;};
+const E2s={
+ loves:async(R,S)=>{await R.bg('market2');R.label('At the market','#e8590c');S.G=gfx(R);S.mia=R.act('pa-miawave',{x:-2.1,y:.25,h:MIA_H,face:1,idle:'none'});S.mia.st.op=0;S.mia.ap();await S.mia.show(.2);await S.mia.go(-1.1,.25,1.3,{hops:3});await S.mia.jump(.25);},
+ hops:async(R,S)=>{R.label('Ride to the market','#2b8a3e');await R.bg('park');S.mia.hide(.1);S.mb=R.act('pa-miabike',{x:-2.1,y:.25,h:1.0,face:1,idle:'none'});S.mb.st.op=0;S.mb.ap();await S.mb.show(.2);await S.mb.go(1.5,.25,2.6,{lin:true,wob:.02});},
+ 'at the market':async(R,S)=>{await R.bg('market2');R.label('At the market','#e8590c');S.G=gfx(R);S.mb.hide(.1);S.mia=R.act('pa-miawave',{x:-2.1,y:.25,h:MIA_H,face:1,idle:'none'});S.mia.st.op=0;S.mia.ap();await S.mia.show(.2);await S.mia.go(-1.1,.25,1.2,{hops:3});},
+ 'big red bus':async(R,S)=>{S.bus=R.act('pa-bus',{x:2.4,y:.25,h:.95,face:-1,idle:'none'});S.bus.st.op=0;S.bus.ap();await S.bus.show(.15);await S.bus.go(.7,.25,1.3,{lin:true});R.fx('dust',1.2,.3,6,{w:.3,t:.7,vx:.8});R.word('Beep beep!',.7,1.95,'#c92a2a',1.2);},
+ 'end of bus':async(R,S)=>{await S.mia.swap('pa-miapoint',.25,{h:MIA_H});await endTiles(R,S,'bus','s',COL.s);},
+ 'tall clock':async(R,S)=>{(S.ts||[]).forEach(t=>S.G.rmTile(t));S.ts=[];await all([S.bus.go(-2.6,.25,1.0,{lin:true}).then(()=>S.bus.hide(.1)),0]);S.ck=R.act('pa-clock',{x:.8,y:.25,h:1.2,face:1,idle:'none'});S.ck.st.op=0;S.ck.ap();await S.ck.show(.35,'pop');R.fx('note',.8,1.5,4,{t:1});},
+ 'end of clock':async(R,S)=>{await endTiles(R,S,'clock','k',COL.c);},
+ 'fresh pear':async(R,S)=>{(S.ts||[]).forEach(t=>S.G.rmTile(t));S.ts=[];S.ck.hide(.25);await S.mia.swap('pa-miapear',.25,{h:MIA_H});S.pr=R.act('pa-pear',{x:.8,y:.5,h:.55,face:1,idle:'none'});S.pr.st.op=0;S.pr.ap();await S.pr.show(.3,'pop');R.fx('sparkle',.8,.9,10,{w:.4,t:.9});},
+ 'end of pear':async(R,S)=>{await endTiles(R,S,'pear','r',COL.m);},
+ knows:async(R,S)=>{(S.ts||[]).forEach(t=>S.G.rmTile(t));S.pr.hide(.2);await S.mia.swap('pa-miacheer',.25,{h:MIA_H});const a=[['s',COL.s],['k',COL.c],['r',COL.m]].map(([c,col],i)=>S.G.tile(c,-.1+i*.6,1.6,col,.46));for(const t of a)await tin(R,t,.2);await all(a.map(t=>glow(R,t,.8)));hearts(R,.2,1.6,10);}
+};
+page('e02',0,{old:mkq(E2s),neu:mkq(E2s)});
+
+/* theory pages for lesson 2 */
+const E2a={
+ 'say cat':async(R,S)=>{await R.bg('playroom1');R.label('Stretch to the last sound','#e8505b');const G=S.G=gfx(R);S.cat=await pop(R,'cat',{x:-1.0,y:.4,h:.95,face:1,idle:'none'},.5);
+  S.w1=wordTiles(G,'cat',.5,1.0,.5);for(const t of S.w1){await tin(R,t,.25);}R.word('caaa - t',.5,1.75,'#c2255c',1.6);
+  await R.T(1.2,e=>{S.w1.forEach((t,i)=>{t.x=t.baseX+(i-1)*.18*Math.sin(e*Math.PI);});});},
+ 'last sound is t':async(R,S)=>{S.w1.slice(0,-1).forEach(t=>{t.a=.35;});const l=S.w1[2];await moveT(R,l,-.1,1.55,.7);await glow(R,l,.7);R.word('/t/',-.1,1.95,COL.t,1.4);},
+ 'now say bus':async(R,S)=>{S.w1.forEach(t=>S.G.rmTile(t));S.cat.hide(.25);S.bs=await pop(R,'pa-bus',{x:-1.0,y:.4,h:.7,face:1,idle:'none'},.5);
+  S.w2=wordTiles(S.G,'bus',.5,1.0,.5);for(const t of S.w2){await tin(R,t,.25);}
+  await R.T(1.0,e=>{S.w2.forEach((t,i)=>{t.x=t.baseX+(i-1)*.18*Math.sin(e*Math.PI);});});},
+ 'last sound is s':async(R,S)=>{S.w2.slice(0,-1).forEach(t=>{t.a=.35;});const l=S.w2[2];await moveT(R,l,-.1,1.55,.7);await glow(R,l,.7);R.word('/s/',-.1,1.95,COL.s,1.4);},
+ 'listen for the very end':async(R,S)=>{R.fx('sparkle',-.1,1.55,26,{w:1.2,t:1.4});await S.bs.jump(.3);}
+};
+page('e02',1,{old:mkq(E2a),neu:mkq(E2a)});
+const E2b={
+ 'say bus again':async(R,S)=>{await R.bg('playroom1');R.label('Find the letter','#e8505b');const G=S.G=gfx(R);S.bs=await pop(R,'pa-bus',{x:-1.0,y:.4,h:.7,face:1,idle:'none'},.5);
+  S.w=wordTiles(G,'bus',.6,1.0,.55,2);for(const t of S.w){await tin(R,t,.25);}},
+ 'last sound is s':async(R,S)=>{R.word('/s/',-1.0,1.5,COL.s,1.5);await S.bs.jump(.3);},
+ 'which letter':async(R,S)=>{S.c=['s','t','n'].map((ch,i)=>S.G.tile(ch,.0+i*.7,.5,colOf(ch),.5));for(const t of S.c){await tin(R,t,.25);}},
+ 'the letter s':async(R,S)=>{await glow(R,S.c[0],.7);S.c[1].a=.3;S.c[2].a=.3;},
+ 'go into the gap':async(R,S)=>{const g=S.w[2];g.gap=false;g.ch='s';g.col=colOf('s');g.s=1;g.a=0;await all([moveT(R,S.c[0],g.x,g.y,.8),R.T(.8,e=>{g.a=e;})]);S.G.rmTile(S.c[0]);g.a=1;S.c[1].a=0;S.c[2].a=0;R.fx('sparkle',.6,1.0,16,{w:.8,t:1});await S.bs.jump(.3);hearts(R,-1.0,1.3,6);}
+};
+page('e02',2,{old:mkq(E2b),neu:mkq(E2b)});
+const E2c={
+ 'pig starts':async(R,S)=>{await R.bg('playroom1');R.label('First and last','#e8505b');const G=S.G=gfx(R);S.pig=await pop(R,'pig',{x:-1.3,y:.4,h:.85,face:1,idle:'none'},.45);S.pw=wordTiles(G,'pig',-.1,1.0,.45);for(const t of S.pw)await tin(R,t,.2);await glow(R,S.pw[0],.7);R.word('starts p',-.1,1.7,COL.b,1.2);},
+ 'ends with g':async(R,S)=>{await glow(R,S.pw[2],.7);R.word('ends g',-.1,1.7,COL.s,1.2);await S.pig.jump(.25);},
+ 'drum starts':async(R,S)=>{S.pw.forEach(t=>S.G.rmTile(t));S.pig.hide(.25);S.dr=await pop(R,'pa-drum',{x:-1.3,y:.4,h:.8,face:1,idle:'none'},.45);S.dw=wordTiles(S.G,'drum',-.1,1.0,.45);for(const t of S.dw)await tin(R,t,.2);await glow(R,S.dw[0],.7);R.word('starts d',-.1,1.7,COL.b,1.2);},
+ 'ends with m':async(R,S)=>{await glow(R,S.dw[3],.7);R.word('ends m',-.1,1.7,COL.s,1.2);await S.dr.jump(.25);},
+ 'both ends':async(R,S)=>{R.fx('sparkle',-.1,1.2,26,{w:1.6,t:1.4});hearts(R,-.1,1.4,8);}
+};
+page('e02',3,{old:mkq(E2c),neu:mkq(E2c)});
 P.DIR.mount();
 })();
