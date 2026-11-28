@@ -7,6 +7,7 @@ const W=P.PIC.W;
 const all=ps=>Promise.all(ps);
 /* per lesson: backdrops to rotate through, characters (picture, height, face), ambient effect, a cheer word list */
 const CFG={
+ e01:{bgs:['classroom','sunhill1','schoolyard1','forest1','lunchtable1'],cast:[['pa-leowave',1.5],['pa-leocheer',1.5],['pa-leosay',1.5],['pa-leotummy',1.5],['pa-leobox',1.5]],amb:'sparkle',noprop:1,keep:1},
  c06:{bgs:['meadow','pond-spring','pond-summer'],cast:[['pa-calf',1.15],['pa-lamb',1.0],['pa-cubnew',.8],['pa-ducklings',.7],['pa-chicks',.6],['pa-whalecalf',.8],['pa-cowcalf',1.0]],amb:'leaves'},
  c07:{bgs:['savanna','grass','sunset','den'],cast:[['pa-lion7eyes',1.3],['pa-lion7pounce',1.2],['pa-lion7young',1.6],['pa-lion7roar',1.6],['pa-lion7mom',1.4]],amb:'leaves'},
  c08:{bgs:['classroom','garden8','leaf8'],cast:[['pa-jar8egg',1.5],['pa-jar8cat',1.5],['pa-chrys8',1.4],['pa-mon8open',1.2],['pa-kids8',1.4]],amb:'leaves'},
@@ -36,7 +37,7 @@ const simple=r=>{const s=r.set||{};if(r.scene)return false;if(s.bins||s.grid||s.
 const rnd=(a,b)=>a+Math.random()*(b-a);
 const scene=(cfg,idx,r)=>(sc,st,set,hk)=>{
   const R=P.DIR.director(sc,P.DIR.TH);const S={};let busy=false,done=false;
-  const [img,h]=cfg.cast[idx%cfg.cast.length];const bg=cfg.bgs[idx%cfg.bgs.length];const pk=propFor(r);
+  const [img,h]=cfg.cast[idx%cfg.cast.length];const bg=cfg.bgs[idx%cfg.bgs.length];const pk=cfg.noprop?null:propFor(r);
   const alive=()=>R.alive()&&!done;
   const amb=()=>{try{if(cfg.amb==='leaves')R.leaves(3,14);else if(cfg.amb==='bubble')R.fx('bubble',rnd(-1.4,1.4),.3,6,{w:.4,t:3,vy:.5});else R.fx('sparkle',rnd(-1.4,1.4),rnd(.8,1.8),6,{w:.5,t:1.4});}catch(e){}};
   R.open(async()=>{await R.bg(bg);
@@ -53,5 +54,5 @@ const scene=(cfg,idx,r)=>(sc,st,set,hk)=>{
         await all(j);await S.a.jump(.2);await S.a.go(S.a.st.x+.5,S.a.st.y,.9);await S.a.go(S.a.st.x-.5,S.a.st.y,.9);});return 2800;},
     miss(){hold(async()=>{R.word(OOPS[Math.floor(Math.random()*OOPS.length)],-.5,1.9,'#e03131',1.3);const j=[S.a.shiver(.9)];if(S.p){const x0=S.p.position.x;j.push(R.T(.6,e=>{S.p.position.x=x0+Math.sin(e*Math.PI*8)*.07*(1-e);}));}await all(j);});}
   };P.DIR_ROUND=API;return API;};
-P.DIR.rounds=function(d){const cfg=CFG[d.id];if(!cfg)return;let n=0;(d.rounds||[]).forEach(r=>{if(!simple(r))return;const k=n++;r.set={};r.scene=scene(cfg,k,r);});};
+P.DIR.rounds=function(d){const cfg=CFG[d.id];if(!cfg)return;let n=0;if(cfg.keep){(d.rounds||[]).forEach((r,k)=>{r.scene=scene(cfg,k,r);});return;}(d.rounds||[]).forEach(r=>{if(!simple(r))return;const k=n++;r.set={};r.scene=scene(cfg,k,r);});};
 })();

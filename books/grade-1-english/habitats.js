@@ -120,7 +120,7 @@ put('arctic','polar bear,polar,penguin,seal,walrus,igloo,snowy mountain,ice,arct
 put('river','beaver,dam,river,canoe,kayak,otter,salmon,bridge,log,wood,raft,heron');
 put('pond','frog,duck,swan,goose,turtle,tadpole,dragonfly,snail,lake,pond,water lily,fly,mosquito,ducklings,lily');
 put('forest','bear,wolf,deer,moose,fox,owl,squirrel,raccoon,rabbit,bunny,hedgehog,mushroom,acorn,evergreen,tree,leaf,fallen leaf,nest,bat,spider,web,stick,pine,bird,woodpecker,cricket,ladybug,ant,worm,caterpillar,chrysalis,bug,log');
-put('farm','cow,ox,pig,piglet,sheep,lamb,goat,horse,foal,chicken,hen,rooster,chick,hay,tractor,barn,farmer,corn,pumpkin,egg,milk,hatching,mule,turkey,carrot,potato,onion,turnip,lettuce,broccoli,peas,beans,seed,seedling,sprout,soil,plant,herb,farm');
+put('farm','cow,ox,sheep,lamb,goat,horse,foal,chicken,hen,rooster,chick,hay,tractor,barn,farmer,corn,pumpkin,egg,milk,hatching,mule,turkey,carrot,potato,onion,turnip,lettuce,broccoli,peas,beans,seed,seedling,sprout,soil,plant,herb,farm');
 put('underwater','fish,tropical fish,shark,octopus,crab,shell,dolphin,jellyfish,starfish,coral,seaweed,anchor');
 put('ocean','ocean,ship,sailboat,boat,lighthouse,island,wave,water wave,surfboard,swimmer,life jacket,lifering,seagull');
 put('desert','camel,cactus,scorpion,snake,lizard,pyramid,sand,dune,oasis');
@@ -144,7 +144,7 @@ put('home','family,people,man,woman,boy,girl,child,baby,grandma,grandpa,mom,dad,
 put('sky','cloud,rain,rainbow,wind,airplane,helicopter,balloon2,weather,storm,lightning,umbrella2,windmill,kite2');
 const ANIM={fly:'bird,parrot,owl,eagle,bee,butterfly,dragonfly,ladybug,bat,airplane,helicopter,rocket,kite,toucan,duck2,fly,mosquito,balloon,alien',
  swim:'fish,tropical fish,shark,whale,dolphin,octopus,seal,turtle,swan,goose,duck,canoe,kayak,sailboat,ship,boat,beaver,salmon,penguin2,raft,surfboard',
- walk:'bear,polar bear,wolf,fox,deer,moose,caribou,raccoon,lion,tiger,elephant,giraffe,zebra,camel,cow,ox,pig,sheep,lamb,goat,horse,foal,mule,dog,puppy,cat,kitten,penguin,chicken,hen,rooster,turkey,monkey,panda,sloth,mouse,squirrel,snail,crab,ant,caterpillar,worm,snake,dinosaur,dragon',
+ walk:'bear,polar bear,wolf,fox,deer,moose,caribou,raccoon,lion,tiger,elephant,giraffe,zebra,camel,cow,ox,sheep,lamb,goat,horse,foal,mule,dog,puppy,cat,kitten,penguin,chicken,hen,rooster,turkey,monkey,panda,sloth,mouse,squirrel,snail,crab,ant,caterpillar,worm,snake,dinosaur,dragon',
  hop:'frog,rabbit,bunny,kangaroo,chick,cricket,grasshopper',
  float:'moon,full moon,sun,star,stars,cloud,rainbow,balloon,snowflake,planet,comet,light bulb,heart',
  drive:'car,bus,school bus,taxi,truck,fire truck,police car,ambulance,tractor,train,bicycle,scooter,garbage truck,delivery truck,snowmobile,sled,skateboard,wagon,cart'};

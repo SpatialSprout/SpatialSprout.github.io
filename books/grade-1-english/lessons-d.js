@@ -102,7 +102,7 @@ U({id:'e27',title:'Sentences that belong together',strand:'Writing',codes:['D1',
    cues:[['about the dentist','tooth|toothbrush|chair','dentist']]},
   {say:'Does not belong',speech:'The dentist checked my teeth. Dinosaurs are big. Dinosaurs are not about the dentist, so that sentence does not belong.',set:S.row(['tooth','dinosaur','toothbrush'],{labels:['teeth','dinosaurs','brush'],cross:1}),
    cues:[['dinosaurs are big','dinosaur','?'],['does not belong','dinosaur','✗','x']]}],
- rounds:[R.pick('Topic: *winter*. Tap the one that does *not* belong.',['snowman','sled','mitten','sunglasses'],'sunglasses'),R.pick('Topic: *the farm*. Tap the one that does *not* belong.',['cow','pig','tractor','rocket'],'rocket'),
+ rounds:[R.pick('Topic: *winter*. Tap the one that does *not* belong.',['snowman','sled','mitten','sunglasses'],'sunglasses'),R.pick('Topic: *the farm*. Tap the one that does *not* belong.',['cow','horse','tractor','rocket'],'rocket'),
   R.pick('Topic: *the beach*. Tap the one that does *not* belong.',['beach','shell','swimsuit','snowman'],'snowman'),R.ask('Topic: *my cat*. Which sentence does *not* belong?',['cat'],['My cat is grey.','My cat likes milk.','Buses are yellow.'],'Buses are yellow.'),
   R.ask('Topic: *the dentist*. Which sentence belongs?',['tooth'],['She cleaned my teeth.','Fish live in water.'],'She cleaned my teeth.'),R.pick('Topic: *breakfast*. Tap the one that does *not* belong.',['pancakes','milk','egg','car'],'car')],
  tries:[['Topic: *rain*. Name a sentence that belongs.','*I wear my rain boots.*'],['Does *I like pizza* belong in a story about *the zoo*?','*No*.']]});
