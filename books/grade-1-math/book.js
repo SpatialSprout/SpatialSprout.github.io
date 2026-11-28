@@ -1,2 +1,2 @@
 window.BOOK={readTheory:true,stillCam:true,sketch:true,noLearnDock:true,grade:1,subject:'Math',tiles:['M','A','T','H'],key:'1m',strands:'all five Ontario strands',
-  files:['sketch.js','props3d.js','habitats.js','kit.js','lessons-a.js','lessons-b.js','lessons-c.js','lessons-d.js','lessons-e.js','lessons-f.js','lessons-g.js','stories.js','theory.js','vtime.js']};
+  files:['pics.js','sketch.js','props3d.js','habitats.js','kit.js','m-pre.js','subject-kit.js','stage.js','art.js','story-pics.js','story-clay.js','story-action.js','story-direct.js','story-scripts-e1.js','story-theory-kit.js','lessons-a.js','lessons-b.js','lessons-c.js','lessons-d.js','lessons-e.js','lessons-f.js','lessons-g.js','stories.js','theory.js','m-kit.js','m-theory-a.js','m-mount.js','vtime.js']};

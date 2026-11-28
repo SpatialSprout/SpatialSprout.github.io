@@ -74,8 +74,6 @@ const B={
  cow:mk((g,o)=>{const c='#f8f9fa';Bx(g,.42,.2,.2,c,0,.32,0);[[-.1,.36,.08],[.08,.3,-.08],[.12,.38,.09]].forEach(([x,y,z])=>E(g,.06,.05,.012,INK,x,y,z+(z>0?.012:-.012),{mix:0}));legs4(g,.17,.07,.24,.03,c);
    Bx(g,.14,.13,.13,c,.27,.42,0);E(g,.05,.05,.07,'#f6b8c6',.35,.38,0);[-1,1].forEach(s=>{Co(g,.015,.05,'#f1e3c6',.26,.51,s*.05,6);E(g,.03,.015,.02,c,.24,.47,s*.08);});eye(g,.34,.45,.04,.013);eye(g,.34,.45,-.04,.013);E(g,.05,.03,.06,'#f6b8c6',-.05,.2,0);}),
  ox:o=>B.cow(o),
- pig:mk((g,o)=>{const c='#ffc9d6';E(g,.2,.14,.14,c,0,.22,0);legs4(g,.12,.07,.12,.035,c);E(g,.1,.1,.1,c,.2,.3,0);Cy(g,.045,.045,.03,'#ffa8bf',.29,.29,0,14).rotation.z=Math.PI/2;
-   [-1,1].forEach(s=>{E(g,.008,.012,.006,INK,.305,.29,s*.015,{mix:0});const e=Co(g,.035,.06,c,.17,.39,s*.06,4);rot(e,s*.3,0,.3);});eye(g,.27,.34,.04,.012);eye(g,.27,.34,-.04,.012);To(g,.025,.008,'#ffa8bf',-.21,.27,0);}),
  horse:mk((g,o)=>{const c=o.c||'#9c6b43';E(g,.24,.12,.11,c,0,.42,0);legs4(g,.16,.06,.34,.03,c);const n=Cy(g,.05,.07,.24,c,.22,.55,0);rot(n,0,0,-.6);Bx(g,.2,.09,.1,c,.33,.66,0).rotation.z=-.4;
    for(let i=0;i<5;i++)Bx(g,.03,.06,.03,'#3b2314',.15+i*.035,.6+i*.03,0);eye(g,.33,.7,.05,.012);eye(g,.33,.7,-.05,.012);const t=Co(g,.04,.22,'#3b2314',-.26,.38,0,8);rot(t,0,0,-.4);}),
  goat:mk((g,o)=>{const c='#e9ecef';E(g,.18,.11,.1,c,0,.3,0);legs4(g,.11,.06,.24,.022,c);E(g,.07,.07,.06,c,.2,.42,0);[-1,1].forEach(s=>{const h=Co(g,.015,.09,'#868e96',.18,.5,s*.03,6);rot(h,s*.3,0,.6);});Co(g,.02,.06,c,.23,.33,0,6).rotation.z=Math.PI;eye(g,.25,.44,.04,.011);eye(g,.25,.44,-.04,.011);}),
@@ -277,7 +275,6 @@ const B={
  wolf:o=>{const g=B.dog(Object.assign({c:'#868e96',d:'#495057'},o));g.scale.setScalar(1.15);return g;},
  foal:o=>{const g=B.horse(Object.assign({c:'#c8975e'},o));g.scale.setScalar(.7);return g;},
  cub:o=>{const g=B.lion(o);g.scale.setScalar(.6);return g;},
- piglet:o=>{const g=B.pig(o);g.scale.setScalar(.6);return g;},
  salmon:o=>B.fish(Object.assign({c:'#ff8787',d:'#fa5252'},o)),
  ptarmigan:o=>B.chicken(o),
  caterpillar:mk((g,o)=>{const c=o.c||'#69db7c';for(let i=0;i<7;i++){E(g,.045,.045,.045,i%2?c:'#fcc419',-.15+i*.05,.045,0);}E(g,.05,.05,.05,c,.2,.07,0);eye(g,.23,.09,.025,.01);eye(g,.23,.09,-.025,.01);}),
