@@ -173,7 +173,7 @@ function director(sc,o){
   /* tap any actor: a little jump */
   sc.later(()=>{if(!P.A||!P.A.drag)return;R.actors.forEach(a=>{if(!a.mesh)return;P.A.drag(a.mesh(),{tap:()=>{if(a.busy||a.st.op<.5)return;try{P.A.pop();}catch(e){}a.jump();}});});},4000);
   return R;}
-P.DIR={director,TH,ST};
+P.DIR={director,TH,ST};if(P.ART)for(const k in ASP)if(!P.ART[k])P.ART[k]=[Math.round(ASP[k]*1000),1000];
 
 /* ---------- scripts ---------- */
 /* each page: open(R) sets up; beats: [[cue word(s), fn(R)], ...] in narration order.

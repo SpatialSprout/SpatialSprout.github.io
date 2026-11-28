@@ -143,9 +143,9 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 
 <div class="sheetwrap" id="sheet" hidden><div class="sheet" role="dialog" aria-modal="true" id="sheetBody"></div></div>
 
-<script src="book.js?v=47492b71"></script>
+<script src="book.js?v=28db4c49"></script>
 <script src="brand.js?v=111ada48"></script>
-<script src="voice.js?v=82b2f05a"></script>
+<script src="voice.js?v=52088486"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/SVGLoader.js"></script>
@@ -589,7 +589,7 @@ const READ={on:false,collect:null,g:null,n:0,cur:-1};PM.READ=READ;
 let readPage=null;
 function theoryText(sp){if(sp._theory)return sp._theory;if(!readPage){const c=document.createElement('canvas');c.width=CW*PS;c.height=CH*PS;readPage={c,g:c.getContext('2d'),t:{},hot:[],flaps:[]};}
   const p=readPage;p.hot=[];p.flaps=[];const S=ensure(sp);READ.collect=[];READ.n=0;READ.g=p.g;const hl=HLon;HLon=false;ACC=sp.color;paperBase(p);try{sp.left(p,S);}catch(e){console.error(e);}HLon=hl;
-  const words=READ.collect;READ.collect=null;READ.g=null;const own=(BK.readSpeech||{})[sp.L&&sp.L.id];sp._theory={words,speech:(sp.kind!=='play'&&own)||words.join(' ')};return sp._theory;}
+  const words=READ.collect;READ.collect=null;READ.g=null;const WB=window.BOOK||{};const own=(WB.readSpeech||{})[(sp.L&&sp.L.id)+(sp.kind==='play'&&WB.readPlay?'p':'')];sp._theory={words,speech:((sp.kind!=='play'||WB.readPlay)&&own)||words.join(' ')};return sp._theory;}
 PM.theoryText=i=>theoryText(SP[i]);
 function readTick(dt){if(!READ.on||!READ.sp)return;const T0=READ.sp._theory;if(!T0)return;const n=T0.words.length;READ.t+=dt;let wi=-1;const vc=voClock&&voClock.tok===voTok?voClock:null;
   const VT=(window.VTIME||{})[vhash(T0.speech)];
@@ -1229,7 +1229,7 @@ Promise.all([Promise.race([Promise.all([fl,imgs]),new Promise(r=>setTimeout(r,30
 <script src="props3d.js?v=9c382284"></script>
 <script src="habitats.js?v=00138686"></script>
 <script src="kit.js?v=efd59897"></script>
-<script src="subject-kit.js?v=d5e4d78d"></script>
+<script src="subject-kit.js?v=e3c078b2"></script>
 <script src="pk-kit.js?v=e99e2a52"></script>
 <script src="kk-kit.js?v=4f36ba0c"></script>
 <script src="pk.js?v=81048a0e"></script>
@@ -1243,7 +1243,7 @@ Promise.all([Promise.race([Promise.all([fl,imgs]),new Promise(r=>setTimeout(r,30
 <script src="story-camouflage.js?v=e55f918f"></script>
 <script src="story-clay.js?v=0396fe09"></script>
 <script src="story-action.js?v=3fd31daa"></script>
-<script src="story-direct.js?v=e48735d3"></script>
+<script src="story-direct.js?v=9833a0f3"></script>
 <script src="story-scripts-e1.js?v=f7fabca2"></script>
 <script src="story-theory-kit.js?v=52629394"></script>
 <script src="story-theory-a.js?v=fbc736fc"></script>
@@ -1252,14 +1252,15 @@ Promise.all([Promise.race([Promise.all([fl,imgs]),new Promise(r=>setTimeout(r,30
 <script src="story-theory-d.js?v=ac90bfda"></script>
 <script src="story-theory-e.js?v=22182215"></script>
 <script src="story-stories.js?v=91ea0f0b"></script>
-<script src="story-rounds.js?v=f93e4ceb"></script>
-<script src="vsent.js?v=da84e44d"></script>
-<script src="lessons-a.js?v=1c14592e"></script>
-<script src="lessons-b.js?v=d4a4c108"></script>
-<script src="lessons-c.js?v=cf1f18e1"></script>
-<script src="lessons-d.js?v=99242969"></script>
+<script src="story-rounds.js?v=aa531ff9"></script>
+<script src="vsent.js?v=99380a65"></script>
+<script src="lessons-a.js?v=24f33eb8"></script>
+<script src="lessons-b.js?v=54c85c14"></script>
+<script src="lessons-c.js?v=6670c216"></script>
+<script src="lessons-d.js?v=44152cb9"></script>
 <script src="stories.js?v=c3e083ad"></script>
-<script src="vtime.js?v=e4e94da7"></script>
+<script src="vtime.js?v=19dc41ba"></script>
+<script src="readspeech.js?v=2710b468"></script>
 <script src="howler.js?v=f115d096"></script>
 <script src="confetti.js?v=aca2432d"></script>
 <script src="tone.js?v=cf1a1cd9"></script>

@@ -81,5 +81,5 @@ const scene=(cfg,idx,r)=>(sc,st,set,hk)=>{
         await all(j);await S.a.jump(.2);await S.a.go(S.a.st.x+.5,S.a.st.y,.9);await S.a.go(S.a.st.x-.5,S.a.st.y,.9);});return 2800;},
     miss(){hold(async()=>{R.word(OOPS[Math.floor(Math.random()*OOPS.length)],-.5,1.9,'#e03131',1.3);const j=[S.a.shiver(.9)];if(S.p){const x0=S.p.position.x;j.push(R.T(.6,e=>{S.p.position.x=x0+Math.sin(e*Math.PI*8)*.07*(1-e);}));}await all(j);});}
   };P.DIR_ROUND=API;return API;};
-P.DIR.rounds=function(d){const cfg=CFG[d.id];if(!cfg)return;let n=0;if(cfg.keep){(d.rounds||[]).forEach((r,k)=>{if(r.set&&r.set.custom)return;r.scene=scene(cfg,k,r);});return;}(d.rounds||[]).forEach(r=>{if(!simple(r))return;const k=n++;r.set={};r.scene=scene(cfg,k,r);});};
+P.DIR.rounds=function(d){const cfg=CFG[d.id];if(!cfg)return;let n=0;if(cfg.keep){(d.rounds||[]).forEach((r,k)=>{if(r.set&&r.set.custom){r.set.bgk=cfg.bgs[k%cfg.bgs.length];return;}r.scene=scene(cfg,k,r);});return;}(d.rounds||[]).forEach(r=>{if(!simple(r))return;const k=n++;r.set={};r.scene=scene(cfg,k,r);});};
 })();
