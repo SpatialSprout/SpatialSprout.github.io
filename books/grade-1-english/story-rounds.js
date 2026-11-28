@@ -8,6 +8,7 @@ const all=ps=>Promise.all(ps);
 /* per lesson: backdrops to rotate through, characters (picture, height, face), ambient effect, a cheer word list */
 const CFG={
  e01:{bgs:['classroom','sunhill1','schoolyard1','forest1','lunchtable1'],cast:[['pa-leowave',1.5],['pa-leocheer',1.5],['pa-leosay',1.5],['pa-leotummy',1.5],['pa-leobox',1.5]],amb:'sparkle',noprop:1,keep:1},
+ e03:{bgs:['farm23','playroom1','forest1','schoolyard1','sunhill1'],cast:[['pa-timwave',1.5],['pa-timcheer',1.5],['pa-timlook',1.5],['pa-timpoint',1.5],['pa-timwow',1.5]],amb:'sparkle',noprop:1,keep:1},
  c06:{bgs:['meadow','pond-spring','pond-summer'],cast:[['pa-calf',1.15],['pa-lamb',1.0],['pa-cubnew',.8],['pa-ducklings',.7],['pa-chicks',.6],['pa-whalecalf',.8],['pa-cowcalf',1.0]],amb:'leaves'},
  c07:{bgs:['savanna','grass','sunset','den'],cast:[['pa-lion7eyes',1.3],['pa-lion7pounce',1.2],['pa-lion7young',1.6],['pa-lion7roar',1.6],['pa-lion7mom',1.4]],amb:'leaves'},
  c08:{bgs:['classroom','garden8','leaf8'],cast:[['pa-jar8egg',1.5],['pa-jar8cat',1.5],['pa-chrys8',1.4],['pa-mon8open',1.2],['pa-kids8',1.4]],amb:'leaves'},

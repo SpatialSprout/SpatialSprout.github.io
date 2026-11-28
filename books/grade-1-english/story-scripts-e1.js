@@ -158,5 +158,56 @@ const E2c={
  'both ends':async(R,S)=>{R.fx('sparkle',-.1,1.2,26,{w:1.6,t:1.4});hearts(R,-.1,1.4,8);}
 };
 page('e02',3,{old:mkq(E2c),neu:mkq(E2c)});
+/* ================= LESSON 3 : Short vowels ================= */
+const VC={a:'#e03131',e:'#f08c00',i:'#7048e8',o:'#0c8599',u:'#2b8a3e'};
+const vcol=ch=>VC[ch]||colOf(ch);
+const vTiles=(G,word,cx,y,size,gapIdx)=>{const n=word.length,sp=size*1.08,x0=cx-(n-1)*sp/2;return word.split('').map((ch,i)=>{const t=G.tile(ch,x0+i*sp,y,VC[ch]||'#5c7cfa',size);t.baseX=x0+i*sp;if(i===gapIdx)t.gap=true;return t;});};
+const TIM_H=1.5;
+const nounTag=async(R,S,word,x,y)=>{const ts=vTiles(S.G,word,x,y,.3);S.tags=(S.tags||[]).concat(ts);for(const t of ts){t.s=.2;}for(const t of ts){await tin(R,t,.12);}await glow(R,ts[1],.5);return ts;};
+const E3s={
+ 'pet hen':async(R,S)=>{await R.bg('farm23');R.label("Tim's Pet Hen",'#2b8a3e');const G=S.G=gfx(R);
+  S.tim=R.act('pa-timwave',{x:-2.3,y:.2,h:TIM_H,face:1,idle:'none'});S.tim.st.op=0;S.tim.ap();await S.tim.show(.2);
+  S.hen=R.act('pa-hen',{x:2.2,y:.2,h:.8,face:-1,idle:'none'});S.hen.st.op=0;S.hen.ap();S.hen.show(.15);
+  await all([S.tim.go(-1.2,.2,1.0,{hops:3}),S.hen.go(-.1,.2,1.2,{hops:4,wob:.08})]);R.fx('dust',-.1,.2,8,{w:.5,t:.6});hearts(R,-.6,1.7,6);S.hen.jump(.3);},
+ 'in a pen':async(R,S)=>{S.pen=R.act('pa-penfence',{x:.95,y:.25,h:1.05,face:1,idle:'none'});S.pen.st.op=0;S.pen.ap();S.pen.show(.3,'pop');R.fx('dust',.95,.3,10,{w:.8,t:.6});nounTag(R,S,'hen',-.2,2.0);nounTag(R,S,'pen',.95,2.0);
+  await S.hen.go(.95,.25,.9,{hops:3,arc:.5});R.fx('crumb',.95,.4,8,{w:.4,t:.7});S.hen.jump(.3);},
+ 'red cap':async(R,S)=>{S.cap=R.act('pa-cap',{x:-1.2,y:2.4,h:.45,face:1,idle:'none'});S.cap.st.op=0;S.cap.ap();await S.cap.show(.1);await fly(R,S.cap,-1.2,1.55,.55,{arc:0,spin:Math.PI*2});S.cap.jump(.2);S.tim.swap('pa-timcheer',.2,{h:TIM_H});R.fx('sparkle',-1.2,1.8,14,{w:.5,t:1});nounTag(R,S,'cap',-1.2,2.3);await S.tim.jump(.3);},
+ 'big bug':async(R,S)=>{S.tim.swap('pa-timwow',.2,{h:TIM_H});S.bug=R.act('pa-bug',{x:2.4,y:.2,h:.5,face:-1,idle:'none'});S.bug.st.op=0;S.bug.ap();S.bug.show(.1);R.word('Eek!',-1.1,2.0,'#e03131',.9);nounTag(R,S,'bug',1.0,1.5);await all([S.bug.go(1.5,.2,.9,{lin:true,wob:.05,hops:5}),S.tim.shiver(.6)]);},
+ 'cluck cluck':async(R,S)=>{await S.hen.swap('pa-henflap',.15,{h:.8});R.word('Cluck!',.4,1.7,'#a0522d',.8);await S.hen.jump(.25);R.word('Cluck!',.8,2.0,'#a0522d',.8);R.fx('note',.9,1.5,4,{w:.4,t:1});await all([S.hen.jump(.25),S.bug.go(2.8,.2,1.0,{lin:true,hops:6})]);S.bug.hide(.1);await S.hen.swap('pa-hen',.15,{h:.8});},
+ 'i see a nut':async(R,S)=>{S.tim.swap('pa-timpoint',.2,{h:TIM_H});S.nut=R.act('pa-walnut',{x:-.3,y:2.4,h:.4,face:1,idle:'none'});S.nut.st.op=0;S.nut.ap();S.nut.show(.1);await fly(R,S.nut,-.3,.2,.6,{arc:0,spin:Math.PI*3});R.fx('crumb',-.3,.3,8,{w:.4,t:.7});nounTag(R,S,'nut',-.3,1.2);await S.nut.jump(.3);},
+ 'are happy':async(R,S)=>{await S.tim.swap('pa-timcheer',.2,{h:TIM_H});hearts(R,-1.2,1.9,10);R.fx('sparkle',.3,1.6,26,{w:1.8,t:1.4});await all([S.tim.jump(.4),S.hen.jump(.4)]);await wave(R,S.tags||[]);await S.tim.jump(.3);}
+};
+page('e03',0,{old:mkq(E3s),neu:mkq(E3s),tm:{"pet hen": 0.93, "in a pen": 2.81, "red cap": 4.77, "big bug": 6.74, "cluck cluck": 7.48, "i see a nut": 9.69, "are happy": 13.24}});
+/* step 1: five vowels */
+const E3a={
+ 'five letters':async(R,S)=>{await R.bg('playroom1');R.label('Five vowels','#e8505b');const G=S.G=gfx(R);
+  S.vt={};for(const[i,ch]of['a','e','i','o','u'].entries()){const x=-1.7+i*.85;const t=G.tile(ch,x,2.0,vcol(ch),.62);t.s=.1;S.vt[ch]=t;R.fx('sparkle',x,2.0,8,{w:.3,t:.7});await tin(R,t,.35);await R.wait(.15);}},
+ 'in cat':async(R,S)=>{S.cat=R.act('cat',{x:-1.7,y:2.6,h:.8,face:1,idle:'none'});S.cat.st.op=0;S.cat.ap();await S.cat.show(.1);await fly(R,S.cat,-1.7,.25,.7,{arc:0});R.fx('dust',-1.7,.25,8,{w:.5,t:.6});R.word('a! a!',-1.7,1.5,vcol('a'),1.2);await all([glow(R,S.vt.a,.8),S.cat.jump(.3)]);},
+ 'in egg':async(R,S)=>{S.egg=R.act('egg',{x:-.85,y:2.6,h:.55,face:1,idle:'none'});S.egg.st.op=0;S.egg.ap();await S.egg.show(.1);await fly(R,S.egg,-.85,.25,.7,{arc:0});await S.egg.shiver(.5);await S.egg.swap('pa-chickegg',.2,{h:.7});R.fx('sparkle',-.85,.7,14,{w:.5,t:.9});R.word('e! e!',-.85,1.5,vcol('e'),1.2);await all([glow(R,S.vt.e,.8),S.egg.jump(.3)]);},
+ fig:async(R,S)=>{S.fg=R.act('pa-fig',{x:0,y:2.6,h:.5,face:1,idle:'none'});S.fg.st.op=0;S.fg.ap();await S.fg.show(.1);await fly(R,S.fg,0,.25,.5,{arc:0,spin:Math.PI*2});R.word('i! i!',0,1.5,vcol('i'),1.2);await all([glow(R,S.vt.i,.8),S.fg.jump(.3)]);},
+ frog:async(R,S)=>{S.fr=R.act('frog',{x:-2.3,y:.25,h:.7,face:1,idle:'none'});S.fr.st.op=0;S.fr.ap();await S.fr.show(.1);await S.fr.go(.85,.25,.7,{hops:2,arc:.5});R.word('o! o!',.85,1.5,vcol('o'),1.2);await all([glow(R,S.vt.o,.8),S.fr.jump(.3)]);},
+ 'and bus':async(R,S)=>{S.bs=R.act('pa-bus',{x:2.6,y:.25,h:.7,face:-1,idle:'none'});S.bs.st.op=0;S.bs.ap();await S.bs.show(.1);R.word('Beep!',1.9,1.2,'#c92a2a',.8);await S.bs.go(1.7,.25,.7,{lin:true,wob:.03});R.fx('dust',2.1,.3,8,{w:.6,t:.7});R.word('u! u!',1.7,1.5,vcol('u'),1.2);await all([glow(R,S.vt.u,.8),S.bs.jump(.3)]);hearts(R,0,1.7,8);}
+};
+page('e03',1,{old:mkq(E3a),neu:mkq(E3a),tm:{"five letters": 0, "in cat": 4.0, "in egg": 6.07, "fig": 8.25, "frog": 9.11, "and bus": 9.46}});
+/* step 2: fill the gap in fig */
+const E3b={
+ 'say fig':async(R,S)=>{await R.bg('forest1');R.label('Fill the vowel','#e8505b');const G=S.G=gfx(R);
+  S.fg=R.act('pa-fig',{x:-1.3,y:2.6,h:.7,face:1,idle:'none'});S.fg.st.op=0;S.fg.ap();await S.fg.show(.1);await fly(R,S.fg,-1.3,.3,.8,{arc:0,spin:Math.PI*3});await S.fg.jump(.3);R.fx('dust',-1.3,.3,8,{w:.5,t:.6});
+  S.w=vTiles(G,'fig',.5,1.0,.6,1);for(const t of S.w){await tin(R,t,.2);}},
+ 'short i':async(R,S)=>{S.c=['i','a','o'].map((ch,i)=>{const t=S.G.tile(ch,-.3+i*.8,2.5,vcol(ch),.5);return t;});for(const t of S.c){R.T(.8,e=>{t.y=2.5+(.4-2.5)*(1-Math.pow(1-e,2))+Math.abs(Math.sin(e*Math.PI*2.5))*.22*(1-e);});await R.wait(.25);}await R.wait(.7);await all([glow(R,S.c[0],.8)]);R.word('i !',-.3,1.2,vcol('i'),1.2);S.c[1].a=.4;S.c[2].a=.4;},
+ 'fill the gap':async(R,S)=>{S.w[1].gap=false;S.w[1].ch='i';S.w[1].col=vcol('i');S.w[1].s=1;S.w[1].a=0;await all([tileFly(R,S.c[0],S.w[1].x,S.w[1].y,.9,.7),R.T(.9,e=>{S.w[1].a=e;})]);S.G.rmTile&&S.G.rmTile(S.c[0]);S.w[1].a=1;R.fx('sparkle',.5,1.0,24,{w:1,t:1.2});await all([S.fg.jump(.45),glow(R,S.w[1],.8)]);hearts(R,-1.3,1.4,8);await S.fg.jump(.3);}
+};
+page('e03',2,{old:mkq(E3b),neu:mkq(E3b),tm:{"say fig": 0, "short i": 2.83, "fill the gap": 4.99}});
+/* step 3: change the vowel pan - pen - pin */
+const E3c={
+ 'look at':async(R,S)=>{await R.bg('playroom1');R.label('Change the vowel','#e8505b');const G=S.G=gfx(R);
+  S.w=vTiles(G,'pan',.6,1.1,.7,1);S.w[1].gap=true;for(const t of S.w){await tin(R,t,.2);}
+  S.vv=['a','e','i'].map((ch,i)=>{const t=G.tile(ch,-.2+i*.8,.45,vcol(ch),.45);t.s=.2;return t;});for(const t of S.vv){await tin(R,t,.2);}},
+ 'with a':async(R,S)=>{S.item=R.act('pa-pan',{x:-1.5,y:.25,h:.8,face:1,idle:'none'});S.item.st.op=0;S.item.ap();await S.item.show(.2,'pop');await tileFly(R,S.vv[0],S.w[1].x,S.w[1].y,.7,.6);const w1=S.w[1];w1.gap=false;w1.ch='a';w1.col=vcol('a');w1.a=1;S.vv[0].a=0;R.word('pan',.6,1.9,vcol('a'),1.2);R.fx('sparkle',-1.5,.9,14,{w:.5,t:.9});await S.item.jump(.3);},
+ 'with e':async(R,S)=>{S.vv[1].x=S.vv[1].x;await tileFly(R,S.vv[1],S.w[1].x,S.w[1].y,.7,.6);S.w[1].ch='e';S.w[1].col=vcol('e');S.vv[1].a=0;await S.item.swap('pa-pen',.25,{h:.8});R.word('pen',.6,1.9,vcol('e'),1.2);R.fx('sparkle',-1.5,.9,14,{w:.5,t:.9});await S.item.jump(.3);},
+ 'with i':async(R,S)=>{await tileFly(R,S.vv[2],S.w[1].x,S.w[1].y,.7,.6);S.w[1].ch='i';S.w[1].col=vcol('i');S.vv[2].a=0;await S.item.swap('pa-pin',.25,{h:.8});R.word('pin',.6,1.9,vcol('i'),1.2);R.fx('sparkle',-1.5,.9,14,{w:.5,t:.9});await S.item.jump(.3);},
+ 'one little':async(R,S)=>{hearts(R,-.2,1.6,10);await wave(R,S.w);await S.item.jump(.3);await S.item.jump(.2);}
+};
+page('e03',3,{old:mkq(E3c),neu:mkq(E3c),tm:{"look at": 0, "with a": 1.79, "with e": 4.19, "with i": 6.64, "one little": 9.09}});
 P.DIR.mount();
 })();
