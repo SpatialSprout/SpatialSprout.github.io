@@ -332,7 +332,7 @@ P.unit=function(d){(window.__UNITS=window.__UNITS||[]).push(d);if(P.DIR&&P.DIR.a
             if(go){H.held=true;P.voPause&&P.voPause();}});
           st.holds=st.holds.filter(H=>H.live);}}
       let rOff=0;
-      return {dev:(kind,hero)=>{st.explain=true;st.devKind=kind;useSet({row:[hero]});},hold:()=>reg.hold||0,_win:()=>game.solved('Yes!'),_miss:()=>bad(''),taskAt(i){rOff=(i-1+d.rounds.length)%d.rounds.length;return this.task(1);},info:()=>(st.msg||'').replace(/\*/g,''),tick:(dt,t)=>{if(reg.sc)reg.sc._tick(dt,t);if(st.storyOn||st.thSy)storySync(dt);if(reg.envTick)reg.envTick(dt,t);if(reg.heroTick)reg.heroTick(dt);
+      return {dev:(kind,hero)=>{st.explain=true;st.devKind=kind;useSet({row:[hero]});},hold:()=>reg.hold||0,_win:()=>game.solved('Yes!'),_miss:()=>bad(''),taskAt(i){rOff=(i-1+d.rounds.length)%d.rounds.length;return this.task(1);},info:()=>(st.msg||'').replace(/\*/g,''),tick:(dt,t)=>{if(reg.sc)reg.sc._tick(dt,t);if(st.storyOn||st.thSy)storySync(dt);if(reg.envTick)reg.envTick(dt,t);if(reg.custom&&reg.custom.tick)reg.custom.tick(dt,t);if(reg.heroTick)reg.heroTick(dt);
           if(st.explain&&st.set&&st.set.row&&st.set.row.length>1&&!st.heroCued){st.heroT=(st.heroT||0)+dt;if(st.heroT>3.8){st.heroT=0;st.hero=((st.hero||0)+1)%st.set.row.length;draw();}}},
         controls:()=>{if(BKs.noLearnDock&&mode==='learn')return reg.custom&&reg.custom.controls?reg.custom.controls():[];const c=[{t:'Next',go:true,fn:()=>{st.ex=(st.ex+1)%sets.length;st.round=null;st.msg='';useSet(sets[st.ex]);}},{t:'Again',fn:()=>{useSet(st.set);}}];
           if(reg.custom&&reg.custom.controls)c.unshift(...reg.custom.controls());

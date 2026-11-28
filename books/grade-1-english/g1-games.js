@@ -19,13 +19,14 @@ R.cups=(q,target,others,o)=>({q,set:g('cups',Object.assign({target,others},o||{}
 R.peek=(q,items,o)=>({q,set:g('peek',Object.assign({items:shuffle(items)},o||{}))});
 R.shadow=(q,choices,o)=>({q,set:g('shadow',Object.assign({choices:shuffle(choices)},o||{}))});
 R.mem=(q,pairs,o)=>({q,set:g('memory',Object.assign({pairs},o||{}))});
-R.fishing=(q,items,o)=>({q,set:g('fish',Object.assign({items:shuffle(items)},o||{}))});
+const plain=it=>{it=String(it);const ok=it[0]==='*';if(ok)it=it.slice(1);const p=it.split(':');const w=(p[0]==='txt'||p[0]==='block')?p[1]:it;return (ok?'*':'')+w;};
+R.fishing=(q,items,o)=>({q,set:g('fish',Object.assign({items:shuffle(items.map(plain))},o||{}))});
 R.bub=(q,items,o)=>R.pop?R.pop(q,items,o):R.tap(q,items,o);
 /* a wide clay word card for the games (fits a word or a short sentence, wraps to two lines) */
 const WCACHE={};
 P.G1WORD=(str,col)=>{const T=P.THREE||window.THREE;str=String(str);col=col||'#4c6ef5';
   const words=str.split(' ');const lines=[];let cur='';for(const w of words){if(cur&&(cur+' '+w).length>8){lines.push(cur);cur=w;}else cur=cur?cur+' '+w:w;}if(cur)lines.push(cur);
-  const c=document.createElement('canvas');const g=c.getContext('2d');let fs=72;const font=f=>'bold '+f+'px "Atkinson Hyperlegible", sans-serif';g.font=font(fs);
+  const c=document.createElement('canvas');const g=c.getContext('2d');let fs=str.length<=2?140:str.length<=4?96:72;const font=f=>'bold '+f+'px "Atkinson Hyperlegible", sans-serif';g.font=font(fs);
   let mw=Math.max(...lines.map(l=>g.measureText(l).width));const MAXPX=300;if(mw>MAXPX){fs=Math.floor(fs*MAXPX/mw);g.font=font(fs);mw=Math.max(...lines.map(l=>g.measureText(l).width));}
   const padX=30,lh=fs*1.15,W=Math.ceil(mw+padX*2),H=Math.ceil(lines.length*lh+fs*.7);c.width=W;c.height=H;
   g.fillStyle=col;const r=Math.min(40,H/3);g.beginPath();if(g.roundRect)g.roundRect(0,0,W,H,r);else g.rect(0,0,W,H);g.fill();
