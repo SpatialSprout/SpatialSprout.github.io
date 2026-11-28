@@ -101,7 +101,7 @@ body.narrow #bar{gap:6px;padding-top:8px}body.narrow #bar button{padding:0 12px;
 #start{position:absolute;inset:0;display:flex;align-items:flex-end;justify-content:center;padding-bottom:6%;z-index:5;background:linear-gradient(transparent 55%,rgba(10,6,3,.55));cursor:pointer;border:0;color:inherit;font:inherit}
 #start span{font-family:'IM Fell English SC',serif;font-size:clamp(17px,2.3vw,28px);padding:.55em 1.4em;border-radius:999px;background:rgba(30,18,8,.75);border:1px solid var(--gold);color:#ffe9b8;box-shadow:0 0 30px rgba(244,201,107,.35);animation:pulse 1.8s ease-in-out infinite}
 #start.gone{display:none}
-#tpage{position:absolute;inset:0;z-index:4;display:none;background:url(../upside-down-world/img/cover.webp?v=216) center/cover}
+#tpage{position:absolute;inset:0;z-index:4;display:none;background:url(../upside-down-world/img/cover.webp?v=217) center/cover}
 #tpage.on{display:block}
 body.narrow #tpage{display:none!important}
 #tpage .pg{position:absolute;left:calc(335*var(--u)*1px);top:calc(172*var(--u)*1px);width:calc(190*var(--u)*1px);height:calc(300*var(--u)*1px);transform:rotate(-1.2deg);display:flex;flex-direction:column;align-items:center;text-align:center;color:#3a2410;font-family:'IM Fell English',serif}
@@ -149,10 +149,11 @@ body.narrow #tpage{display:none!important}
   <button id="play" aria-label="Play narration">&#9654; Read</button>
   <button id="tocBtn" aria-label="Contents: choose a page" title="Contents">&#9776; Contents</button>
   <span class="pg" id="pg">Cover</span>
+  <button id="mute" aria-pressed="false" aria-label="Mute narration" title="Sound on / off">&#128266;</button>
   <button id="auto" aria-pressed="true" title="Turn the pages by itself">Auto turn</button>
   <button id="next" aria-label="Next page">&#8594;</button>
 </div>
-<script src="story.js?v=216"></script>
+<script src="story.js?v=217"></script>
 <script src="sprite.js?v=43"></script>
 <script src="../upside-down-world/lyrics.js?v=2"></script><script src="../upside-down-world/lyrics2.js?v=1"></script>
 <script src="../upside-down-world/voice.js?v=20"></script><script src="voice.js?v=6"></script>
@@ -168,6 +169,9 @@ function fnv(t){let h=0x811c9dc5;for(let i=0;i<t.length;i++){h^=t.charCodeAt(i);
 const curly=s=>s.replace(/(^|[\s(])"/g,'$1“').replace(/"/g,'”').replace(/'/g,'’');
 let u=1,cur=-1,part=0,playing=false,auto=true,started=false,timer=0,raf=0,pageT0=performance.now();
 const audio=new Audio();audio.preload='auto';
+(function(){let m=false;try{m=localStorage.getItem('ssMute')==='1';}catch(e){}
+function ap(){audio.muted=m;const b=document.getElementById('mute');if(!b)return;b.innerHTML=m?'&#128263;':'&#128266;';b.setAttribute('aria-pressed',m);b.setAttribute('aria-label',m?'Turn sound on':'Mute narration');}
+window.__muteInit=function(){ap();document.getElementById('mute').onclick=()=>{m=!m;try{localStorage.setItem('ssMute',m?'1':'0');}catch(e){}ap();};};})();
 
 /* ---------- living picture: WebGL depth parallax ----------
    Each picture has a relief map (how far each pixel rises out of the book, made offline with Depth Anything V2).
@@ -296,9 +300,9 @@ function loadTex(src){
 /* a page with a living video: the still shows until the video can play; the video already moves, so no relief parallax */
 const vids={};let blackT=null;
 function black(){if(!blackT&&gl){blackT=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,blackT);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGB,1,1,0,gl.RGB,gl.UNSIGNED_BYTE,new Uint8Array([0,0,0]));}return {ready:true,t:blackT};}
-function loadVid(name){if(vids[name])return vids[name];const v=document.createElement('video');v.muted=true;v.defaultMuted=true;v.loop=true;v.playsInline=true;v.setAttribute('playsinline','');v.setAttribute('muted','');v.preload='auto';v.crossOrigin='anonymous';v.src='img/'+name+'.mp4?v=216';
+function loadVid(name){if(vids[name])return vids[name];const v=document.createElement('video');v.muted=true;v.defaultMuted=true;v.loop=true;v.playsInline=true;v.setAttribute('playsinline','');v.setAttribute('muted','');v.preload='auto';v.crossOrigin='anonymous';v.src='img/'+name+'.mp4?v=217';
   const o={v,t:null,ok:false};v.addEventListener('playing',()=>{o.ok=true;});vids[name]=o;return o;}
-function pageTex(p){if(p.video)return {c:loadTex('img/'+p.img+'.webp?v=216'),d:p.relief?loadTex('img/'+p.img+'-d.webp?v=216'):black(),vid:loadVid(p.video)};return {c:loadTex('img/'+p.img+'.webp?v=216'),d:loadTex('img/'+p.img+'-d.webp?v=216')};}
+function pageTex(p){if(p.video)return {c:loadTex('img/'+p.img+'.webp?v=217'),d:p.relief?loadTex('img/'+p.img+'-d.webp?v=217'):black(),vid:loadVid(p.video)};return {c:loadTex('img/'+p.img+'.webp?v=217'),d:loadTex('img/'+p.img+'-d.webp?v=217')};}
 const ORIGIN={kb:[.72,.55],shade:[.80,.74]};
 const ZV=new WeakMap();
 function zv(p){let z=ZV.get(p);if(z)return z;z=new Float32Array(36);(p.mv||[]).slice(0,3).forEach((m,i)=>{const k=m[0],o=i*12,amp=k===3?m[5]*Math.PI/180:k===4?m[5]:m[5]/1408;
@@ -326,7 +330,7 @@ function makeLayer(i){
   if(layers[i])return layers[i];
   const p=P[i],L=document.createElement('div');L.className='layer';
   const kb=document.createElement('div');kb.className='kb';kb.style.transformOrigin=(p.fx==='shade'?'80% 74%':'72% 55%');
-  if(!gl){let im;if(p.video){im=loadVid(p.video).v;im.poster='img/'+p.img+'.webp';}else{im=new Image();im.src='img/'+p.img+'.webp?v=216';im.alt='';}im.className='fb';kb.appendChild(im);}
+  if(!gl){let im;if(p.video){im=loadVid(p.video).v;im.poster='img/'+p.img+'.webp';}else{im=new Image();im.src='img/'+p.img+'.webp?v=217';im.alt='';}im.className='fb';kb.appendChild(im);}
   if(p.fx==='shade'){const s=document.createElement('div');s.className='shade';kb.appendChild(s);L._shade=s;}
   if(p.song){const r=document.createElement('div');r.className='rings';r.style.cssText='left:'+(650/W*100)+'%;top:'+(55/H*100)+'%;width:'+(130/W*100)+'%;height:'+(130/H*100)+'%';r.innerHTML='<i></i><i></i><i></i><i></i>';kb.appendChild(r);L._rings=r;}
   const t=document.createElement('div');t.className='txt'+(p.cover?' cover':'')+(p.book?' bk':'')+(p.rag?' rag':'')+(p.songcard?' sc':'')+(p.big?' big':'');let b=p.box;
@@ -444,7 +448,7 @@ function setTP(on){const t=$('tpage');if(t)t.classList.toggle('on',!!on);}
 (function(){const ul=$('tpList');P.forEach((p,i)=>{if(p.ch){const li=document.createElement('li');li.innerHTML='<span>'+p.ch+'</span><span>'+i+'</span>';li.onclick=()=>jump(i);ul.appendChild(li);}});})();
 (function(){const _s=show;show=function(i,k){_s(i,k);setTP(i===0&&started);};})();
 function begin(){started=true;setTP(true);$('start').classList.add('gone');playing=true;updPlay();speak();}
-$('start').onclick=begin;
+$('start').onclick=begin;window.__muteInit();
 /* pointer and device tilt steer the 3D look */
 let ptr=[0,0],ptrS=[0,0];
 stage.addEventListener('pointermove',e=>{const r=stage.getBoundingClientRect();ptr=[((e.clientX-r.left)/r.width-.5)*2,((e.clientY-r.top)/r.height-.5)*2];});
@@ -498,7 +502,7 @@ function sprState(d,tt){
 const sm3=(a,b,x)=>{const k=Math.max(0,Math.min(1,(x-a)/(b-a)));return k*k*(3-2*k);},ease=k=>k*k*(3-2*k);
 function shiftAt(qx,qy,rl,t){const m=sm3(.30,.40,qx)*sm3(.97,.90,qx)*sm3(.95,.85,qy);
   return [(curPar[0]*.011*(.35+.65*m)+m*Math.sin(t*.85+qy*9+qx*2)*.0022)*rl,(curPar[1]*.011*(.35+.65*m)+m*Math.cos(t*.67+qx*7)*.0022)*rl];}
-const DEP={};function depthAt(img,x,y){let o=DEP[img];if(!o){o=DEP[img]={c:null};const im=new Image();im.onload=()=>{const cv2=document.createElement('canvas');cv2.width=im.naturalWidth;cv2.height=im.naturalHeight;const cx=cv2.getContext('2d');cx.drawImage(im,0,0);o.c=cx;o.w=cv2.width;o.h=cv2.height;};im.src='img/'+img+'-d.webp?v=216';}
+const DEP={};function depthAt(img,x,y){let o=DEP[img];if(!o){o=DEP[img]={c:null};const im=new Image();im.onload=()=>{const cv2=document.createElement('canvas');cv2.width=im.naturalWidth;cv2.height=im.naturalHeight;const cx=cv2.getContext('2d');cx.drawImage(im,0,0);o.c=cx;o.w=cv2.width;o.h=cv2.height;};im.src='img/'+img+'-d.webp?v=217';}
   if(!o.c)return .85;try{const v=o.c.getImageData(Math.min(o.w-1,Math.round(x/W*o.w)),Math.min(o.h-1,Math.round(y/H*o.h)),1,1).data[0]/255;return sm3(.14,1,v);}catch(e){return .85;}}
 /* body-part motions: rot (rad, + = clockwise on screen), sx, sy scale about the pivot, dx, dy in picture px */
 const MOT={
