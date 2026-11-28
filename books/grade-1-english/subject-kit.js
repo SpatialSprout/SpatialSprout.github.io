@@ -171,7 +171,7 @@ function render(g2,st,h){const set=st.set||{};const reg={items:[],opts:[],built:
   if(set.custom&&CUSTOM[set.custom]){reg.custom=CUSTOM[set.custom](g2,st,h,set)||{};}
   if(set.custom&&set.bgk&&P.PIC){try{const bw=4.1,bh=bw*864/1536;const bm=P.PIC.plane('pic-'+set.bgk,bw,bh,0,true);bm.geometry.translate(0,bh/2,0);bm.position.set(0,-.02,-3.15);bm.material.opacity=.95;g2.add(bm);}catch(e){}}
   /* a row of standees (also used for order and pick rounds) */
-  if(set.row){const names=set.row,pos=layoutRow(names.length,set.z||(set.scene?-.95:set.fill||set.build?-2.6:Z0));names.forEach((n,i)=>{const lb=set.labels===false?false:(set.labels&&set.labels[i]!=null?set.labels[i]:(set.letters?'ABCDEFGH'[i]:n));
+  if(set.row){const names=set.row,pos=layoutRow(names.length,set.z||(set.scene?-.95:set.fill||set.build?-2.6:Z0));names.forEach((n,i)=>{const lb=set.labels===false?false:(set.labels&&set.labels[i]!=null?set.labels[i]:(set.letters?'ABCDEFGH'[i]:(P.G1LAB?P.G1LAB(n):n)));
     const s=standee(n,{col:COLS[(set.colOff||0)+i%COLS.length],label:lb,s:pos[i][2]*(set.s||(set.scene?.86:1.12))});s.position.set(pos[i][0],0,pos[i][1]);s.userData.i=i;g2.add(s);reg.items.push(s);
     if(st.lit&&st.lit.includes(i)){const r=mk(G('k2ring',()=>new THREE.TorusGeometry(.42,.035,8,32)),lam('#16a36f'),0);r.rotation.x=Math.PI/2;r.position.set(pos[i][0],.05,pos[i][1]);g2.add(r);}
     const oi=(st.ord||[]).indexOf(i);if(oi>=0){const b=tag(String(oi+1),{size:.26,bg:'#ffd54f',border:'#e09b00'});b.position.set(.34,1.05,-.3);s.add(b);}
@@ -291,7 +291,7 @@ P.unit=function(d){(window.__UNITS=window.__UNITS||[]).push(d);if(P.DIR&&P.DIR.a
         item(i,n){A.pop();const set=st.set;const it=reg.items[i];
           if(set.order){if(st.ord.includes(i))return;st.ord.push(i);draw();say(String(st.ord.length));if(st.ord.length===set.order.length){const ok=st.ord.every((k,j)=>set.row[k]===set.order[j]);
               if(ok&&P.STAGE)st.ord.forEach((k,j)=>A.later(()=>live(reg.items[k],true),j*220));if(play()){if(ok)game.solved(st.round.ok||'Yes! That is the right order.');else{bad(st.round.hint||'Not quite. Try again!');st.ord=[];A.later(draw,700);}}else{st.msg=ok?'Right order!':'Try again!';if(!ok){st.ord=[];A.later(draw,700);}A.redraw();}}return;}
-          const lab=(set.say&&set.say[n])||(set.labels&&set.labels[i])||n;
+          const lab=(set.say&&set.say[n])||(set.labels&&set.labels[i])||(P.G1LAB?P.G1LAB(n):n);
           if(play()&&st.round.ans!=null&&!st.round.o){const ans=[].concat(st.round.ans);if(ans.includes(n)){live(it);if(ans.length>1){if(!st.lit.includes(i)){st.lit.push(i);draw();}const need=ans.length;if(st.lit.length>=need)game.solved(st.round.ok||'Yes! You found them all.');else say(lab);}else{st.lit=[i];draw();game.solved(st.round.ok||'Yes!');}}
             else{shake(it);bad(st.round.hint||'Look again!');}return;}
           if(set.cross!=null&&!play()){st.crossed=i;draw();}
@@ -315,7 +315,7 @@ P.unit=function(d){(window.__UNITS=window.__UNITS||[]).push(d);if(P.DIR&&P.DIR.a
         if(set.fill){A.seq([[900,()=>{st.filled=set.ans;st.filledOk=true;draw();act(set.doneMsg||set.ans);A.good();say(set.doneMsg||set.ans);}]]);return;}
         if(set.build){A.seq(set.build.map((w,i)=>[500,()=>{st.built.push(i);A.pop();draw();if(st.built.length===set.build.length)act(set.build.join(' '));}]));return;}
         if(set.order){A.seq(set.order.map(n=>[550,()=>{st.ord.push(set.row.indexOf(n));A.pop();draw();}]));return;}
-        if(set.row){A.seq(set.row.map((n,i)=>[700,()=>{live(reg.items[i]);say((set.labels&&set.labels[i])||n);}]));}
+        if(set.row){A.seq(set.row.map((n,i)=>[700,()=>{live(reg.items[i]);say((set.labels&&set.labels[i])||(P.G1LAB?P.G1LAB(n):n));}]));}
         if(reg.custom&&reg.custom.play)reg.custom.play();if(reg.scene&&reg.scene.play)reg.scene.play();}
       function storySync(dt){const SY=st.storyOn?STORY[d.id]:st.thSy;if(!SY)return;st.sy.t+=dt;const wi=wordAt(SY,st.sy);if(wi!==st.wi){st.wi=wi;if(P.redrawR)P.redrawR();}
         const ons=reg.sc&&reg.sc.ons;if(!ons||wi<0)return;const N=SY.toks.map(t=>t.n);
