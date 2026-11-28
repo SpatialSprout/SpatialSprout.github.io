@@ -36,6 +36,9 @@ P.G1WORD=(str,col)=>{const T=P.THREE||window.THREE;str=String(str);col=col||'#4c
   const side=new T.MeshPhongMaterial({color:new T.Color(col).lerp(new T.Color('#1b2236'),.25),shininess:30});const front=new T.MeshPhongMaterial({map:tex,transparent:true,shininess:40});
   const geo=new T.BoxGeometry(w,h,d);geo.translate(0,h/2,0);const m=new T.Mesh(geo,[side,side,side,side,front,side]);m.castShadow=true;
   const grp=new T.Group();grp.add(m);grp.rotation.x=-.12;grp.userData.face=m;grp.userData.txt=str;return grp;};
+/* card colour comes from the text itself, never from whether it is a right answer */
+const HUES=['#e8505b','#2f7de1','#16a36f','#f08a24','#8b5cf6','#c2255c','#0c8599','#e8a900'];
+P.G1HUE=t=>{t=String(t);if(t.length===1&&/[.?!,]/.test(t))return {'.':'#1c7ed6','?':'#7048e8','!':'#e03131',',':'#868e96'}[t];let h=0;for(let i=0;i<t.length;i++)h=(h*31+t.charCodeAt(i))>>>0;return HUES[h%HUES.length];};
 /* the spoken name of a picture (clay art keys like pa-sunface say 'sun') */
 const NICE={sunface:'sun',bluebook:'book',goldfish:'goldfish',alarm_clock:'clock',polar_bear:'polar bear',apple_tree:'apple tree',momwave:'mom',mombook:'mom',boycoat:'boy',windcloud:'wind',puppysleep:'puppy',teddy2:'teddy bear',tooth2:'tooth',oneband:'Mister Music',penfence:'pen',chickegg:'egg',kitecloud:'cloud',whalecloud:'cloud',shootstar:'shooting star',fishrod:'fishing rod',table21:'table',lbclosed:'lunchbox',lbopen:'lunchbox',snowfort:'snow fort',picnicbasket:'basket',laundry:'laundry basket',sled:'sled',kid0:'Kofi',kid1:'Anna',kid2:'friend',kid3:'Sara'};
 P.G1LAB=k=>{let n=String(k).replace(/^pa-/,'');if(NICE[n])return NICE[n];n=n.replace(/^(leo|mia|tim|nora|milo|dad|mom|ava|sam)(wave|cheer|say|tummy|box|eat|point|think|pear|bike|look|wow|tele|wonder|sing|dance|bow|spoon|pan|book|dish|stir)$/,'$1');return n.replace(/_/g,' ').replace(/\d+$/,'');};

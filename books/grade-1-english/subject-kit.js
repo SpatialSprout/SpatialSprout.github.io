@@ -179,7 +179,7 @@ function render(g2,st,h){const set=st.set||{};const reg={items:[],opts:[],built:
   /* sorting crates */
   if(set.bins){const nb=set.bins.length,w=nb===2?1.95:1.38,gap=nb===2?2.2:1.45;const bins=set.bins.map((b,j)=>{const c=crate(b,COLS[(j*2+1)%COLS.length],(j-(nb-1)/2)*gap,-2.2,w);g2.add(c);A.drag(c.children[0],{tap:()=>h.bin(j)});return c;});reg.bins=bins;
     const items=set.items;const loose=items.map((it,i)=>i).filter(i=>st.place[i]==null);const sp=Math.min(.7,4.4/Math.max(1,loose.length));const cnt=set.bins.map(()=>0);
-    items.forEach((it,i)=>{const s=standee(it[0],{col:COLS[i%COLS.length],label:it[2]||it[0],s:st.place[i]==null?.72:.62});let x,z;
+    items.forEach((it,i)=>{const isW=String(it[0]).slice(0,4)==='txt:'&&P.G1WORD;const s=isW?(()=>{const t=String(it[0]).split(':')[1];const o=P.G1WORD(t,P.G1HUE?P.G1HUE(t):COLS[i%COLS.length]);o.scale.setScalar(st.place[i]==null?.78:.62);return o;})():standee(it[0],{col:COLS[i%COLS.length],label:it[2]||it[0],s:st.place[i]==null?.72:.62});let x,z;
       if(st.place[i]==null){const k=loose.indexOf(i);x=(k-(loose.length-1)/2)*sp;z=-.75;}else{const j=st.place[i],k=cnt[j]++;const cols=2;x=bins[j].position.x+((k%cols)-(cols-1)/2)*(w/cols)*.92;z=-2.5+Math.floor(k/cols)*.55;s.userData.inBin=1;}
       s.position.set(x,0,z);s.userData.i=i;if(st.sel===i){const r=mk(G('k2sel',()=>new THREE.TorusGeometry(.4,.04,8,32)),lam('#e4572e'),0);r.rotation.x=Math.PI/2;r.position.y=.05;s.add(r);}
       g2.add(s);reg.items.push(s);

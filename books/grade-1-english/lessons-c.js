@@ -27,7 +27,7 @@ R.feed('Feed the basket only the *questions*: the ones that need a question mark
   R.word('Choose the end mark: *Was there school today___*','Was there school today','',['?','.','!'],'?'),
   R.word('Choose the end mark: *Everything was white___*','Everything was white','',['.','?'],'.'),
   R.cups('Watch the cups! Where is the *question mark*?','txt:?:#7048e8',['txt:.:#1c7ed6','txt:!:#e03131']),
-  R.sort('Which end mark?',['.','?','!'],[['txt:I made a snowman:#495057',0],['txt:Do you like it:#495057',1],['txt:It is huge:#495057',2],['txt:Can I go out:#495057',1],['txt:My boots are wet:#495057',0],['txt:Hooray:#495057',2]]),
+  R.sort('Which end mark? Sort each sentence.',['. period','? question','! wow'],[['txt:I made a snowman:#495057',0],['txt:Do you like it:#495057',1],['txt:It is huge:#495057',2],['txt:Can I go out:#495057',1],['txt:My boots are wet:#495057',0],['txt:Hooray:#495057',2]]),
   R.q('What did they put on the snowman\'s nose?',['a carrot','a button','a mitten'],'a carrot'),
   R.tf('A telling sentence ends with a question mark.',false,{ok:'Right! A telling sentence ends with a period.'}),
   R.peek('Hide and seek! Find what the child put on to play in the snow.',['*pa-mitten','*pa-boot','*scarf','sun','pa-pie','ball']),
