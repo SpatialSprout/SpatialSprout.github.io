@@ -7,8 +7,8 @@ window.STRIPE_PRICES = {
   "grade-2-science": "price_1UYpkED4bGzi46ANHL59EH6d", "grade-2-social-studies": "price_1UYpkHD4bGzi46AN10mSk2is",
   "grade-3-math": "price_1UYpkJD4bGzi46AN4ofD06Ne", "grade-3-english": "price_1UYpkLD4bGzi46ANGBZUF19P",
   "grade-3-science": "price_1UYpkND4bGzi46ANu62EDAYZ", "grade-3-social-studies": "price_1UYpkPD4bGzi46ANDi2WFQCn",
-  "grade-4-math": "price_1UYpkSD4bGzi46ANS3kIcwqL", "grade-4-english": "price_1UYpkUD4bGzi46ANB7KCDRtO",
-  "grade-4-science": "price_1UYpkWD4bGzi46AN5f7Q8Fnj", "grade-4-social-studies": "price_1UYpkYD4bGzi46ANyf8xYJHh",
-  "grade-5-math": "price_1UYpkaD4bGzi46AN1fA6VY9s", "grade-6-math": "price_1UYpkdD4bGzi46ANVxCCZINU",
-  "grade-7-math": "price_1UYpkfD4bGzi46ANAEyQnJKB", "grade-8-math": "price_1UYpkhD4bGzi46ANE1dHV2Pl"
+  "grade-4-math": "price_1UglJcD4bGzi46ANU92HMqct", "grade-4-english": "price_1UglJfD4bGzi46AN51SQu8CW",
+  "grade-4-science": "price_1UglJgD4bGzi46ANs4X5Ohcf", "grade-4-social-studies": "price_1UglJgD4bGzi46ANrgeO9Vza",
+  "grade-5-math": "price_1UglJhD4bGzi46ANCWjk3BOK", "grade-6-math": "price_1UglJiD4bGzi46ANUZ7Acw1J",
+  "grade-7-math": "price_1UglJjD4bGzi46ANC26xKCWd", "grade-8-math": "price_1UglJkD4bGzi46ANETxYS8J0"
 };
