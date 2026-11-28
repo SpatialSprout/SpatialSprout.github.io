@@ -262,5 +262,52 @@ const E4b={
   await all([R.T(.9,e=>{S.w[1].s=1+.4*Math.sin(e*Math.PI);S.w[1].hl=Math.sin(e*Math.PI);}),S.n.jump(.4)]);await S.cp.go(.5,1.3,.9,{arc:.5,wob:.08});hearts(R,.5,1.8,10);await all([S.cp.jump(.3),S.n.jump(.3)]);}
 };
 page('e04',2,{old:mkq(E4b),neu:mkq(E4b),tm:{"the word kit": 0.68, "silent e": 2.49, "becomes kite": 4.72, "makes the i long": 8.16, "cap plus e": 9.28, "long too": 12.67}});
+/* ================= LESSON 5 : Rhyming words ================= */
+const MH=1.5;
+const RCOL=['#2b8a3e','#e8590c','#7048e8','#1c7ed6','#c2255c'];
+const rtag=(G,word,cx,y,size,col)=>{const n=word.length,sp=size*1.08,x0=cx-(n-1)*sp/2;return word.split('').map((ch,i)=>{const t=G.tile(ch,x0+i*sp,y,col,size);t.baseX=x0+i*sp;return t;});};
+const rpair=async(R,S,w1,x1,w2,x2,y,col)=>{const a=rtag(S.G,w1,x1,y,.26,col),b=rtag(S.G,w2,x2,y,.26,col);const all2=a.concat(b);for(const t of all2)t.s=.2;
+  if(S.pr)for(const t of S.pr)tout(R,t,.3);S.pr=all2;for(const t of a)await tin(R,t,.09);for(const t of b)await tin(R,t,.09);await all([...all2.map(t=>glow(R,t,.5))]);R.word('rhyme!',(x1+x2)/2,y-.45,col,.9);return all2;};
+const E5s={
+ 'i like rice':async(R,S)=>{await R.bg('picnic5');R.label('A Spicy Song','#e8590c');S.G=gfx(R);
+  S.m=R.act('pa-milosing',{x:-2.4,y:.2,h:MH,face:1,idle:'none'});S.m.st.op=0;S.m.ap();S.m.show(.2);
+  S.mic=R.act('pa-mic',{x:-.7,y:.2,h:.85,face:1,idle:'none'});S.mic.st.op=0;S.mic.ap();S.mic.show(.25,'pop');
+  await S.m.go(-1.5,.2,1.0,{hops:3});R.fx('note',-1.2,1.6,6,{w:.8,t:1.3});
+  S.rc=R.act('pa-rice',{x:.9,y:2.6,h:.55,face:1,idle:'none'});S.rc.st.op=0;S.rc.ap();await S.rc.show(.1);await fly(R,S.rc,.9,.2,.55,{arc:0,spin:Math.PI*2});R.fx('crumb',.9,.3,8,{w:.4,t:.7});S.rc.jump(.3);},
+ 'that is nice':async(R,S)=>{await all([rpair(R,S,'rice',-1.0,'nice',.9,1.95,RCOL[0]),S.m.jump(.4)]);hearts(R,.9,1.0,6);},
+ 'i like bread':async(R,S)=>{S.rc.hide(.25);S.br=R.act('pa-bread',{x:2.7,y:.2,h:.65,face:-1,idle:'none'});S.br.st.op=0;S.br.ap();S.br.show(.15);await S.br.go(.9,.2,.9,{lin:true,wob:.04});R.fx('dust',.9,.3,8,{w:.5,t:.6});await S.m.swap('pa-milodance',.2,{h:MH});S.m.jump(.35);},
+ 'jam on red':async(R,S)=>{S.jm=R.act('pa-jam',{x:.9,y:2.6,h:.55,face:1,idle:'none'});S.jm.st.op=0;S.jm.ap();await S.jm.show(.1);await fly(R,S.jm,.9,.95,.5,{arc:0,spin:-.5});R.fx('sparkle',.9,.9,12,{w:.4,t:.8});await all([rpair(R,S,'bread',-1.0,'red',.9,1.95,RCOL[1]),S.jm.jump(.3)]);},
+ 'a bowl of soup':async(R,S)=>{S.jm.hide(.25);S.br.hide(.25);S.sp=R.act('pa-soup',{x:.9,y:.2,h:.6,face:1,idle:'none'});S.sp.st.op=0;S.sp.ap();await S.sp.show(.4,'pop');R.fx('dust',.9,.8,10,{w:.3,t:1.2});await S.m.swap('pa-milosing',.2,{h:MH});},
+ 'the group':async(R,S)=>{S.nr=R.act('pa-norawave',{x:-2.9,y:.2,h:MH,face:1,idle:'none'});S.nr.st.op=0;S.nr.ap();S.nr.show(.15);S.tm=R.act('pa-timwave',{x:3.0,y:.2,h:MH,face:-1,idle:'none'});S.tm.st.op=0;S.tm.ap();S.tm.show(.15);
+  await all([S.nr.go(-.2,.2,1.0,{hops:3}),S.tm.go(1.8,.2,1.0,{hops:3}),rpair(R,S,'soup',-1.0,'group',.9,1.95,RCOL[2])]);await all([S.m.jump(.35),S.nr.jump(.35),S.tm.jump(.35)]);},
+ 'a slice of pie':async(R,S)=>{S.sp.hide(.2);S.pi=R.act('pa-pie',{x:.9,y:.2,h:.6,face:1,idle:'none'});S.pi.st.op=0;S.pi.ap();await S.pi.show(.3,'pop');R.fx('crumb',.9,.4,8,{w:.4,t:.7});},
+ 'way up high':async(R,S)=>{S.m.swap('pa-milobow',.2,{h:MH});await all([S.pi.go(.9,1.6,.7,{arc:.3}),rpair(R,S,'pie',-1.0,'high',.9,1.95,RCOL[3])]);await S.pi.jump(.3);},
+ 'food is fun':async(R,S)=>{await S.m.swap('pa-milodance',.2,{h:MH});R.fx('note',-.2,1.6,10,{w:1.6,t:1.6});R.word('Yum! Yum!',.4,1.45,'#e8590c',1.2);await all([S.m.jump(.35),S.nr.jump(.35),S.tm.jump(.35),S.pi.jump(.35)]);await all([S.m.jump(.3),S.nr.jump(.3),S.tm.jump(.3)]);},
+ 'happy tum':async(R,S)=>{await S.m.swap('pa-milotummy',.2,{h:MH});hearts(R,-1.5,1.9,12);R.fx('sparkle',.3,1.6,24,{w:2,t:1.4});await all([S.m.jump(.4),S.nr.jump(.4),S.tm.jump(.4)]);await S.m.shiver(.5);}
+};
+page('e05',0,{old:mkq(E5s),neu:mkq(E5s),tm:{"i like rice": 0, "that is nice": 1.27, "i like bread": 2.25, "jam on red": 4.15, "a bowl of soup": 5.04, "the group": 6.93, "a slice of pie": 7.59, "way up high": 9.05, "food is fun": 9.95, "happy tum": 14.69}});
+const E5a={
+ 'cat and hat':async(R,S)=>{await R.bg('playroom1');R.label('Same ending sound','#e8590c');S.G=gfx(R);
+  S.ct=R.act('pa-cat',{x:-2.5,y:.2,h:.85,face:1,idle:'none'});S.ct.st.op=0;S.ct.ap();S.ct.show(.2);S.ct.go(-1.0,.2,1.0,{hops:3});
+  S.ht=R.act('pa-hat',{x:-1.0,y:2.7,h:.4,face:1,idle:'none'});S.ht.st.op=0;S.ht.ap();await R.wait(.5);await S.ht.show(.1);await fly(R,S.ht,-1.0,.98,.7,{arc:0,spin:Math.PI*2});R.fx('sparkle',-1.0,1.1,14,{w:.4,t:.9});S.ct.jump(.3);
+  await rpair(R,S,'cat',-1.0,'hat',.7,1.95,RCOL[0]);},
+ 'they rhyme':async(R,S)=>{await all([S.ct.jump(.4),R.T(.8,e=>{S.ht.st.y=.98+Math.abs(Math.sin(e*Math.PI))*.35;S.ht.ap();})]);hearts(R,-1.0,1.6,8);R.word('-at',-1.0,1.4,RCOL[0],1.0);},
+ 'moon and spoon':async(R,S)=>{S.ct.hide(.2);S.ht.hide(.2);S.mn=R.act('pa-moon',{x:.4,y:2.5,h:.8,face:1,idle:'none'});S.mn.st.op=0;S.mn.ap();S.mn.show(.2);await S.mn.go(.4,1.0,.8,{arc:.1});
+  S.spn=R.act('pa-spoon',{x:2.7,y:.3,h:1.1,face:-1,idle:'none'});S.spn.st.op=0;S.spn.ap();S.spn.show(.2);S.spn.st.rz=-.5;S.spn.ap();await all([S.spn.go(.5,.55,.8,{arc:.4}),S.mn.go(.45,.85,.8)]);R.fx('sparkle',.45,.85,16,{w:.5,t:1});
+  await rpair(R,S,'moon',-1.1,'spoon',.8,1.95,RCOL[2]);},
+ 'rhyme too':async(R,S)=>{hearts(R,.45,1.4,10);await all([S.mn.jump(.4),S.spn.jump(.4)]);R.word('-oon',.45,1.5,RCOL[2],1.0);await all([S.mn.jump(.3),S.spn.jump(.3)]);}
+};
+page('e05',1,{old:mkq(E5a),neu:mkq(E5a),tm:{"cat and hat": 0, "they rhyme": 3.03, "moon and spoon": 4.25, "rhyme too": 7.4}});
+const E5b={
+ 'let us sort':async(R,S)=>{await R.bg('schoolyard1');R.label('Sort the rhymes','#e8590c');const G=S.G=gfx(R);
+  S.c1=R.act('pa-crate1',{x:-1.0,y:-.4,h:.8,face:1,idle:'none'});S.c1.st.op=0;S.c1.ap();S.c1.show(.2);S.c2=R.act('pa-crate2',{x:1.3,y:-.4,h:.8,face:1,idle:'none'});S.c2.st.op=0;S.c2.ap();S.c2.show(.2);
+  await all([S.c1.go(-1.0,.2,.5,{arc:.3}),S.c2.go(1.3,.2,.5,{arc:.3})]);R.fx('dust',-1.0,.3,8,{w:.7,t:.6});R.fx('dust',1.3,.3,8,{w:.7,t:.6});
+  for(const t of rtag(G,'og',-1.0,1.35,.4,RCOL[1]).concat(rtag(G,'ee',1.3,1.35,.4,RCOL[3])))await tin(R,t,.2);
+  S.it={};for(const[k,a,x,y]of[['pa-frog',null,-1.8,1.8],['pa-dog',null,-.5,1.8],['bee',null,.8,1.8],['pa-tree',null,1.8,1.8]]){const o=R.act(k.replace('pa-frog','frog'),{x:x,y:y+.5,h:.6,face:1,idle:'none'});o.st.op=0;o.ap();o.show(.15,'pop');o.go(x,y-.3,.35,{arc:.1});S.it[k]=o;await R.wait(.3);}
+  },
+ 'frog and dog':async(R,S)=>{const f=S.it['pa-frog'],d=S.it['pa-dog'];await f.go(-1.2,.55,.9,{arc:.9});R.fx('dust',-1.2,.6,8,{w:.4,t:.6});await all([S.c1.shiver(.4),f.jump(.2)]);d.go(-.8,.55,.8,{arc:.8});await R.wait(.8);await all([S.c1.shiver(.5),d.jump(.2)]);R.word('-og!',-1.0,1.7,RCOL[1],1.0);hearts(R,-1.0,1.8,6);},
+ 'bee and tree':async(R,S)=>{const b=S.it['bee'],t=S.it['pa-tree'];await b.go(1.1,.6,1.0,{arc:.9,wob:.1});await all([S.c2.shiver(.4),b.jump(.2)]);t.go(1.6,.55,.9,{arc:.9});await R.wait(.9);await all([S.c2.shiver(.5),t.jump(.2)]);R.word('-ee!',1.3,1.7,RCOL[3],1.0);hearts(R,1.3,1.8,8);R.fx('sparkle',.1,1.5,26,{w:2.4,t:1.4});await all([S.c1.jump(.35),S.c2.jump(.35)]);}
+};
+page('e05',2,{old:mkq(E5b),neu:mkq(E5b),tm:{"let us sort": 0, "frog and dog": 1.19, "bee and tree": 3.44}});
 P.DIR.mount();
 })();
