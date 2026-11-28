@@ -188,5 +188,5 @@ P.DIR.mount=function(){Object.keys(PAGES).forEach(id=>{const X=P.SCN[id]=P.SCN[i
       const beats=(neu&&def.neu)||def.old||def.neu||[];
       try{def.cast&&def.cast(R,S);}catch(e){console.error(e);}
       if(def.open)R.open(()=>def.open(R,S));
-      beats.forEach(b=>R.at(b[0],()=>b[1](R,S),b[2]));return {};}};});});};
+      beats.forEach(b=>R.at(b[0],()=>b[1](R,S),b[2]));if(def.tm)beats.forEach(b=>{const t=def.tm[b[0]];if(t==null)return;sc.later(()=>{const o=sc.ons.find(x=>x.w===String(b[0]).toLowerCase());if(o&&!o.done){o.done=true;try{o.f();}catch(e){console.error(e);}}},(t+3.5)*1000);});return {};}};});});};
 })();

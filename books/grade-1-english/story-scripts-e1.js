@@ -71,7 +71,7 @@ const E1s={
  knows:async(R,S)=>{await S.leo.swap('pa-leocheer',.25,{h:1.6});R.fx('heart',-1.5,1.9,8,{w:.8,t:1.5});await wave(R,[S.t1,S.t2,S.t3]);await wave(R,[S.t1,S.t2,S.t3]);},
  eat:async(R,S)=>{await S.leo.swap('pa-leoeat',.3,{h:1.3});[S.bn,S.mf,S.sd].forEach((a,i)=>{});for(const a of [S.bn,S.mf,S.sd]){await fly(R,a,-1.4,1.0,.6,{arc:.5,spin:Math.PI*2});a.hide(.12);R.fx('crumb',-1.4,.9,8,{w:.3,t:.7});await S.leo.jump(.15);}R.word('Yum!',-1.2,2.0,'#2b8a3e',1.4);hearts(R,-1.4,1.7,8);await R.wait(.5);}
 };
-page('e01',0,{old:mkq(E1s),neu:mkq(E1s)});
+page('e01',0,{old:mkq(E1s),neu:mkq(E1s),tm:{"lunchtime": 2.45, "tummy goes": 6.0, "opens his": 8.69, "yellow banana": 14.25, "first sound is b": 15.95, "sweet muffin": 18.96, "first sound is m": 20.61, "soft sandwich": 24.02, "first sound is s": 25.88, "knows": 28.23, "eat": 33.42}});
 
 /* theory pages for lesson 1 */
 const E1a={
@@ -90,7 +90,7 @@ const E1a={
  'first sound is s':async(R,S)=>{S.w2.slice(1).forEach(t=>{t.a=.35;});await tileFly(R,S.w2[0],-.9,2.0,.9,.35);await glow(R,S.w2[0],.7);R.word('s !',-.9,2.1,'#2b8a3e',1.3);R.fx('sparkle',-.9,2.0,18,{w:.8,t:1.1});await S.sn.jump(.35);},
  'pops out':async(R,S)=>{R.fx('sparkle',-.9,1.9,30,{w:1.4,t:1.5});R.fx('heart',.2,1.4,8,{w:1,t:1.5});await S.sn.jump(.3);await S.sn.jump(.2);}
 };
-page('e01',1,{old:mkq(E1a),neu:mkq(E1a)});
+page('e01',1,{old:mkq(E1a),neu:mkq(E1a),tm:{"say moon": 0, "first sound is m": 4.17, "now say sun": 5.68, "first sound is s": 8.1, "pops out": 12.99}});
 const E1b={
  'say fox':async(R,S)=>{await R.bg('forest1');R.label('Find the letter','#e8505b');const G=S.G=gfx(R);S.fx=R.act('fox',{x:-2.3,y:.3,h:1.0,face:1,idle:'none'});S.fx.st.op=0;S.fx.ap();await S.fx.show(.2);await S.fx.go(-1.1,.3,1.4,{hops:5});
   S.w=wordTiles(G,'fox',.6,1.0,.55,0);for(const t of S.w){await tin(R,t,.22);}},
@@ -99,7 +99,7 @@ const E1b={
  'the letter f':async(R,S)=>{await glow(R,S.c[0],.8);R.fx('sparkle',S.c[0].x,.9,14,{w:.6,t:1});for(const t of [S.c[1],S.c[2]]){R.T(.6,e=>{t.x=t.x+Math.sin(e*Math.PI*8)*.01;t.a=1-.65*e;});}await R.wait(.5);},
  'fill the gap':async(R,S)=>{S.w[0].gap=false;S.w[0].ch='f';S.w[0].col=colOf('f');S.w[0].s=1;S.w[0].a=0;await all([tileFly(R,S.c[0],S.w[0].x,S.w[0].y,.9,.7),R.T(.9,e=>{S.w[0].a=e;})]);S.G.rmTile(S.c[0]);S.w[0].a=1;R.T(.6,e=>{S.c[1].y-=.05*e;S.c[1].a=.35*(1-e);S.c[2].y-=.05*e;S.c[2].a=.35*(1-e);});R.fx('sparkle',.6,1.0,24,{w:1.0,t:1.2});await all([S.fx.jump(.45),glow(R,S.w[0],.8)]);hearts(R,-1.1,1.5,8);await S.fx.go(-.3,.3,.9,{hops:3});R.fx('heart',-.3,1.5,6,{w:.6,t:1.2});}
 };
-page('e01',2,{old:mkq(E1b),neu:mkq(E1b)});
+page('e01',2,{old:mkq(E1b),neu:mkq(E1b),tm:{"say fox": 0, "first sound is f": 3.29, "which letter": 4.97, "the letter f": 7.15, "fill the gap": 9.7}});
 const E1c={
  'look a bee':async(R,S)=>{await R.bg('schoolyard1');R.label('Same first sound','#e8505b');const G=S.G=gfx(R);S.bee=R.act('bee',{x:-2.3,y:1.9,h:.7,face:1,idle:'none'});S.bee.st.op=0;S.bee.ap();await S.bee.show(.15);
   await fly(R,S.bee,-1.8,1.2,.5,{arc:.2});await fly(R,S.bee,-1.4,1.7,.5,{arc:.2});await fly(R,S.bee,-1.3,.8,.5,{arc:.3});S.tb=G.tile('b',-1.3,1.7,colOf('b'),.46);await tin(R,S.tb,.3);R.fx('sparkle',-1.3,1.7,10,{w:.5,t:.9});},
@@ -108,7 +108,7 @@ const E1c={
  'same sound':async(R,S)=>{await all([glow(R,S.tb,.8),glow(R,S.tb2,.8),glow(R,S.tb3,.8)]);},
  'say them with me':async(R,S)=>{R.word('Bee!',-1.3,2.1,'#e8a900',1.0);await all([S.bee.jump(.35),wave(R,[S.tb])]);R.word('Bear!',-.3,2.1,'#a0522d',1.0);await all([S.br.jump(.3),wave(R,[S.tb2])]);R.word('Bus!',.95,2.1,'#c92a2a',1.0);await all([S.bs.jump(.3),wave(R,[S.tb3])]);hearts(R,-.3,1.5,10);await all([S.bee.jump(.3),S.br.jump(.3),S.bs.jump(.3)]);}
 };
-page('e01',3,{old:mkq(E1c),neu:mkq(E1c)});
+page('e01',3,{old:mkq(E1c),neu:mkq(E1c),tm:{"look a bee": 0, "a bear": 1.19, "and a bus": 2.39, "same sound": 5.82, "say them with me": 7.01}});
 
 /* ================= LESSON 2 : Ending sounds ================= */
 const MIA_H=1.4;
