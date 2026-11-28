@@ -4,7 +4,7 @@
 const P=window.PM;if(!P||!P.DIR)return;
 const page=P.DIR.page;
 /* the staged pages drive their own action, so the old per-step cue lists of these lessons are dropped */
-const STAGED=/^e0[1-5]$/;const U0=P.unit;P.unit=function(d){if(d&&STAGED.test(d.id)&&d.steps)d.steps.forEach(st=>{st.cues=[];});return U0.apply(this,arguments);};
+const STAGED=P.G1STAGED=new Set(['e01','e02','e03','e04','e05','e06','e07','e08','e09']);const U0=P.unit;P.unit=function(d){if(d&&STAGED.has(d.id)&&d.steps)d.steps.forEach(st=>{st.cues=[];});return U0.apply(this,arguments);};
 const all=ps=>Promise.all(ps);
 const pop=async(R,k,o,t)=>{const a=R.act(k,o);a.st.op=0;a.ap();await a.show(t||.45,'pop');return a;};
 const liteq=f=>(R,S)=>{const prev=S._q||Promise.resolve();const p=prev.then(()=>f(R,S));S._q=p.catch(()=>0);p.catch(e=>{if(e)console.error(e);});return Promise.race([p.catch(()=>0),R.wait(.7)]);};
@@ -461,5 +461,7 @@ const E9b={
  'slide into place':async(R,S)=>{await all([glow(R,S.sb,.7),S.bk.jump(.35),S.bk2.jump(.35),S.bk3.jump(.35)]);hearts(R,.3,1.7,10);await wave(R,S.w.concat([S.sb]));await all([S.bk.jump(.3),S.bk2.jump(.3),S.bk3.jump(.3)]);}
 };
 page('e09',2,{old:mkq(E9b),neu:mkq(E9b),tm:{"add an s": 0.88, "book becomes books": 3.16, "slide into place": 6.76}});
+/* shared helpers for the later lesson files */
+P.G1H={all,pop,liteq,mkq,hearts,gfx,tin,tout,glow,moveT,COL,colOf,wordTiles,fly,tileFly,squash,wave,VC,vcol,vTiles,rtag,ntag,NC,tg,nounTag,ptag,pltag,GOLD,PG,RCOL,rpair};
 P.DIR.mount();
 })();

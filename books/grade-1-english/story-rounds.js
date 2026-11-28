@@ -15,6 +15,26 @@ const CFG={
  e07:{bgs:['kitchen-day','playroom1','livingroom','lunchtable1','sunhill1'],cast:[['pa-dadwave',1.45],['pa-dadcheer',1.45],['pa-dadpan',1.45],['pa-dadpoint',1.45]],amb:'sparkle',noprop:1,keep:1},
  e08:{bgs:['city1','street','park','playroom1','sunhill1'],cast:[['pa-norawave',1.5],['pa-leowave',1.5],['pa-leocheer',1.5],['pa-noralook',1.5],['pa-leosay',1.5]],amb:'sparkle',noprop:1,keep:1},
  e09:{bgs:['livingroom','playroom1','kitchen-day','sunhill1','picnic5'],cast:[['pa-miacheer',1.5],['pa-miawave',1.5],['pa-miapoint',1.5],['pa-miathink',1.5]],amb:'sparkle',noprop:1,keep:1},
+ e02:{bgs:['market2','street','park','playroom1','sunhill1'],cast:[['pa-miawave',1.5],['pa-miacheer',1.5],['pa-miapoint',1.5],['pa-miathink',1.5],['pa-miapear',1.5]],amb:'sparkle',noprop:1,keep:1},
+ e10:{bgs:['livingroom','kitchen-day','park','playroom1','street'],cast:[['pa-momwave',1.45],['pa-momcheer',1.45],['pa-dadwave',1.45],['pa-timwave',1.4],['pa-miacheer',1.4]],amb:'sparkle',noprop:1,keep:1},
+ e11:{bgs:['kitchen22','kitchen-day','livingroom','picnic5','playroom1'],cast:[['grandma',1.35],['pa-miawave',1.4],['pa-miacheer',1.4],['grandma',1.35]],amb:'sparkle',noprop:1,keep:1},
+ e12:{bgs:['sunhill1','park','street','playroom1','schoolyard1'],cast:[['pa-boycoat',1.2],['pa-boynocoat',1.2],['pa-miathink',1.4],['pa-leosay',1.4]],amb:'sparkle',noprop:1,keep:1},
+ e13:{bgs:['park','sunhill1','forest1','picnic5','playroom1'],cast:[['pa-avawave',1.35],['pa-avacheer',1.35],['pa-timcheer',1.4],['pa-timwow',1.4]],amb:'sparkle',noprop:1,keep:1},
+ e14:{bgs:['nighthill1','schoolyard1','park','livingroom','sunhill1'],cast:[['pa-norawave',1.45],['kid0',1.1],['pa-dadwave',1.45],['pa-leocheer',1.4]],amb:'sparkle',noprop:1,keep:1},
+ e15:{bgs:['classroom','playroom1','schoolyard1','park','livingroom'],cast:[['pa-teacher',1.4],['pa-miawave',1.4],['pa-leowave',1.4],['pa-norawave',1.45]],amb:'sparkle',noprop:1,keep:1},
+ e16:{bgs:['nighthill1','livingroom','street','schoolyard1','park'],cast:[['pa-timwow',1.4],['pa-timcheer',1.4],['kid2',1.1],['pa-norawonder',1.45]],amb:'sparkle',noprop:1,keep:1},
+ e17:{bgs:['classroom','livingroom','kitchen-day','park','playroom1'],cast:[['pa-momwave',1.45],['pa-mombook',1.45],['pa-mompoint',1.45],['pa-miawave',1.4],['pa-timcheer',1.4]],amb:'sparkle',noprop:1,keep:1},
+ e18:{bgs:['farm23','park','sunhill1','schoolyard1','livingroom'],cast:[['grandpa',1.3],['grandma',1.3],['pa-miawave',1.35],['pa-dog',.6]],amb:'sparkle',noprop:1,keep:1},
+ e19:{bgs:['playroom1','schoolyard1','park','street','sunhill1'],cast:[['pa-oneband',1.45],['pa-miacheer',1.35],['pa-leocheer',1.35],['pa-milodance',1.45]],amb:'sparkle',noprop:1,keep:1},
+ e20:{bgs:['livingroom','park','playroom1','sunhill1','schoolyard1'],cast:[['pa-leowave',1.4],['pa-leocheer',1.4],['pa-puppy',.6],['pa-leosay',1.4]],amb:'sparkle',noprop:1,keep:1},
+ e21:{bgs:['nighthill1','sunhill1','forest1','park','playroom1'],cast:[['pa-norawave',1.45],['pa-noralook',1.45],['pa-norawonder',1.45],['pa-noratele',1.45]],amb:'sparkle',noprop:1,keep:1},
+ e22:{bgs:['park','playroom1','livingroom','forest1','schoolyard1'],cast:[['pa-leowave',1.4],['pa-leocheer',1.4],['kid3',1.0],['kid0',1.0]],amb:'sparkle',noprop:1,keep:1},
+ e23:{bgs:['kitchen-day','livingroom','sunhill1','playroom1','nighthill1'],cast:[['pa-miawave',1.4],['pa-miacheer',1.4],['pa-miapoint',1.4],['pa-miathink',1.4]],amb:'sparkle',noprop:1,keep:1},
+ e24:{bgs:['farm23','laketown1','park','kitchen-day','sunhill1'],cast:[['grandpa',1.3],['pa-timwave',1.4],['pa-timcheer',1.4],['pa-timlook',1.4]],amb:'sparkle',noprop:1,keep:1},
+ e25:{bgs:['livingroom','playroom1','farm23','sunhill1','forest1'],cast:[['pa-leosay',1.4],['pa-leocheer',1.4],['pa-leowave',1.4],['pa-miathink',1.4]],amb:'sparkle',noprop:1,keep:1},
+ e26:{bgs:['sunhill1','park','forest1','playroom1','farm23'],cast:[['lion',1.0],['monkey',.8],['pa-zebra',.8],['elephant',1.0]],amb:'sparkle',noprop:1,keep:1},
+ e27:{bgs:['hall','playroom1','schoolyard1','livingroom','sunhill1'],cast:[['pa-norawave',1.45],['pa-dentist',1.35],['pa-noralook',1.45],['pa-norapoint',1.45]],amb:'sparkle',noprop:1,keep:1},
+ e28:{bgs:['kitchen22','kitchen-day','farm23','livingroom','playroom1'],cast:[['pa-milospoon',1.45],['pa-milotummy',1.45],['pa-milodance',1.45],['pa-milobow',1.45]],amb:'sparkle',noprop:1,keep:1},
  c06:{bgs:['meadow','pond-spring','pond-summer'],cast:[['pa-calf',1.15],['pa-lamb',1.0],['pa-cubnew',.8],['pa-ducklings',.7],['pa-chicks',.6],['pa-whalecalf',.8],['pa-cowcalf',1.0]],amb:'leaves'},
  c07:{bgs:['savanna','grass','sunset','den'],cast:[['pa-lion7eyes',1.3],['pa-lion7pounce',1.2],['pa-lion7young',1.6],['pa-lion7roar',1.6],['pa-lion7mom',1.4]],amb:'leaves'},
  c08:{bgs:['classroom','garden8','leaf8'],cast:[['pa-jar8egg',1.5],['pa-jar8cat',1.5],['pa-chrys8',1.4],['pa-mon8open',1.2],['pa-kids8',1.4]],amb:'leaves'},
@@ -61,5 +81,5 @@ const scene=(cfg,idx,r)=>(sc,st,set,hk)=>{
         await all(j);await S.a.jump(.2);await S.a.go(S.a.st.x+.5,S.a.st.y,.9);await S.a.go(S.a.st.x-.5,S.a.st.y,.9);});return 2800;},
     miss(){hold(async()=>{R.word(OOPS[Math.floor(Math.random()*OOPS.length)],-.5,1.9,'#e03131',1.3);const j=[S.a.shiver(.9)];if(S.p){const x0=S.p.position.x;j.push(R.T(.6,e=>{S.p.position.x=x0+Math.sin(e*Math.PI*8)*.07*(1-e);}));}await all(j);});}
   };P.DIR_ROUND=API;return API;};
-P.DIR.rounds=function(d){const cfg=CFG[d.id];if(!cfg)return;let n=0;if(cfg.keep){(d.rounds||[]).forEach((r,k)=>{r.scene=scene(cfg,k,r);});return;}(d.rounds||[]).forEach(r=>{if(!simple(r))return;const k=n++;r.set={};r.scene=scene(cfg,k,r);});};
+P.DIR.rounds=function(d){const cfg=CFG[d.id];if(!cfg)return;let n=0;if(cfg.keep){(d.rounds||[]).forEach((r,k)=>{if(r.set&&r.set.custom)return;r.scene=scene(cfg,k,r);});return;}(d.rounds||[]).forEach(r=>{if(!simple(r))return;const k=n++;r.set={};r.scene=scene(cfg,k,r);});};
 })();

@@ -351,7 +351,7 @@ P.unit=function(d){(window.__UNITS=window.__UNITS||[]).push(d);if(P.DIR&&P.DIR.a
           if(set.bins)set=Object.assign({},set,{items:shuffle(set.items)});
           if(R.scene)set=Object.assign({},set,{scene:R.scene});else if(!BKs.noThinker&&P.STAGE&&!set.row&&!set.fill&&!set.build&&!set.bins&&!set.grid&&!set.custom)set=Object.assign({},set,{scene:(sc,st2,s2)=>P.STAGE.thinker(sc,st2,s2,{kid:r%6})});
           if(!BKs.pageAnswers&&R.o&&!set.fill&&!set.build&&!set.bins&&!set.grid&&!set.custom&&R.o.length<=4&&R.o.every(t=>String(t).length<=16))set=Object.assign({},set,{choices:shuffle(R.o.map(String))});
-          st.chosen=null;useSet(set);st.setup=false;return R.q;}};}});
+          st.chosen=null;useSet(set);st.setup=false;if(BKs.readQ&&P.speak&&R.q){const tq=String(R.q).replace(/\*/g,'');clearTimeout(st._rq);st._rq=setTimeout(()=>{try{P.speak(tq);}catch(e){}},700);}return R.q;}};}});
 };
 P.K2={standee,block,crate,find,pic,picTile,img,CUSTOM,COLS,render,jump,shake,mixHex};
 })();
